@@ -29,7 +29,7 @@ CORS(app)  # Enable CORS for frontend communication
 
 # Configuration
 UPLOAD_FOLDER = '../data/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif'}  # JFIF is JPEG format
 MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
 MODELS_DIR = '../models'
 RESULTS_DIR = '../results/heatmaps'

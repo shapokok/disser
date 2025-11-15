@@ -70,8 +70,8 @@
                     <div class="upload-icon">📁</div>
                     <div class="upload-text">Drag and drop images here</div>
                     <div class="upload-subtext">or click to browse</div>
-                    <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, PNG (max 16MB)</div>
-                    <input type="file" id="fileInput" accept="image/jpeg,image/png" multiple>
+                    <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, JPEG, JFIF, PNG (max 16MB)</div>
+                    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jfif,.jfif" multiple>
                 </div>
 
                 <!-- Image Preview -->
@@ -171,9 +171,12 @@
         uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadArea.classList.remove('dragover');
-            const files = Array.from(e.dataTransfer.files).filter(file =>
-                file.type === 'image/jpeg' || file.type === 'image/png'
-            );
+            const files = Array.from(e.dataTransfer.files).filter(file => {
+                // Accept JPEG, PNG, and JFIF files
+                return file.type === 'image/jpeg' ||
+                       file.type === 'image/png' ||
+                       file.name.toLowerCase().endsWith('.jfif');
+            });
             handleFiles(files);
         });
 
@@ -187,10 +190,13 @@
         function validateImage(file) {
             const errors = [];
 
-            // Check file type
-            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            if (!validTypes.includes(file.type)) {
-                errors.push(`Invalid file type. Only JPG and PNG images are supported.`);
+            // Check file type (including JFIF which is JPEG format)
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/jfif'];
+            const fileName = file.name.toLowerCase();
+            const isJfif = fileName.endsWith('.jfif');
+
+            if (!validTypes.includes(file.type) && !isJfif) {
+                errors.push(`Invalid file type. Only JPG, JPEG, JFIF, and PNG images are supported.`);
             }
 
             // Check file size (16MB max)
