@@ -319,7 +319,9 @@
         }
 
         // Analyze images
-        analyzeBtn.addEventListener('click', async () => {
+        analyzeBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent any default behavior
+
             const model = document.getElementById('modelSelect').value;
             const explanation = document.getElementById('explanationSelect').value;
             const datasetType = document.getElementById('datasetSelect').value;
@@ -355,10 +357,19 @@
                 }
 
                 const uploadData = await uploadResponse.json();
+                console.log('Upload response:', uploadData);
 
                 if (!uploadData.success) {
                     updateProgress('step1', 'error');
                     throw new Error(uploadData.error || 'Failed to upload files');
+                }
+
+                if (!uploadData.uploaded || uploadData.uploaded.length === 0) {
+                    updateProgress('step1', 'error');
+                    const errorDetails = uploadData.errors && uploadData.errors.length > 0
+                        ? `\n\nErrors: ${uploadData.errors.join(', ')}`
+                        : '';
+                    throw new Error(`No files were uploaded successfully. Please check the file format and size.${errorDetails}`);
                 }
 
                 updateProgress('step1', 'completed');
@@ -437,7 +448,9 @@
         });
 
         // Compare all models on first image
-        compareBtn.addEventListener('click', async () => {
+        compareBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent any default behavior
+
             if (selectedFiles.length === 0) return;
 
             // Show loading
@@ -455,13 +468,27 @@
                     body: formData
                 });
 
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json().catch(() => ({ error: `HTTP ${uploadResponse.status}` }));
+                    throw new Error(errorData.error || 'Failed to upload file');
+                }
+
                 const uploadData = await uploadResponse.json();
+                console.log('Compare upload response:', uploadData);
 
                 if (!uploadData.success) {
-                    throw new Error('Failed to upload file');
+                    throw new Error(uploadData.error || 'Failed to upload file');
+                }
+
+                if (!uploadData.uploaded || uploadData.uploaded.length === 0) {
+                    const errorDetails = uploadData.errors && uploadData.errors.length > 0
+                        ? `\n\nErrors: ${uploadData.errors.join(', ')}`
+                        : '';
+                    throw new Error(`No files were uploaded successfully. Please check the file format and size.${errorDetails}`);
                 }
 
                 const uploadedFile = uploadData.uploaded[0];
+                console.log('Uploaded file:', uploadedFile);
 
                 // Compare all models
                 const compareResponse = await fetch('http://localhost:5000/api/compare', {
