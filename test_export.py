@@ -6,8 +6,10 @@ Simple test script to verify export functionality works
 import sys
 import os
 
-# Add backend to path
-sys.path.insert(0, '/home/user/disser/crop_monitoring_app/backend')
+# Add backend to path (works on both Windows and Linux)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+backend_path = os.path.join(script_dir, 'crop_monitoring_app', 'backend')
+sys.path.insert(0, backend_path)
 
 try:
     from export_utils import export_to_csv, export_to_json, export_to_excel
