@@ -22,6 +22,13 @@ from utils import (
 )
 from validation import get_all_validation_reports, generate_realistic_confusion_matrix, plot_confusion_matrix
 from report_generator import create_pdf_report, generate_comparison_report
+from export_utils import (
+    export_to_csv,
+    export_to_json,
+    export_to_excel,
+    export_comparison_to_csv,
+    export_comparison_to_excel
+)
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -664,6 +671,177 @@ def get_treatment(disease_class):
                     ]
                 }
             })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/csv', methods=['POST'])
+def export_csv():
+    """
+    Export analysis results to CSV format
+    Accepts single result or array of results
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results provided'}), 400
+
+        # Generate CSV
+        csv_data = export_to_csv(results)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"crop_analysis_{timestamp}.csv"
+
+        return send_file(
+            io.BytesIO(csv_data.encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/json', methods=['POST'])
+def export_json():
+    """
+    Export analysis results to JSON format
+    Accepts single result or array of results
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results provided'}), 400
+
+        # Generate JSON
+        json_data = export_to_json(results, pretty=True)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"crop_analysis_{timestamp}.json"
+
+        return send_file(
+            io.BytesIO(json_data.encode('utf-8')),
+            mimetype='application/json',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/excel', methods=['POST'])
+def export_excel():
+    """
+    Export analysis results to Excel format with formatting
+    Accepts single result or array of results
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results provided'}), 400
+
+        # Generate Excel
+        excel_data = export_to_excel(results)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"crop_analysis_{timestamp}.xlsx"
+
+        return send_file(
+            io.BytesIO(excel_data),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/comparison/csv', methods=['POST'])
+def export_comparison_csv():
+    """
+    Export model comparison results to CSV format
+    """
+    try:
+        data = request.json
+
+        if not data or 'comparisons' not in data:
+            return jsonify({'error': 'No comparison data provided'}), 400
+
+        # Generate CSV
+        csv_data = export_comparison_to_csv(data)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"model_comparison_{timestamp}.csv"
+
+        return send_file(
+            io.BytesIO(csv_data.encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/comparison/excel', methods=['POST'])
+def export_comparison_excel():
+    """
+    Export model comparison results to Excel format
+    """
+    try:
+        data = request.json
+
+        if not data or 'comparisons' not in data:
+            return jsonify({'error': 'No comparison data provided'}), 400
+
+        # Generate Excel
+        excel_data = export_comparison_to_excel(data)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"model_comparison_{timestamp}.xlsx"
+
+        return send_file(
+            io.BytesIO(excel_data),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
 
     except Exception as e:
         import traceback

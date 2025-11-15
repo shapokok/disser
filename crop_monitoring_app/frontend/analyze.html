@@ -615,6 +615,18 @@
             }).join('')}
                 </div>
 
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--light-gray);">
+                    <h4 style="text-align: center; margin-bottom: 1rem;">📊 Export Comparison</h4>
+                    <div style="text-align: center;">
+                        <button class="btn btn-secondary" onclick="exportComparison('csv')" style="margin: 0.5rem;">
+                            📄 Export as CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportComparison('excel')" style="margin: 0.5rem;">
+                            📊 Export as Excel
+                        </button>
+                    </div>
+                </div>
+
                 <div style="margin-top: 2rem; text-align: center;">
                     <button class="btn btn-primary" onclick="location.reload()">
                         Analyze Another Image
@@ -623,6 +635,9 @@
             `;
 
             resultsContainer.appendChild(comparisonCard);
+
+            // Store comparison data for export
+            window.currentComparisonData = compareData;
 
             // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -708,6 +723,31 @@
                 resultsContainer.appendChild(resultCard);
             });
 
+            // Add export all results button
+            if (results.length > 0) {
+                const exportCard = document.createElement('div');
+                exportCard.className = 'card';
+                exportCard.style.marginTop = '2rem';
+                exportCard.innerHTML = `
+                    <div class="card-header">
+                        <h3 style="margin: 0;">📊 Export Results</h3>
+                        <p style="margin: 0.5rem 0 0 0; color: var(--gray);">Download all analysis results in your preferred format</p>
+                    </div>
+                    <div class="card-body" style="text-align: center;">
+                        <button class="btn btn-primary" onclick="exportResults('csv')" style="margin: 0.5rem;">
+                            📄 Export as CSV
+                        </button>
+                        <button class="btn btn-primary" onclick="exportResults('json')" style="margin: 0.5rem;">
+                            📋 Export as JSON
+                        </button>
+                        <button class="btn btn-primary" onclick="exportResults('excel')" style="margin: 0.5rem;">
+                            📊 Export as Excel
+                        </button>
+                    </div>
+                `;
+                resultsContainer.appendChild(exportCard);
+            }
+
             // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -723,6 +763,125 @@
                 link.click();
             }
         }
+
+        // Global results storage
+        let globalResults = [];
+
+        // Store results after analysis
+        function storeResults(results) {
+            globalResults = results.map(r => ({
+                ...r,
+                image_name: r.original_name
+            }));
+        }
+
+        // Export all results
+        async function exportResults(format) {
+            if (globalResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/export/${format}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        results: globalResults
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Export failed');
+                }
+
+                // Download the file
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+
+                // Get filename from response headers or use default
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = `crop_analysis.${format}`;
+
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+                    if (filenameMatch) {
+                        filename = filenameMatch[1];
+                    }
+                }
+
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                console.log(`✓ Exported ${globalResults.length} results as ${format.toUpperCase()}`);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert(`Failed to export results: ${error.message}`);
+            }
+        }
+
+        // Export comparison results
+        async function exportComparison(format) {
+            if (!window.currentComparisonData) {
+                alert('No comparison data to export');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/export/comparison/${format}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(window.currentComparisonData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Export failed');
+                }
+
+                // Download the file
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = `model_comparison.${format}`;
+
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+                    if (filenameMatch) {
+                        filename = filenameMatch[1];
+                    }
+                }
+
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                console.log(`✓ Exported comparison as ${format.toUpperCase()}`);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert(`Failed to export comparison: ${error.message}`);
+            }
+        }
+
+        // Update the analyze button handler to store results
+        const originalDisplayResults = displayResults;
+        displayResults = function(results) {
+            storeResults(results);
+            originalDisplayResults(results);
+        };
     </script>
 </body>
 
