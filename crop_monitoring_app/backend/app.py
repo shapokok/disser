@@ -263,6 +263,14 @@ def compare_models():
         # Preprocess image once
         image_tensor, _ = preprocess_image(image_path)
 
+        # Validate models exist
+        missing_models = [m for m in models_to_compare if m not in model_manager.models]
+        if missing_models:
+            return jsonify({
+                'error': f'Models not loaded: {", ".join(missing_models)}',
+                'available_models': list(model_manager.models.keys())
+            }), 400
+
         # Compare models
         results = {}
         for model_name in models_to_compare:
@@ -277,6 +285,12 @@ def compare_models():
                     'confidence_percent': f"{prediction['confidence'] * 100:.2f}%",
                     'inference_time_ms': round(inference_time, 2)
                 }
+
+        if not results:
+            return jsonify({
+                'error': 'No models available for comparison',
+                'available_models': list(model_manager.models.keys())
+            }), 400
 
         return jsonify({
             'success': True,

@@ -348,11 +348,17 @@
                     body: formData
                 });
 
+                if (!uploadResponse.ok) {
+                    updateProgress('step1', 'error');
+                    const errorData = await uploadResponse.json().catch(() => ({ error: `HTTP ${uploadResponse.status}` }));
+                    throw new Error(errorData.error || 'Failed to upload files');
+                }
+
                 const uploadData = await uploadResponse.json();
 
                 if (!uploadData.success) {
                     updateProgress('step1', 'error');
-                    throw new Error('Failed to upload files');
+                    throw new Error(uploadData.error || 'Failed to upload files');
                 }
 
                 updateProgress('step1', 'completed');
@@ -382,7 +388,17 @@
                         })
                     });
 
+                    if (!predictResponse.ok) {
+                        const errorData = await predictResponse.json().catch(() => ({ error: `HTTP ${predictResponse.status}` }));
+                        throw new Error(errorData.error || `Prediction failed for ${file.original_name}`);
+                    }
+
                     const result = await predictResponse.json();
+
+                    if (!result.success && result.error) {
+                        throw new Error(result.error);
+                    }
+
                     result.original_name = file.original_name;
                     results.push(result);
 
@@ -461,12 +477,32 @@
 
                 const compareData = await compareResponse.json();
 
+                // Check if response was successful
+                if (!compareResponse.ok || compareData.error) {
+                    throw new Error(compareData.error || `Server error: ${compareResponse.status}`);
+                }
+
+                if (!compareData.success) {
+                    throw new Error(compareData.error || 'Model comparison failed');
+                }
+
                 // Display comparison results
                 displayComparisonResults(compareData, uploadedFile.original_name);
 
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error comparing models. Please make sure the backend server is running on http://localhost:5000');
+
+                // Show detailed error message
+                let errorMsg = 'Error comparing models.\n\n';
+                if (error.message) {
+                    errorMsg += `Details: ${error.message}\n\n`;
+                }
+                errorMsg += 'Please ensure:\n';
+                errorMsg += '• Backend server is running on http://localhost:5000\n';
+                errorMsg += '• All models are properly loaded\n';
+                errorMsg += '• Image was uploaded successfully';
+
+                alert(errorMsg);
             } finally {
                 loadingContainer.classList.add('hidden');
                 compareBtn.disabled = false;
