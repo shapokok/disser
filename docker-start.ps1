@@ -142,10 +142,10 @@ if ($profile) {
 }
 
 Write-Host ""
-Write-Host "📊 Useful commands:" -ForegroundColor White
+Write-Host "Useful commands:" -ForegroundColor White
 Write-Host "   View logs:        docker-compose logs -f" -ForegroundColor Gray
 Write-Host "   Stop:             docker-compose stop" -ForegroundColor Gray
-Write-Host "   Stop & remove:    docker-compose down" -ForegroundColor Gray
+Write-Host "   Stop and remove:  docker-compose down" -ForegroundColor Gray
 Write-Host "   Restart:          docker-compose restart" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Press Ctrl+C to view logs (or close this window)" -ForegroundColor Yellow
@@ -155,6 +155,6 @@ Write-Host ""
 $showLogs = Read-Host "Do you want to see container logs? (y/n)"
 if ($showLogs -eq "y" -or $showLogs -eq "Y") {
     Write-Host ""
-    Write-Host "Showing logs (Press Ctrl+C to exit)..." -ForegroundColor Cyan
+    Write-Host "Showing logs (Press Ctrl+C to exit)" -ForegroundColor Cyan
     docker-compose logs -f
 }
