@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Statistics - Crop Disease Detection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌱</span>
+                <span>CropAI Monitor</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="analyze.html">Analyze</a></li>
+                <li><a href="stats.html" class="active">Statistics</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem;">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">📊 Model Performance Statistics</h2>
+                <p class="card-subtitle">Comparative analysis of different neural network architectures</p>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingStats" class="card">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading model statistics...</div>
+        </div>
+
+        <!-- Statistics Container -->
+        <div id="statsContainer" class="hidden">
+            <!-- Overall Performance -->
+            <div class="card">
+                <h2 class="card-title mb-3">Performance Comparison</h2>
+                <div id="performanceTable"></div>
+            </div>
+
+            <!-- Model Cards -->
+            <div id="modelCardsContainer" class="models-grid">
+                <!-- Model cards will be inserted here -->
+            </div>
+
+            <!-- Performance Charts -->
+            <div class="card">
+                <h2 class="card-title mb-3">Visual Performance Analysis</h2>
+                <div id="chartsContainer">
+                    <!-- Charts will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Dataset Information -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Dataset Information</h2>
+                    <p class="card-subtitle">PlantVillage dataset with additional field images</p>
+                </div>
+                <div class="card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;" id="totalClasses">38</div>
+                            <div style="color: var(--gray); margin-top: 0.5rem;">Disease Classes</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--secondary-color); font-weight: bold;">14</div>
+                            <div style="color: var(--gray); margin-top: 0.5rem;">Plant Types</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;">54,306</div>
+                            <div style="color: var(--gray); margin-top: 0.5rem;">Training Images</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--secondary-color); font-weight: bold;">4</div>
+                            <div style="color: var(--gray); margin-top: 0.5rem;">Model Architectures</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Comparison -->
+            <div class="card">
+                <h2 class="card-title mb-3">Model Recommendations</h2>
+                <div class="features-grid">
+                    <div class="feature-card" style="border: 2px solid var(--success-color);">
+                        <div class="feature-icon">🏆</div>
+                        <h3 class="feature-title">Best Accuracy</h3>
+                        <p style="font-size: 1.5rem; color: var(--primary-color); font-weight: bold; margin: 1rem 0;">Hybrid CNN-Transformer</p>
+                        <p class="feature-description">96.7% accuracy - Best for research and high-accuracy requirements</p>
+                    </div>
+                    <div class="feature-card" style="border: 2px solid var(--secondary-color);">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Best Speed</h3>
+                        <p style="font-size: 1.5rem; color: var(--secondary-color); font-weight: bold; margin: 1rem 0;">MobileNet-V2</p>
+                        <p class="feature-description">32ms inference - Best for mobile and real-time applications</p>
+                    </div>
+                    <div class="feature-card" style="border: 2px solid var(--warning-color);">
+                        <div class="feature-icon">⚖️</div>
+                        <h3 class="feature-title">Best Balance</h3>
+                        <p style="font-size: 1.5rem; color: var(--warning-color); font-weight: bold; margin: 1rem 0;">EfficientNet-B0</p>
+                        <p class="feature-description">95.4% accuracy with reasonable speed - Recommended for most use cases</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Details -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Training Configuration</h2>
+                    <p class="card-subtitle">Common training parameters used for all models</p>
+                </div>
+                <div class="card-body">
+                    <div style="background: var(--light); padding: 2rem; border-radius: 10px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Optimizer:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">Adam</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Learning Rate:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">0.001 (with decay)</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Batch Size:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">32</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Epochs:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">50 (early stopping)</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Loss Function:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">Cross-Entropy</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Data Augmentation:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">Rotation, Flip, Color Jitter</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Validation Split:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">20%</span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <strong style="color: var(--dark);">Input Size:</strong>
+                                <span style="color: var(--gray); margin-left: 0.5rem;">224x224</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>Crop Disease Detection System</strong> - Master's Thesis Project</p>
+        <p>© 2025 - For Educational and Research Purposes</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Load statistics on page load
+        document.addEventListener('DOMContentLoaded', loadStatistics);
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch('http://localhost:5000/api/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    displayStatistics(data.statistics);
+                    document.getElementById('totalClasses').textContent = data.total_classes;
+                } else {
+                    throw new Error('Failed to load statistics');
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                document.getElementById('loadingStats').innerHTML = `
+                    <div class="alert alert-error">
+                        <strong>Error:</strong> Could not load statistics. Please ensure the backend server is running on http://localhost:5000
+                    </div>
+                `;
+            }
+        }
+
+        function displayStatistics(stats) {
+            // Hide loading, show stats
+            document.getElementById('loadingStats').classList.add('hidden');
+            document.getElementById('statsContainer').classList.remove('hidden');
+
+            // Create performance table
+            const performanceTable = document.getElementById('performanceTable');
+            performanceTable.innerHTML = `
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: var(--primary-color); color: white;">
+                                <th style="padding: 1rem; text-align: left;">Model</th>
+                                <th style="padding: 1rem; text-align: center;">Accuracy</th>
+                                <th style="padding: 1rem; text-align: center;">Precision</th>
+                                <th style="padding: 1rem; text-align: center;">Recall</th>
+                                <th style="padding: 1rem; text-align: center;">F1-Score</th>
+                                <th style="padding: 1rem; text-align: center;">Inference Time</th>
+                                <th style="padding: 1rem; text-align: center;">Model Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(stats).map(([name, data], index) => `
+                                <tr style="background: ${index % 2 === 0 ? 'white' : 'var(--light)'};">
+                                    <td style="padding: 1rem; font-weight: bold; color: var(--dark);">${formatModelName(name)}</td>
+                                    <td style="padding: 1rem; text-align: center; color: var(--primary-color); font-weight: bold;">${(data.accuracy * 100).toFixed(1)}%</td>
+                                    <td style="padding: 1rem; text-align: center;">${(data.precision * 100).toFixed(1)}%</td>
+                                    <td style="padding: 1rem; text-align: center;">${(data.recall * 100).toFixed(1)}%</td>
+                                    <td style="padding: 1rem; text-align: center;">${(data.f1_score * 100).toFixed(1)}%</td>
+                                    <td style="padding: 1rem; text-align: center;">${data.inference_time_ms}ms</td>
+                                    <td style="padding: 1rem; text-align: center;">${data.size_mb}MB</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Create model cards
+            const modelCardsContainer = document.getElementById('modelCardsContainer');
+            modelCardsContainer.innerHTML = Object.entries(stats).map(([name, data]) => `
+                <div class="model-card">
+                    <h3 class="model-name">${formatModelName(name)}</h3>
+                    <ul class="model-stats">
+                        <li>
+                            <span class="stat-label">Accuracy</span>
+                            <span class="stat-value" style="color: var(--primary-color);">${(data.accuracy * 100).toFixed(2)}%</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Precision</span>
+                            <span class="stat-value">${(data.precision * 100).toFixed(2)}%</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Recall</span>
+                            <span class="stat-value">${(data.recall * 100).toFixed(2)}%</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">F1-Score</span>
+                            <span class="stat-value">${(data.f1_score * 100).toFixed(2)}%</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Inference Time</span>
+                            <span class="stat-value">${data.inference_time_ms}ms</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Parameters</span>
+                            <span class="stat-value">${data.parameters}</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Model Size</span>
+                            <span class="stat-value">${data.size_mb}MB</span>
+                        </li>
+                    </ul>
+                </div>
+            `).join('');
+
+            // Create visual charts
+            createCharts(stats);
+        }
+
+        function createCharts(stats) {
+            const chartsContainer = document.getElementById('chartsContainer');
+
+            // Accuracy comparison bar chart (ASCII art style)
+            const maxAccuracy = Math.max(...Object.values(stats).map(s => s.accuracy));
+
+            chartsContainer.innerHTML = `
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--dark);">Accuracy Comparison</h3>
+                    ${Object.entries(stats).map(([name, data]) => {
+                        const percentage = (data.accuracy / maxAccuracy) * 100;
+                        return `
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                                    <span style="font-weight: 600; color: var(--dark);">${formatModelName(name)}</span>
+                                    <span style="font-weight: bold; color: var(--primary-color);">${(data.accuracy * 100).toFixed(2)}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${percentage}%;"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--dark);">Inference Speed Comparison (lower is better)</h3>
+                    ${Object.entries(stats).map(([name, data]) => {
+                        const maxTime = 125; // Hybrid model time
+                        const percentage = (data.inference_time_ms / maxTime) * 100;
+                        return `
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                                    <span style="font-weight: 600; color: var(--dark);">${formatModelName(name)}</span>
+                                    <span style="font-weight: bold; color: var(--secondary-color);">${data.inference_time_ms}ms</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${percentage}%; background: linear-gradient(90deg, var(--secondary-color), var(--warning-color));"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 1.5rem; color: var(--dark);">F1-Score Comparison</h3>
+                    ${Object.entries(stats).map(([name, data]) => {
+                        const maxF1 = Math.max(...Object.values(stats).map(s => s.f1_score));
+                        const percentage = (data.f1_score / maxF1) * 100;
+                        return `
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                                    <span style="font-weight: 600; color: var(--dark);">${formatModelName(name)}</span>
+                                    <span style="font-weight: bold; color: var(--success-color);">${(data.f1_score * 100).toFixed(2)}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${percentage}%; background: linear-gradient(90deg, var(--success-color), var(--primary-color));"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function formatModelName(name) {
+            const names = {
+                'baseline': 'Baseline CNN',
+                'efficientnet': 'EfficientNet-B0',
+                'mobilenet': 'MobileNet-V2',
+                'hybrid': 'Hybrid CNN-Transformer'
+            };
+            return names[name] || name;
+        }
+    </script>
+</body>
+</html>

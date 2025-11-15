@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze Images - Crop Disease Detection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌱</span>
+                <span>CropAI Monitor</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="analyze.html" class="active">Analyze</a></li>
+                <li><a href="stats.html">Statistics</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem;">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">🔬 Analyze Crop Images</h2>
+                <p class="card-subtitle">Upload plant images for AI-powered disease detection</p>
+            </div>
+
+            <!-- Configuration -->
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">Select Model</label>
+                        <select id="modelSelect" class="form-select">
+                            <option value="efficientnet">EfficientNet-B0 (Recommended)</option>
+                            <option value="hybrid">Hybrid CNN-Transformer (Most Accurate)</option>
+                            <option value="mobilenet">MobileNet-V2 (Fastest)</option>
+                            <option value="baseline">Baseline CNN</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Explanation Method</label>
+                        <select id="explanationSelect" class="form-select">
+                            <option value="gradcam">Grad-CAM (Recommended)</option>
+                            <option value="lime">LIME</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dataset Type</label>
+                        <select id="datasetSelect" class="form-select">
+                            <option value="controlled">Controlled (PlantVillage)</option>
+                            <option value="field">Field Images</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Drag and drop images here</div>
+                    <div class="upload-subtext">or click to browse</div>
+                    <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, PNG (max 16MB)</div>
+                    <input type="file" id="fileInput" accept="image/jpeg,image/png" multiple>
+                </div>
+
+                <!-- Image Preview -->
+                <div id="imagePreviewContainer" class="hidden">
+                    <h3 class="mt-3 mb-2">Selected Images</h3>
+                    <div id="imagePreviewGrid" class="image-preview-grid"></div>
+                </div>
+
+                <!-- Analyze Button -->
+                <div class="text-center mt-3">
+                    <button id="analyzeBtn" class="btn btn-primary btn-large" disabled>
+                        🔍 Analyze Images
+                    </button>
+                    <button id="clearBtn" class="btn btn-outline mt-2" style="display: none;">
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingContainer" class="card hidden">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Analyzing images with AI models...</div>
+            <div class="loading-text" style="font-size: 0.9rem; color: var(--gray);">This may take a few seconds</div>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsContainer" class="hidden">
+            <!-- Results will be inserted here dynamically -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>Crop Disease Detection System</strong> - Master's Thesis Project</p>
+        <p>© 2025 - For Educational and Research Purposes</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Upload area functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreviewGrid = document.getElementById('imagePreviewGrid');
+        const loadingContainer = document.getElementById('loadingContainer');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        let selectedFiles = [];
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(file =>
+                file.type === 'image/jpeg' || file.type === 'image/png'
+            );
+            handleFiles(files);
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        // Handle file selection
+        function handleFiles(files) {
+            selectedFiles = [...selectedFiles, ...files];
+            updateImagePreviews();
+            analyzeBtn.disabled = false;
+            clearBtn.style.display = 'inline-block';
+        }
+
+        // Update image previews
+        function updateImagePreviews() {
+            imagePreviewGrid.innerHTML = '';
+
+            if (selectedFiles.length > 0) {
+                imagePreviewContainer.classList.remove('hidden');
+
+                selectedFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const preview = document.createElement('div');
+                        preview.className = 'image-preview-item';
+                        preview.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button class="image-preview-remove" onclick="removeImage(${index})">×</button>
+                        `;
+                        imagePreviewGrid.appendChild(preview);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                imagePreviewContainer.classList.add('hidden');
+            }
+        }
+
+        // Remove image
+        function removeImage(index) {
+            selectedFiles.splice(index, 1);
+            updateImagePreviews();
+
+            if (selectedFiles.length === 0) {
+                analyzeBtn.disabled = true;
+                clearBtn.style.display = 'none';
+                resultsContainer.classList.add('hidden');
+            }
+        }
+
+        // Clear all
+        clearBtn.addEventListener('click', () => {
+            selectedFiles = [];
+            fileInput.value = '';
+            updateImagePreviews();
+            analyzeBtn.disabled = true;
+            clearBtn.style.display = 'none';
+            resultsContainer.classList.add('hidden');
+        });
+
+        // Analyze images
+        analyzeBtn.addEventListener('click', async () => {
+            const model = document.getElementById('modelSelect').value;
+            const explanation = document.getElementById('explanationSelect').value;
+            const datasetType = document.getElementById('datasetSelect').value;
+
+            // Show loading
+            loadingContainer.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
+            analyzeBtn.disabled = true;
+
+            try {
+                // Upload files first
+                const formData = new FormData();
+                selectedFiles.forEach(file => {
+                    formData.append('files', file);
+                });
+
+                const uploadResponse = await fetch('http://localhost:5000/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const uploadData = await uploadResponse.json();
+
+                if (!uploadData.success) {
+                    throw new Error('Failed to upload files');
+                }
+
+                // Analyze each image
+                const results = [];
+                for (const file of uploadData.uploaded) {
+                    const predictResponse = await fetch('http://localhost:5000/api/predict', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            image_path: file.saved_name,
+                            model: model,
+                            explanation: explanation,
+                            dataset_type: datasetType
+                        })
+                    });
+
+                    const result = await predictResponse.json();
+                    result.original_name = file.original_name;
+                    results.push(result);
+                }
+
+                // Display results
+                displayResults(results);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error analyzing images. Please make sure the backend server is running on http://localhost:5000');
+            } finally {
+                loadingContainer.classList.add('hidden');
+                analyzeBtn.disabled = false;
+            }
+        });
+
+        // Display results
+        function displayResults(results) {
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.remove('hidden');
+
+            results.forEach((result, index) => {
+                const confidence = result.prediction?.confidence || 0;
+                const confidenceClass = confidence > 0.8 ? 'confidence-high' :
+                                       confidence > 0.5 ? 'confidence-medium' : 'confidence-low';
+
+                const resultCard = document.createElement('div');
+                resultCard.className = 'result-card';
+                resultCard.innerHTML = `
+                    <div class="result-header">
+                        <div>
+                            <h3 style="color: var(--gray); font-size: 0.9rem; margin-bottom: 0.5rem;">Image ${index + 1}: ${result.original_name}</h3>
+                            <div class="prediction-label">${result.prediction?.class || 'Unknown'}</div>
+                        </div>
+                        <div class="confidence-badge ${confidenceClass}">
+                            ${result.prediction?.confidence_percent || '0%'}
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                        <div>
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">Top Predictions</h4>
+                            <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                                ${result.top_predictions?.map((pred, i) => `
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; ${i < result.top_predictions.length - 1 ? 'border-bottom: 1px solid var(--light-gray);' : ''}">
+                                        <span style="color: var(--dark);">${i + 1}. ${pred.class}</span>
+                                        <strong style="color: var(--primary-color);">${pred.confidence_percent}</strong>
+                                    </div>
+                                `).join('') || ''}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">Analysis Details</h4>
+                            <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                    <span style="color: var(--gray);">Model Used</span>
+                                    <strong>${result.model_used || 'N/A'}</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                    <span style="color: var(--gray);">Explanation Method</span>
+                                    <strong>${result.explanation_method || 'N/A'}</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                    <span style="color: var(--gray);">Dataset Type</span>
+                                    <strong>${result.dataset_type || 'N/A'}</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                    <span style="color: var(--gray);">Inference Time</span>
+                                    <strong>${result.inference_time_ms || 'N/A'} ms</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${result.visualization ? `
+                        <div class="visualization-container">
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">Explainable AI Visualization</h4>
+                            <img src="data:image/png;base64,${result.visualization}"
+                                 alt="Grad-CAM Visualization"
+                                 class="visualization-image">
+                            <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.5rem; text-align: center;">
+                                The heatmap shows which parts of the image the AI model focused on for making the prediction
+                            </p>
+                        </div>
+                    ` : ''}
+
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <button class="btn btn-secondary" onclick="downloadResult(${index})">
+                            💾 Download Visualization
+                        </button>
+                    </div>
+                `;
+                resultsContainer.appendChild(resultCard);
+            });
+
+            // Scroll to results
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Download result
+        function downloadResult(index) {
+            const resultCard = resultsContainer.children[index];
+            const img = resultCard.querySelector('.visualization-image');
+            if (img) {
+                const link = document.createElement('a');
+                link.href = img.src;
+                link.download = `crop_analysis_${index + 1}.png`;
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>
