@@ -73,14 +73,9 @@
                     <div class="upload-icon">📁</div>
                     <div class="upload-text">Drag and drop images here</div>
                     <div class="upload-subtext">or click to browse</div>
-<<<<<<< Updated upstream
-                    <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, JPEG, JFIF, PNG (max 16MB)</div>
-                    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jfif,.jfif" multiple>
-=======
                     <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, PNG (max 16MB)
                     </div>
                     <input type="file" id="fileInput" accept="image/jpeg,image/png" multiple>
->>>>>>> Stashed changes
                 </div>
 
                 <!-- Image Preview -->
@@ -184,8 +179,8 @@
             const files = Array.from(e.dataTransfer.files).filter(file => {
                 // Accept JPEG, PNG, and JFIF files
                 return file.type === 'image/jpeg' ||
-                       file.type === 'image/png' ||
-                       file.name.toLowerCase().endsWith('.jfif');
+                    file.type === 'image/png' ||
+                    file.name.toLowerCase().endsWith('.jfif');
             });
             handleFiles(files);
         });
