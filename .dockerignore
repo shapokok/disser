@@ -1,0 +1,73 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+test_results_*.json
+
+# Data (exclude large datasets, keep structure)
+data/uploads/*
+!data/uploads/.gitkeep
+data/test_images/*
+!data/test_images/.gitkeep
+
+# Models (exclude large model files unless needed)
+models/*.pth
+models/*.pt
+models/*.h5
+!models/.gitkeep
+
+# Results
+results/
+*.png
+*.jpg
+*.jpeg
+
+# Documentation (not needed in container)
+*.md
+!README.md
+
+# Docker
+docker-compose.override.yml
+Dockerfile.dev
+
+# Node (if any)
+node_modules/
+npm-debug.log
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
