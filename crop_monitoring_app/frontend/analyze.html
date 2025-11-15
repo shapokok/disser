@@ -85,6 +85,10 @@
                     <button id="analyzeBtn" class="btn btn-primary btn-large" disabled>
                         🔍 Analyze Images
                     </button>
+                    <button id="compareBtn" class="btn btn-secondary btn-large" disabled style="margin-left: 1rem;">
+                        ⚖️ Compare All Models
+                    </button>
+                    <br>
                     <button id="clearBtn" class="btn btn-outline mt-2" style="display: none;">
                         Clear All
                     </button>
@@ -124,6 +128,7 @@
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const analyzeBtn = document.getElementById('analyzeBtn');
+        const compareBtn = document.getElementById('compareBtn');
         const clearBtn = document.getElementById('clearBtn');
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
         const imagePreviewGrid = document.getElementById('imagePreviewGrid');
@@ -167,6 +172,7 @@
             selectedFiles = [...selectedFiles, ...files];
             updateImagePreviews();
             analyzeBtn.disabled = false;
+            compareBtn.disabled = false;
             clearBtn.style.display = 'inline-block';
         }
 
@@ -213,6 +219,7 @@
             fileInput.value = '';
             updateImagePreviews();
             analyzeBtn.disabled = true;
+            compareBtn.disabled = true;
             clearBtn.style.display = 'none';
             resultsContainer.classList.add('hidden');
         });
@@ -278,6 +285,140 @@
                 analyzeBtn.disabled = false;
             }
         });
+
+        // Compare all models on first image
+        compareBtn.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+
+            // Show loading
+            loadingContainer.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
+            compareBtn.disabled = true;
+
+            try {
+                // Upload first file
+                const formData = new FormData();
+                formData.append('files', selectedFiles[0]);
+
+                const uploadResponse = await fetch('http://localhost:5000/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const uploadData = await uploadResponse.json();
+
+                if (!uploadData.success) {
+                    throw new Error('Failed to upload file');
+                }
+
+                const uploadedFile = uploadData.uploaded[0];
+
+                // Compare all models
+                const compareResponse = await fetch('http://localhost:5000/api/compare', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image_path: uploadedFile.saved_name,
+                        models: ['baseline', 'efficientnet', 'mobilenet', 'hybrid']
+                    })
+                });
+
+                const compareData = await compareResponse.json();
+
+                // Display comparison results
+                displayComparisonResults(compareData, uploadedFile.original_name);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error comparing models. Please make sure the backend server is running on http://localhost:5000');
+            } finally {
+                loadingContainer.classList.add('hidden');
+                compareBtn.disabled = false;
+            }
+        });
+
+        // Display comparison results
+        function displayComparisonResults(compareData, imageName) {
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.remove('hidden');
+
+            const comparisonCard = document.createElement('div');
+            comparisonCard.className = 'result-card';
+
+            const comparisons = compareData.comparisons || {};
+            const modelNames = {
+                'baseline': 'Baseline CNN',
+                'efficientnet': 'EfficientNet-B0',
+                'mobilenet': 'MobileNet-V2',
+                'hybrid': 'Hybrid CNN-Transformer'
+            };
+
+            comparisonCard.innerHTML = `
+                <div class="result-header">
+                    <h2 style="color: var(--dark);">🏆 Model Comparison Results</h2>
+                    <p style="color: var(--gray); margin-top: 0.5rem;">Image: ${imageName}</p>
+                </div>
+
+                <div class="models-grid" style="margin-top: 2rem;">
+                    ${Object.entries(comparisons).map(([model, result]) => {
+                        const confidence = result.confidence || 0;
+                        const confidenceClass = confidence > 0.8 ? 'confidence-high' :
+                                               confidence > 0.5 ? 'confidence-medium' : 'confidence-low';
+
+                        return `
+                            <div class="model-card" style="position: relative;">
+                                <div style="position: absolute; top: 10px; right: 10px;">
+                                    <span class="confidence-badge ${confidenceClass}" style="font-size: 0.85rem; padding: 0.3rem 0.8rem;">
+                                        ${result.confidence_percent || '0%'}
+                                    </span>
+                                </div>
+
+                                <h3 class="model-name" style="margin-bottom: 1rem;">
+                                    ${modelNames[model] || model}
+                                </h3>
+
+                                <div style="background: var(--light); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                    <div style="font-weight: bold; color: var(--dark); margin-bottom: 0.5rem;">
+                                        Prediction:
+                                    </div>
+                                    <div style="color: var(--primary-color); font-size: 1.1rem; font-weight: bold;">
+                                        ${result.predicted_class || 'Unknown'}
+                                    </div>
+                                </div>
+
+                                <ul class="model-stats" style="margin-top: 1rem;">
+                                    <li>
+                                        <span class="stat-label">Confidence</span>
+                                        <span class="stat-value" style="color: var(--primary-color);">
+                                            ${result.confidence_percent || '0%'}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="stat-label">Inference Time</span>
+                                        <span class="stat-value">
+                                            ${result.inference_time_ms?.toFixed(2) || 'N/A'} ms
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-primary" onclick="location.reload()">
+                        Analyze Another Image
+                    </button>
+                </div>
+            `;
+
+            resultsContainer.appendChild(comparisonCard);
+
+            // Scroll to results
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         // Display results
         function displayResults(results) {

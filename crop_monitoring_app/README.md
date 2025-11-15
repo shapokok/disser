@@ -52,10 +52,20 @@ This application is a **master's thesis project** demonstrating an intelligent s
 - ✅ **Disease Detection:** 38 disease classes across 14 plant types
 - ✅ **Explainable AI:** Grad-CAM and LIME visualizations
 - ✅ **Real-time Results:** Instant disease classification with confidence scores
-- ✅ **Model Comparison:** Side-by-side performance metrics
+- ✅ **Model Comparison:** Side-by-side performance metrics with one click
 - ✅ **Batch Processing:** Analyze multiple images at once
 - ✅ **Download Results:** Save heatmaps and visualizations
 - ✅ **Responsive Design:** Works on desktop, tablet, and mobile
+
+### Advanced Features
+
+- 🎯 **Confusion Matrix Analysis:** Visual confusion matrices for each model
+- 📊 **Per-Class Metrics:** Detailed precision, recall, F1-score for all 38 classes
+- 🏆 **Best/Worst Classes:** Automatically identify top and bottom performing classes
+- ⚠️ **Confused Pairs:** See which diseases models confuse most often
+- 📄 **PDF Report Generation:** Professional reports with predictions and visualizations
+- 📈 **Validation Metrics:** Comprehensive model performance statistics
+- 🔄 **Live Model Switching:** Compare all models on the same image instantly
 
 ### Supported Crops & Diseases
 

@@ -20,9 +20,11 @@ grad-cam==1.4.8
 # Numerical Computing
 numpy==1.24.3
 scipy==1.11.4
+scikit-learn==1.3.2
 
 # Visualization
 matplotlib==3.8.2
+seaborn==0.13.0
 
 # Utilities
 python-multipart==0.0.6

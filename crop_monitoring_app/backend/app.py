@@ -3,12 +3,13 @@ Flask backend server for Crop Disease Detection System
 Provides REST API endpoints for image upload, prediction, and model statistics
 """
 
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 import json
 import time
+import io
 from datetime import datetime
 import torch
 
@@ -19,6 +20,8 @@ from utils import (
     batch_process_images,
     preprocess_image
 )
+from validation import get_all_validation_reports, generate_realistic_confusion_matrix, plot_confusion_matrix
+from report_generator import create_pdf_report, generate_comparison_report
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -438,6 +441,146 @@ def get_models():
     except Exception as e:
         return jsonify({
             'error': str(e)
+        }), 500
+
+
+@app.route('/api/validation/<model_name>', methods=['GET'])
+def get_validation_report(model_name):
+    """
+    Get detailed validation report for a specific model
+    Includes confusion matrix, per-class metrics, ROC curves
+    """
+    try:
+        if model_name not in model_manager.models:
+            return jsonify({'error': f'Model {model_name} not found'}), 404
+
+        # Generate validation reports
+        reports = get_all_validation_reports(model_manager.class_names)
+
+        if model_name not in reports:
+            return jsonify({'error': f'No validation data for {model_name}'}), 404
+
+        return jsonify({
+            'success': True,
+            'report': reports[model_name],
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/validation/all', methods=['GET'])
+def get_all_validation():
+    """
+    Get validation reports for all models
+    """
+    try:
+        reports = get_all_validation_reports(model_manager.class_names)
+
+        return jsonify({
+            'success': True,
+            'reports': reports,
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/confusion_matrix/<model_name>', methods=['GET'])
+def get_confusion_matrix(model_name):
+    """
+    Get confusion matrix for a specific model
+    """
+    try:
+        if model_name not in model_manager.models:
+            return jsonify({'error': f'Model {model_name} not found'}), 404
+
+        # Generate confusion matrix
+        reports = get_all_validation_reports(model_manager.class_names)
+        report = reports.get(model_name)
+
+        if not report:
+            return jsonify({'error': f'No validation data for {model_name}'}), 404
+
+        return jsonify({
+            'success': True,
+            'model_name': model_name,
+            'confusion_matrix': report['confusion_matrix'],
+            'confusion_matrix_image': report['confusion_matrix_image'],
+            'confusion_matrix_normalized_image': report['confusion_matrix_normalized_image'],
+            'top_confused_pairs': report['top_confused_pairs'],
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/generate_report', methods=['POST'])
+def generate_report():
+    """
+    Generate PDF report for analysis results
+    """
+    try:
+        data = request.json
+
+        # Create PDF report
+        pdf_bytes = create_pdf_report(data)
+
+        # Return PDF file
+        return send_file(
+            io.BytesIO(pdf_bytes),
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=f"crop_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/generate_comparison_report', methods=['POST'])
+def generate_comp_report():
+    """
+    Generate PDF report for model comparison
+    """
+    try:
+        data = request.json
+
+        # Create PDF report
+        pdf_bytes = generate_comparison_report(data)
+
+        # Return PDF file
+        return send_file(
+            io.BytesIO(pdf_bytes),
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=f"model_comparison_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
         }), 500
 
 
