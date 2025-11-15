@@ -13,9 +13,9 @@ try {
     $dockerVersion = docker --version
     Write-Host "✓ Docker found: $dockerVersion" -ForegroundColor Green
 } catch {
-    Write-Host "❌ Docker is not installed or not running." -ForegroundColor Red
+    Write-Host "Docker is not installed or not running." -ForegroundColor Red
     Write-Host "Please install Docker Desktop from: https://www.docker.com/products/docker-desktop/" -ForegroundColor Yellow
-    Write-Host "Or start Docker Desktop if it's already installed." -ForegroundColor Yellow
+    Write-Host "Or start Docker Desktop if it is already installed." -ForegroundColor Yellow
     exit 1
 }
 
