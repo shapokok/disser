@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libxrender-dev \
     libgl1 \
+<<<<<<< HEAD
     libgl1-mesa-glx \
+=======
+>>>>>>> 779dcc6e3ddde4950103f07168202fc4dbb2514d
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
