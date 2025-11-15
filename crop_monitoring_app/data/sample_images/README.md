@@ -1,71 +1,81 @@
-# Sample Images Directory
+# Sample Images for Testing
 
-This directory should contain sample plant disease images for testing the application.
+## Quick Start
 
-## How to Add Sample Images
+Place your test images in this directory. Recommended structure:
 
-### Option 1: Download from PlantVillage Dataset
+```
+sample_images/
+├── apple_scab_01.jpg
+├── apple_scab_02.jpg
+├── tomato_early_blight_01.jpg
+├── tomato_late_blight_01.jpg
+├── potato_early_blight_01.jpg
+├── healthy_leaf_01.jpg
+└── ...
+```
 
-1. Visit the PlantVillage dataset: https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset
-2. Download sample images from various disease categories
-3. Place them in this directory
+## Image Requirements
 
-### Option 2: Use Your Own Images
+- **Format:** JPG or PNG
+- **Size:** At least 224×224 pixels (higher is better)
+- **File Size:** Maximum 16MB
+- **Quality:** Clear, well-lit photos of leaves
 
-- Take photos of plant leaves
+## Where to Get Images
+
+### Free Stock Photos
+- **Unsplash:** https://unsplash.com/s/photos/plant-disease
+- **Pexels:** https://www.pexels.com/search/plant%20leaf/
+- **Pixabay:** https://pixabay.com/images/search/plant/
+
+### Research Dataset
+- **PlantVillage:** https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset
+  (Requires free Kaggle account)
+
+### Your Own Photos
+- Take photos of your own plants
 - Ensure good lighting and focus
-- Supported formats: JPG, PNG
-- Recommended resolution: At least 224×224 pixels
-- Maximum file size: 16MB
+- Capture the affected area clearly
 
-## Recommended Sample Images
+## Recommended Sample Set (15 images)
 
-For demonstration purposes, include at least one image from each category:
+1. **Apple Diseases** (3 images)
+   - Apple scab
+   - Black rot
+   - Healthy apple leaf
 
-### Apple Diseases
-- `apple_scab_sample.jpg`
-- `apple_black_rot_sample.jpg`
-- `apple_healthy_sample.jpg`
+2. **Tomato Diseases** (4 images)
+   - Early blight
+   - Late blight
+   - Leaf mold
+   - Healthy tomato leaf
 
-### Tomato Diseases
-- `tomato_early_blight_sample.jpg`
-- `tomato_late_blight_sample.jpg`
-- `tomato_leaf_mold_sample.jpg`
-- `tomato_healthy_sample.jpg`
+3. **Potato Diseases** (3 images)
+   - Early blight
+   - Late blight
+   - Healthy potato leaf
 
-### Corn Diseases
-- `corn_common_rust_sample.jpg`
-- `corn_healthy_sample.jpg`
+4. **Other Crops** (5 images)
+   - Corn common rust
+   - Grape black rot
+   - Pepper bacterial spot
+   - Any other plant disease
+   - Healthy plant
 
-### Potato Diseases
-- `potato_early_blight_sample.jpg`
-- `potato_late_blight_sample.jpg`
-- `potato_healthy_sample.jpg`
+## For Thesis Defense
 
-### Other Crops
-- `grape_black_rot_sample.jpg`
-- `pepper_bacterial_spot_sample.jpg`
-- `strawberry_leaf_scorch_sample.jpg`
+Having 10-15 diverse sample images will allow you to demonstrate:
+- Different disease types
+- Model accuracy across crops
+- Explainable AI visualizations
+- Model comparison features
 
-## Image Naming Convention
+## Testing the System
 
-Use descriptive names that indicate:
-1. Plant type
-2. Disease name (or "healthy")
-3. Optional: additional identifier
-
-Example: `tomato_early_blight_sample_01.jpg`
-
-## Testing the Application
-
-Once you have sample images:
-
-1. Start the backend server: `python backend/app.py`
-2. Open the frontend: `frontend/analyze.html`
-3. Upload sample images
-4. Test different models and explanation methods
-5. Verify visualizations are generated correctly
-
-## Quick Test Images
-
-For quick testing, you can use any plant leaf image. The model will make predictions based on the trained weights (or random initialization for demo purposes).
+Once you have images:
+1. Start the backend: `cd backend && python app.py`
+2. Open frontend: `frontend/index.html`
+3. Go to "Analyze" page
+4. Upload your sample images
+5. Test different models and explanation methods

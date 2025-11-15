@@ -96,11 +96,27 @@
             </div>
         </div>
 
-        <!-- Loading Indicator -->
+        <!-- Loading Indicator with Progress -->
         <div id="loadingContainer" class="card hidden">
             <div class="loading-spinner"></div>
-            <div class="loading-text">Analyzing images with AI models...</div>
-            <div class="loading-text" style="font-size: 0.9rem; color: var(--gray);">This may take a few seconds</div>
+            <div class="loading-text" id="loadingMainText">Processing your request...</div>
+            <div class="loading-text" style="font-size: 0.9rem; color: var(--gray);" id="loadingSubText">Please wait</div>
+
+            <!-- Progress Steps -->
+            <div id="progressSteps" style="margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                <div class="progress-step" id="step1">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Uploading images...</span>
+                </div>
+                <div class="progress-step" id="step2">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Running AI model...</span>
+                </div>
+                <div class="progress-step" id="step3">
+                    <span class="step-icon">⏳</span>
+                    <span class="step-text">Generating explanations...</span>
+                </div>
+            </div>
         </div>
 
         <!-- Results Container -->
@@ -167,13 +183,69 @@
             handleFiles(files);
         });
 
-        // Handle file selection
+        // Validate image files
+        function validateImage(file) {
+            const errors = [];
+
+            // Check file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                errors.push(`Invalid file type. Only JPG and PNG images are supported.`);
+            }
+
+            // Check file size (16MB max)
+            const maxSize = 16 * 1024 * 1024;
+            if (file.size > maxSize) {
+                errors.push(`File too large (${(file.size / 1024 / 1024).toFixed(2)}MB). Maximum size is 16MB.`);
+            }
+
+            // Check minimum size (too small might be invalid)
+            const minSize = 1024; // 1KB
+            if (file.size < minSize) {
+                errors.push(`File too small. Please ensure it's a valid image.`);
+            }
+
+            return errors;
+        }
+
+        // Handle file selection with validation
         function handleFiles(files) {
-            selectedFiles = [...selectedFiles, ...files];
-            updateImagePreviews();
-            analyzeBtn.disabled = false;
-            compareBtn.disabled = false;
-            clearBtn.style.display = 'inline-block';
+            const validFiles = [];
+            const allErrors = [];
+
+            files.forEach(file => {
+                const errors = validateImage(file);
+                if (errors.length === 0) {
+                    validFiles.push(file);
+                } else {
+                    allErrors.push({file: file.name, errors});
+                }
+            });
+
+            // Show errors if any
+            if (allErrors.length > 0) {
+                let errorMessage = '⚠️ Some files were not added:\n\n';
+                allErrors.forEach(({file, errors}) => {
+                    errorMessage += `${file}:\n`;
+                    errors.forEach(err => errorMessage += `  • ${err}\n`);
+                    errorMessage += '\n';
+                });
+                alert(errorMessage);
+            }
+
+            // Add valid files
+            if (validFiles.length > 0) {
+                selectedFiles = [...selectedFiles, ...validFiles];
+                updateImagePreviews();
+                analyzeBtn.disabled = false;
+                compareBtn.disabled = false;
+                clearBtn.style.display = 'inline-block';
+            }
+
+            // Show success message if files were added
+            if (validFiles.length > 0 && allErrors.length === 0) {
+                console.log(`✓ Successfully added ${validFiles.length} image(s)`);
+            }
         }
 
         // Update image previews
@@ -224,6 +296,28 @@
             resultsContainer.classList.add('hidden');
         });
 
+        // Progress tracking helpers
+        function resetProgress() {
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active', 'completed', 'error');
+            });
+        }
+
+        function updateProgress(stepId, status) {
+            const step = document.getElementById(stepId);
+            if (!step) return;
+
+            step.classList.remove('active', 'completed', 'error');
+            if (status) {
+                step.classList.add(status);
+            }
+        }
+
+        function setLoadingText(main, sub) {
+            document.getElementById('loadingMainText').textContent = main;
+            document.getElementById('loadingSubText').textContent = sub;
+        }
+
         // Analyze images
         analyzeBtn.addEventListener('click', async () => {
             const model = document.getElementById('modelSelect').value;
@@ -235,8 +329,15 @@
             resultsContainer.classList.add('hidden');
             analyzeBtn.disabled = true;
 
+            // Reset and start progress
+            resetProgress();
+            setLoadingText('Starting analysis...', 'Preparing your images');
+
             try {
-                // Upload files first
+                // Step 1: Upload files
+                updateProgress('step1', 'active');
+                setLoadingText('Uploading images...', `Uploading ${selectedFiles.length} image(s) to server`);
+
                 const formData = new FormData();
                 selectedFiles.forEach(file => {
                     formData.append('files', file);
@@ -250,12 +351,24 @@
                 const uploadData = await uploadResponse.json();
 
                 if (!uploadData.success) {
+                    updateProgress('step1', 'error');
                     throw new Error('Failed to upload files');
                 }
 
-                // Analyze each image
+                updateProgress('step1', 'completed');
+
+                // Step 2 & 3: Analyze each image
                 const results = [];
-                for (const file of uploadData.uploaded) {
+                for (let i = 0; i < uploadData.uploaded.length; i++) {
+                    const file = uploadData.uploaded[i];
+
+                    // Step 2: Run AI model
+                    updateProgress('step2', 'active');
+                    setLoadingText(
+                        `Running AI model... (${i + 1}/${uploadData.uploaded.length})`,
+                        `Analyzing ${file.original_name} with ${model.toUpperCase()}`
+                    );
+
                     const predictResponse = await fetch('http://localhost:5000/api/predict', {
                         method: 'POST',
                         headers: {
@@ -272,14 +385,35 @@
                     const result = await predictResponse.json();
                     result.original_name = file.original_name;
                     results.push(result);
+
+                    if (i === uploadData.uploaded.length - 1) {
+                        updateProgress('step2', 'completed');
+                    }
                 }
+
+                // Step 3: Generate visualizations
+                updateProgress('step3', 'active');
+                setLoadingText('Finalizing results...', 'Preparing visualization and results');
+
+                // Small delay to show final step
+                await new Promise(resolve => setTimeout(resolve, 500));
+                updateProgress('step3', 'completed');
 
                 // Display results
                 displayResults(results);
 
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error analyzing images. Please make sure the backend server is running on http://localhost:5000');
+
+                // Mark current step as error
+                document.querySelectorAll('.progress-step.active').forEach(step => {
+                    step.classList.remove('active');
+                    step.classList.add('error');
+                });
+
+                // Show user-friendly error message
+                const errorMsg = error.message || 'Unknown error occurred';
+                alert(`⚠️ Error: ${errorMsg}\n\nPlease ensure:\n- Backend server is running on http://localhost:5000\n- Your internet connection is stable\n- Image files are valid (JPG/PNG)`);
             } finally {
                 loadingContainer.classList.add('hidden');
                 analyzeBtn.disabled = false;

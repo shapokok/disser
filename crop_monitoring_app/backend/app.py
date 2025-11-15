@@ -584,6 +584,81 @@ def generate_comp_report():
         }), 500
 
 
+@app.route('/api/treatment/<disease_class>', methods=['GET'])
+def get_treatment(disease_class):
+    """
+    Get treatment recommendations for a specific disease
+    """
+    try:
+        # Load treatment database
+        treatment_db_path = os.path.join(os.path.dirname(__file__), 'treatment_database.json')
+
+        if not os.path.exists(treatment_db_path):
+            return jsonify({
+                'error': 'Treatment database not found'
+            }), 404
+
+        with open(treatment_db_path, 'r') as f:
+            treatment_db = json.load(f)
+
+        # Find treatment for disease
+        treatment = None
+
+        # Try exact match first
+        if disease_class in treatment_db:
+            treatment = treatment_db[disease_class]
+        # Try partial match (e.g., if "healthy" is in the class name)
+        elif 'healthy' in disease_class.lower():
+            treatment = treatment_db.get('healthy')
+        # Try to find by matching disease name
+        else:
+            for key in treatment_db.keys():
+                if key.lower() in disease_class.lower() or disease_class.lower() in key.lower():
+                    treatment = treatment_db[key]
+                    break
+
+        if treatment:
+            return jsonify({
+                'success': True,
+                'disease_class': disease_class,
+                'treatment': treatment
+            })
+        else:
+            # Return generic recommendations
+            return jsonify({
+                'success': True,
+                'disease_class': disease_class,
+                'treatment': {
+                    'disease_name': disease_class.replace('___', ' - ').replace('_', ' '),
+                    'severity': 'unknown',
+                    'symptoms': 'Please consult with an agricultural expert for specific symptoms.',
+                    'treatments': [
+                        'Consult with local agricultural extension service',
+                        'Remove and isolate affected plants',
+                        'Maintain good plant hygiene',
+                        'Monitor regularly for changes'
+                    ],
+                    'prevention': [
+                        'Practice crop rotation',
+                        'Maintain proper plant spacing',
+                        'Use disease-resistant varieties when available',
+                        'Monitor plants regularly'
+                    ],
+                    'organic_options': [
+                        'Contact organic farming consultants',
+                        'Use certified organic products only'
+                    ]
+                }
+            })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
 @app.route('/frontend/<path:path>')
 def serve_frontend(path):
     """Serve frontend files"""
