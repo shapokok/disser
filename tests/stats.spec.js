@@ -2,47 +2,81 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Statistics Page', () => {
   test('should load statistics page successfully', async ({ page }) => {
-    await page.goto('/crop_monitoring_app/frontend/stats.html');
-
-    // Verify page loaded
-    await expect(page.locator('body')).toBeVisible();
+    await page.goto('/frontend/stats.html');
+    await expect(page).toHaveTitle(/Model Statistics - Crop Disease Detection/i);
   });
 
-  test('should display statistics heading', async ({ page }) => {
-    await page.goto('/crop_monitoring_app/frontend/stats.html');
+  test('should display page heading', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
 
-    // Look for statistics-related heading
-    const heading = page.locator('h1, h2, h3').first();
+    const heading = page.locator('h2.card-title').first();
     await expect(heading).toBeVisible();
+    await expect(heading).toContainText(/Model Performance Statistics/i);
   });
 
-  test('should have data visualization elements', async ({ page }) => {
-    await page.goto('/crop_monitoring_app/frontend/stats.html');
+  test('should display navigation menu', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
 
-    // Look for common chart/graph elements
-    const chartArea = page.locator('canvas, svg, .chart, #chart, .graph').first();
-    if (await chartArea.count() > 0) {
-      await expect(chartArea).toBeDefined();
-    }
+    // Verify nav links are present
+    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Analyze' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Statistics' })).toBeVisible();
   });
 
-  test('should be responsive', async ({ page }) => {
-    await page.goto('/crop_monitoring_app/frontend/stats.html');
+  test('should show loading indicator or stats container', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
 
-    // Verify page renders on different viewport sizes
-    await expect(page.locator('body')).toBeVisible();
+    // Either loading indicator or stats container should be present
+    const loadingIndicator = page.locator('#loadingStats');
+    const statsContainer = page.locator('#statsContainer');
 
-    const viewportSize = page.viewportSize();
-    expect(viewportSize).toBeDefined();
+    const loadingVisible = await loadingIndicator.isVisible().catch(() => false);
+    const statsVisible = await statsContainer.isVisible().catch(() => false);
+
+    // At least one should be present
+    expect(loadingVisible || statsVisible).toBe(true);
   });
 
-  test('should handle navigation', async ({ page }) => {
-    await page.goto('/crop_monitoring_app/frontend/stats.html');
+  test('should have confusion matrix model selector', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
 
-    // Verify navigation elements exist
-    const links = page.locator('a[href]');
-    if (await links.count() > 0) {
-      expect(await links.count()).toBeGreaterThan(0);
-    }
+    const modelSelect = page.locator('#confusionModelSelect');
+    await expect(modelSelect).toBeAttached();
+
+    // Check for model options
+    const options = await modelSelect.locator('option').allTextContents();
+    expect(options.some(opt => opt.includes('EfficientNet'))).toBe(true);
+  });
+
+  test('should have performance comparison section', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
+
+    // Look for performance table container
+    const perfTable = page.locator('#performanceTable');
+    await expect(perfTable).toBeAttached();
+  });
+
+  test('should have charts container', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
+
+    // Look for charts container
+    const chartsContainer = page.locator('#chartsContainer');
+    await expect(chartsContainer).toBeAttached();
+  });
+
+  test('should have model cards container', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
+
+    // Look for model cards container
+    const modelCardsContainer = page.locator('#modelCardsContainer');
+    await expect(modelCardsContainer).toBeAttached();
+  });
+
+  test('should navigate back to home', async ({ page }) => {
+    await page.goto('/frontend/stats.html');
+
+    // Click the Home nav link
+    await page.getByRole('link', { name: 'Home' }).click();
+    await expect(page).toHaveURL(/index\.html/);
   });
 });
