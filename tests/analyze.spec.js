@@ -10,8 +10,10 @@ async function openMobileMenuIfNeeded(page) {
     const menuToggle = page.locator('.menu-toggle');
     if (await menuToggle.isVisible()) {
       await menuToggle.click();
-      // Wait for menu to be visible
+      // Wait for menu to be visible and animation to complete
       await navLinks.waitFor({ state: 'visible', timeout: 5000 });
+      // Extra wait for CSS transitions/animations to complete
+      await page.waitForTimeout(300);
     }
   }
 }

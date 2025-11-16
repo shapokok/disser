@@ -10,8 +10,10 @@ async function openMobileMenuIfNeeded(page) {
     const menuToggle = page.locator('.menu-toggle');
     if (await menuToggle.isVisible()) {
       await menuToggle.click();
-      // Wait for menu to be visible
+      // Wait for menu to be visible and animation to complete
       await navLinks.waitFor({ state: 'visible', timeout: 5000 });
+      // Extra wait for CSS transitions/animations to complete
+      await page.waitForTimeout(300);
     }
   }
 }
@@ -69,9 +71,10 @@ test.describe('Home Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Click the "Analyze" nav link within navigation
-    // Use force for mobile Safari where menu items may overlap
-    await page.locator('.nav-links').getByRole('link', { name: 'Analyze' }).click({ force: true });
+    // Get the Analyze link and scroll into view to avoid overlaps
+    const analyzeLink = page.locator('.nav-links').getByRole('link', { name: 'Analyze' });
+    await analyzeLink.scrollIntoViewIfNeeded();
+    await analyzeLink.click({ force: true });
     await expect(page).toHaveURL(/analyze\.html/);
   });
 
@@ -81,9 +84,10 @@ test.describe('Home Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Click the "Statistics" nav link within navigation
-    // Use force for mobile Safari where menu items may overlap
-    await page.locator('.nav-links').getByRole('link', { name: 'Statistics' }).click({ force: true });
+    // Get the Statistics link and scroll into view to avoid overlaps
+    const statsLink = page.locator('.nav-links').getByRole('link', { name: 'Statistics' });
+    await statsLink.scrollIntoViewIfNeeded();
+    await statsLink.click({ force: true });
     await expect(page).toHaveURL(/stats\.html/);
   });
 });

@@ -10,8 +10,10 @@ async function openMobileMenuIfNeeded(page) {
     const menuToggle = page.locator('.menu-toggle');
     if (await menuToggle.isVisible()) {
       await menuToggle.click();
-      // Wait for menu to be visible
+      // Wait for menu to be visible and animation to complete
       await navLinks.waitFor({ state: 'visible', timeout: 5000 });
+      // Extra wait for CSS transitions/animations to complete
+      await page.waitForTimeout(300);
     }
   }
 }
@@ -98,9 +100,10 @@ test.describe('Statistics Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Click the Home nav link within navigation
-    // Use force for mobile Safari where menu items may overlap
-    await page.locator('.nav-links').getByRole('link', { name: 'Home' }).click({ force: true });
+    // Get the Home link and scroll into view to avoid overlaps
+    const homeLink = page.locator('.nav-links').getByRole('link', { name: 'Home' });
+    await homeLink.scrollIntoViewIfNeeded();
+    await homeLink.click({ force: true });
     await expect(page).toHaveURL(/index\.html/);
   });
 });
