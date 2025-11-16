@@ -18,11 +18,12 @@ test.describe('Home Page', () => {
   test('should display navigation menu', async ({ page }) => {
     await page.goto('/frontend/index.html');
 
-    // Verify nav links are present
-    await expect(page.locator('.nav-links')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Analyze' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Statistics' })).toBeVisible();
+    // Verify nav links are present within the navigation
+    const navLinks = page.locator('.nav-links');
+    await expect(navLinks).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Analyze' })).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Statistics' })).toBeVisible();
   });
 
   test('should have call-to-action buttons', async ({ page }) => {
@@ -40,16 +41,16 @@ test.describe('Home Page', () => {
   test('should navigate to analyze page', async ({ page }) => {
     await page.goto('/frontend/index.html');
 
-    // Click the "Analyze" nav link
-    await page.getByRole('link', { name: 'Analyze' }).click();
+    // Click the "Analyze" nav link within navigation
+    await page.locator('.nav-links').getByRole('link', { name: 'Analyze' }).click();
     await expect(page).toHaveURL(/analyze\.html/);
   });
 
   test('should navigate to statistics page', async ({ page }) => {
     await page.goto('/frontend/index.html');
 
-    // Click the "Statistics" nav link
-    await page.getByRole('link', { name: 'Statistics' }).click();
+    // Click the "Statistics" nav link within navigation
+    await page.locator('.nav-links').getByRole('link', { name: 'Statistics' }).click();
     await expect(page).toHaveURL(/stats\.html/);
   });
 });

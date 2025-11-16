@@ -17,10 +17,11 @@ test.describe('Statistics Page', () => {
   test('should display navigation menu', async ({ page }) => {
     await page.goto('/frontend/stats.html');
 
-    // Verify nav links are present
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Analyze' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Statistics' })).toBeVisible();
+    // Verify nav links are present within the navigation
+    const navLinks = page.locator('.nav-links');
+    await expect(navLinks.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Analyze' })).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Statistics' })).toBeVisible();
   });
 
   test('should show loading indicator or stats container', async ({ page }) => {
@@ -75,8 +76,8 @@ test.describe('Statistics Page', () => {
   test('should navigate back to home', async ({ page }) => {
     await page.goto('/frontend/stats.html');
 
-    // Click the Home nav link
-    await page.getByRole('link', { name: 'Home' }).click();
+    // Click the Home nav link within navigation
+    await page.locator('.nav-links').getByRole('link', { name: 'Home' }).click();
     await expect(page).toHaveURL(/index\.html/);
   });
 });

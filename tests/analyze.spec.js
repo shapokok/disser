@@ -70,9 +70,10 @@ test.describe('Analyze Page', () => {
   test('should display navigation menu', async ({ page }) => {
     await page.goto('/frontend/analyze.html');
 
-    // Verify nav links are present
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Analyze' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Statistics' })).toBeVisible();
+    // Verify nav links are present within the navigation
+    const navLinks = page.locator('.nav-links');
+    await expect(navLinks.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Analyze' })).toBeVisible();
+    await expect(navLinks.getByRole('link', { name: 'Statistics' })).toBeVisible();
   });
 });
