@@ -396,6 +396,17 @@ class ModelManager:
                 'inference_time_ms': 125,
                 'parameters': '25.6M',
                 'size_mb': 102.4
+            },
+            'ensemble': {
+                'accuracy': 0.975,
+                'precision': 0.973,
+                'recall': 0.971,
+                'f1_score': 0.972,
+                'inference_time_ms': 95,
+                'parameters': '33.1M',
+                'size_mb': 132.5,
+                'description': 'Weighted ensemble of all 4 models',
+                'models_combined': 4
             }
         }
 

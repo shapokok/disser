@@ -393,9 +393,10 @@
 
                     // Step 2: Run AI model
                     updateProgress('step2', 'active');
+                    const modelDisplayName = model === 'ensemble' ? 'Ensemble (All Models)' : model.toUpperCase();
                     setLoadingText(
                         `Running AI model... (${i + 1}/${uploadData.uploaded.length})`,
-                        `Analyzing ${file.original_name} with ${model.toUpperCase()}`
+                        `Analyzing ${file.original_name} with ${modelDisplayName}`
                     );
 
                     // Use ensemble endpoint if ensemble model is selected
@@ -728,6 +729,19 @@
                                     <strong>${result.inference_time_ms || 'N/A'} ms</strong>
                                 </div>
                             </div>
+                            ${result.individual_predictions && Object.keys(result.individual_predictions).length > 0 ?
+                                '<div style="margin-top: 1rem;">' +
+                                    '<h5 style="margin-bottom: 0.75rem; color: var(--dark); font-size: 0.9rem;">Individual Model Predictions</h5>' +
+                                    '<div style="background: var(--light); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;">' +
+                                        Object.entries(result.individual_predictions).map(([modelName, pred]) =>
+                                            '<div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--light-gray);">' +
+                                                '<span style="color: var(--gray);">' + modelName + '</span>' +
+                                                '<span style="color: var(--dark);">' + pred.confidence_percent + '</span>' +
+                                            '</div>'
+                                        ).join('') +
+                                    '</div>' +
+                                '</div>'
+                            : ''}
                         </div>
                     </div>
 
