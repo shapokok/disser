@@ -1,5 +1,21 @@
 const { test, expect } = require('@playwright/test');
 
+// Helper function to open mobile menu if needed
+async function openMobileMenuIfNeeded(page) {
+  const navLinks = page.locator('.nav-links');
+  const isVisible = await navLinks.isVisible().catch(() => false);
+
+  if (!isVisible) {
+    // On mobile, click menu toggle to open menu
+    const menuToggle = page.locator('.menu-toggle');
+    if (await menuToggle.isVisible()) {
+      await menuToggle.click();
+      // Wait for menu to be visible
+      await navLinks.waitFor({ state: 'visible', timeout: 5000 });
+    }
+  }
+}
+
 test.describe('Home Page', () => {
   test('should load home page successfully', async ({ page }) => {
     await page.goto('/frontend/index.html');
@@ -17,6 +33,9 @@ test.describe('Home Page', () => {
 
   test('should display navigation menu', async ({ page }) => {
     await page.goto('/frontend/index.html');
+
+    // Open mobile menu if needed
+    await openMobileMenuIfNeeded(page);
 
     // Verify nav links are present within the navigation
     const navLinks = page.locator('.nav-links');
@@ -41,6 +60,9 @@ test.describe('Home Page', () => {
   test('should navigate to analyze page', async ({ page }) => {
     await page.goto('/frontend/index.html');
 
+    // Open mobile menu if needed
+    await openMobileMenuIfNeeded(page);
+
     // Click the "Analyze" nav link within navigation
     await page.locator('.nav-links').getByRole('link', { name: 'Analyze' }).click();
     await expect(page).toHaveURL(/analyze\.html/);
@@ -48,6 +70,9 @@ test.describe('Home Page', () => {
 
   test('should navigate to statistics page', async ({ page }) => {
     await page.goto('/frontend/index.html');
+
+    // Open mobile menu if needed
+    await openMobileMenuIfNeeded(page);
 
     // Click the "Statistics" nav link within navigation
     await page.locator('.nav-links').getByRole('link', { name: 'Statistics' }).click();

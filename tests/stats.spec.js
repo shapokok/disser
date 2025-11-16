@@ -1,5 +1,21 @@
 const { test, expect } = require('@playwright/test');
 
+// Helper function to open mobile menu if needed
+async function openMobileMenuIfNeeded(page) {
+  const navLinks = page.locator('.nav-links');
+  const isVisible = await navLinks.isVisible().catch(() => false);
+
+  if (!isVisible) {
+    // On mobile, click menu toggle to open menu
+    const menuToggle = page.locator('.menu-toggle');
+    if (await menuToggle.isVisible()) {
+      await menuToggle.click();
+      // Wait for menu to be visible
+      await navLinks.waitFor({ state: 'visible', timeout: 5000 });
+    }
+  }
+}
+
 test.describe('Statistics Page', () => {
   test('should load statistics page successfully', async ({ page }) => {
     await page.goto('/frontend/stats.html');
@@ -16,6 +32,9 @@ test.describe('Statistics Page', () => {
 
   test('should display navigation menu', async ({ page }) => {
     await page.goto('/frontend/stats.html');
+
+    // Open mobile menu if needed
+    await openMobileMenuIfNeeded(page);
 
     // Verify nav links are present within the navigation
     const navLinks = page.locator('.nav-links');
@@ -75,6 +94,9 @@ test.describe('Statistics Page', () => {
 
   test('should navigate back to home', async ({ page }) => {
     await page.goto('/frontend/stats.html');
+
+    // Open mobile menu if needed
+    await openMobileMenuIfNeeded(page);
 
     // Click the Home nav link within navigation
     await page.locator('.nav-links').getByRole('link', { name: 'Home' }).click();
