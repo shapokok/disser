@@ -100,9 +100,11 @@ test.describe('Statistics Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Use href attribute for more reliable targeting in Mobile Safari
-    const homeLink = page.locator('.nav-links a[href="index.html"]');
-    await homeLink.click({ force: true });
+    // Use JavaScript click to bypass Mobile Safari rendering issues
+    await page.evaluate(() => {
+      const link = document.querySelector('.nav-links a[href="index.html"]');
+      if (link) link.click();
+    });
     await expect(page).toHaveURL(/index\.html/);
   });
 });
