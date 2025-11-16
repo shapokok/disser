@@ -93,28 +93,23 @@ def split_dataset(
         errors = 0
 
         for img in valid_images:
-            # Check if source file exists
-            if not img.exists():
-                print(f"  ⚠️  Source file not found: {img.name}")
-                errors += 1
-                continue
-
             dest = valid_class_dir / img.name
 
             # Check if destination already exists
             if dest.exists():
-                print(f"  ℹ️  File already exists in valid: {img.name}")
                 skipped += 1
                 continue
 
             try:
-                shutil.move(str(img), str(dest))
+                # Use absolute paths for Windows compatibility
+                shutil.move(str(img.absolute()), str(dest.absolute()))
                 moved += 1
-            except FileNotFoundError as e:
-                print(f"  ❌ Error moving {img.name}: {e}")
+            except FileNotFoundError:
+                # File doesn't exist - skip silently (already filtered above)
                 errors += 1
             except Exception as e:
-                print(f"  ❌ Unexpected error moving {img.name}: {e}")
+                # Only report unexpected errors
+                print(f"  ⚠️  Unexpected error moving {img.name}: {e}")
                 errors += 1
 
         print(f"  ✓ Moved: {moved}, Skipped: {skipped}, Errors: {errors}")
