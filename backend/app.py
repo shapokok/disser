@@ -32,14 +32,12 @@ from export_utils import (
 
 # Initialize Flask app
 app = Flask(__name__)
-# Enable CORS for frontend communication with specific settings
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ["http://localhost:8000", "http://localhost:3000", "http://127.0.0.1:8000", "http://localhost", "file://"],
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"]
-    }
-})
+# Enable CORS for all routes with permissive settings for development
+CORS(app,
+     resources={r"/*": {"origins": "*"}},
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     supports_credentials=False)
 
 # Configuration
 UPLOAD_FOLDER = '../data/uploads'
