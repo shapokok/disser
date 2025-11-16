@@ -713,6 +713,121 @@ def generate_comp_report():
         }), 500
 
 
+@app.route('/api/export/analysis', methods=['POST'])
+def export_analysis():
+    """
+    Export analysis results to Excel
+    """
+    try:
+        data = request.json
+
+        # Create Excel file
+        excel_bytes = create_analysis_excel(data)
+
+        # Return Excel file
+        return send_file(
+            io.BytesIO(excel_bytes),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f"analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/batch', methods=['POST'])
+def export_batch():
+    """
+    Export batch processing results to Excel
+    """
+    try:
+        data = request.json
+
+        # Create Excel file
+        excel_bytes = create_batch_excel(data)
+
+        # Return Excel file
+        return send_file(
+            io.BytesIO(excel_bytes),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f"batch_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/comparison', methods=['POST'])
+def export_comparison():
+    """
+    Export model comparison to Excel
+    """
+    try:
+        data = request.json
+
+        # Create Excel file
+        excel_bytes = create_comparison_excel(data)
+
+        # Return Excel file
+        return send_file(
+            io.BytesIO(excel_bytes),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f"model_comparison_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/validation/<model_name>', methods=['GET'])
+def export_validation(model_name):
+    """
+    Export validation report to Excel
+    """
+    try:
+        if model_name not in model_manager.models:
+            return jsonify({'error': f'Model {model_name} not found'}), 404
+
+        # Get validation reports
+        reports = get_all_validation_reports(model_manager.class_names)
+
+        if model_name not in reports:
+            return jsonify({'error': f'No validation data for {model_name}'}), 404
+
+        # Create Excel file
+        excel_bytes = create_validation_excel(reports[model_name])
+
+        # Return Excel file
+        return send_file(
+            io.BytesIO(excel_bytes),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f"validation_{model_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
 @app.route('/api/treatment/<disease_class>', methods=['GET'])
 def get_treatment(disease_class):
     """
