@@ -63,13 +63,24 @@ def split_dataset(
             print(f"  ⚠️  No images found in {class_name}, skipping")
             continue
 
-        # Shuffle and split
-        random.shuffle(image_files)
-        split_idx = int(len(image_files) * split_ratio)
-        valid_images = image_files[split_idx:]
+        # Filter to only existing files (handle corrupted/missing entries)
+        existing_files = [f for f in image_files if f.exists()]
+        missing_count = len(image_files) - len(existing_files)
+
+        if missing_count > 0:
+            print(f"  ⚠️  Found {missing_count} missing files (listed but don't exist), skipping them")
+
+        if not existing_files:
+            print(f"  ⚠️  No valid images found in {class_name}, skipping")
+            continue
+
+        # Shuffle and split ONLY existing files
+        random.shuffle(existing_files)
+        split_idx = int(len(existing_files) * split_ratio)
+        valid_images = existing_files[split_idx:]
 
         if not valid_images:
-            print(f"  ⚠️  Not enough images to split (only {len(image_files)}), skipping")
+            print(f"  ⚠️  Not enough images to split (only {len(existing_files)}), skipping")
             continue
 
         # Create validation directory for this class
