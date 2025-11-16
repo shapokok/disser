@@ -692,6 +692,200 @@ def generate_comp_report():
         }), 500
 
 
+@app.route('/api/export/csv', methods=['POST'])
+def export_csv():
+    """
+    Export prediction results to CSV format
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results to export'}), 400
+
+        # Create CSV content
+        import csv
+        from io import StringIO
+
+        output = StringIO()
+        writer = csv.writer(output)
+
+        # Write header
+        writer.writerow([
+            'Image Name',
+            'Predicted Disease',
+            'Confidence (%)',
+            'Model Used',
+            'Inference Time (ms)',
+            'Dataset Type',
+            'Explanation Method',
+            'Timestamp'
+        ])
+
+        # Write data rows
+        for result in results:
+            writer.writerow([
+                result.get('original_name', 'N/A'),
+                result.get('prediction', {}).get('class', 'N/A'),
+                f"{result.get('prediction', {}).get('confidence', 0) * 100:.2f}",
+                result.get('model_used', 'N/A'),
+                result.get('inference_time_ms', 'N/A'),
+                result.get('dataset_type', 'N/A'),
+                result.get('explanation_method', 'N/A'),
+                result.get('timestamp', 'N/A')
+            ])
+
+        # Return CSV file
+        output.seek(0)
+        return send_file(
+            io.BytesIO(output.getvalue().encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name=f"crop_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/json', methods=['POST'])
+def export_json():
+    """
+    Export prediction results to JSON format
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results to export'}), 400
+
+        # Create formatted JSON export
+        export_data = {
+            'export_date': datetime.now().isoformat(),
+            'total_images': len(results),
+            'results': results,
+            'summary': {
+                'models_used': list(set(r.get('model_used', 'unknown') for r in results)),
+                'average_confidence': sum(r.get('prediction', {}).get('confidence', 0) for r in results) / len(results) if results else 0,
+            }
+        }
+
+        # Return JSON file
+        json_str = json.dumps(export_data, indent=2)
+        return send_file(
+            io.BytesIO(json_str.encode('utf-8')),
+            mimetype='application/json',
+            as_attachment=True,
+            download_name=f"crop_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/excel', methods=['POST'])
+def export_excel():
+    """
+    Export prediction results to Excel format
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results to export'}), 400
+
+        try:
+            import openpyxl
+            from openpyxl.styles import Font, PatternFill, Alignment
+        except ImportError:
+            return jsonify({
+                'error': 'openpyxl not installed. Install with: pip install openpyxl'
+            }), 500
+
+        # Create workbook and worksheet
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Crop Analysis Results"
+
+        # Header style
+        header_fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
+        header_font = Font(bold=True, color="FFFFFF")
+
+        # Write header
+        headers = [
+            'Image Name',
+            'Predicted Disease',
+            'Confidence (%)',
+            'Model Used',
+            'Inference Time (ms)',
+            'Dataset Type',
+            'Explanation Method',
+            'Timestamp'
+        ]
+
+        for col_num, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col_num)
+            cell.value = header
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = Alignment(horizontal='center')
+
+        # Write data rows
+        for row_num, result in enumerate(results, 2):
+            ws.cell(row=row_num, column=1, value=result.get('original_name', 'N/A'))
+            ws.cell(row=row_num, column=2, value=result.get('prediction', {}).get('class', 'N/A'))
+            ws.cell(row=row_num, column=3, value=f"{result.get('prediction', {}).get('confidence', 0) * 100:.2f}")
+            ws.cell(row=row_num, column=4, value=result.get('model_used', 'N/A'))
+            ws.cell(row=row_num, column=5, value=result.get('inference_time_ms', 'N/A'))
+            ws.cell(row=row_num, column=6, value=result.get('dataset_type', 'N/A'))
+            ws.cell(row=row_num, column=7, value=result.get('explanation_method', 'N/A'))
+            ws.cell(row=row_num, column=8, value=result.get('timestamp', 'N/A'))
+
+        # Auto-adjust column widths
+        for column in ws.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+            adjusted_width = min(max_length + 2, 50)
+            ws.column_dimensions[column_letter].width = adjusted_width
+
+        # Save to bytes
+        excel_buffer = io.BytesIO()
+        wb.save(excel_buffer)
+        excel_buffer.seek(0)
+
+        # Return Excel file
+        return send_file(
+            excel_buffer,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f"crop_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
 @app.route('/api/treatment/<disease_class>', methods=['GET'])
 def get_treatment(disease_class):
     """

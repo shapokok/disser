@@ -721,6 +721,25 @@
                 resultsContainer.appendChild(resultCard);
             });
 
+            // Add export buttons after all results
+            const exportContainer = document.createElement('div');
+            exportContainer.style.cssText = 'text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--light); border-radius: 12px;';
+            exportContainer.innerHTML = `
+                <h4 style="margin-bottom: 1rem; color: var(--dark);">📊 Export Results</h4>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="exportResults('csv')">
+                        📄 Export to CSV
+                    </button>
+                    <button class="btn btn-primary" onclick="exportResults('json')">
+                        📋 Export to JSON
+                    </button>
+                    <button class="btn btn-primary" onclick="exportResults('excel')">
+                        📊 Export to Excel
+                    </button>
+                </div>
+            `;
+            resultsContainer.appendChild(exportContainer);
+
             // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -734,6 +753,76 @@
                 link.href = img.src;
                 link.download = `crop_analysis_${index + 1}.png`;
                 link.click();
+            }
+        }
+
+        // Export results to various formats
+        async function exportResults(format) {
+            try {
+                // Get current results from the page
+                const results = Array.from(resultsContainer.querySelectorAll('.result-card')).map((card, index) => {
+                    const predictionLabel = card.querySelector('.prediction-label');
+                    const confidenceBadge = card.querySelector('.confidence-badge');
+                    const modelUsed = card.querySelector('[style*="Model Used"]')?.nextElementSibling?.textContent || 'N/A';
+
+                    return {
+                        original_name: card.querySelector('h3')?.textContent.split(':')[1]?.trim() || `image_${index + 1}`,
+                        prediction: {
+                            class: predictionLabel?.textContent || 'N/A',
+                            confidence: parseFloat(confidenceBadge?.textContent.replace('%', '')) / 100 || 0
+                        },
+                        model_used: modelUsed,
+                        inference_time_ms: 'N/A',
+                        dataset_type: 'N/A',
+                        explanation_method: 'gradcam',
+                        timestamp: new Date().toISOString()
+                    };
+                });
+
+                if (results.length === 0) {
+                    alert('No results to export');
+                    return;
+                }
+
+                // Send export request to backend
+                const response = await fetch(`http://localhost:5000/api/export/${format}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ results })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Export failed: ${response.statusText}`);
+                }
+
+                // Download the file
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+
+                // Get filename from Content-Disposition header if available
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = `crop_analysis.${format}`;
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                    if (filenameMatch && filenameMatch[1]) {
+                        filename = filenameMatch[1].replace(/['"]/g, '');
+                    }
+                }
+
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                alert(`✅ Results exported successfully as ${format.toUpperCase()}!`);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert(`❌ Export failed: ${error.message}`);
             }
         }
     </script>

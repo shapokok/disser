@@ -1,0 +1,67 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+README.md
+SETUP.md
+TESTING_GUIDE.md
+PROJECT_STATUS.md
+*.md
+
+# Test files
+tests/
+test_server.py
+playwright.config.js
+playwright-report/
+test-results/
+
+# Scripts
+fix_all.sh
+run.sh
+run.bat
+download_samples.py
+main.py
+
+# Data (large files, will be mounted as volumes)
+data/uploads/*
+!data/uploads/.gitkeep
+data/sample_images/*
+!data/sample_images/.gitkeep
+results/*
+!results/.gitkeep
+
+# Models (large files, will be mounted as volumes)
+models/*.pth
+models/*.pt
+models/*.h5
+models/*.pkl
