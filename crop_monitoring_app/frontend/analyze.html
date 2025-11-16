@@ -41,6 +41,7 @@
                     <div class="form-group">
                         <label class="form-label">Select Model</label>
                         <select id="modelSelect" class="form-select">
+                            <option value="ensemble">🏆 Ensemble (All Models Combined)</option>
                             <option value="efficientnet">EfficientNet-B0 (Recommended)</option>
                             <option value="hybrid">Hybrid CNN-Transformer (Most Accurate)</option>
                             <option value="mobilenet">MobileNet-V2 (Fastest)</option>
@@ -369,17 +370,31 @@
                         `Analyzing ${file.original_name} with ${model.toUpperCase()}`
                     );
 
-                    const predictResponse = await fetch('http://localhost:5000/api/predict', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
+                    // Use ensemble endpoint if ensemble model is selected
+                    const apiEndpoint = model === 'ensemble'
+                        ? 'http://localhost:5000/api/ensemble'
+                        : 'http://localhost:5000/api/predict';
+
+                    const requestBody = model === 'ensemble'
+                        ? {
+                            image_path: file.saved_name,
+                            ensemble_method: 'weighted',
+                            explanation: explanation,
+                            dataset_type: datasetType
+                        }
+                        : {
                             image_path: file.saved_name,
                             model: model,
                             explanation: explanation,
                             dataset_type: datasetType
-                        })
+                        };
+
+                    const predictResponse = await fetch(apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
                     });
 
                     const result = await predictResponse.json();
@@ -597,6 +612,20 @@
                                     <span style="color: var(--gray);">Model Used</span>
                                     <strong>${result.model_used || 'N/A'}</strong>
                                 </div>
+                                ${result.ensemble_method ? `
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <span style="color: var(--gray);">Ensemble Method</span>
+                                        <strong>${result.ensemble_method}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <span style="color: var(--gray);">Models Combined</span>
+                                        <strong>${result.models_count || 'N/A'}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <span style="color: var(--gray);">Agreement Rate</span>
+                                        <strong style="color: ${result.agreement_rate > 0.75 ? '#22c55e' : result.agreement_rate > 0.5 ? '#eab308' : '#ef4444'};">${result.agreement_percent || 'N/A'}</strong>
+                                    </div>
+                                ` : ''}
                                 <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
                                     <span style="color: var(--gray);">Explanation Method</span>
                                     <strong>${result.explanation_method || 'N/A'}</strong>
@@ -622,6 +651,64 @@
                             <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.5rem; text-align: center;">
                                 The heatmap shows which parts of the image the AI model focused on for making the prediction
                             </p>
+                        </div>
+                    ` : ''}
+
+                    ${result.individual_predictions ? `
+                        <div style="margin-top: 1.5rem;">
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">Individual Model Predictions</h4>
+                            <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                                ${Object.entries(result.individual_predictions).map(([modelName, pred]) => `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <div>
+                                            <strong style="color: var(--dark);">${modelName.charAt(0).toUpperCase() + modelName.slice(1)}</strong>
+                                            <div style="color: var(--gray); font-size: 0.9rem; margin-top: 0.25rem;">${pred.class}</div>
+                                        </div>
+                                        <span style="font-weight: 600; color: var(--primary-color);">${pred.confidence_percent}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${result.uncertainty_metrics ? `
+                        <div style="margin-top: 1.5rem;">
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">📊 Uncertainty Analysis</h4>
+                            <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Uncertainty Level</div>
+                                        <div style="font-weight: 600; color: ${result.uncertainty_metrics.uncertainty_level === 'low' ? '#22c55e' : result.uncertainty_metrics.uncertainty_level === 'medium' ? '#eab308' : '#ef4444'}; text-transform: uppercase; font-size: 1.1rem;">
+                                            ${result.uncertainty_metrics.uncertainty_level}
+                                        </div>
+                                    </div>
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Prediction Variance</div>
+                                        <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">${result.uncertainty_metrics.prediction_variance}</div>
+                                    </div>
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Normalized Entropy</div>
+                                        <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">${result.uncertainty_metrics.normalized_entropy}</div>
+                                    </div>
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Disagreement Score</div>
+                                        <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">${result.uncertainty_metrics.disagreement_score}</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 1rem; padding: 0.75rem; background: white; border-radius: 6px;">
+                                    <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.5rem;">95% Confidence Interval</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-weight: 600; color: var(--dark);">${(result.uncertainty_metrics.confidence_interval.lower * 100).toFixed(2)}%</span>
+                                        <div style="flex: 1; height: 8px; background: linear-gradient(to right, #3b82f6, #22c55e); border-radius: 4px; position: relative;">
+                                            <div style="position: absolute; left: ${result.uncertainty_metrics.confidence_interval.lower * 100}%; right: ${(1 - result.uncertainty_metrics.confidence_interval.upper) * 100}%; height: 100%; background: rgba(59, 130, 246, 0.3); border: 2px solid #3b82f6; border-radius: 4px;"></div>
+                                        </div>
+                                        <span style="font-weight: 600; color: var(--dark);">${(result.uncertainty_metrics.confidence_interval.upper * 100).toFixed(2)}%</span>
+                                    </div>
+                                    <div style="color: var(--gray); font-size: 0.8rem; margin-top: 0.5rem; text-align: center;">
+                                        Interval Width: ${(result.uncertainty_metrics.confidence_interval.width * 100).toFixed(2)}%
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ` : ''}
 
