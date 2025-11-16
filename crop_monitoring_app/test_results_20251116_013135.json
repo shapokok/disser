@@ -1,0 +1,153 @@
+{
+  "timestamp": "2025-11-16T01:31:35.248521",
+  "tests_run": 23,
+  "tests_passed": 22,
+  "tests_failed": 1,
+  "failures": [
+    {
+      "test": "Upload directory accessible",
+      "details": "Directory not found"
+    }
+  ],
+  "warnings": [],
+  "test_details": [
+    {
+      "test": "Backend server running",
+      "passed": true,
+      "details": "Server status: online, Version: 1.0.0",
+      "timestamp": "2025-11-16T01:31:37.321218"
+    },
+    {
+      "test": "Models loaded",
+      "passed": true,
+      "details": "Loaded: baseline, efficientnet, mobilenet, hybrid",
+      "timestamp": "2025-11-16T01:31:39.360270"
+    },
+    {
+      "test": "Upload directory accessible",
+      "passed": false,
+      "details": "Directory not found",
+      "timestamp": "2025-11-16T01:31:39.360270"
+    },
+    {
+      "test": "Upload single JPEG",
+      "passed": true,
+      "details": "Uploaded: test_upload.jpg",
+      "timestamp": "2025-11-16T01:31:41.499708"
+    },
+    {
+      "test": "Upload multiple images",
+      "passed": true,
+      "details": "Uploaded 3/3 files",
+      "timestamp": "2025-11-16T01:31:43.658271"
+    },
+    {
+      "test": "Upload JFIF format",
+      "passed": true,
+      "details": "JFIF support verified",
+      "timestamp": "2025-11-16T01:31:45.724118"
+    },
+    {
+      "test": "Reject invalid file types",
+      "passed": true,
+      "details": "Invalid file type properly rejected",
+      "timestamp": "2025-11-16T01:31:47.782693"
+    },
+    {
+      "test": "Prediction with baseline",
+      "passed": true,
+      "details": "Class: Potato - Late blight, Confidence: 2.82%",
+      "timestamp": "2025-11-16T01:31:54.920726"
+    },
+    {
+      "test": "Prediction with efficientnet",
+      "passed": true,
+      "details": "Class: Cherry (including sour) - healthy, Confidence: 2.70%",
+      "timestamp": "2025-11-16T01:31:58.057066"
+    },
+    {
+      "test": "Prediction with mobilenet",
+      "passed": true,
+      "details": "Class: Peach - Bacterial spot, Confidence: 5.32%",
+      "timestamp": "2025-11-16T01:32:01.281414"
+    },
+    {
+      "test": "Prediction with hybrid",
+      "passed": true,
+      "details": "Class: Potato - Late blight, Confidence: 5.95%",
+      "timestamp": "2025-11-16T01:32:05.317217"
+    },
+    {
+      "test": "Grad-CAM visualization",
+      "passed": true,
+      "details": "Visualization generated: True, Valid: True",
+      "timestamp": "2025-11-16T01:32:10.792755"
+    },
+    {
+      "test": "LIME visualization",
+      "passed": true,
+      "details": "LIME explanation generated successfully",
+      "timestamp": "2025-11-16T01:32:57.874572"
+    },
+    {
+      "test": "Model comparison",
+      "passed": true,
+      "details": "Compared 4 models successfully",
+      "timestamp": "2025-11-16T01:33:02.424875"
+    },
+    {
+      "test": "Model statistics endpoint",
+      "passed": true,
+      "details": "Models available: ['baseline', 'efficientnet', 'mobilenet', 'hybrid']",
+      "timestamp": "2025-11-16T01:33:04.473870"
+    },
+    {
+      "test": "Class names endpoint",
+      "passed": true,
+      "details": "Total classes: 38",
+      "timestamp": "2025-11-16T01:33:06.548786"
+    },
+    {
+      "test": "Confusion matrix endpoint",
+      "passed": true,
+      "details": "Confusion matrix data available",
+      "timestamp": "2025-11-16T01:33:26.947110"
+    },
+    {
+      "test": "Validation report endpoint",
+      "passed": true,
+      "details": "Validation report available",
+      "timestamp": "2025-11-16T01:33:46.973138"
+    },
+    {
+      "test": "Missing image path error handling",
+      "passed": true,
+      "details": "Returned HTTP 400 with error message",
+      "timestamp": "2025-11-16T01:33:49.039331"
+    },
+    {
+      "test": "Invalid model name error handling",
+      "passed": true,
+      "details": "Returned HTTP 400",
+      "timestamp": "2025-11-16T01:33:53.174091"
+    },
+    {
+      "test": "Nonexistent image error handling",
+      "passed": true,
+      "details": "Returned HTTP 404",
+      "timestamp": "2025-11-16T01:33:55.218185"
+    },
+    {
+      "test": "Invalid endpoint error handling",
+      "passed": true,
+      "details": "Returned HTTP 404",
+      "timestamp": "2025-11-16T01:33:57.272154"
+    },
+    {
+      "test": "Batch processing",
+      "passed": true,
+      "details": "Processed 3/3 images",
+      "timestamp": "2025-11-16T01:34:09.449554"
+    }
+  ]
+}
