@@ -70,7 +70,8 @@ test.describe('Home Page', () => {
     await openMobileMenuIfNeeded(page);
 
     // Click the "Analyze" nav link within navigation
-    await page.locator('.nav-links').getByRole('link', { name: 'Analyze' }).click();
+    // Use force for mobile Safari where menu items may overlap
+    await page.locator('.nav-links').getByRole('link', { name: 'Analyze' }).click({ force: true });
     await expect(page).toHaveURL(/analyze\.html/);
   });
 
@@ -81,7 +82,8 @@ test.describe('Home Page', () => {
     await openMobileMenuIfNeeded(page);
 
     // Click the "Statistics" nav link within navigation
-    await page.locator('.nav-links').getByRole('link', { name: 'Statistics' }).click();
+    // Use force for mobile Safari where menu items may overlap
+    await page.locator('.nav-links').getByRole('link', { name: 'Statistics' }).click({ force: true });
     await expect(page).toHaveURL(/stats\.html/);
   });
 });

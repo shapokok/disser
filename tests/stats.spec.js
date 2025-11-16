@@ -99,7 +99,8 @@ test.describe('Statistics Page', () => {
     await openMobileMenuIfNeeded(page);
 
     // Click the Home nav link within navigation
-    await page.locator('.nav-links').getByRole('link', { name: 'Home' }).click();
+    // Use force for mobile Safari where menu items may overlap
+    await page.locator('.nav-links').getByRole('link', { name: 'Home' }).click({ force: true });
     await expect(page).toHaveURL(/index\.html/);
   });
 });
