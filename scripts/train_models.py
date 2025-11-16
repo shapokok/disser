@@ -140,12 +140,24 @@ def get_data_loaders():
     """Prepare data loaders with augmentation"""
     print("📁 Loading dataset...")
 
-    if not DATA_DIR.exists():
-        print(f"❌ Dataset not found at {DATA_DIR}")
-        print("   Please run: python scripts/download_dataset.py")
+    # Check for pre-split dataset (train/valid folders)
+    train_dir = DATA_DIR / "train"
+    valid_dir = DATA_DIR / "valid"
+
+    if not train_dir.exists() or not valid_dir.exists():
+        print(f"❌ Dataset not found!")
+        print(f"   Expected structure:")
+        print(f"   {DATA_DIR}/")
+        print(f"   ├── train/")
+        print(f"   │   ├── Apple___Apple_scab/")
+        print(f"   │   └── ... (38 classes)")
+        print(f"   └── valid/")
+        print(f"       └── ... (38 classes)")
+        print()
+        print("   Download from: https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset")
         sys.exit(1)
 
-    # Data augmentation
+    # Data augmentation for training
     train_transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.RandomHorizontalFlip(),
@@ -155,27 +167,22 @@ def get_data_loaders():
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
+    # No augmentation for validation
     val_transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    # Load dataset
-    full_dataset = datasets.ImageFolder(DATA_DIR)
-    num_classes = len(full_dataset.classes)
+    # Load train and validation datasets
+    train_dataset = datasets.ImageFolder(train_dir, transform=train_transform)
+    val_dataset = datasets.ImageFolder(valid_dir, transform=val_transform)
 
-    print(f"✓ Found {len(full_dataset)} images in {num_classes} classes")
+    num_classes = len(train_dataset.classes)
 
-    # Split dataset (80% train, 20% val)
-    train_size = int(0.8 * len(full_dataset))
-    val_size = len(full_dataset) - train_size
-
-    train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
-
-    # Apply transforms
-    train_dataset.dataset.transform = train_transform
-    val_dataset.dataset.transform = val_transform
+    print(f"✓ Found {len(train_dataset)} training images")
+    print(f"✓ Found {len(val_dataset)} validation images")
+    print(f"✓ Number of classes: {num_classes}")
 
     # Create loaders
     train_loader = DataLoader(
@@ -194,13 +201,10 @@ def get_data_loaders():
         pin_memory=True if DEVICE.type == 'cuda' else False
     )
 
-    print(f"✓ Train: {len(train_dataset)} images")
-    print(f"✓ Val: {len(val_dataset)} images")
-
     # Save class names
     class_names_path = MODELS_DIR / "class_names.json"
     with open(class_names_path, 'w') as f:
-        json.dump(full_dataset.classes, f, indent=2)
+        json.dump(train_dataset.classes, f, indent=2)
     print(f"✓ Class names saved: {class_names_path}")
 
     return train_loader, val_loader, num_classes
