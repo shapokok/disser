@@ -75,8 +75,17 @@ class EfficientNetModel(nn.Module):
     def __init__(self, num_classes=38, pretrained=True):
         super(EfficientNetModel, self).__init__()
 
-        # Load pre-trained EfficientNet-B0
-        self.backbone = models.efficientnet_b0(pretrained=pretrained)
+        # Load pre-trained EfficientNet-B0 using new weights API
+        if pretrained:
+            try:
+                from torchvision.models import EfficientNet_B0_Weights
+                self.backbone = models.efficientnet_b0(weights=EfficientNet_B0_Weights.IMAGENET1K_V1)
+            except Exception as e:
+                print(f"Warning: Could not load pretrained weights: {e}")
+                print("Loading model without pretrained weights")
+                self.backbone = models.efficientnet_b0(weights=None)
+        else:
+            self.backbone = models.efficientnet_b0(weights=None)
 
         # Replace classifier
         in_features = self.backbone.classifier[1].in_features
@@ -98,8 +107,17 @@ class MobileNetModel(nn.Module):
     def __init__(self, num_classes=38, pretrained=True):
         super(MobileNetModel, self).__init__()
 
-        # Load pre-trained MobileNetV2
-        self.backbone = models.mobilenet_v2(pretrained=pretrained)
+        # Load pre-trained MobileNetV2 using new weights API
+        if pretrained:
+            try:
+                from torchvision.models import MobileNet_V2_Weights
+                self.backbone = models.mobilenet_v2(weights=MobileNet_V2_Weights.IMAGENET1K_V1)
+            except Exception as e:
+                print(f"Warning: Could not load pretrained weights: {e}")
+                print("Loading model without pretrained weights")
+                self.backbone = models.mobilenet_v2(weights=None)
+        else:
+            self.backbone = models.mobilenet_v2(weights=None)
 
         # Replace classifier
         in_features = self.backbone.classifier[1].in_features
@@ -121,8 +139,14 @@ class HybridCNNTransformer(nn.Module):
     def __init__(self, num_classes=38):
         super(HybridCNNTransformer, self).__init__()
 
-        # CNN backbone (using ResNet-50 features)
-        resnet = models.resnet50(pretrained=True)
+        # CNN backbone (using ResNet-50 features) with new weights API
+        try:
+            from torchvision.models import ResNet50_Weights
+            resnet = models.resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
+        except Exception as e:
+            print(f"Warning: Could not load pretrained ResNet weights: {e}")
+            resnet = models.resnet50(weights=None)
+
         self.cnn_features = nn.Sequential(*list(resnet.children())[:-2])  # Remove avgpool and fc
 
         # Transformer encoder
@@ -493,6 +517,37 @@ class ModelManager:
         agreement_count = sum(1 for idx in all_predicted_classes if idx == predicted_idx.item())
         agreement_rate = agreement_count / len(all_predicted_classes)
 
+        # === Advanced Uncertainty Metrics ===
+
+        # 1. Prediction Variance: Measure disagreement between models
+        prob_stack = torch.stack(all_probabilities)
+        prediction_variance = prob_stack.var(dim=0).mean().item()
+
+        # 2. Entropy: Measure uncertainty in ensemble prediction
+        # Higher entropy = more uncertain prediction
+        entropy = -torch.sum(ensemble_probs * torch.log(ensemble_probs + 1e-10)).item()
+        max_entropy = -torch.log(torch.tensor(1.0 / len(self.class_names))).item()
+        normalized_entropy = entropy / max_entropy if max_entropy > 0 else 0
+
+        # 3. Confidence Interval (95% CI using standard deviation across models)
+        top_class_probs = torch.tensor([pred['probabilities'][predicted_idx.item()].item()
+                                        for pred in all_predictions.values()])
+        conf_std = top_class_probs.std().item()
+        conf_mean = top_class_probs.mean().item()
+        confidence_interval_lower = max(0, conf_mean - 1.96 * conf_std)
+        confidence_interval_upper = min(1, conf_mean + 1.96 * conf_std)
+
+        # 4. Model Disagreement Score: Percentage of models that disagree
+        disagreement_score = 1.0 - agreement_rate
+
+        # 5. Uncertainty Category
+        if confidence.item() > 0.9 and agreement_rate > 0.75 and normalized_entropy < 0.3:
+            uncertainty_level = 'low'
+        elif confidence.item() > 0.7 and agreement_rate > 0.5 and normalized_entropy < 0.6:
+            uncertainty_level = 'medium'
+        else:
+            uncertainty_level = 'high'
+
         return {
             'predicted_class': self.class_names[predicted_idx.item()],
             'confidence': confidence.item(),
@@ -509,7 +564,20 @@ class ModelManager:
                 for name, pred in all_predictions.items()
             },
             'agreement_rate': agreement_rate,
-            'models_count': len(all_predictions)
+            'models_count': len(all_predictions),
+            # Advanced uncertainty metrics
+            'uncertainty_metrics': {
+                'prediction_variance': round(prediction_variance, 4),
+                'entropy': round(entropy, 4),
+                'normalized_entropy': round(normalized_entropy, 4),
+                'disagreement_score': round(disagreement_score, 4),
+                'uncertainty_level': uncertainty_level,
+                'confidence_interval': {
+                    'lower': round(confidence_interval_lower, 4),
+                    'upper': round(confidence_interval_upper, 4),
+                    'width': round(confidence_interval_upper - confidence_interval_lower, 4)
+                }
+            }
         }
 
 
