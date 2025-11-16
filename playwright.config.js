@@ -72,7 +72,7 @@ module.exports = defineConfig({
 
   // Run local dev server before starting tests
   webServer: {
-    command: 'cd crop_monitoring_app && python backend/app.py',
+    command: 'python test_server.py',
     url: 'http://localhost:5000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
