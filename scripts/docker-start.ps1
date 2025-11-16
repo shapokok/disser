@@ -137,7 +137,7 @@ Write-Host "   Backend API: http://localhost:5000" -ForegroundColor Cyan
 if ($profile) {
     Write-Host "   Frontend:    http://localhost (via Nginx)" -ForegroundColor Cyan
 } else {
-    $frontendPath = Join-Path $PSScriptRoot "crop_monitoring_app\frontend\index.html"
+    $frontendPath = Join-Path (Split-Path $PSScriptRoot -Parent) "frontend\index.html"
     Write-Host "   Frontend:    Open $frontendPath in browser" -ForegroundColor Cyan
 }
 
