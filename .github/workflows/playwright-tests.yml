@@ -94,7 +94,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Run Mobile tests
         run: npx playwright test --project="Mobile Chrome" --project="Mobile Safari"

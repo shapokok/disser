@@ -52,13 +52,13 @@ test.describe('Home Page', () => {
     const heroSection = page.locator('.hero');
     await expect(heroSection).toBeVisible();
 
-    // Check for "Start Analysis" button - scroll into view if needed
-    const startButton = page.getByRole('link', { name: /Start Analysis/i });
+    // Check for "Start Analysis" button within hero section
+    const startButton = heroSection.getByRole('link', { name: /Start Analysis/i });
     await startButton.scrollIntoViewIfNeeded();
     await expect(startButton).toBeVisible();
 
-    // Check for "View Statistics" button
-    const statsButton = page.getByRole('link', { name: /View Statistics/i });
+    // Check for "View Statistics" button within hero section
+    const statsButton = heroSection.getByRole('link', { name: /View Statistics/i });
     await statsButton.scrollIntoViewIfNeeded();
     await expect(statsButton).toBeVisible();
   });
