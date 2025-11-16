@@ -10,11 +10,13 @@ or provides links to download them manually.
 import os
 import sys
 
+
 def print_banner():
-    print("="*70)
+    print("=" * 70)
     print("  Sample Images Downloader - Crop Disease Detection System")
-    print("="*70)
+    print("=" * 70)
     print()
+
 
 def print_instructions():
     print("📸 SAMPLE IMAGES SETUP INSTRUCTIONS")
@@ -41,7 +43,9 @@ def print_instructions():
     # Option 2
     print("OPTION 2: PlantVillage Dataset (For Training/Research)")
     print("-" * 70)
-    print("1. Visit Kaggle: https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset")
+    print(
+        "1. Visit Kaggle: https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset"
+    )
     print("2. Download the dataset (requires Kaggle account - free)")
     print("3. Extract sample images to data/sample_images/")
     print()
@@ -67,13 +71,10 @@ def print_instructions():
     print("=" * 70)
     print()
 
+
 def create_directories():
     """Create necessary directories for sample images"""
-    dirs = [
-        'data/sample_images',
-        'data/field_images',
-        'data/uploads'
-    ]
+    dirs = ["data/sample_images", "data/field_images", "data/uploads"]
 
     print("📁 Creating directories...")
     for dir_path in dirs:
@@ -81,9 +82,10 @@ def create_directories():
         print(f"  ✓ {dir_path}")
     print()
 
+
 def create_readme():
     """Create README in sample images directory"""
-    readme_path = 'data/sample_images/README.md'
+    readme_path = "data/sample_images/README.md"
 
     readme_content = """# Sample Images for Testing
 
@@ -168,11 +170,12 @@ Once you have images:
 5. Test different models and explanation methods
 """
 
-    with open(readme_path, 'w') as f:
+    with open(readme_path, "w", encoding="utf-8") as f:
         f.write(readme_content)
 
     print(f"  ✓ Created {readme_path}")
     print()
+
 
 def print_next_steps():
     print("🎯 NEXT STEPS")
@@ -194,12 +197,14 @@ def print_next_steps():
     print("📧 For questions, refer to README.md or SETUP.md")
     print()
 
+
 def main():
     print_banner()
     create_directories()
     create_readme()
     print_instructions()
     print_next_steps()
+
 
 if __name__ == "__main__":
     main()

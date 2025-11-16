@@ -75,8 +75,17 @@ class EfficientNetModel(nn.Module):
     def __init__(self, num_classes=38, pretrained=True):
         super(EfficientNetModel, self).__init__()
 
-        # Load pre-trained EfficientNet-B0
-        self.backbone = models.efficientnet_b0(pretrained=pretrained)
+        # Load pre-trained EfficientNet-B0 using new weights API
+        if pretrained:
+            try:
+                from torchvision.models import EfficientNet_B0_Weights
+                self.backbone = models.efficientnet_b0(weights=EfficientNet_B0_Weights.IMAGENET1K_V1)
+            except Exception as e:
+                print(f"Warning: Could not load pretrained weights: {e}")
+                print("Loading model without pretrained weights")
+                self.backbone = models.efficientnet_b0(weights=None)
+        else:
+            self.backbone = models.efficientnet_b0(weights=None)
 
         # Replace classifier
         in_features = self.backbone.classifier[1].in_features
@@ -98,8 +107,17 @@ class MobileNetModel(nn.Module):
     def __init__(self, num_classes=38, pretrained=True):
         super(MobileNetModel, self).__init__()
 
-        # Load pre-trained MobileNetV2
-        self.backbone = models.mobilenet_v2(pretrained=pretrained)
+        # Load pre-trained MobileNetV2 using new weights API
+        if pretrained:
+            try:
+                from torchvision.models import MobileNet_V2_Weights
+                self.backbone = models.mobilenet_v2(weights=MobileNet_V2_Weights.IMAGENET1K_V1)
+            except Exception as e:
+                print(f"Warning: Could not load pretrained weights: {e}")
+                print("Loading model without pretrained weights")
+                self.backbone = models.mobilenet_v2(weights=None)
+        else:
+            self.backbone = models.mobilenet_v2(weights=None)
 
         # Replace classifier
         in_features = self.backbone.classifier[1].in_features
@@ -121,8 +139,14 @@ class HybridCNNTransformer(nn.Module):
     def __init__(self, num_classes=38):
         super(HybridCNNTransformer, self).__init__()
 
-        # CNN backbone (using ResNet-50 features)
-        resnet = models.resnet50(pretrained=True)
+        # CNN backbone (using ResNet-50 features) with new weights API
+        try:
+            from torchvision.models import ResNet50_Weights
+            resnet = models.resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
+        except Exception as e:
+            print(f"Warning: Could not load pretrained ResNet weights: {e}")
+            resnet = models.resnet50(weights=None)
+
         self.cnn_features = nn.Sequential(*list(resnet.children())[:-2])  # Remove avgpool and fc
 
         # Transformer encoder
