@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY crop_monitoring_app/backend/requirements.txt /app/backend/
+COPY backend/requirements.txt /app/backend/
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
@@ -25,7 +25,10 @@ RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 FROM base as app
 
 # Copy application code
-COPY crop_monitoring_app /app/crop_monitoring_app
+COPY backend /app/backend
+COPY frontend /app/frontend
+COPY models /app/models
+COPY data /app/data
 
 # Create necessary directories
 RUN mkdir -p /app/data/uploads \
@@ -35,7 +38,7 @@ RUN mkdir -p /app/data/uploads \
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
-ENV FLASK_APP=/app/crop_monitoring_app/backend/app.py
+ENV FLASK_APP=/app/backend/app.py
 ENV FLASK_ENV=production
 
 # Expose port
@@ -46,7 +49,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:5000/')" || exit 1
 
 # Set working directory to backend
-WORKDIR /app/crop_monitoring_app/backend
+WORKDIR /app/backend
 
 # Run the application
 CMD ["python", "app.py"]
