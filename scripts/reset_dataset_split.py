@@ -67,19 +67,31 @@ def reset_split(
 
             # Check if destination already exists
             if dest.exists():
-                print(f"  ⚠️  File already exists in train: {img.name}, removing from valid")
+                # File already in train, just remove from valid
                 try:
                     img.unlink()
+                    moved += 1  # Count as moved (already in correct location)
                 except Exception as e:
-                    print(f"  ❌ Error removing duplicate: {e}")
-                    errors += 1
+                    # If file doesn't exist, it's fine - already removed
+                    if img.exists():
+                        print(f"  ⚠️  Could not remove duplicate {img.name}: {e}")
+                        errors += 1
+                    else:
+                        moved += 1  # File doesn't exist, count as success
                 continue
 
             try:
-                shutil.move(str(img), str(dest))
+                # Use absolute paths for Windows compatibility
+                shutil.move(str(img.absolute()), str(dest.absolute()))
                 moved += 1
+            except FileNotFoundError:
+                # File already moved or doesn't exist
+                if dest.exists():
+                    moved += 1  # Already in destination
+                else:
+                    errors += 1
             except Exception as e:
-                print(f"  ❌ Error moving {img.name}: {e}")
+                print(f"  ⚠️  Error moving {img.name}: {e}")
                 errors += 1
 
         print(f"  ✓ Moved: {moved}, Errors: {errors}")
