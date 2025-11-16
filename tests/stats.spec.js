@@ -100,9 +100,8 @@ test.describe('Statistics Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Get the Home link and scroll into view to avoid overlaps
-    const homeLink = page.locator('.nav-links').getByRole('link', { name: 'Home' });
-    await homeLink.scrollIntoViewIfNeeded();
+    // Use href attribute for more reliable targeting in Mobile Safari
+    const homeLink = page.locator('.nav-links a[href="index.html"]');
     await homeLink.click({ force: true });
     await expect(page).toHaveURL(/index\.html/);
   });

@@ -71,9 +71,8 @@ test.describe('Home Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Get the Analyze link and scroll into view to avoid overlaps
-    const analyzeLink = page.locator('.nav-links').getByRole('link', { name: 'Analyze' });
-    await analyzeLink.scrollIntoViewIfNeeded();
+    // Use href attribute for more reliable targeting in Mobile Safari
+    const analyzeLink = page.locator('.nav-links a[href="analyze.html"]');
     await analyzeLink.click({ force: true });
     await expect(page).toHaveURL(/analyze\.html/);
   });
@@ -84,9 +83,8 @@ test.describe('Home Page', () => {
     // Open mobile menu if needed
     await openMobileMenuIfNeeded(page);
 
-    // Get the Statistics link and scroll into view to avoid overlaps
-    const statsLink = page.locator('.nav-links').getByRole('link', { name: 'Statistics' });
-    await statsLink.scrollIntoViewIfNeeded();
+    // Use href attribute for more reliable targeting in Mobile Safari
+    const statsLink = page.locator('.nav-links a[href="stats.html"]');
     await statsLink.click({ force: true });
     await expect(page).toHaveURL(/stats\.html/);
   });
