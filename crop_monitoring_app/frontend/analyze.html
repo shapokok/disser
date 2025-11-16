@@ -41,6 +41,7 @@
                     <div class="form-group">
                         <label class="form-label">Select Model</label>
                         <select id="modelSelect" class="form-select">
+                            <option value="ensemble">🏆 Ensemble (All Models Combined)</option>
                             <option value="efficientnet">EfficientNet-B0 (Recommended)</option>
                             <option value="hybrid">Hybrid CNN-Transformer (Most Accurate)</option>
                             <option value="mobilenet">MobileNet-V2 (Fastest)</option>
@@ -364,22 +365,34 @@
 
                     // Step 2: Run AI model
                     updateProgress('step2', 'active');
+                    const modelDisplayName = model === 'ensemble' ? 'Ensemble (All Models)' : model.toUpperCase();
                     setLoadingText(
                         `Running AI model... (${i + 1}/${uploadData.uploaded.length})`,
-                        `Analyzing ${file.original_name} with ${model.toUpperCase()}`
+                        `Analyzing ${file.original_name} with ${modelDisplayName}`
                     );
 
-                    const predictResponse = await fetch('http://localhost:5000/api/predict', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
+                    // Choose endpoint based on model type
+                    const endpoint = model === 'ensemble' ? '/api/ensemble' : '/api/predict';
+                    const requestBody = model === 'ensemble'
+                        ? {
+                            image_path: file.saved_name,
+                            ensemble_method: 'weighted',
+                            explanation: explanation,
+                            dataset_type: datasetType
+                        }
+                        : {
                             image_path: file.saved_name,
                             model: model,
                             explanation: explanation,
                             dataset_type: datasetType
-                        })
+                        };
+
+                    const predictResponse = await fetch(`http://localhost:5000${endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
                     });
 
                     const result = await predictResponse.json();
@@ -597,6 +610,20 @@
                                     <span style="color: var(--gray);">Model Used</span>
                                     <strong>${result.model_used || 'N/A'}</strong>
                                 </div>
+                                ${result.model_used === 'ensemble' && result.ensemble_method ?
+                                    '<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">' +
+                                        '<span style="color: var(--gray);">Ensemble Method</span>' +
+                                        '<strong>' + result.ensemble_method + '</strong>' +
+                                    '</div>' +
+                                    '<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">' +
+                                        '<span style="color: var(--gray);">Models Combined</span>' +
+                                        '<strong>' + (result.models_count || 0) + '</strong>' +
+                                    '</div>' +
+                                    '<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">' +
+                                        '<span style="color: var(--gray);">Agreement Rate</span>' +
+                                        '<strong style="color: ' + (result.agreement_rate > 0.75 ? 'var(--success-color)' : 'var(--warning-color)') + ';">' + (result.agreement_percent || 'N/A') + '</strong>' +
+                                    '</div>'
+                                : ''}
                                 <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
                                     <span style="color: var(--gray);">Explanation Method</span>
                                     <strong>${result.explanation_method || 'N/A'}</strong>
@@ -610,6 +637,19 @@
                                     <strong>${result.inference_time_ms || 'N/A'} ms</strong>
                                 </div>
                             </div>
+                            ${result.individual_predictions && Object.keys(result.individual_predictions).length > 0 ?
+                                '<div style="margin-top: 1rem;">' +
+                                    '<h5 style="margin-bottom: 0.75rem; color: var(--dark); font-size: 0.9rem;">Individual Model Predictions</h5>' +
+                                    '<div style="background: var(--light); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;">' +
+                                        Object.entries(result.individual_predictions).map(([modelName, pred]) =>
+                                            '<div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--light-gray);">' +
+                                                '<span style="color: var(--gray);">' + modelName + '</span>' +
+                                                '<span style="color: var(--dark);">' + pred.confidence_percent + '</span>' +
+                                            '</div>'
+                                        ).join('') +
+                                    '</div>' +
+                                '</div>'
+                            : ''}
                         </div>
                     </div>
 

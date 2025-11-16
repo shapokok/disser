@@ -293,6 +293,112 @@ def compare_models():
         }), 500
 
 
+@app.route('/api/ensemble', methods=['POST'])
+def ensemble_predict():
+    """
+    Ensemble prediction combining all models
+    """
+    try:
+        data = request.json
+        image_path = data.get('image_path')
+        ensemble_method = data.get('ensemble_method', 'weighted')  # 'weighted', 'average', or 'voting'
+        explanation_method = data.get('explanation', 'gradcam')
+        dataset_type = data.get('dataset_type', 'controlled')
+
+        if not image_path:
+            return jsonify({'error': 'No image path provided'}), 400
+
+        # Resolve full path
+        if not os.path.isabs(image_path):
+            image_path = os.path.join(UPLOAD_FOLDER, image_path)
+
+        if not os.path.exists(image_path):
+            return jsonify({'error': f'Image not found: {image_path}'}), 404
+
+        start_time = time.time()
+
+        # Preprocess image
+        image_tensor, original_image = preprocess_image(image_path)
+
+        # Get ensemble prediction
+        result = model_manager.predict_ensemble(image_tensor, method=ensemble_method)
+
+        # Generate visualization using best performing model (hybrid)
+        if explanation_method == 'gradcam':
+            best_model = model_manager.get_model('hybrid')
+            target_layer = model_manager.get_target_layer('hybrid')
+            viz_result = generate_gradcam_visualization(
+                best_model,
+                target_layer,
+                image_path,
+                model_manager.class_names
+            )
+            result['visualization_base64'] = viz_result.get('visualization_base64')
+            result['overlay_base64'] = viz_result.get('overlay_base64')
+        elif explanation_method == 'lime':
+            best_model = model_manager.get_model('hybrid')
+            viz_result = apply_lime_explanation(
+                best_model,
+                image_path,
+                model_manager.class_names
+            )
+            result['visualization_base64'] = viz_result.get('visualization_base64')
+
+        inference_time = (time.time() - start_time) * 1000  # Convert to ms
+
+        # Format response
+        response = {
+            'success': True,
+            'prediction': {
+                'class': format_class_name(result['predicted_class']),
+                'class_raw': result['predicted_class'],
+                'confidence': result['confidence'],
+                'confidence_percent': f"{result['confidence'] * 100:.2f}%"
+            },
+            'model_used': 'ensemble',
+            'ensemble_method': ensemble_method,
+            'models_count': result['models_count'],
+            'models_used': result['models_used'],
+            'agreement_rate': result['agreement_rate'],
+            'agreement_percent': f"{result['agreement_rate'] * 100:.1f}%",
+            'individual_predictions': {
+                name: {
+                    'class': format_class_name(pred['predicted_class']),
+                    'confidence': pred['confidence'],
+                    'confidence_percent': f"{pred['confidence'] * 100:.2f}%"
+                }
+                for name, pred in result['individual_predictions'].items()
+            },
+            'explanation_method': explanation_method,
+            'dataset_type': dataset_type,
+            'inference_time_ms': round(inference_time, 2),
+            'visualization': result.get('visualization_base64'),
+            'overlay': result.get('overlay_base64'),
+            'timestamp': datetime.now().isoformat()
+        }
+
+        # Add top-3 predictions
+        all_probs = result['all_probabilities']
+        top3_indices = sorted(range(len(all_probs)), key=lambda i: all_probs[i], reverse=True)[:3]
+        response['top_predictions'] = [
+            {
+                'class': format_class_name(model_manager.class_names[idx]),
+                'confidence': all_probs[idx],
+                'confidence_percent': f"{all_probs[idx] * 100:.2f}%"
+            }
+            for idx in top3_indices
+        ]
+
+        return jsonify(response)
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
 @app.route('/api/batch', methods=['POST'])
 def batch_predict():
     """

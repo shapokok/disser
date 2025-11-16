@@ -53,6 +53,17 @@ MOCK_STATS = {
         'inference_time_ms': 125,
         'parameters': '25.6M',
         'size_mb': '102.4'
+    },
+    'ensemble': {
+        'accuracy': 0.975,
+        'precision': 0.973,
+        'recall': 0.971,
+        'f1_score': 0.972,
+        'inference_time_ms': 95,
+        'parameters': '33.1M',
+        'size_mb': '132.5',
+        'description': 'Weighted ensemble of all 4 models',
+        'models_combined': 4
     }
 }
 
@@ -127,6 +138,57 @@ def predict():
         ],
         'visualization': MOCK_IMAGE,
         'inference_time_ms': 58
+    })
+
+@app.route('/api/ensemble', methods=['POST'])
+def ensemble():
+    """Mock ensemble prediction endpoint"""
+    data = request.json
+
+    return jsonify({
+        'success': True,
+        'model_used': 'ensemble',
+        'ensemble_method': data.get('ensemble_method', 'weighted'),
+        'models_count': 4,
+        'models_used': ['baseline', 'efficientnet', 'mobilenet', 'hybrid'],
+        'agreement_rate': 1.0,
+        'agreement_percent': '100.0%',
+        'explanation_method': data.get('explanation', 'gradcam'),
+        'dataset_type': data.get('dataset_type', 'controlled'),
+        'prediction': {
+            'class': 'Tomato___healthy',
+            'confidence': 0.97,
+            'confidence_percent': '97.0%'
+        },
+        'individual_predictions': {
+            'baseline': {
+                'class': 'Tomato___healthy',
+                'confidence': 0.95,
+                'confidence_percent': '95.0%'
+            },
+            'efficientnet': {
+                'class': 'Tomato___healthy',
+                'confidence': 0.98,
+                'confidence_percent': '98.0%'
+            },
+            'mobilenet': {
+                'class': 'Tomato___healthy',
+                'confidence': 0.96,
+                'confidence_percent': '96.0%'
+            },
+            'hybrid': {
+                'class': 'Tomato___healthy',
+                'confidence': 0.99,
+                'confidence_percent': '99.0%'
+            }
+        },
+        'top_predictions': [
+            {'class': 'Tomato___healthy', 'confidence': 0.97, 'confidence_percent': '97.0%'},
+            {'class': 'Tomato___Late_Blight', 'confidence': 0.02, 'confidence_percent': '2.0%'},
+            {'class': 'Tomato___Early_Blight', 'confidence': 0.01, 'confidence_percent': '1.0%'}
+        ],
+        'visualization': MOCK_IMAGE,
+        'inference_time_ms': 85
     })
 
 @app.route('/api/compare', methods=['POST'])
