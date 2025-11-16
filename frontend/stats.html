@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Model Statistics - Crop Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -55,11 +57,56 @@
                 <!-- Model cards will be inserted here -->
             </div>
 
-            <!-- Performance Charts -->
+            <!-- Interactive Charts -->
             <div class="card">
-                <h2 class="card-title mb-3">Visual Performance Analysis</h2>
-                <div id="chartsContainer">
-                    <!-- Charts will be inserted here -->
+                <div class="card-header">
+                    <h2 class="card-title">📊 Interactive Performance Dashboard</h2>
+                    <p class="card-subtitle">Explore model metrics with interactive charts</p>
+                </div>
+                <div class="card-body">
+                    <!-- Chart Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                        <!-- Radar Chart -->
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">🎯 Overall Performance Radar</h3>
+                            <div style="background: white; padding: 1rem; border-radius: 8px;">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Scatter Chart -->
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);">
+                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">⚡ Accuracy vs Speed Trade-off</h3>
+                            <div style="background: white; padding: 1rem; border-radius: 8px;">
+                                <canvas id="scatterChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                        <!-- Bar Chart -->
+                        <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);">
+                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">📈 Accuracy Comparison</h3>
+                            <div style="background: white; padding: 1rem; border-radius: 8px;">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Doughnut Chart -->
+                        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);">
+                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">💾 Model Size Distribution</h3>
+                            <div style="background: white; padding: 1rem; border-radius: 8px;">
+                                <canvas id="doughnutChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Button -->
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <button onclick="exportCharts()" class="btn btn-primary" style="padding: 0.75rem 2rem;">
+                            📥 Export Charts as Images
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -324,69 +371,247 @@
             createCharts(stats);
         }
 
+        // Store chart instances globally for export
+        let chartInstances = {};
+
         function createCharts(stats) {
-            const chartsContainer = document.getElementById('chartsContainer');
+            // Prepare data
+            const models = Object.keys(stats);
+            const modelNames = models.map(m => formatModelName(m));
+            const colors = {
+                baseline: 'rgba(255, 99, 132, 0.8)',
+                efficientnet: 'rgba(54, 162, 235, 0.8)',
+                mobilenet: 'rgba(255, 206, 86, 0.8)',
+                hybrid: 'rgba(75, 192, 192, 0.8)'
+            };
 
-            // Accuracy comparison bar chart (ASCII art style)
-            const maxAccuracy = Math.max(...Object.values(stats).map(s => s.accuracy));
+            // 1. Radar Chart - Overall Performance
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            if (chartInstances.radar) chartInstances.radar.destroy();
+            chartInstances.radar = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'Speed'],
+                    datasets: models.map(model => ({
+                        label: formatModelName(model),
+                        data: [
+                            stats[model].accuracy * 100,
+                            stats[model].precision * 100,
+                            stats[model].recall * 100,
+                            stats[model].f1_score * 100,
+                            100 - (stats[model].inference_time_ms / 125 * 100) // Inverted speed
+                        ],
+                        backgroundColor: colors[model].replace('0.8', '0.2'),
+                        borderColor: colors[model],
+                        borderWidth: 2,
+                        pointBackgroundColor: colors[model],
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: colors[model]
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.r.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
 
-            chartsContainer.innerHTML = `
-                <div style="margin-bottom: 3rem;">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--dark);">Accuracy Comparison</h3>
-                    ${Object.entries(stats).map(([name, data]) => {
-                        const percentage = (data.accuracy / maxAccuracy) * 100;
-                        return `
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
-                                    <span style="font-weight: 600; color: var(--dark);">${formatModelName(name)}</span>
-                                    <span style="font-weight: bold; color: var(--primary-color);">${(data.accuracy * 100).toFixed(2)}%</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${percentage}%;"></div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
+            // 2. Scatter Chart - Accuracy vs Speed
+            const scatterCtx = document.getElementById('scatterChart').getContext('2d');
+            if (chartInstances.scatter) chartInstances.scatter.destroy();
+            chartInstances.scatter = new Chart(scatterCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: models.map(model => ({
+                        label: formatModelName(model),
+                        data: [{
+                            x: stats[model].inference_time_ms,
+                            y: stats[model].accuracy * 100
+                        }],
+                        backgroundColor: colors[model],
+                        borderColor: colors[model],
+                        pointRadius: 10,
+                        pointHoverRadius: 15
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Inference Time (ms)',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            ticks: { stepSize: 25 }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            min: 85,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' +
+                                           context.parsed.y.toFixed(2) + '% @ ' +
+                                           context.parsed.x + 'ms';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
 
-                <div style="margin-bottom: 3rem;">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--dark);">Inference Speed Comparison (lower is better)</h3>
-                    ${Object.entries(stats).map(([name, data]) => {
-                        const maxTime = 125; // Hybrid model time
-                        const percentage = (data.inference_time_ms / maxTime) * 100;
-                        return `
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
-                                    <span style="font-weight: 600; color: var(--dark);">${formatModelName(name)}</span>
-                                    <span style="font-weight: bold; color: var(--secondary-color);">${data.inference_time_ms}ms</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${percentage}%; background: linear-gradient(90deg, var(--secondary-color), var(--warning-color));"></div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
+            // 3. Bar Chart - Accuracy Comparison
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            if (chartInstances.bar) chartInstances.bar.destroy();
+            chartInstances.bar = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: modelNames,
+                    datasets: [{
+                        label: 'Accuracy (%)',
+                        data: models.map(m => stats[m].accuracy * 100),
+                        backgroundColor: models.map(m => colors[m]),
+                        borderColor: models.map(m => colors[m].replace('0.8', '1')),
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 85,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Accuracy: ' + context.parsed.y.toFixed(2) + '%';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
 
-                <div>
-                    <h3 style="margin-bottom: 1.5rem; color: var(--dark);">F1-Score Comparison</h3>
-                    ${Object.entries(stats).map(([name, data]) => {
-                        const maxF1 = Math.max(...Object.values(stats).map(s => s.f1_score));
-                        const percentage = (data.f1_score / maxF1) * 100;
-                        return `
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
-                                    <span style="font-weight: 600; color: var(--dark);">${formatModelName(name)}</span>
-                                    <span style="font-weight: bold; color: var(--success-color);">${(data.f1_score * 100).toFixed(2)}%</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${percentage}%; background: linear-gradient(90deg, var(--success-color), var(--primary-color));"></div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
+            // 4. Doughnut Chart - Model Size Distribution
+            const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+            if (chartInstances.doughnut) chartInstances.doughnut.destroy();
+            chartInstances.doughnut = new Chart(doughnutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: modelNames,
+                    datasets: [{
+                        data: models.map(m => stats[m].size_mb),
+                        backgroundColor: models.map(m => colors[m]),
+                        borderColor: '#fff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.parsed + 'MB (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Export all charts as images
+        function exportCharts() {
+            const charts = ['radar', 'scatter', 'bar', 'doughnut'];
+            charts.forEach((chartType, index) => {
+                setTimeout(() => {
+                    const chart = chartInstances[chartType];
+                    if (chart) {
+                        const url = chart.toBase64Image();
+                        const link = document.createElement('a');
+                        link.download = `${chartType}-chart.png`;
+                        link.href = url;
+                        link.click();
+                    }
+                }, index * 200); // Stagger downloads
+            });
+
+            alert('📥 Exporting 4 charts as PNG images...');
         }
 
         function formatModelName(name) {
