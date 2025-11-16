@@ -112,8 +112,8 @@ def preprocess_image(image_path, target_size=(224, 224)):
     std = np.array([0.229, 0.224, 0.225])
     image_array = (image_array - mean) / std
 
-    # Convert to tensor (C, H, W)
-    image_tensor = torch.from_numpy(image_array).permute(2, 0, 1).unsqueeze(0)
+    # Convert to tensor (C, H, W) and ensure float32 dtype
+    image_tensor = torch.from_numpy(image_array).permute(2, 0, 1).unsqueeze(0).float()
 
     return image_tensor, original_image
 
@@ -267,10 +267,10 @@ def apply_lime_explanation(model, image_path, class_names, num_samples=1000):
             mean = np.array([0.485, 0.456, 0.406])
             std = np.array([0.229, 0.224, 0.225])
             img = (img - mean) / std
-            img_tensor = torch.from_numpy(img).permute(2, 0, 1)
+            img_tensor = torch.from_numpy(img).permute(2, 0, 1).float()
             batch.append(img_tensor)
 
-        batch_tensor = torch.stack(batch)
+        batch_tensor = torch.stack(batch).float()  # Ensure float32
 
         with torch.no_grad():
             outputs = model(batch_tensor)

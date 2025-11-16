@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyze Images - Crop Disease Detection</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -37,10 +39,12 @@
 
             <!-- Configuration -->
             <div class="card-body">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
                     <div class="form-group">
                         <label class="form-label">Select Model</label>
                         <select id="modelSelect" class="form-select">
+                            <option value="ensemble">🏆 Ensemble (All Models Combined)</option>
                             <option value="efficientnet">EfficientNet-B0 (Recommended)</option>
                             <option value="hybrid">Hybrid CNN-Transformer (Most Accurate)</option>
                             <option value="mobilenet">MobileNet-V2 (Fastest)</option>
@@ -70,7 +74,8 @@
                     <div class="upload-icon">📁</div>
                     <div class="upload-text">Drag and drop images here</div>
                     <div class="upload-subtext">or click to browse</div>
-                    <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, PNG (max 16MB)</div>
+                    <div class="upload-subtext mt-2" style="font-size: 0.85rem;">Supported formats: JPG, PNG (max 16MB)
+                    </div>
                     <input type="file" id="fileInput" accept="image/jpeg,image/png" multiple>
                 </div>
 
@@ -100,7 +105,8 @@
         <div id="loadingContainer" class="card hidden">
             <div class="loading-spinner"></div>
             <div class="loading-text" id="loadingMainText">Processing your request...</div>
-            <div class="loading-text" style="font-size: 0.9rem; color: var(--gray);" id="loadingSubText">Please wait</div>
+            <div class="loading-text" style="font-size: 0.9rem; color: var(--gray);" id="loadingSubText">Please wait
+            </div>
 
             <!-- Progress Steps -->
             <div id="progressSteps" style="margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
@@ -171,9 +177,12 @@
         uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadArea.classList.remove('dragover');
-            const files = Array.from(e.dataTransfer.files).filter(file =>
-                file.type === 'image/jpeg' || file.type === 'image/png'
-            );
+            const files = Array.from(e.dataTransfer.files).filter(file => {
+                // Accept JPEG, PNG, and JFIF files
+                return file.type === 'image/jpeg' ||
+                    file.type === 'image/png' ||
+                    file.name.toLowerCase().endsWith('.jfif');
+            });
             handleFiles(files);
         });
 
@@ -187,10 +196,13 @@
         function validateImage(file) {
             const errors = [];
 
-            // Check file type
-            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            if (!validTypes.includes(file.type)) {
-                errors.push(`Invalid file type. Only JPG and PNG images are supported.`);
+            // Check file type (including JFIF which is JPEG format)
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/jfif'];
+            const fileName = file.name.toLowerCase();
+            const isJfif = fileName.endsWith('.jfif');
+
+            if (!validTypes.includes(file.type) && !isJfif) {
+                errors.push(`Invalid file type. Only JPG, JPEG, JFIF, and PNG images are supported.`);
             }
 
             // Check file size (16MB max)
@@ -218,14 +230,14 @@
                 if (errors.length === 0) {
                     validFiles.push(file);
                 } else {
-                    allErrors.push({file: file.name, errors});
+                    allErrors.push({ file: file.name, errors });
                 }
             });
 
             // Show errors if any
             if (allErrors.length > 0) {
                 let errorMessage = '⚠️ Some files were not added:\n\n';
-                allErrors.forEach(({file, errors}) => {
+                allErrors.forEach(({ file, errors }) => {
                     errorMessage += `${file}:\n`;
                     errors.forEach(err => errorMessage += `  • ${err}\n`);
                     errorMessage += '\n';
@@ -319,7 +331,9 @@
         }
 
         // Analyze images
-        analyzeBtn.addEventListener('click', async () => {
+        analyzeBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent any default behavior
+
             const model = document.getElementById('modelSelect').value;
             const explanation = document.getElementById('explanationSelect').value;
             const datasetType = document.getElementById('datasetSelect').value;
@@ -348,11 +362,26 @@
                     body: formData
                 });
 
+                if (!uploadResponse.ok) {
+                    updateProgress('step1', 'error');
+                    const errorData = await uploadResponse.json().catch(() => ({ error: `HTTP ${uploadResponse.status}` }));
+                    throw new Error(errorData.error || 'Failed to upload files');
+                }
+
                 const uploadData = await uploadResponse.json();
+                console.log('Upload response:', uploadData);
 
                 if (!uploadData.success) {
                     updateProgress('step1', 'error');
-                    throw new Error('Failed to upload files');
+                    throw new Error(uploadData.error || 'Failed to upload files');
+                }
+
+                if (!uploadData.uploaded || uploadData.uploaded.length === 0) {
+                    updateProgress('step1', 'error');
+                    const errorDetails = uploadData.errors && uploadData.errors.length > 0
+                        ? `\n\nErrors: ${uploadData.errors.join(', ')}`
+                        : '';
+                    throw new Error(`No files were uploaded successfully. Please check the file format and size.${errorDetails}`);
                 }
 
                 updateProgress('step1', 'completed');
@@ -369,20 +398,44 @@
                         `Analyzing ${file.original_name} with ${model.toUpperCase()}`
                     );
 
-                    const predictResponse = await fetch('http://localhost:5000/api/predict', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
+                    // Use ensemble endpoint if ensemble model is selected
+                    const apiEndpoint = model === 'ensemble'
+                        ? 'http://localhost:5000/api/ensemble'
+                        : 'http://localhost:5000/api/predict';
+
+                    const requestBody = model === 'ensemble'
+                        ? {
+                            image_path: file.saved_name,
+                            ensemble_method: 'weighted',
+                            explanation: explanation,
+                            dataset_type: datasetType
+                        }
+                        : {
                             image_path: file.saved_name,
                             model: model,
                             explanation: explanation,
                             dataset_type: datasetType
-                        })
+                        };
+
+                    const predictResponse = await fetch(apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
                     });
 
+                    if (!predictResponse.ok) {
+                        const errorData = await predictResponse.json().catch(() => ({ error: `HTTP ${predictResponse.status}` }));
+                        throw new Error(errorData.error || `Prediction failed for ${file.original_name}`);
+                    }
+
                     const result = await predictResponse.json();
+
+                    if (!result.success && result.error) {
+                        throw new Error(result.error);
+                    }
+
                     result.original_name = file.original_name;
                     results.push(result);
 
@@ -421,7 +474,9 @@
         });
 
         // Compare all models on first image
-        compareBtn.addEventListener('click', async () => {
+        compareBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent any default behavior
+
             if (selectedFiles.length === 0) return;
 
             // Show loading
@@ -439,13 +494,27 @@
                     body: formData
                 });
 
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json().catch(() => ({ error: `HTTP ${uploadResponse.status}` }));
+                    throw new Error(errorData.error || 'Failed to upload file');
+                }
+
                 const uploadData = await uploadResponse.json();
+                console.log('Compare upload response:', uploadData);
 
                 if (!uploadData.success) {
-                    throw new Error('Failed to upload file');
+                    throw new Error(uploadData.error || 'Failed to upload file');
+                }
+
+                if (!uploadData.uploaded || uploadData.uploaded.length === 0) {
+                    const errorDetails = uploadData.errors && uploadData.errors.length > 0
+                        ? `\n\nErrors: ${uploadData.errors.join(', ')}`
+                        : '';
+                    throw new Error(`No files were uploaded successfully. Please check the file format and size.${errorDetails}`);
                 }
 
                 const uploadedFile = uploadData.uploaded[0];
+                console.log('Uploaded file:', uploadedFile);
 
                 // Compare all models
                 const compareResponse = await fetch('http://localhost:5000/api/compare', {
@@ -461,12 +530,32 @@
 
                 const compareData = await compareResponse.json();
 
+                // Check if response was successful
+                if (!compareResponse.ok || compareData.error) {
+                    throw new Error(compareData.error || `Server error: ${compareResponse.status}`);
+                }
+
+                if (!compareData.success) {
+                    throw new Error(compareData.error || 'Model comparison failed');
+                }
+
                 // Display comparison results
                 displayComparisonResults(compareData, uploadedFile.original_name);
 
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error comparing models. Please make sure the backend server is running on http://localhost:5000');
+
+                // Show detailed error message
+                let errorMsg = 'Error comparing models.\n\n';
+                if (error.message) {
+                    errorMsg += `Details: ${error.message}\n\n`;
+                }
+                errorMsg += 'Please ensure:\n';
+                errorMsg += '• Backend server is running on http://localhost:5000\n';
+                errorMsg += '• All models are properly loaded\n';
+                errorMsg += '• Image was uploaded successfully';
+
+                alert(errorMsg);
             } finally {
                 loadingContainer.classList.add('hidden');
                 compareBtn.disabled = false;
@@ -497,11 +586,11 @@
 
                 <div class="models-grid" style="margin-top: 2rem;">
                     ${Object.entries(comparisons).map(([model, result]) => {
-                        const confidence = result.confidence || 0;
-                        const confidenceClass = confidence > 0.8 ? 'confidence-high' :
-                                               confidence > 0.5 ? 'confidence-medium' : 'confidence-low';
+                const confidence = result.confidence || 0;
+                const confidenceClass = confidence > 0.8 ? 'confidence-high' :
+                    confidence > 0.5 ? 'confidence-medium' : 'confidence-low';
 
-                        return `
+                return `
                             <div class="model-card" style="position: relative;">
                                 <div style="position: absolute; top: 10px; right: 10px;">
                                     <span class="confidence-badge ${confidenceClass}" style="font-size: 0.85rem; padding: 0.3rem 0.8rem;">
@@ -538,7 +627,19 @@
                                 </ul>
                             </div>
                         `;
-                    }).join('')}
+            }).join('')}
+                </div>
+
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--light-gray);">
+                    <h4 style="text-align: center; margin-bottom: 1rem;">📊 Export Comparison</h4>
+                    <div style="text-align: center;">
+                        <button class="btn btn-secondary" onclick="exportComparison('csv')" style="margin: 0.5rem;">
+                            📄 Export as CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportComparison('excel')" style="margin: 0.5rem;">
+                            📊 Export as Excel
+                        </button>
+                    </div>
                 </div>
 
                 <div style="margin-top: 2rem; text-align: center;">
@@ -549,6 +650,9 @@
             `;
 
             resultsContainer.appendChild(comparisonCard);
+
+            // Store comparison data for export
+            window.currentComparisonData = compareData;
 
             // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -562,7 +666,7 @@
             results.forEach((result, index) => {
                 const confidence = result.prediction?.confidence || 0;
                 const confidenceClass = confidence > 0.8 ? 'confidence-high' :
-                                       confidence > 0.5 ? 'confidence-medium' : 'confidence-low';
+                    confidence > 0.5 ? 'confidence-medium' : 'confidence-low';
 
                 const resultCard = document.createElement('div');
                 resultCard.className = 'result-card';
@@ -597,6 +701,20 @@
                                     <span style="color: var(--gray);">Model Used</span>
                                     <strong>${result.model_used || 'N/A'}</strong>
                                 </div>
+                                ${result.ensemble_method ? `
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <span style="color: var(--gray);">Ensemble Method</span>
+                                        <strong>${result.ensemble_method}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <span style="color: var(--gray);">Models Combined</span>
+                                        <strong>${result.models_count || 'N/A'}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <span style="color: var(--gray);">Agreement Rate</span>
+                                        <strong style="color: ${result.agreement_rate > 0.75 ? '#22c55e' : result.agreement_rate > 0.5 ? '#eab308' : '#ef4444'};">${result.agreement_percent || 'N/A'}</strong>
+                                    </div>
+                                ` : ''}
                                 <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-gray);">
                                     <span style="color: var(--gray);">Explanation Method</span>
                                     <strong>${result.explanation_method || 'N/A'}</strong>
@@ -625,6 +743,64 @@
                         </div>
                     ` : ''}
 
+                    ${result.individual_predictions ? `
+                        <div style="margin-top: 1.5rem;">
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">Individual Model Predictions</h4>
+                            <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                                ${Object.entries(result.individual_predictions).map(([modelName, pred]) => `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--light-gray);">
+                                        <div>
+                                            <strong style="color: var(--dark);">${modelName.charAt(0).toUpperCase() + modelName.slice(1)}</strong>
+                                            <div style="color: var(--gray); font-size: 0.9rem; margin-top: 0.25rem;">${pred.class}</div>
+                                        </div>
+                                        <span style="font-weight: 600; color: var(--primary-color);">${pred.confidence_percent}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${result.uncertainty_metrics ? `
+                        <div style="margin-top: 1.5rem;">
+                            <h4 style="margin-bottom: 1rem; color: var(--dark);">📊 Uncertainty Analysis</h4>
+                            <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Uncertainty Level</div>
+                                        <div style="font-weight: 600; color: ${result.uncertainty_metrics.uncertainty_level === 'low' ? '#22c55e' : result.uncertainty_metrics.uncertainty_level === 'medium' ? '#eab308' : '#ef4444'}; text-transform: uppercase; font-size: 1.1rem;">
+                                            ${result.uncertainty_metrics.uncertainty_level}
+                                        </div>
+                                    </div>
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Prediction Variance</div>
+                                        <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">${result.uncertainty_metrics.prediction_variance}</div>
+                                    </div>
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Normalized Entropy</div>
+                                        <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">${result.uncertainty_metrics.normalized_entropy}</div>
+                                    </div>
+                                    <div style="padding: 0.75rem; background: white; border-radius: 6px;">
+                                        <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.25rem;">Disagreement Score</div>
+                                        <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">${result.uncertainty_metrics.disagreement_score}</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 1rem; padding: 0.75rem; background: white; border-radius: 6px;">
+                                    <div style="color: var(--gray); font-size: 0.85rem; margin-bottom: 0.5rem;">95% Confidence Interval</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-weight: 600; color: var(--dark);">${(result.uncertainty_metrics.confidence_interval.lower * 100).toFixed(2)}%</span>
+                                        <div style="flex: 1; height: 8px; background: linear-gradient(to right, #3b82f6, #22c55e); border-radius: 4px; position: relative;">
+                                            <div style="position: absolute; left: ${result.uncertainty_metrics.confidence_interval.lower * 100}%; right: ${(1 - result.uncertainty_metrics.confidence_interval.upper) * 100}%; height: 100%; background: rgba(59, 130, 246, 0.3); border: 2px solid #3b82f6; border-radius: 4px;"></div>
+                                        </div>
+                                        <span style="font-weight: 600; color: var(--dark);">${(result.uncertainty_metrics.confidence_interval.upper * 100).toFixed(2)}%</span>
+                                    </div>
+                                    <div style="color: var(--gray); font-size: 0.8rem; margin-top: 0.5rem; text-align: center;">
+                                        Interval Width: ${(result.uncertainty_metrics.confidence_interval.width * 100).toFixed(2)}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+
                     <div style="text-align: center; margin-top: 1.5rem;">
                         <button class="btn btn-secondary" onclick="downloadResult(${index})">
                             💾 Download Visualization
@@ -633,6 +809,31 @@
                 `;
                 resultsContainer.appendChild(resultCard);
             });
+
+            // Add export all results button
+            if (results.length > 0) {
+                const exportCard = document.createElement('div');
+                exportCard.className = 'card';
+                exportCard.style.marginTop = '2rem';
+                exportCard.innerHTML = `
+                    <div class="card-header">
+                        <h3 style="margin: 0;">📊 Export Results</h3>
+                        <p style="margin: 0.5rem 0 0 0; color: var(--gray);">Download all analysis results in your preferred format</p>
+                    </div>
+                    <div class="card-body" style="text-align: center;">
+                        <button class="btn btn-primary" onclick="exportResults('csv')" style="margin: 0.5rem;">
+                            📄 Export as CSV
+                        </button>
+                        <button class="btn btn-primary" onclick="exportResults('json')" style="margin: 0.5rem;">
+                            📋 Export as JSON
+                        </button>
+                        <button class="btn btn-primary" onclick="exportResults('excel')" style="margin: 0.5rem;">
+                            📊 Export as Excel
+                        </button>
+                    </div>
+                `;
+                resultsContainer.appendChild(exportCard);
+            }
 
             // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -649,6 +850,126 @@
                 link.click();
             }
         }
+
+        // Global results storage
+        let globalResults = [];
+
+        // Store results after analysis
+        function storeResults(results) {
+            globalResults = results.map(r => ({
+                ...r,
+                image_name: r.original_name
+            }));
+        }
+
+        // Export all results
+        async function exportResults(format) {
+            if (globalResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/export/${format}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        results: globalResults
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Export failed');
+                }
+
+                // Download the file
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+
+                // Get filename from response headers or use default
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = `crop_analysis.${format}`;
+
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+                    if (filenameMatch) {
+                        filename = filenameMatch[1];
+                    }
+                }
+
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                console.log(`✓ Exported ${globalResults.length} results as ${format.toUpperCase()}`);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert(`Failed to export results: ${error.message}`);
+            }
+        }
+
+        // Export comparison results
+        async function exportComparison(format) {
+            if (!window.currentComparisonData) {
+                alert('No comparison data to export');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/export/comparison/${format}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(window.currentComparisonData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Export failed');
+                }
+
+                // Download the file
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = `model_comparison.${format}`;
+
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+                    if (filenameMatch) {
+                        filename = filenameMatch[1];
+                    }
+                }
+
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                console.log(`✓ Exported comparison as ${format.toUpperCase()}`);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert(`Failed to export comparison: ${error.message}`);
+            }
+        }
+
+        // Update the analyze button handler to store results
+        const originalDisplayResults = displayResults;
+        displayResults = function(results) {
+            storeResults(results);
+            originalDisplayResults(results);
+        };
     </script>
 </body>
+
 </html>

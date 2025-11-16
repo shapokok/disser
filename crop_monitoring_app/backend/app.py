@@ -23,10 +23,11 @@ from utils import (
 from validation import get_all_validation_reports, generate_realistic_confusion_matrix, plot_confusion_matrix
 from report_generator import create_pdf_report, generate_comparison_report
 from export_utils import (
-    create_analysis_excel,
-    create_batch_excel,
-    create_comparison_excel,
-    create_validation_excel
+    export_to_csv,
+    export_to_json,
+    export_to_excel,
+    export_comparison_to_csv,
+    export_comparison_to_excel
 )
 
 # Initialize Flask app
@@ -35,7 +36,7 @@ CORS(app)  # Enable CORS for frontend communication
 
 # Configuration
 UPLOAD_FOLDER = '../data/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif'}  # JFIF is JPEG format
 MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
 MODELS_DIR = '../models'
 RESULTS_DIR = '../results/heatmaps'
@@ -269,6 +270,14 @@ def compare_models():
         # Preprocess image once
         image_tensor, _ = preprocess_image(image_path)
 
+        # Validate models exist
+        missing_models = [m for m in models_to_compare if m not in model_manager.models]
+        if missing_models:
+            return jsonify({
+                'error': f'Models not loaded: {", ".join(missing_models)}',
+                'available_models': list(model_manager.models.keys())
+            }), 400
+
         # Compare models
         results = {}
         for model_name in models_to_compare:
@@ -284,12 +293,126 @@ def compare_models():
                     'inference_time_ms': round(inference_time, 2)
                 }
 
+        if not results:
+            return jsonify({
+                'error': 'No models available for comparison',
+                'available_models': list(model_manager.models.keys())
+            }), 400
+
         return jsonify({
             'success': True,
             'image_path': image_path,
             'comparisons': results,
             'timestamp': datetime.now().isoformat()
         })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/ensemble', methods=['POST'])
+def ensemble_predict():
+    """
+    Ensemble prediction combining all models
+    """
+    try:
+        data = request.json
+        image_path = data.get('image_path')
+        ensemble_method = data.get('ensemble_method', 'weighted')  # 'weighted', 'average', or 'voting'
+        explanation_method = data.get('explanation', 'gradcam')
+        dataset_type = data.get('dataset_type', 'controlled')
+
+        if not image_path:
+            return jsonify({'error': 'No image path provided'}), 400
+
+        # Resolve full path
+        if not os.path.isabs(image_path):
+            image_path = os.path.join(UPLOAD_FOLDER, image_path)
+
+        if not os.path.exists(image_path):
+            return jsonify({'error': f'Image not found: {image_path}'}), 404
+
+        start_time = time.time()
+
+        # Preprocess image
+        from utils import preprocess_image
+        image_tensor, original_image = preprocess_image(image_path)
+
+        # Get ensemble prediction
+        result = model_manager.predict_ensemble(image_tensor, method=ensemble_method)
+
+        # Generate visualization using best performing model (hybrid)
+        if explanation_method == 'gradcam':
+            best_model = model_manager.get_model('hybrid')
+            target_layer = model_manager.get_target_layer('hybrid')
+            viz_result = generate_gradcam_visualization(
+                best_model,
+                target_layer,
+                image_path,
+                model_manager.class_names
+            )
+            result['visualization_base64'] = viz_result.get('visualization_base64')
+            result['overlay_base64'] = viz_result.get('overlay_base64')
+        elif explanation_method == 'lime':
+            best_model = model_manager.get_model('hybrid')
+            viz_result = apply_lime_explanation(
+                best_model,
+                image_path,
+                model_manager.class_names
+            )
+            result['visualization_base64'] = viz_result.get('visualization_base64')
+
+        inference_time = (time.time() - start_time) * 1000  # Convert to ms
+
+        # Format response
+        response = {
+            'success': True,
+            'prediction': {
+                'class': format_class_name(result['predicted_class']),
+                'class_raw': result['predicted_class'],
+                'confidence': result['confidence'],
+                'confidence_percent': f"{result['confidence'] * 100:.2f}%"
+            },
+            'model_used': 'ensemble',
+            'ensemble_method': ensemble_method,
+            'models_count': result['models_count'],
+            'models_used': result['models_used'],
+            'agreement_rate': result['agreement_rate'],
+            'agreement_percent': f"{result['agreement_rate'] * 100:.1f}%",
+            'individual_predictions': {
+                name: {
+                    'class': format_class_name(pred['predicted_class']),
+                    'confidence': pred['confidence'],
+                    'confidence_percent': f"{pred['confidence'] * 100:.2f}%"
+                }
+                for name, pred in result['individual_predictions'].items()
+            },
+            'uncertainty_metrics': result.get('uncertainty_metrics', {}),
+            'explanation_method': explanation_method,
+            'dataset_type': dataset_type,
+            'inference_time_ms': round(inference_time, 2),
+            'visualization': result.get('visualization_base64'),
+            'overlay': result.get('overlay_base64'),
+            'timestamp': datetime.now().isoformat()
+        }
+
+        # Add top-3 predictions
+        all_probs = result['all_probabilities']
+        top3_indices = sorted(range(len(all_probs)), key=lambda i: all_probs[i], reverse=True)[:3]
+        response['top_predictions'] = [
+            {
+                'class': format_class_name(model_manager.class_names[idx]),
+                'confidence': all_probs[idx],
+                'confidence_percent': f"{all_probs[idx] * 100:.2f}%"
+            }
+            for idx in top3_indices
+        ]
+
+        return jsonify(response)
 
     except Exception as e:
         import traceback
@@ -771,6 +894,177 @@ def get_treatment(disease_class):
                     ]
                 }
             })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/csv', methods=['POST'])
+def export_csv():
+    """
+    Export analysis results to CSV format
+    Accepts single result or array of results
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results provided'}), 400
+
+        # Generate CSV
+        csv_data = export_to_csv(results)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"crop_analysis_{timestamp}.csv"
+
+        return send_file(
+            io.BytesIO(csv_data.encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/json', methods=['POST'])
+def export_json():
+    """
+    Export analysis results to JSON format
+    Accepts single result or array of results
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results provided'}), 400
+
+        # Generate JSON
+        json_data = export_to_json(results, pretty=True)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"crop_analysis_{timestamp}.json"
+
+        return send_file(
+            io.BytesIO(json_data.encode('utf-8')),
+            mimetype='application/json',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/excel', methods=['POST'])
+def export_excel():
+    """
+    Export analysis results to Excel format with formatting
+    Accepts single result or array of results
+    """
+    try:
+        data = request.json
+        results = data.get('results', [])
+
+        if not results:
+            return jsonify({'error': 'No results provided'}), 400
+
+        # Generate Excel
+        excel_data = export_to_excel(results)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"crop_analysis_{timestamp}.xlsx"
+
+        return send_file(
+            io.BytesIO(excel_data),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/comparison/csv', methods=['POST'])
+def export_comparison_csv():
+    """
+    Export model comparison results to CSV format
+    """
+    try:
+        data = request.json
+
+        if not data or 'comparisons' not in data:
+            return jsonify({'error': 'No comparison data provided'}), 400
+
+        # Generate CSV
+        csv_data = export_comparison_to_csv(data)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"model_comparison_{timestamp}.csv"
+
+        return send_file(
+            io.BytesIO(csv_data.encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/export/comparison/excel', methods=['POST'])
+def export_comparison_excel():
+    """
+    Export model comparison results to Excel format
+    """
+    try:
+        data = request.json
+
+        if not data or 'comparisons' not in data:
+            return jsonify({'error': 'No comparison data provided'}), 400
+
+        # Generate Excel
+        excel_data = export_comparison_to_excel(data)
+
+        # Create response
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"model_comparison_{timestamp}.xlsx"
+
+        return send_file(
+            io.BytesIO(excel_data),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
 
     except Exception as e:
         import traceback
