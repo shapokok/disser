@@ -48,12 +48,18 @@ test.describe('Home Page', () => {
   test('should have call-to-action buttons', async ({ page }) => {
     await page.goto('/frontend/index.html');
 
-    // Check for "Start Analysis" button
+    // Wait for hero section to be visible
+    const heroSection = page.locator('.hero');
+    await expect(heroSection).toBeVisible();
+
+    // Check for "Start Analysis" button - scroll into view if needed
     const startButton = page.getByRole('link', { name: /Start Analysis/i });
+    await startButton.scrollIntoViewIfNeeded();
     await expect(startButton).toBeVisible();
 
     // Check for "View Statistics" button
     const statsButton = page.getByRole('link', { name: /View Statistics/i });
+    await statsButton.scrollIntoViewIfNeeded();
     await expect(statsButton).toBeVisible();
   });
 
