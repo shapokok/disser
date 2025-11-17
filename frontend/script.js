@@ -4,7 +4,12 @@
  */
 
 // API Configuration
-const API_BASE_URL = 'http://localhost:5000';
+// Automatically detect environment:
+// - In production (nginx), use relative URLs to go through proxy
+// - In development, connect directly to backend on port 5000
+const API_BASE_URL = window.location.port === '80' || window.location.port === ''
+    ? window.location.origin  // Use nginx proxy in production
+    : 'http://localhost:5000';  // Direct connection in development
 
 // API Helper Functions
 const API = {
