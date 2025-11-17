@@ -1,0 +1,59 @@
+{
+  "baseline": {
+    "accuracy": 0.892,
+    "precision": 0.885,
+    "recall": 0.878,
+    "f1_score": 0.881,
+    "inference_time_ms": 45,
+    "parameters": "1.2M",
+    "size_mb": 4.8,
+    "validation_samples": 0,
+    "notes": "Replace with your actual validation metrics"
+  },
+  "efficientnet": {
+    "accuracy": 0.954,
+    "precision": 0.951,
+    "recall": 0.948,
+    "f1_score": 0.949,
+    "inference_time_ms": 78,
+    "parameters": "4.0M",
+    "size_mb": 16.2,
+    "validation_samples": 0,
+    "notes": "Replace with your actual validation metrics"
+  },
+  "mobilenet": {
+    "accuracy": 0.923,
+    "precision": 0.920,
+    "recall": 0.915,
+    "f1_score": 0.917,
+    "inference_time_ms": 32,
+    "parameters": "2.3M",
+    "size_mb": 9.1,
+    "validation_samples": 0,
+    "notes": "Replace with your actual validation metrics"
+  },
+  "hybrid": {
+    "accuracy": 0.967,
+    "precision": 0.965,
+    "recall": 0.963,
+    "f1_score": 0.964,
+    "inference_time_ms": 125,
+    "parameters": "25.6M",
+    "size_mb": 102.4,
+    "validation_samples": 0,
+    "notes": "Replace with your actual validation metrics"
+  },
+  "ensemble": {
+    "accuracy": 0.975,
+    "precision": 0.973,
+    "recall": 0.971,
+    "f1_score": 0.972,
+    "inference_time_ms": 95,
+    "parameters": "33.1M",
+    "size_mb": 132.5,
+    "description": "Weighted ensemble of all 4 models",
+    "models_combined": 4,
+    "validation_samples": 0,
+    "notes": "Replace with your actual validation metrics"
+  }
+}

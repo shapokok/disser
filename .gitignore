@@ -35,9 +35,10 @@ Thumbs.db
 # Machine Learning Models (large binary files)
 models/*.pth
 *.pth
-# But keep model documentation
+# But keep model documentation and metrics
 !models/README.md
 !models/class_names.json
+!models/model_metrics.json
 
 # Data directories
 data/uploads/*

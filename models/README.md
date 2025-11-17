@@ -96,9 +96,57 @@ After adding your models to this directory:
    - ✓ Successfully loaded trained weights from...
    - Or warnings if models weren't found
 
+## Model Performance Metrics
+
+To display real validation metrics instead of placeholder values:
+
+### Option 1: Manual Entry (Quick)
+Edit `model_metrics.json` and replace the values with your actual validation results:
+
+```json
+{
+  "baseline": {
+    "accuracy": 0.892,
+    "precision": 0.885,
+    "recall": 0.878,
+    "f1_score": 0.881,
+    ...
+  }
+}
+```
+
+### Option 2: Automatic Computation (Recommended)
+If you have a validation dataset, run the metrics computation script:
+
+```bash
+cd backend
+python compute_metrics.py --val_dir /path/to/validation/dataset
+```
+
+The script will:
+- Evaluate all models on your validation set
+- Compute accuracy, precision, recall, F1-score
+- Measure actual inference times
+- Calculate model sizes and parameter counts
+- Save results to `model_metrics.json`
+
+**Validation dataset structure:**
+```
+validation/
+├── Apple___Apple_scab/
+│   ├── image1.jpg
+│   ├── image2.jpg
+├── Apple___Black_rot/
+│   ├── image1.jpg
+├── ...
+```
+
+After updating metrics, restart the server to see real statistics on the stats page.
+
 ## Required Files
 
 - `class_names.json` - List of 38 disease classes (auto-generated)
+- `model_metrics.json` - Validation metrics (optional, defaults provided)
 - Your trained `.pth` model files
 
 ## Notes
@@ -109,3 +157,4 @@ After adding your models to this directory:
   - Random initialization (for Baseline CNN)
 - All models are automatically moved to GPU if available
 - Models are set to evaluation mode (`model.eval()`)
+- Statistics are loaded from `model_metrics.json` if available

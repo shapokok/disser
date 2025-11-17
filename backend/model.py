@@ -388,8 +388,22 @@ class ModelManager:
     def get_model_stats(self):
         """
         Get performance statistics for all loaded models
-        Returns mock statistics - in production, these would be from validation set
+        Loads from model_metrics.json if available, otherwise returns default values
         """
+        # Try to load real metrics from JSON file
+        metrics_file = os.path.join(self.models_dir, 'model_metrics.json')
+
+        if os.path.exists(metrics_file):
+            try:
+                with open(metrics_file, 'r') as f:
+                    stats = json.load(f)
+                print(f"✓ Loaded model metrics from {metrics_file}")
+                return stats
+            except Exception as e:
+                print(f"Warning: Could not load metrics from {metrics_file}: {e}")
+                print("Using default metrics")
+
+        # Default/fallback statistics
         stats = {
             'baseline': {
                 'accuracy': 0.892,
@@ -398,7 +412,8 @@ class ModelManager:
                 'f1_score': 0.881,
                 'inference_time_ms': 45,
                 'parameters': '1.2M',
-                'size_mb': 4.8
+                'size_mb': 4.8,
+                'notes': 'Default values - update model_metrics.json with real metrics'
             },
             'efficientnet': {
                 'accuracy': 0.954,
@@ -407,7 +422,8 @@ class ModelManager:
                 'f1_score': 0.949,
                 'inference_time_ms': 78,
                 'parameters': '4.0M',
-                'size_mb': 16.2
+                'size_mb': 16.2,
+                'notes': 'Default values - update model_metrics.json with real metrics'
             },
             'mobilenet': {
                 'accuracy': 0.923,
@@ -416,7 +432,8 @@ class ModelManager:
                 'f1_score': 0.917,
                 'inference_time_ms': 32,
                 'parameters': '2.3M',
-                'size_mb': 9.1
+                'size_mb': 9.1,
+                'notes': 'Default values - update model_metrics.json with real metrics'
             },
             'hybrid': {
                 'accuracy': 0.967,
@@ -425,7 +442,8 @@ class ModelManager:
                 'f1_score': 0.964,
                 'inference_time_ms': 125,
                 'parameters': '25.6M',
-                'size_mb': 102.4
+                'size_mb': 102.4,
+                'notes': 'Default values - update model_metrics.json with real metrics'
             },
             'ensemble': {
                 'accuracy': 0.975,
@@ -436,7 +454,8 @@ class ModelManager:
                 'parameters': '33.1M',
                 'size_mb': 132.5,
                 'description': 'Weighted ensemble of all 4 models',
-                'models_combined': 4
+                'models_combined': 4,
+                'notes': 'Default values - update model_metrics.json with real metrics'
             }
         }
 
