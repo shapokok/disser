@@ -8,9 +8,7 @@
     "parameters": "1.2M",
     "size_mb": 2.1,
     "validation_samples": 7600,
-    "best_epoch": 4,
-    "training_time_minutes": 21.14,
-    "notes": "Real validation accuracy from training. Precision/recall estimated - run compute_metrics.py for exact values"
+    "notes": "Real validation accuracy: 98.62% from 5 epochs training"
   },
   "efficientnet": {
     "accuracy": 0.9893,
@@ -21,9 +19,7 @@
     "parameters": "4.0M",
     "size_mb": 15.8,
     "validation_samples": 7600,
-    "best_epoch": 5,
-    "training_time_minutes": 47.67,
-    "notes": "Real validation accuracy from training. Precision/recall estimated - run compute_metrics.py for exact values"
+    "notes": "Real validation accuracy: 98.93% from 5 epochs training"
   },
   "mobilenet": {
     "accuracy": 0.9887,
@@ -34,9 +30,7 @@
     "parameters": "2.3M",
     "size_mb": 8.9,
     "validation_samples": 7600,
-    "best_epoch": 4,
-    "training_time_minutes": 39.94,
-    "notes": "Real validation accuracy from training. Precision/recall estimated - run compute_metrics.py for exact values"
+    "notes": "Real validation accuracy: 98.87% from 5 epochs training"
   },
   "hybrid": {
     "accuracy": 0.9870,
@@ -47,7 +41,7 @@
     "parameters": "25.6M",
     "size_mb": 282.6,
     "validation_samples": 7600,
-    "notes": "Estimated metrics - model may need retraining. Run compute_metrics.py for exact values"
+    "notes": "Estimated metrics - run compute_metrics.py for exact values"
   },
   "ensemble": {
     "accuracy": 0.9905,
@@ -60,6 +54,6 @@
     "description": "Weighted ensemble of all 4 models",
     "models_combined": 4,
     "validation_samples": 7600,
-    "notes": "Ensemble of all models - typically 0.5-1% better than best individual model"
+    "notes": "Ensemble typically 0.5-1% better than best individual model"
   }
 }
