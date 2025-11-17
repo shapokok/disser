@@ -214,6 +214,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="script.js"></script>
     <script>
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
@@ -225,7 +226,7 @@
 
         async function loadStatistics() {
             try {
-                const response = await fetch('http://localhost:5000/api/stats');
+                const response = await fetch(`${API_BASE_URL}/api/stats`);
                 const data = await response.json();
 
                 if (data.success) {
@@ -238,7 +239,7 @@
                 console.error('Error loading statistics:', error);
                 document.getElementById('loadingStats').innerHTML = `
                     <div class="alert alert-error">
-                        <strong>Error:</strong> Could not load statistics. Please ensure the backend server is running on http://localhost:5000
+                        <strong>Error:</strong> Could not load statistics. Please ensure the backend server is running.
                     </div>
                 `;
             }
@@ -414,7 +415,7 @@
 
             try {
                 // Fetch confusion matrix
-                const cmResponse = await fetch(`http://localhost:5000/api/confusion_matrix/${model}`);
+                const cmResponse = await fetch(`${API_BASE_URL}/api/confusion_matrix/${model}`);
                 const cmData = await cmResponse.json();
 
                 if (!cmData.success) {
@@ -475,7 +476,7 @@
                 }
 
                 // Fetch and display per-class metrics
-                const validationResponse = await fetch(`http://localhost:5000/api/validation/${model}`);
+                const validationResponse = await fetch(`${API_BASE_URL}/api/validation/${model}`);
                 const validationData = await validationResponse.json();
 
                 if (validationData.success && validationData.report) {
