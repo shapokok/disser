@@ -39,6 +39,7 @@ models/*.pth
 !models/README.md
 !models/class_names.json
 !models/model_metrics.json
+!models/training_history/
 
 # Data directories
 data/uploads/*

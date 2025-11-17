@@ -143,10 +143,33 @@ validation/
 
 After updating metrics, restart the server to see real statistics on the stats page.
 
+## Training History
+
+Detailed training curves and metadata are stored in `training_history/`:
+
+```
+training_history/
+├── baseline_history.json
+├── efficientnet_history.json
+├── mobilenet_history.json
+└── README.md
+```
+
+Each file contains:
+- Loss curves (train/validation per epoch)
+- Accuracy curves (train/validation per epoch)
+- Training times
+- Best epoch information
+
+Access via API:
+- `/api/training_history/<model_name>` - Get specific model history
+- `/api/training_history/all` - Get all training histories
+
 ## Required Files
 
 - `class_names.json` - List of 38 disease classes (auto-generated)
 - `model_metrics.json` - Validation metrics (optional, defaults provided)
+- `training_history/*.json` - Training curves and history (optional)
 - Your trained `.pth` model files
 
 ## Notes

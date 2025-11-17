@@ -581,6 +581,73 @@ def get_models():
         }), 500
 
 
+@app.route('/api/training_history/<model_name>', methods=['GET'])
+def get_training_history(model_name):
+    """
+    Get training history for a specific model
+    Returns loss curves, accuracy curves, and training metadata
+    """
+    try:
+        history_file = os.path.join(MODELS_DIR, 'training_history', f'{model_name}_history.json')
+
+        if not os.path.exists(history_file):
+            return jsonify({
+                'error': f'No training history found for {model_name}',
+                'available_models': [
+                    f.replace('_history.json', '')
+                    for f in os.listdir(os.path.join(MODELS_DIR, 'training_history'))
+                    if f.endswith('_history.json')
+                ] if os.path.exists(os.path.join(MODELS_DIR, 'training_history')) else []
+            }), 404
+
+        with open(history_file, 'r') as f:
+            history = json.load(f)
+
+        return jsonify({
+            'success': True,
+            'history': history,
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
+@app.route('/api/training_history/all', methods=['GET'])
+def get_all_training_history():
+    """
+    Get training history for all models
+    """
+    try:
+        history_dir = os.path.join(MODELS_DIR, 'training_history')
+        all_histories = {}
+
+        if os.path.exists(history_dir):
+            for filename in os.listdir(history_dir):
+                if filename.endswith('_history.json'):
+                    model_name = filename.replace('_history.json', '')
+                    with open(os.path.join(history_dir, filename), 'r') as f:
+                        all_histories[model_name] = json.load(f)
+
+        return jsonify({
+            'success': True,
+            'histories': all_histories,
+            'count': len(all_histories),
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
+
+
 @app.route('/api/validation/<model_name>', methods=['GET'])
 def get_validation_report(model_name):
     """
