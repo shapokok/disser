@@ -276,18 +276,48 @@ class ModelManager:
             raise ValueError(f"Unknown model type: {model_type}")
 
         # Try to load trained weights
-        model_path = os.path.join(self.models_dir, f'{model_name}.pth')
-        if os.path.exists(model_path):
-            try:
-                state_dict = torch.load(model_path, map_location=self.device)
-                model.load_state_dict(state_dict)
-                print(f"Loaded trained weights from {model_path}")
-            except Exception as e:
-                print(f"Warning: Could not load weights from {model_path}: {e}")
-                print("Using randomly initialized weights (for demonstration)")
-        else:
-            print(f"No trained weights found at {model_path}")
-            print("Using pre-trained/randomly initialized weights (for demonstration)")
+        # Support multiple naming conventions: modelname.pth, modelname_model.pth, model_modelname.pth
+        possible_paths = [
+            os.path.join(self.models_dir, f'{model_name}_model.pth'),
+            os.path.join(self.models_dir, f'{model_name}.pth'),
+            os.path.join(self.models_dir, f'model_{model_name}.pth'),
+        ]
+
+        model_loaded = False
+        for model_path in possible_paths:
+            if os.path.exists(model_path):
+                try:
+                    checkpoint = torch.load(model_path, map_location=self.device)
+
+                    # Handle different checkpoint formats
+                    if isinstance(checkpoint, dict):
+                        # Check if it's a full checkpoint with 'model_state_dict' or 'state_dict'
+                        if 'model_state_dict' in checkpoint:
+                            state_dict = checkpoint['model_state_dict']
+                        elif 'state_dict' in checkpoint:
+                            state_dict = checkpoint['state_dict']
+                        else:
+                            # Assume the dict is the state_dict itself
+                            state_dict = checkpoint
+                    else:
+                        # Assume it's directly the state_dict
+                        state_dict = checkpoint
+
+                    model.load_state_dict(state_dict)
+                    print(f"✓ Successfully loaded trained weights from {model_path}")
+                    model_loaded = True
+                    break
+                except Exception as e:
+                    print(f"Warning: Could not load weights from {model_path}: {e}")
+                    continue
+
+        if not model_loaded:
+            print(f"! No trained weights found for {model_name}")
+            print(f"  Searched: {', '.join([os.path.basename(p) for p in possible_paths])}")
+            if model_type in ['efficientnet', 'mobilenet', 'hybrid']:
+                print(f"  Using ImageNet pre-trained weights for {model_type}")
+            else:
+                print(f"  Using randomly initialized weights")
 
         model = model.to(self.device)
         model.eval()
@@ -587,18 +617,27 @@ class ModelManager:
 
 def create_mock_models(models_dir):
     """
-    Create and save mock model files for demonstration
-    In production, replace these with your trained models
+    Initialize models directory and create class_names.json if needed
+    This sets up the directory structure for trained models
     """
     os.makedirs(models_dir, exist_ok=True)
 
-    # Create class names file
+    # Create class names file if it doesn't exist
     class_names_file = os.path.join(models_dir, 'class_names.json')
     if not os.path.exists(class_names_file):
         manager = ModelManager(models_dir)
         with open(class_names_file, 'w') as f:
             json.dump(manager.class_names, f, indent=2)
+        print(f"✓ Created {class_names_file}")
 
-    print(f"Model directory initialized at: {models_dir}")
-    print("Note: Add your trained .pth files to this directory")
-    print("Expected files: baseline_model.pth, efficientnet_model.pth, mobilenet_model.pth, hybrid_model.pth")
+    # Check for trained model files
+    expected_models = ['baseline_model.pth', 'efficientnet_model.pth', 'mobilenet_model.pth', 'hybrid_model.pth']
+    existing_models = [m for m in expected_models if os.path.exists(os.path.join(models_dir, m))]
+
+    if existing_models:
+        print(f"✓ Models directory ready at: {models_dir}")
+    else:
+        print(f"ℹ Models directory initialized at: {models_dir}")
+        print(f"  Place your trained models here with names:")
+        print(f"  - {', '.join(expected_models)}")
+        print(f"  Or use alternative naming: baseline.pth, efficientnet.pth, etc.")

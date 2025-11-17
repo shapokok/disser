@@ -49,9 +49,17 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
 
-# Initialize models
+# Initialize models directory (creates class_names.json if needed)
 create_mock_models(MODELS_DIR)
 model_manager = ModelManager(models_dir=MODELS_DIR)
+
+# Check for available trained models
+trained_models = [f for f in os.listdir(MODELS_DIR) if f.endswith('.pth')]
+if trained_models:
+    print(f"\n📦 Found trained models: {', '.join(trained_models)}")
+else:
+    print(f"\n⚠️  No trained .pth models found in {MODELS_DIR}")
+    print(f"   The system will use ImageNet pre-trained weights for demonstration")
 
 # Load all models at startup
 print("Loading models...")

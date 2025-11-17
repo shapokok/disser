@@ -31,3 +31,16 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# Machine Learning Models (large binary files)
+models/*.pth
+*.pth
+# But keep model documentation
+!models/README.md
+!models/class_names.json
+
+# Data directories
+data/uploads/*
+!data/uploads/.gitkeep
+results/heatmaps/*
+!results/heatmaps/.gitkeep
