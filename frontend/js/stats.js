@@ -214,14 +214,14 @@
     }
     const s = state.stats.statistics || {};
     table.append(el("table", { class: "data" }, [
-      el("thead", {}, el("tr", {}, [el("th", { text: t("common.model") }), el("th", { class: "num", text: "ECE" }), el("th", { class: "num", text: t("stats.ece_after") }), el("th", { class: "num", text: "T" }), el("th", { class: "num", text: "NLL" }), el("th", { class: "num", text: t("stats.mean_conf") })])),
+      el("thead", {}, el("tr", {}, [el("th", { text: t("common.model") }), el("th", { class: "num", text: "ECE" }), el("th", { class: "num", text: "ECE (T)" }), el("th", { class: "num", text: "T" }), el("th", { class: "num", text: "NLL" }), el("th", { class: "num", text: t("stats.mean_conf") })])),
       el("tbody", {}, names.map((n) => { const c = reports[n].calibration; return el("tr", {}, [el("td", { text: modelLabel(n) }), el("td", { class: "num", text: c.ece.toFixed(4) }), el("td", { class: "num", text: c.ece_after_temperature.toFixed(4) }), el("td", { class: "num", text: c.temperature.toFixed(2) }), el("td", { class: "num", text: c.nll.toFixed(3) }), el("td", { class: "num", text: fmt.pct(c.mean_confidence, 1) })]); })),
     ]));
     const comp = state.comparison;
     if (comp && comp.mcnemar && comp.mcnemar.length) {
-      mc.append(el("div", { class: "card-head" }, el("h3", { text: t("stats.mcnemar") })), el("table", { class: "data" }, [
-        el("thead", {}, el("tr", {}, [el("th", { text: "A" }), el("th", { text: "B" }), el("th", { class: "num", text: t("stats.a_only") }), el("th", { class: "num", text: t("stats.b_only") }), el("th", { class: "num", text: "p" })])),
-        el("tbody", {}, comp.mcnemar.map((r) => el("tr", {}, [el("td", { text: modelLabel(r.a) }), el("td", { text: modelLabel(r.b) }), el("td", { class: "num", text: r.a_only }), el("td", { class: "num", text: r.b_only }), el("td", { class: "num", text: r.p_value < 0.001 ? "< 0.001" : r.p_value.toFixed(3) })]))),
+      mc.append(el("table", { class: "data" }, [
+        el("thead", {}, el("tr", {}, [el("th", { text: "A" }), el("th", { text: "B" }), el("th", { class: "num", text: "Acc A" }), el("th", { class: "num", text: "Acc B" }), el("th", { class: "num", text: t("stats.a_only") }), el("th", { class: "num", text: t("stats.b_only") }), el("th", { class: "num", text: "p" }), el("th")])),
+        el("tbody", {}, comp.mcnemar.map((r) => { const sig = r.p_value < 0.05; return el("tr", {}, [el("td", { text: modelLabel(r.a) }), el("td", { text: modelLabel(r.b) }), el("td", { class: "num", text: fmt.pct(r.accuracy_a, 2) }), el("td", { class: "num", text: fmt.pct(r.accuracy_b, 2) }), el("td", { class: "num", text: r.a_only }), el("td", { class: "num", text: r.b_only }), el("td", { class: "num", text: r.p_value < 0.001 ? "< 0.001" : r.p_value.toFixed(3) }), el("td", {}, el("span", { class: "chip " + (sig ? "accent" : ""), text: sig ? t("stats.significant") : t("stats.not_significant") }))]); })),
       ]));
     }
     // reliability diagram: accuracy per confidence bin for the trained models (+ the diagonal)
