@@ -8,6 +8,13 @@
 | `model_metrics.json` | реальные метрики каждой модели и ансамбля на `data/PlantVillage/valid` | `scripts/evaluate_models.py` |
 | `field_model_info.json` | описание адаптированной полевой модели (метод, сид, точность на PlantDoc) | `domain_adaptation_experiments/da/run_all.py` |
 
+Быстрый способ получить веса на другой машине — из GitHub Release (после того как автор опубликует их
+командой из docstring скрипта):
+
+```bash
+python scripts/download_weights.py            # models/*.pth + model_metrics.json
+```
+
 Ожидаемые веса:
 
 | Файл | Архитектура | Как получить |

@@ -95,8 +95,14 @@ def main():
     rng = np.random.RandomState(0)
     idx = rng.permutation(len(ds.samples))[: args.limit]
     samples = [ds.samples[i] for i in idx]
-    metrics = json.loads((MODELS_DIR / "model_metrics.json").read_text()) if (MODELS_DIR / "model_metrics.json").exists() else {}
-    names = args.models or [n for n in MODEL_TYPES if metrics.get(n, {}).get("trained") and (MODELS_DIR / f"{n}_model.pth").exists()]
+    metrics = (
+        json.loads((MODELS_DIR / "model_metrics.json").read_text())
+        if (MODELS_DIR / "model_metrics.json").exists()
+        else {}
+    )
+    names = args.models or [
+        n for n in MODEL_TYPES if metrics.get(n, {}).get("trained") and (MODELS_DIR / f"{n}_model.pth").exists()
+    ]
 
     results = {"limit": len(samples), "device": str(device), "corruptions": list(CORRUPTIONS), "models": {}}
     for name in names:
@@ -110,7 +116,14 @@ def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "robustness.json").write_text(json.dumps(results, indent=2))
     header = "| Искажение | " + " | ".join(MODEL_TYPES[n]["label"] for n in names) + " |"
-    lines = ["# Робастность к искажениям (accuracy, %)", "", f"{len(samples)} изображений valid, device {device}", "", header, "|---|" + "---|" * len(names)]
+    lines = [
+        "# Робастность к искажениям (accuracy, %)",
+        "",
+        f"{len(samples)} изображений valid, device {device}",
+        "",
+        header,
+        "|---|" + "---|" * len(names),
+    ]
     for cname in CORRUPTIONS:
         lines.append(f"| {cname} | " + " | ".join(f"{100 * results['models'][n][cname]:.1f}" for n in names) + " |")
     (OUT_DIR / "robustness.md").write_text("\n".join(lines) + "\n")

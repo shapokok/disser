@@ -13,7 +13,7 @@
 | ✅ | CI (GitHub Actions): ruff, pytest без весов, Playwright chromium |
 | ✅ | Ветка `clean-main` запушена в https://github.com/shapokok/disser и сделана основной |
 | ✅ | CI на GitHub зелёный (ruff + pytest, Playwright) |
-| 💡 | Хранить веса как GitHub Release (или Git LFS) и добавить `scripts/download_weights.py`, чтобы проект запускался на чужой машине без обучения |
+| ⬜ | Опубликовать веса как GitHub Release: `gh release create v2.0.0 models/*.pth models/model_metrics.json`; `scripts/download_weights.py` уже готов и скачает их на чужой машине |
 
 ## 2. Бэкенд
 
