@@ -175,9 +175,9 @@ def mcnemar(a_correct: np.ndarray, b_correct: np.ndarray) -> dict:
     b = int((a_correct & ~b_correct).sum())  # A right, B wrong
     c = int((~a_correct & b_correct).sum())  # A wrong, B right
     if b + c == 0:
-        return {"b": b, "c": c, "statistic": 0.0, "p_value": 1.0}
+        return {"a_only": b, "b_only": c, "statistic": 0.0, "p_value": 1.0}
     stat = (abs(b - c) - 1) ** 2 / (b + c)
-    return {"b": b, "c": c, "statistic": float(stat), "p_value": float(chi2.sf(stat, 1))}
+    return {"a_only": b, "b_only": c, "statistic": float(stat), "p_value": float(chi2.sf(stat, 1))}
 
 
 def summarise(name, probs, labels, class_names, elapsed_ms_per_image, model):
@@ -385,7 +385,7 @@ def main():
                 all_metrics[n]["accuracy_dedup"] = round(comparison["deduplicated"][n]["accuracy_dedup"], 4)
     (METRICS_DIR / "model_comparison.json").write_text(json.dumps(comparison, indent=2))
     for row in comparison["mcnemar"]:
-        print(f"McNemar {row['a']} vs {row['b']}: b={row['b']} c={row['c']} p={row['p_value']:.3g}")
+        print(f"McNemar {row['a']} vs {row['b']}: a_only={row['a_only']} b_only={row['b_only']} p={row['p_value']:.3g}")
 
     metrics_file.write_text(json.dumps(all_metrics, indent=2))
     print(f"\nwrote {metrics_file}, results/metrics/*_validation.json and model_comparison.json")

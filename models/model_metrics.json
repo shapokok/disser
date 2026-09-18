@@ -5,13 +5,18 @@
     "precision": 0.9846,
     "recall": 0.9843,
     "f1_score": 0.9843,
-    "inference_time_ms": 9.5,
+    "ece": 0.0059,
+    "ece_after_temperature": 0.0032,
+    "temperature": 0.85,
+    "nll": 0.0503,
+    "inference_time_ms": 11.7,
     "parameters": "0.5M",
     "parameters_count": 540454,
     "size_mb": 2.2,
     "validation_samples": 17572,
     "trained": true,
-    "evaluated_at": "2026-09-18T19:58:45"
+    "evaluated_at": "2026-09-19T00:14:50",
+    "accuracy_dedup": 0.9842
   },
   "efficientnet": {
     "accuracy": 0.9894,
@@ -19,13 +24,18 @@
     "precision": 0.9893,
     "recall": 0.9895,
     "f1_score": 0.9893,
-    "inference_time_ms": 93.3,
+    "ece": 0.0044,
+    "ece_after_temperature": 0.0028,
+    "temperature": 1.281,
+    "nll": 0.0344,
+    "inference_time_ms": 379.1,
     "parameters": "4.1M",
     "parameters_count": 4056226,
     "size_mb": 16.5,
     "validation_samples": 17572,
     "trained": true,
-    "evaluated_at": "2026-09-18T20:26:06"
+    "evaluated_at": "2026-09-19T00:14:50",
+    "accuracy_dedup": 0.9894
   },
   "mobilenet": {
     "accuracy": 0.9854,
@@ -33,20 +43,27 @@
     "precision": 0.9853,
     "recall": 0.9852,
     "f1_score": 0.9852,
-    "inference_time_ms": 48.0,
+    "ece": 0.0022,
+    "ece_after_temperature": 0.0019,
+    "temperature": 1.093,
+    "nll": 0.0437,
+    "inference_time_ms": 159.3,
     "parameters": "2.3M",
     "parameters_count": 2272550,
     "size_mb": 9.3,
     "validation_samples": 17572,
     "trained": true,
-    "evaluated_at": "2026-09-18T20:40:10"
+    "evaluated_at": "2026-09-19T00:14:50",
+    "accuracy_dedup": 0.9854
   },
   "ensemble": {
     "accuracy": 0.9963,
     "precision": 0.9963,
     "recall": 0.9963,
     "f1_score": 0.9963,
-    "inference_time_ms": 150.8,
+    "ece": 0.0164,
+    "nll": 0.0266,
+    "inference_time_ms": 550.1,
     "parameters": "6.9M",
     "size_mb": 28.0,
     "models_combined": [
@@ -57,7 +74,8 @@
     "method": "accuracy-weighted average of softmax outputs",
     "validation_samples": 17572,
     "trained": true,
-    "evaluated_at": "2026-09-18T21:08:12"
+    "evaluated_at": "2026-09-19T00:14:51",
+    "accuracy_dedup": 0.9963
   },
   "hybrid": {
     "accuracy": 0.046,
@@ -65,12 +83,17 @@
     "precision": 0.004,
     "recall": 0.0433,
     "f1_score": 0.0052,
-    "inference_time_ms": 95.7,
+    "ece": 0.0209,
+    "ece_after_temperature": 0.0118,
+    "temperature": 1.279,
+    "nll": 3.4958,
+    "inference_time_ms": 69.9,
     "parameters": "74.0M",
     "parameters_count": 73958502,
     "size_mb": 296.2,
     "validation_samples": 17572,
     "trained": false,
-    "evaluated_at": "2026-09-18T21:08:12"
+    "evaluated_at": "2026-09-19T00:14:51",
+    "accuracy_dedup": 0.0467
   }
 }

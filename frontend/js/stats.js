@@ -221,7 +221,7 @@
     if (comp && comp.mcnemar && comp.mcnemar.length) {
       mc.append(el("div", { class: "card-head" }, el("h3", { text: t("stats.mcnemar") })), el("table", { class: "data" }, [
         el("thead", {}, el("tr", {}, [el("th", { text: "A" }), el("th", { text: "B" }), el("th", { class: "num", text: t("stats.a_only") }), el("th", { class: "num", text: t("stats.b_only") }), el("th", { class: "num", text: "p" })])),
-        el("tbody", {}, comp.mcnemar.map((r) => el("tr", {}, [el("td", { text: modelLabel(r.a) }), el("td", { text: modelLabel(r.b) }), el("td", { class: "num", text: r.b }), el("td", { class: "num", text: r.c }), el("td", { class: "num", text: r.p_value < 0.001 ? "< 0.001" : r.p_value.toFixed(3) })]))),
+        el("tbody", {}, comp.mcnemar.map((r) => el("tr", {}, [el("td", { text: modelLabel(r.a) }), el("td", { text: modelLabel(r.b) }), el("td", { class: "num", text: r.a_only }), el("td", { class: "num", text: r.b_only }), el("td", { class: "num", text: r.p_value < 0.001 ? "< 0.001" : r.p_value.toFixed(3) })]))),
       ]));
     }
     // reliability diagram: accuracy per confidence bin for the trained models (+ the diagonal)

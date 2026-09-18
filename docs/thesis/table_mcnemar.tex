@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\caption{Попарное сравнение моделей: тест МакНемара на валидационной выборке}
+\label{tab:mcnemar}
+\begin{tabular}{llrrrr}
+\toprule
+Модель A & Модель B & A верно, B нет & B верно, A нет & χ² & p \\
+\midrule
+Baseline CNN & EfficientNet-B0 & 158 & 246 & 18.74 & 1.5e-05 \\
+Baseline CNN & MobileNet-V2 & 200 & 219 & 0.77 & 0.379 \\
+Baseline CNN & Hybrid CNN-Transformer & 16493 & 5 & 16476.01 & 0 \\
+Baseline CNN & Ансамбль & 22 & 232 & 171.97 & 2.74e-39 \\
+EfficientNet-B0 & MobileNet-V2 & 218 & 149 & 12.60 & 0.000386 \\
+EfficientNet-B0 & Hybrid CNN-Transformer & 16584 & 8 & 16558.02 & 0 \\
+EfficientNet-B0 & Ансамбль & 23 & 145 & 87.15 & 1.01e-20 \\
+MobileNet-V2 & Hybrid CNN-Transformer & 16507 & 0 & 16505.00 & 0 \\
+MobileNet-V2 & Ансамбль & 14 & 205 & 164.84 & 9.91e-38 \\
+Hybrid CNN-Transformer & Ансамбль & 0 & 16698 & 16696.00 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}

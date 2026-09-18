@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\caption{Калибровка уверенности (15 бинов; T подобрана на половине valid, ECE — на другой половине)}
+\label{tab:calibration}
+\begin{tabular}{lrrrr}
+\toprule
+Модель & ECE & ECE после temperature scaling & T & NLL \\
+\midrule
+Baseline CNN & 0.0059 & 0.0032 & 0.85 & 0.050 \\
+EfficientNet-B0 & 0.0044 & 0.0028 & 1.28 & 0.034 \\
+MobileNet-V2 & 0.0022 & 0.0019 & 1.09 & 0.044 \\
+Hybrid CNN-Transformer & 0.0209 & 0.0118 & 1.28 & 3.496 \\
+\bottomrule
+\end{tabular}
+\end{table}

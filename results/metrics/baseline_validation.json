@@ -1,6 +1,6 @@
 {
   "model_name": "baseline",
-  "evaluated_at": "2026-09-18T21:15:12",
+  "evaluated_at": "2026-09-19T00:14:50",
   "num_samples": 17572,
   "overall": {
     "accuracy": 0.9843501024356931,

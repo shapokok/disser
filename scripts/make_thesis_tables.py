@@ -148,7 +148,7 @@ def main():
     if comp and comp.get("mcnemar"):
         header_m = ["Модель A", "Модель B", "A верно, B нет", "B верно, A нет", "χ²", "p"]
         rows_m = [
-            [label(r["a"]), label(r["b"]), r["b"], r["c"], f"{r['statistic']:.2f}", f"{r['p_value']:.3g}"]
+            [label(r["a"]), label(r["b"]), r["a_only"], r["b_only"], f"{r['statistic']:.2f}", f"{r['p_value']:.3g}"]
             for r in comp["mcnemar"]
         ]
         (OUT / "table_mcnemar.tex").write_text(

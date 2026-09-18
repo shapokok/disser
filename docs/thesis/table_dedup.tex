@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{Точность на valid после удаления изображений, имеющих почти-дубликат в train}
+\label{tab:dedup}
+\begin{tabular}{lrrr}
+\toprule
+Модель & Accuracy (все), \% & Accuracy (без дубликатов), \% & Удалено изображений \\
+\midrule
+Baseline CNN & 98.44 & 98.42 & 385 \\
+EfficientNet-B0 & 98.94 & 98.94 & 385 \\
+MobileNet-V2 & 98.54 & 98.54 & 385 \\
+Hybrid CNN-Transformer & 4.60 & 4.67 & 385 \\
+Ансамбль & 99.63 & 99.63 & 385 \\
+\bottomrule
+\end{tabular}
+\end{table}

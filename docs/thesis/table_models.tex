@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{Метрики моделей на валидационной выборке PlantVillage (17572 изображений)}
+\label{tab:models}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+Модель & Accuracy, \% & Top-5, \% & Precision, \% & Recall, \% & Macro-F1, \% & ECE & Инференс, мс & Параметры & Размер, МБ \\
+\midrule
+Baseline CNN & 98.44 & 99.97 & 98.46 & 98.43 & 98.43 & 0.006 & 12 & 0.5M & 2.2 \\
+EfficientNet-B0 & 98.94 & 99.99 & 98.93 & 98.95 & 98.93 & 0.004 & 379 & 4.1M & 16.5 \\
+MobileNet-V2 & 98.54 & 100.00 & 98.53 & 98.52 & 98.52 & 0.002 & 159 & 2.3M & 9.3 \\
+Hybrid CNN-Transformer (не обучена) & 4.60 & 21.19 & 0.40 & 4.33 & 0.52 & 0.021 & 70 & 74.0M & 296.2 \\
+Ансамбль & 99.63 & — & 99.63 & 99.63 & 99.63 & 0.016 & 550 & 6.9M & 28.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
