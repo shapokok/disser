@@ -1,0 +1,168 @@
+{
+  "Apple___Apple_scab": {
+    "disease_name": "Apple Scab",
+    "severity": "moderate",
+    "symptoms": "Dark, scabby lesions on leaves and fruit",
+    "treatments": [
+      "Remove and destroy infected leaves",
+      "Apply fungicides (myclobutanil or captan) during wet periods",
+      "Prune trees to improve air circulation",
+      "Apply dormant spray in early spring"
+    ],
+    "prevention": [
+      "Choose scab-resistant apple varieties",
+      "Rake and remove fallen leaves in autumn",
+      "Maintain proper spacing between trees",
+      "Avoid overhead watering"
+    ],
+    "organic_options": [
+      "Sulfur-based fungicides",
+      "Neem oil spray",
+      "Copper-based fungicides"
+    ]
+  },
+  "Apple___Black_rot": {
+    "disease_name": "Black Rot",
+    "severity": "high",
+    "symptoms": "Circular brown spots on leaves, fruit rot",
+    "treatments": [
+      "Remove all mummified fruit and cankers",
+      "Apply fungicides (captan or thiophanate-methyl)",
+      "Prune infected branches 6-8 inches below visible symptoms"
+    ],
+    "prevention": [
+      "Remove dead wood and debris",
+      "Maintain tree health through proper fertilization",
+      "Thin fruit to prevent overcrowding"
+    ],
+    "organic_options": [
+      "Copper fungicides",
+      "Remove and destroy infected material"
+    ]
+  },
+  "Tomato___Early_blight": {
+    "disease_name": "Early Blight",
+    "severity": "moderate",
+    "symptoms": "Dark brown spots with concentric rings on lower leaves",
+    "treatments": [
+      "Apply fungicides (chlorothalonil or copper-based)",
+      "Remove infected lower leaves",
+      "Mulch around plants to prevent soil splash",
+      "Water at the base of plants, avoid wetting foliage"
+    ],
+    "prevention": [
+      "Rotate crops (don't plant tomatoes in same spot for 3 years)",
+      "Space plants properly for good air circulation",
+      "Use disease-resistant varieties",
+      "Stake or cage plants to keep foliage off ground"
+    ],
+    "organic_options": [
+      "Copper fungicides",
+      "Baking soda spray (1 tablespoon per gallon water)",
+      "Neem oil"
+    ]
+  },
+  "Tomato___Late_blight": {
+    "disease_name": "Late Blight",
+    "severity": "critical",
+    "symptoms": "Water-soaked spots on leaves, white mold on undersides, fruit rot",
+    "treatments": [
+      "Immediately remove and destroy all infected plants",
+      "Apply fungicides (chlorothalonil, mancozeb) preventatively",
+      "Do NOT compost infected material - burn or dispose in trash",
+      "Clean tools with 10% bleach solution"
+    ],
+    "prevention": [
+      "Use certified disease-free seed potatoes and transplants",
+      "Avoid overhead irrigation",
+      "Provide excellent air circulation",
+      "Monitor weather for conditions favoring blight (cool, wet)"
+    ],
+    "organic_options": [
+      "Copper fungicides (must be applied preventatively)",
+      "Remove infected plants immediately to protect others"
+    ]
+  },
+  "Potato___Early_blight": {
+    "disease_name": "Early Blight",
+    "severity": "moderate",
+    "symptoms": "Dark spots with target-like pattern on lower leaves",
+    "treatments": [
+      "Apply fungicides containing chlorothalonil or mancozeb",
+      "Remove infected leaves from bottom of plant",
+      "Hill soil around plants to cover lower stems"
+    ],
+    "prevention": [
+      "Rotate crops (3-4 year rotation)",
+      "Use certified disease-free seed potatoes",
+      "Maintain proper plant nutrition",
+      "Destroy volunteer plants"
+    ],
+    "organic_options": [
+      "Copper fungicides",
+      "Bordeaux mixture",
+      "Remove affected foliage"
+    ]
+  },
+  "Corn_(maize)___Common_rust_": {
+    "disease_name": "Common Rust",
+    "severity": "low-moderate",
+    "symptoms": "Reddish-brown pustules on both sides of leaves",
+    "treatments": [
+      "Usually doesn't require treatment in most cases",
+      "Apply fungicides if infection is severe (propiconazole)",
+      "No action needed if infection occurs after tasseling"
+    ],
+    "prevention": [
+      "Plant resistant hybrid varieties",
+      "Early planting to avoid peak rust season",
+      "Good weed control around field"
+    ],
+    "organic_options": [
+      "Usually not necessary",
+      "Sulfur dust if absolutely needed"
+    ]
+  },
+  "Grape___Black_rot": {
+    "disease_name": "Black Rot",
+    "severity": "high",
+    "symptoms": "Reddish-brown spots on leaves, black mummified fruit",
+    "treatments": [
+      "Apply fungicides (myclobutanil or captan) starting at bloom",
+      "Remove and destroy all mummified fruit",
+      "Prune to improve air circulation",
+      "Continue fungicide applications through mid-summer"
+    ],
+    "prevention": [
+      "Sanitation is critical - remove ALL mummies",
+      "Prune vines to open canopy",
+      "Apply dormant lime-sulfur spray",
+      "Remove infected canes during dormant pruning"
+    ],
+    "organic_options": [
+      "Copper fungicides",
+      "Sulfur sprays",
+      "Rigorous sanitation"
+    ]
+  },
+  "healthy": {
+    "disease_name": "Healthy Plant",
+    "severity": "none",
+    "symptoms": "No disease symptoms detected",
+    "treatments": [
+      "Continue regular monitoring",
+      "Maintain current care practices"
+    ],
+    "prevention": [
+      "Continue proper watering schedule",
+      "Maintain adequate nutrition",
+      "Monitor regularly for early disease detection",
+      "Practice good garden hygiene"
+    ],
+    "organic_options": [
+      "Companion planting",
+      "Beneficial insects for pest control",
+      "Compost tea for plant health"
+    ]
+  }
+}

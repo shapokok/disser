@@ -1,0 +1,52 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Environments ---
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# --- Node ---
+node_modules/
+npm-debug.log*
+
+# --- Datasets (downloaded by scripts/download_dataset.py) ---
+data/PlantVillage/
+data/uploads/*
+!data/uploads/.gitkeep
+domain_adaptation_experiments/datasets/
+
+# --- Model weights & checkpoints (large binaries, see models/README.md) ---
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.safetensors
+results/checkpoints/
+results/heatmaps/*
+!results/heatmaps/.gitkeep
+
+# --- Test / tool output ---
+test-results/
+playwright-report/
+logs/
+*.log
+structure.txt
+
+# --- IDE / OS ---
+.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Jupyter ---
+.ipynb_checkpoints/

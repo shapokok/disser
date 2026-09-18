@@ -1,0 +1,98 @@
+{
+  "efficientnet": {
+    "model": "EfficientNet-B0",
+    "overall": {
+      "accuracy": 0.24358974358974358,
+      "precision": 1.0,
+      "recall": 0.24358974358974358,
+      "f1_score": 0.3138622066372477,
+      "num_samples": 468
+    },
+    "per_class": [
+      {
+        "class_idx": 7,
+        "class_name": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+        "accuracy": 0.671875,
+        "precision": 1.0,
+        "recall": 0.671875,
+        "f1_score": 0.8037383177570093,
+        "samples": 64
+      },
+      {
+        "class_idx": 9,
+        "class_name": "Corn_(maize)___Northern_Leaf_Blight",
+        "accuracy": 0.07777777777777778,
+        "precision": 1.0,
+        "recall": 0.07777777777777778,
+        "f1_score": 0.1443298969072165,
+        "samples": 180
+      },
+      {
+        "class_idx": 25,
+        "class_name": "Squash___Powdery_mildew",
+        "accuracy": 0.1951219512195122,
+        "precision": 1.0,
+        "recall": 0.1951219512195122,
+        "f1_score": 0.326530612244898,
+        "samples": 123
+      },
+      {
+        "class_idx": 30,
+        "class_name": "Tomato___Late_blight",
+        "accuracy": 0.32673267326732675,
+        "precision": 1.0,
+        "recall": 0.32673267326732675,
+        "f1_score": 0.4925373134328358,
+        "samples": 101
+      }
+    ]
+  },
+  "mobilenet": {
+    "model": "MobileNet-V2",
+    "overall": {
+      "accuracy": 0.4188034188034188,
+      "precision": 1.0,
+      "recall": 0.4188034188034188,
+      "f1_score": 0.4767414361891387,
+      "num_samples": 468
+    },
+    "per_class": [
+      {
+        "class_idx": 7,
+        "class_name": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+        "accuracy": 0.734375,
+        "precision": 1.0,
+        "recall": 0.734375,
+        "f1_score": 0.8468468468468469,
+        "samples": 64
+      },
+      {
+        "class_idx": 9,
+        "class_name": "Corn_(maize)___Northern_Leaf_Blight",
+        "accuracy": 0.24444444444444444,
+        "precision": 1.0,
+        "recall": 0.24444444444444444,
+        "f1_score": 0.39285714285714285,
+        "samples": 180
+      },
+      {
+        "class_idx": 25,
+        "class_name": "Squash___Powdery_mildew",
+        "accuracy": 0.6178861788617886,
+        "precision": 1.0,
+        "recall": 0.6178861788617886,
+        "f1_score": 0.7638190954773869,
+        "samples": 123
+      },
+      {
+        "class_idx": 30,
+        "class_name": "Tomato___Late_blight",
+        "accuracy": 0.2871287128712871,
+        "precision": 1.0,
+        "recall": 0.2871287128712871,
+        "f1_score": 0.4461538461538461,
+        "samples": 101
+      }
+    ]
+  }
+}

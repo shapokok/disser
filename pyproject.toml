@@ -1,0 +1,52 @@
+[project]
+name = "crop-disease-detection"
+version = "2.0.0"
+description = "Intelligent crop condition monitoring with computer vision: web app + domain adaptation experiments (master's thesis)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # web
+    "flask>=3.0",
+    "flask-cors>=4.0",
+    "gunicorn>=22.0",
+    # ml
+    "torch>=2.4",
+    "torchvision>=0.19",
+    "numpy>=1.26",
+    "scikit-learn>=1.4",
+    "scikit-image>=0.22",
+    "lime>=0.2.0.1",
+    # images / plots
+    "pillow>=10.0",
+    "opencv-python-headless>=4.9",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "pandas>=2.1",
+    # reports / export
+    "reportlab>=4.0",
+    "openpyxl>=3.1",
+    # misc
+    "tqdm>=4.66",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["domain_adaptation_experiments/legacy", "venv", ".venv", "node_modules"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "models: tests that need the trained weights in models/ (skipped when absent)",
+]

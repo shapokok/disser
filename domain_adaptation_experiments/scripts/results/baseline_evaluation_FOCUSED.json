@@ -1,0 +1,12 @@
+{
+  "efficientnet": {
+    "model": "EfficientNet-B0",
+    "overall": {
+      "accuracy": 0.17462311557788945,
+      "precision": 0.6993478160260601,
+      "recall": 0.17462311557788945,
+      "f1_score": 0.22445060167206587,
+      "num_samples": 796
+    },
+    "per_class": {
+      

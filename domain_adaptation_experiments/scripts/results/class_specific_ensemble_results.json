@@ -1,0 +1,17 @@
+{
+  "strategy": "class_specific_ensemble",
+  "routing": {
+    "7": "stage2",
+    "9": "stage2",
+    "25": "final",
+    "30": "stage1"
+  },
+  "overall_accuracy": 0.5405982905982906,
+  "per_class": {
+    "7": 0.359375,
+    "9": 0.4111111111111111,
+    "25": 0.9105691056910569,
+    "30": 0.43564356435643564
+  },
+  "improvement_over_final": -0.12440170940170947
+}

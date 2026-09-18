@@ -1,0 +1,17 @@
+# Normalise line endings: LF in the repository, native on checkout.
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.py text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+
+# Binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.jfif binary
+*.gif binary
+*.pdf binary
+*.pth binary
+*.xlsx binary

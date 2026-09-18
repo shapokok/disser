@@ -1,0 +1,18 @@
+{
+  "efficientnet": {
+    "model": "EfficientNet-B0",
+    "accuracy": 0.12176165803108809,
+    "precision": 0.28702437509912393,
+    "recall": 0.12176165803108809,
+    "f1_score": 0.11867652446626095,
+    "num_samples": 2316
+  },
+  "mobilenet": {
+    "model": "MobileNet-V2",
+    "accuracy": 0.12305699481865284,
+    "precision": 0.22048437529589934,
+    "recall": 0.12305699481865284,
+    "f1_score": 0.10102857750309677,
+    "num_samples": 2316
+  }
+}
