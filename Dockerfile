@@ -19,9 +19,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 libgli
 
 WORKDIR /app
 
-# CPU-only torch keeps the image ~1.5 GB smaller than the default CUDA build.
+# CPU-only torch: the default PyPI wheel pulls several GB of CUDA libraries.
 COPY requirements.txt .
-RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+RUN pip install --index-url https://download.pytorch.org/whl/cpu $(grep -E "^(torch|torchvision)==" requirements.txt | cut -d";" -f1) \
+    && grep -v -E "^(torch|torchvision|nvidia-|triton)" requirements.txt > /tmp/requirements-cpu.txt \
+    && pip install -r /tmp/requirements-cpu.txt
 
 COPY backend ./backend
 COPY frontend ./frontend

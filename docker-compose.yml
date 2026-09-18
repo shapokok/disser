@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    image: crop-disease
     container_name: crop-disease
     ports:
       - "5001:5001"
