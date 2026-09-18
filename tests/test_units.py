@@ -118,3 +118,19 @@ def test_da_stratified_split_is_deterministic(tmp_path, monkeypatch):
     assert a == b
     assert len(a["adapt"]) == 64 and len(a["dev"]) == 16 and len(a["test"]) == 16
     assert not set(map(tuple, a["adapt"])) & set(map(tuple, a["dev"]))
+
+
+def test_field_tta_probs_restricted_to_covered_classes(tmp_path):
+    from PIL import Image
+
+    import config
+    from field_model import FieldAdapter
+    from model import MobileNetModel
+
+    ckpt = tmp_path / "field.pth"
+    torch.save(MobileNetModel(38, pretrained=False).state_dict(), ckpt)
+    adapter = FieldAdapter([f"c{i}" for i in range(38)], torch.device("cpu"), path=ckpt, info_path=tmp_path / "none.json")
+    probs = adapter.tta_probs(Image.new("RGB", (300, 260), (40, 120, 40)))
+    assert probs.shape == (38,)
+    assert probs[[7, 9, 25, 30]].sum() == pytest.approx(1.0, abs=1e-5)
+    assert config.FIELD_TTA in (True, False)

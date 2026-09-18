@@ -1,0 +1,4761 @@
+{
+  "method": "joint_v2_noadabn",
+  "label": "Joint fine-tuning v2 без AdaBN",
+  "seed": 42,
+  "unsupervised": false,
+  "protocol": {
+    "k_folds": 5,
+    "inner_dev": 0.15,
+    "fold_seed": 42,
+    "n": 500
+  },
+  "config": {
+    "device": "mps",
+    "replay_per_class": 30,
+    "seconds_total": 406.4
+  },
+  "open": {
+    "n": 500,
+    "correct": 300,
+    "accuracy": 0.6,
+    "ci95": [
+      0.5564533144716549,
+      0.6420217618221643
+    ],
+    "macro_f1": 0.6446815703480808,
+    "per_class": {
+      "7": {
+        "name": "Cercospora leaf spot Gray leaf spot",
+        "accuracy": 0.6176470588235294,
+        "precision": 0.3442622950819672,
+        "recall": 0.6176470588235294,
+        "f1": 0.4421052631578947,
+        "support": 68
+      },
+      "9": {
+        "name": "Northern Leaf Blight",
+        "accuracy": 0.3645833333333333,
+        "precision": 0.8333333333333334,
+        "recall": 0.3645833333333333,
+        "f1": 0.5072463768115942,
+        "support": 192
+      },
+      "25": {
+        "name": "Powdery mildew",
+        "accuracy": 0.8372093023255814,
+        "precision": 0.9,
+        "recall": 0.8372093023255814,
+        "f1": 0.8674698795180723,
+        "support": 129
+      },
+      "30": {
+        "name": "Late blight",
+        "accuracy": 0.7207207207207207,
+        "precision": 0.8080808080808081,
+        "recall": 0.7207207207207207,
+        "f1": 0.7619047619047619,
+        "support": 111
+      }
+    },
+    "confusion_matrix": [
+      [
+        42,
+        14,
+        2,
+        0,
+        10
+      ],
+      [
+        79,
+        70,
+        1,
+        9,
+        33
+      ],
+      [
+        1,
+        0,
+        108,
+        10,
+        10
+      ],
+      [
+        0,
+        0,
+        9,
+        80,
+        22
+      ]
+    ],
+    "confusion_labels": [
+      "Cercospora leaf spot Gray leaf spot",
+      "Northern Leaf Blight",
+      "Powdery mildew",
+      "Late blight",
+      "other"
+    ]
+  },
+  "restricted": {
+    "n": 500,
+    "correct": 335,
+    "accuracy": 0.67,
+    "ci95": [
+      0.627624826873818,
+      0.709782802825675
+    ],
+    "macro_f1": 0.6659453395325337,
+    "per_class": {
+      "7": {
+        "name": "Cercospora leaf spot Gray leaf spot",
+        "accuracy": 0.6764705882352942,
+        "precision": 0.3194444444444444,
+        "recall": 0.6764705882352942,
+        "f1": 0.4339622641509434,
+        "support": 68
+      },
+      "9": {
+        "name": "Northern Leaf Blight",
+        "accuracy": 0.4166666666666667,
+        "precision": 0.8080808080808081,
+        "recall": 0.4166666666666667,
+        "f1": 0.5498281786941581,
+        "support": 192
+      },
+      "25": {
+        "name": "Powdery mildew",
+        "accuracy": 0.8682170542635659,
+        "precision": 0.8615384615384616,
+        "recall": 0.8682170542635659,
+        "f1": 0.8648648648648649,
+        "support": 129
+      },
+      "30": {
+        "name": "Late blight",
+        "accuracy": 0.8738738738738738,
+        "precision": 0.7637795275590551,
+        "recall": 0.8738738738738738,
+        "f1": 0.8151260504201681,
+        "support": 111
+      }
+    },
+    "confusion_matrix": [
+      [
+        46,
+        18,
+        4,
+        0,
+        0
+      ],
+      [
+        95,
+        80,
+        3,
+        14,
+        0
+      ],
+      [
+        1,
+        0,
+        112,
+        16,
+        0
+      ],
+      [
+        2,
+        1,
+        11,
+        97,
+        0
+      ]
+    ],
+    "confusion_labels": [
+      "Cercospora leaf spot Gray leaf spot",
+      "Northern Leaf Blight",
+      "Powdery mildew",
+      "Late blight",
+      "other"
+    ]
+  },
+  "fold_accuracy": [
+    0.68,
+    0.46,
+    0.59,
+    0.58,
+    0.69
+  ],
+  "fold_accuracy_mean": 0.6,
+  "fold_accuracy_std": 0.08318653737234169,
+  "folds": [
+    {
+      "fold": 0,
+      "n_fit": 340,
+      "n_inner": 60,
+      "n_test": 100,
+      "accuracy": 0.68,
+      "seconds": 81.7,
+      "info": {
+        "best_epoch": 27,
+        "best_inner": 0.65
+      }
+    },
+    {
+      "fold": 1,
+      "n_fit": 340,
+      "n_inner": 60,
+      "n_test": 100,
+      "accuracy": 0.46,
+      "seconds": 81.0,
+      "info": {
+        "best_epoch": 26,
+        "best_inner": 0.65
+      }
+    },
+    {
+      "fold": 2,
+      "n_fit": 340,
+      "n_inner": 60,
+      "n_test": 100,
+      "accuracy": 0.59,
+      "seconds": 81.5,
+      "info": {
+        "best_epoch": 24,
+        "best_inner": 0.7
+      }
+    },
+    {
+      "fold": 3,
+      "n_fit": 340,
+      "n_inner": 60,
+      "n_test": 100,
+      "accuracy": 0.58,
+      "seconds": 79.8,
+      "info": {
+        "best_epoch": 17,
+        "best_inner": 0.5666666666666667
+      }
+    },
+    {
+      "fold": 4,
+      "n_fit": 340,
+      "n_inner": 60,
+      "n_test": 100,
+      "accuracy": 0.69,
+      "seconds": 82.4,
+      "info": {
+        "best_epoch": 27,
+        "best_inner": 0.6666666666666666
+      }
+    }
+  ],
+  "oof": {
+    "paths": [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (11).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (12).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (16).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (18).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (21).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (25).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (33).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (36).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (39).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (40).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (48).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (55).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (57).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (63).jpg",
+      "train/Corn leaf blight/Corn leaf blight (1).jpeg",
+      "train/Corn leaf blight/Corn leaf blight (101).jpg",
+      "train/Corn leaf blight/Corn leaf blight (103).jpg",
+      "train/Corn leaf blight/Corn leaf blight (109).jpg",
+      "train/Corn leaf blight/Corn leaf blight (120).jpg",
+      "train/Corn leaf blight/Corn leaf blight (121).jpg",
+      "train/Corn leaf blight/Corn leaf blight (124).jpg",
+      "train/Corn leaf blight/Corn leaf blight (128).jpg",
+      "train/Corn leaf blight/Corn leaf blight (13).jpg",
+      "train/Corn leaf blight/Corn leaf blight (134).jpg",
+      "train/Corn leaf blight/Corn leaf blight (137).jpg",
+      "train/Corn leaf blight/Corn leaf blight (143).jpg",
+      "train/Corn leaf blight/Corn leaf blight (146).jpg",
+      "train/Corn leaf blight/Corn leaf blight (148).jpg",
+      "train/Corn leaf blight/Corn leaf blight (151).jpg",
+      "train/Corn leaf blight/Corn leaf blight (152).jpg",
+      "train/Corn leaf blight/Corn leaf blight (155).jpg",
+      "train/Corn leaf blight/Corn leaf blight (161).jpg",
+      "train/Corn leaf blight/Corn leaf blight (169).jpg",
+      "train/Corn leaf blight/Corn leaf blight (24).jpg",
+      "train/Corn leaf blight/Corn leaf blight (35).jpg",
+      "train/Corn leaf blight/Corn leaf blight (40).jpg",
+      "train/Corn leaf blight/Corn leaf blight (50).jpg",
+      "train/Corn leaf blight/Corn leaf blight (51).jpg",
+      "train/Corn leaf blight/Corn leaf blight (52).jpg",
+      "train/Corn leaf blight/Corn leaf blight (53).jpg",
+      "train/Corn leaf blight/Corn leaf blight (62).jpg",
+      "train/Corn leaf blight/Corn leaf blight (66).jpg",
+      "train/Corn leaf blight/Corn leaf blight (69).jpg",
+      "train/Corn leaf blight/Corn leaf blight (71).jpg",
+      "train/Corn leaf blight/Corn leaf blight (76).jpg",
+      "train/Corn leaf blight/Corn leaf blight (79).jpg",
+      "train/Corn leaf blight/Corn leaf blight (80).jpg",
+      "train/Corn leaf blight/Corn leaf blight (82).jpg",
+      "train/Corn leaf blight/Corn leaf blight (9).jpg",
+      "train/Corn leaf blight/Corn leaf blight (99).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (1).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (101).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (11).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (116).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (12).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (121).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (123).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (13).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (14).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (17).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (2).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (3).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (31).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (41).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (46).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (53).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (54).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (68).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (73).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (75).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (76).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (77).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (79).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (8).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (91).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (93).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (100).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (17).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (18).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (23).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (26).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (29).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (39).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (45).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (56).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (63).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (75).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (76).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (77).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (83).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (84).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (86).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (87).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (91).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (93).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (96).jpg",
+      "test/Corn leaf blight/Corn leaf blight (2).jpg",
+      "test/Corn leaf blight/Corn leaf blight (5).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (1).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (8).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (10).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (19).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (29).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (37).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (43).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (44).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (45).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (46).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (56).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (61).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (64).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (7).jpg",
+      "train/Corn leaf blight/Corn leaf blight (104).jpg",
+      "train/Corn leaf blight/Corn leaf blight (106).jpg",
+      "train/Corn leaf blight/Corn leaf blight (112).jpg",
+      "train/Corn leaf blight/Corn leaf blight (115).jpg",
+      "train/Corn leaf blight/Corn leaf blight (116).jpg",
+      "train/Corn leaf blight/Corn leaf blight (118).jpg",
+      "train/Corn leaf blight/Corn leaf blight (119).jpg",
+      "train/Corn leaf blight/Corn leaf blight (126).jpg",
+      "train/Corn leaf blight/Corn leaf blight (129).jpg",
+      "train/Corn leaf blight/Corn leaf blight (131).jpg",
+      "train/Corn leaf blight/Corn leaf blight (145).jpg",
+      "train/Corn leaf blight/Corn leaf blight (153).jpg",
+      "train/Corn leaf blight/Corn leaf blight (156).jpg",
+      "train/Corn leaf blight/Corn leaf blight (157).jpg",
+      "train/Corn leaf blight/Corn leaf blight (160).jpg",
+      "train/Corn leaf blight/Corn leaf blight (163).jpg",
+      "train/Corn leaf blight/Corn leaf blight (167).jpg",
+      "train/Corn leaf blight/Corn leaf blight (17).jpg",
+      "train/Corn leaf blight/Corn leaf blight (172).jpg",
+      "train/Corn leaf blight/Corn leaf blight (18).jpg",
+      "train/Corn leaf blight/Corn leaf blight (23).jpg",
+      "train/Corn leaf blight/Corn leaf blight (33).jpg",
+      "train/Corn leaf blight/Corn leaf blight (41).jpg",
+      "train/Corn leaf blight/Corn leaf blight (45).jpg",
+      "train/Corn leaf blight/Corn leaf blight (49).jpg",
+      "train/Corn leaf blight/Corn leaf blight (55).jpg",
+      "train/Corn leaf blight/Corn leaf blight (59).jpg",
+      "train/Corn leaf blight/Corn leaf blight (72).jpg",
+      "train/Corn leaf blight/Corn leaf blight (77).jpg",
+      "train/Corn leaf blight/Corn leaf blight (86).jpg",
+      "train/Corn leaf blight/Corn leaf blight (90).jpg",
+      "train/Corn leaf blight/Corn leaf blight (92).jpg",
+      "train/Corn leaf blight/Corn leaf blight (93).jpg",
+      "train/Corn leaf blight/Corn leaf blight (96).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (102).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (107).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (110).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (115).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (22).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (24).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (25).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (27).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (32).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (34).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (37).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (40).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (42).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (47).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (49).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (50).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (59).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (62).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (65).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (67).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (78).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (82).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (84).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (87).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (10).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (101).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (19).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (21).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (31).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (33).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (35).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (36).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (37).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (42).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (43).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (44).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (46).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (55).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (59).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (61).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (65).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (72).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (78).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (85).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (89).jpg",
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (1).jpg",
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (3).jpg",
+      "test/Corn leaf blight/Corn leaf blight (1).jpg",
+      "test/Corn leaf blight/Corn leaf blight (12).jpg",
+      "test/Corn leaf blight/Corn leaf blight (3).jpg",
+      "test/Corn leaf blight/Corn leaf blight (7).jpg",
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (1).jpg",
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (2).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (2).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (13).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (14).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (27).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (28).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (30).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (32).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (35).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (38).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (49).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (51).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (52).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (59).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (6).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (9).jpg",
+      "train/Corn leaf blight/Corn leaf blight (10).jpg",
+      "train/Corn leaf blight/Corn leaf blight (108).jpg",
+      "train/Corn leaf blight/Corn leaf blight (11).jpg",
+      "train/Corn leaf blight/Corn leaf blight (114).jpg",
+      "train/Corn leaf blight/Corn leaf blight (123).jpg",
+      "train/Corn leaf blight/Corn leaf blight (125).jpg",
+      "train/Corn leaf blight/Corn leaf blight (138).jpg",
+      "train/Corn leaf blight/Corn leaf blight (14).jpg",
+      "train/Corn leaf blight/Corn leaf blight (141).jpg",
+      "train/Corn leaf blight/Corn leaf blight (150).jpg",
+      "train/Corn leaf blight/Corn leaf blight (162).jpg",
+      "train/Corn leaf blight/Corn leaf blight (164).jpg",
+      "train/Corn leaf blight/Corn leaf blight (166).jpg",
+      "train/Corn leaf blight/Corn leaf blight (168).jpg",
+      "train/Corn leaf blight/Corn leaf blight (171).jpg",
+      "train/Corn leaf blight/Corn leaf blight (173).jpg",
+      "train/Corn leaf blight/Corn leaf blight (177).jpg",
+      "train/Corn leaf blight/Corn leaf blight (179).jpg",
+      "train/Corn leaf blight/Corn leaf blight (2).jpg",
+      "train/Corn leaf blight/Corn leaf blight (25).jpg",
+      "train/Corn leaf blight/Corn leaf blight (29).jpg",
+      "train/Corn leaf blight/Corn leaf blight (3).jpg",
+      "train/Corn leaf blight/Corn leaf blight (32).jpg",
+      "train/Corn leaf blight/Corn leaf blight (36).jpg",
+      "train/Corn leaf blight/Corn leaf blight (38).jpg",
+      "train/Corn leaf blight/Corn leaf blight (47).jpg",
+      "train/Corn leaf blight/Corn leaf blight (56).jpg",
+      "train/Corn leaf blight/Corn leaf blight (6).jpg",
+      "train/Corn leaf blight/Corn leaf blight (63).jpg",
+      "train/Corn leaf blight/Corn leaf blight (68).jpg",
+      "train/Corn leaf blight/Corn leaf blight (7).jpg",
+      "train/Corn leaf blight/Corn leaf blight (70).jpg",
+      "train/Corn leaf blight/Corn leaf blight (84).jpg",
+      "train/Corn leaf blight/Corn leaf blight (89).jpg",
+      "train/Corn leaf blight/Corn leaf blight (91).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (103).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (106).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (108).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (114).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (117).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (16).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (20).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (23).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (26).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (30).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (36).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (38).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (4).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (44).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (51).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (57).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (58).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (7).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (70).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (74).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (81).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (85).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (88).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (89).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (15).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (16).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (28).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (40).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (41).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (48).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (50).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (58).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (6).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (68).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (69).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (71).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (82).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (9).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (90).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (95).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (98).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (99).jpg",
+      "test/Corn leaf blight/Corn leaf blight (10).jpg",
+      "test/Corn leaf blight/Corn leaf blight (11).jpg",
+      "test/Corn leaf blight/Corn leaf blight (4).jpg",
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (3).jpg",
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (5).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (3).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (4).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (7).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (9).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (1).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (20).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (22).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (24).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (26).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (3).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (31).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (4).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (50).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (53).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (54).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (60).jpg",
+      "train/Corn leaf blight/Corn leaf blight (1).jpg",
+      "train/Corn leaf blight/Corn leaf blight (100).jpg",
+      "train/Corn leaf blight/Corn leaf blight (102).jpg",
+      "train/Corn leaf blight/Corn leaf blight (113).jpg",
+      "train/Corn leaf blight/Corn leaf blight (122).jpg",
+      "train/Corn leaf blight/Corn leaf blight (127).jpg",
+      "train/Corn leaf blight/Corn leaf blight (130).jpg",
+      "train/Corn leaf blight/Corn leaf blight (132).jpg",
+      "train/Corn leaf blight/Corn leaf blight (133).jpg",
+      "train/Corn leaf blight/Corn leaf blight (135).jpg",
+      "train/Corn leaf blight/Corn leaf blight (139).jpg",
+      "train/Corn leaf blight/Corn leaf blight (144).jpg",
+      "train/Corn leaf blight/Corn leaf blight (147).jpg",
+      "train/Corn leaf blight/Corn leaf blight (15).jpg",
+      "train/Corn leaf blight/Corn leaf blight (154).jpg",
+      "train/Corn leaf blight/Corn leaf blight (174).jpg",
+      "train/Corn leaf blight/Corn leaf blight (175).jpg",
+      "train/Corn leaf blight/Corn leaf blight (176).jpg",
+      "train/Corn leaf blight/Corn leaf blight (19).jpg",
+      "train/Corn leaf blight/Corn leaf blight (26).jpg",
+      "train/Corn leaf blight/Corn leaf blight (27).jpg",
+      "train/Corn leaf blight/Corn leaf blight (28).jpg",
+      "train/Corn leaf blight/Corn leaf blight (30).jpg",
+      "train/Corn leaf blight/Corn leaf blight (34).jpg",
+      "train/Corn leaf blight/Corn leaf blight (4).jpg",
+      "train/Corn leaf blight/Corn leaf blight (42).jpg",
+      "train/Corn leaf blight/Corn leaf blight (48).jpg",
+      "train/Corn leaf blight/Corn leaf blight (54).jpg",
+      "train/Corn leaf blight/Corn leaf blight (61).jpg",
+      "train/Corn leaf blight/Corn leaf blight (64).jpg",
+      "train/Corn leaf blight/Corn leaf blight (67).jpg",
+      "train/Corn leaf blight/Corn leaf blight (73).jpg",
+      "train/Corn leaf blight/Corn leaf blight (78).jpg",
+      "train/Corn leaf blight/Corn leaf blight (81).jpg",
+      "train/Corn leaf blight/Corn leaf blight (85).jpg",
+      "train/Corn leaf blight/Corn leaf blight (87).jpg",
+      "train/Corn leaf blight/Corn leaf blight (88).jpg",
+      "train/Corn leaf blight/Corn leaf blight (97).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (100).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (104).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (105).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (109).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (111).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (112).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (119).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (120).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (122).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (33).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (35).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (5).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (6).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (60).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (61).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (63).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (69).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (72).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (83).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (86).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (9).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (92).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (95).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (97).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (98).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (99).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (11).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (22).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (24).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (25).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (3).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (30).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (34).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (38).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (4).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (57).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (60).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (62).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (64).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (67).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (7).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (70).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (73).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (74).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (81).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (92).jpg",
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (4).jpg",
+      "test/Corn leaf blight/Corn leaf blight (8).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (10).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (5).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (15).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (17).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (2).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (23).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (34).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (41).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (42).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (47).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (5).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (58).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (62).jpg",
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (8).jpg",
+      "train/Corn leaf blight/Corn leaf blight (105).jpg",
+      "train/Corn leaf blight/Corn leaf blight (107).jpg",
+      "train/Corn leaf blight/Corn leaf blight (110).jpg",
+      "train/Corn leaf blight/Corn leaf blight (111).jpg",
+      "train/Corn leaf blight/Corn leaf blight (117).jpg",
+      "train/Corn leaf blight/Corn leaf blight (12).jpg",
+      "train/Corn leaf blight/Corn leaf blight (136).jpg",
+      "train/Corn leaf blight/Corn leaf blight (140).jpg",
+      "train/Corn leaf blight/Corn leaf blight (142).jpg",
+      "train/Corn leaf blight/Corn leaf blight (149).jpg",
+      "train/Corn leaf blight/Corn leaf blight (158).jpg",
+      "train/Corn leaf blight/Corn leaf blight (159).jpg",
+      "train/Corn leaf blight/Corn leaf blight (16).jpg",
+      "train/Corn leaf blight/Corn leaf blight (165).jpg",
+      "train/Corn leaf blight/Corn leaf blight (170).jpg",
+      "train/Corn leaf blight/Corn leaf blight (178).jpg",
+      "train/Corn leaf blight/Corn leaf blight (20).jpg",
+      "train/Corn leaf blight/Corn leaf blight (21).jpg",
+      "train/Corn leaf blight/Corn leaf blight (22).jpg",
+      "train/Corn leaf blight/Corn leaf blight (31).jpg",
+      "train/Corn leaf blight/Corn leaf blight (37).jpg",
+      "train/Corn leaf blight/Corn leaf blight (39).jpg",
+      "train/Corn leaf blight/Corn leaf blight (43).jpg",
+      "train/Corn leaf blight/Corn leaf blight (44).jpg",
+      "train/Corn leaf blight/Corn leaf blight (46).jpg",
+      "train/Corn leaf blight/Corn leaf blight (5).jpg",
+      "train/Corn leaf blight/Corn leaf blight (57).jpg",
+      "train/Corn leaf blight/Corn leaf blight (58).jpg",
+      "train/Corn leaf blight/Corn leaf blight (60).jpg",
+      "train/Corn leaf blight/Corn leaf blight (65).jpg",
+      "train/Corn leaf blight/Corn leaf blight (74).jpg",
+      "train/Corn leaf blight/Corn leaf blight (75).jpg",
+      "train/Corn leaf blight/Corn leaf blight (8).jpg",
+      "train/Corn leaf blight/Corn leaf blight (83).jpg",
+      "train/Corn leaf blight/Corn leaf blight (94).jpg",
+      "train/Corn leaf blight/Corn leaf blight (95).jpg",
+      "train/Corn leaf blight/Corn leaf blight (98).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (10).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (113).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (118).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (15).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (18).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (19).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (21).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (28).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (29).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (39).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (43).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (45).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (48).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (52).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (55).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (56).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (64).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (66).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (71).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (80).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (90).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (94).jpg",
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (96).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (1).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (12).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (13).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (14).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (2).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (20).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (27).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (32).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (47).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (49).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (5).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (51).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (52).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (53).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (54).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (66).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (79).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (8).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (80).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (88).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (94).jpg",
+      "train/Tomato leaf late blight/Tomato leaf late blight (97).jpg",
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (2).jpg",
+      "test/Corn leaf blight/Corn leaf blight (6).jpg",
+      "test/Corn leaf blight/Corn leaf blight (9).jpg",
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (4).jpg",
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (6).jpg",
+      "test/Tomato leaf late blight/Tomato leaf late blight (6).jpg"
+    ],
+    "labels": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      9,
+      9,
+      30,
+      30,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      7,
+      7,
+      9,
+      9,
+      9,
+      9,
+      25,
+      25,
+      30,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      9,
+      9,
+      9,
+      25,
+      25,
+      30,
+      30,
+      30,
+      30,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      7,
+      9,
+      30,
+      30,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      7,
+      9,
+      9,
+      25,
+      25,
+      30
+    ],
+    "pred_open": [
+      7,
+      9,
+      9,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      7,
+      7,
+      7,
+      9,
+      9,
+      7,
+      9,
+      7,
+      2,
+      7,
+      7,
+      9,
+      26,
+      6,
+      9,
+      9,
+      9,
+      18,
+      9,
+      9,
+      9,
+      7,
+      7,
+      9,
+      7,
+      7,
+      6,
+      7,
+      9,
+      9,
+      7,
+      7,
+      7,
+      9,
+      30,
+      9,
+      7,
+      7,
+      25,
+      25,
+      25,
+      30,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      1,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      11,
+      25,
+      25,
+      29,
+      25,
+      30,
+      25,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      21,
+      30,
+      30,
+      30,
+      29,
+      30,
+      30,
+      30,
+      30,
+      7,
+      9,
+      30,
+      30,
+      9,
+      7,
+      7,
+      9,
+      8,
+      25,
+      7,
+      4,
+      1,
+      7,
+      11,
+      25,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      36,
+      30,
+      7,
+      9,
+      9,
+      30,
+      9,
+      28,
+      7,
+      9,
+      7,
+      30,
+      7,
+      1,
+      7,
+      7,
+      9,
+      7,
+      7,
+      7,
+      7,
+      30,
+      23,
+      29,
+      7,
+      6,
+      25,
+      25,
+      25,
+      7,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      17,
+      25,
+      25,
+      25,
+      30,
+      25,
+      30,
+      14,
+      25,
+      30,
+      25,
+      25,
+      30,
+      21,
+      29,
+      30,
+      25,
+      30,
+      30,
+      31,
+      30,
+      20,
+      30,
+      30,
+      30,
+      30,
+      25,
+      30,
+      30,
+      30,
+      0,
+      30,
+      30,
+      29,
+      7,
+      7,
+      9,
+      7,
+      9,
+      30,
+      25,
+      29,
+      7,
+      7,
+      12,
+      7,
+      7,
+      9,
+      7,
+      7,
+      23,
+      7,
+      7,
+      9,
+      7,
+      9,
+      9,
+      23,
+      9,
+      7,
+      7,
+      9,
+      9,
+      7,
+      9,
+      25,
+      9,
+      4,
+      7,
+      30,
+      9,
+      9,
+      9,
+      7,
+      9,
+      9,
+      7,
+      7,
+      30,
+      7,
+      6,
+      9,
+      7,
+      7,
+      30,
+      1,
+      9,
+      6,
+      16,
+      7,
+      6,
+      25,
+      25,
+      11,
+      25,
+      30,
+      14,
+      30,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      6,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      33,
+      29,
+      18,
+      30,
+      26,
+      30,
+      30,
+      30,
+      30,
+      25,
+      30,
+      30,
+      30,
+      30,
+      16,
+      7,
+      29,
+      9,
+      25,
+      25,
+      30,
+      30,
+      30,
+      31,
+      7,
+      7,
+      15,
+      9,
+      9,
+      7,
+      1,
+      9,
+      9,
+      7,
+      7,
+      7,
+      13,
+      7,
+      9,
+      7,
+      7,
+      7,
+      23,
+      10,
+      7,
+      9,
+      9,
+      9,
+      9,
+      7,
+      9,
+      9,
+      7,
+      9,
+      7,
+      9,
+      7,
+      7,
+      26,
+      9,
+      18,
+      7,
+      6,
+      10,
+      7,
+      9,
+      23,
+      6,
+      9,
+      9,
+      16,
+      6,
+      9,
+      7,
+      25,
+      37,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      30,
+      25,
+      30,
+      30,
+      3,
+      30,
+      0,
+      30,
+      30,
+      30,
+      30,
+      25,
+      30,
+      30,
+      25,
+      20,
+      30,
+      25,
+      30,
+      7,
+      9,
+      25,
+      29,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      9,
+      7,
+      7,
+      8,
+      7,
+      7,
+      7,
+      7,
+      9,
+      9,
+      7,
+      7,
+      9,
+      9,
+      23,
+      9,
+      9,
+      7,
+      7,
+      7,
+      9,
+      9,
+      9,
+      7,
+      30,
+      7,
+      9,
+      7,
+      29,
+      9,
+      9,
+      7,
+      7,
+      7,
+      9,
+      7,
+      8,
+      7,
+      9,
+      9,
+      9,
+      9,
+      37,
+      25,
+      25,
+      25,
+      25,
+      30,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      30,
+      30,
+      1,
+      30,
+      30,
+      30,
+      0,
+      30,
+      30,
+      23,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      23,
+      30,
+      30,
+      30,
+      30,
+      9,
+      7,
+      7,
+      25,
+      25,
+      30
+    ],
+    "probs_focus": [
+      [
+        0.6953999996185303,
+        0.015200000256299973,
+        0.0,
+        0.0
+      ],
+      [
+        0.01119999960064888,
+        0.9886999726295471,
+        0.0,
+        0.0
+      ],
+      [
+        0.4032000005245209,
+        0.5967000126838684,
+        0.0,
+        0.0
+      ],
+      [
+        0.5224999785423279,
+        0.011099999770522118,
+        0.0,
+        0.0
+      ],
+      [
+        0.795199990272522,
+        0.19679999351501465,
+        0.0,
+        0.0
+      ],
+      [
+        0.9621000289916992,
+        0.037700001150369644,
+        0.0,
+        0.0
+      ],
+      [
+        0.3547999858856201,
+        0.10509999841451645,
+        0.002899999963119626,
+        0.025800000876188278
+      ],
+      [
+        0.9726999998092651,
+        0.025800000876188278,
+        0.0,
+        0.0
+      ],
+      [
+        0.6384000182151794,
+        0.016300000250339508,
+        0.0,
+        0.0003000000142492354
+      ],
+      [
+        0.4456999897956848,
+        0.1527000069618225,
+        0.00019999999494757503,
+        0.00279999990016222
+      ],
+      [
+        0.9830999970436096,
+        0.015399999916553497,
+        0.0,
+        0.0
+      ],
+      [
+        0.007199999876320362,
+        0.9865999817848206,
+        0.0,
+        0.00279999990016222
+      ],
+      [
+        0.8259000182151794,
+        0.14869999885559082,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.6489999890327454,
+        0.35100001096725464,
+        0.0,
+        0.0
+      ],
+      [
+        0.867900013923645,
+        0.01810000091791153,
+        0.0,
+        0.006800000090152025
+      ],
+      [
+        0.03060000017285347,
+        0.9474999904632568,
+        0.0,
+        0.012299999594688416
+      ],
+      [
+        0.014700000174343586,
+        0.9821000099182129,
+        0.0,
+        0.0003000000142492354
+      ],
+      [
+        0.3100999891757965,
+        0.2635999917984009,
+        9.999999747378752e-05,
+        0.014800000004470348
+      ],
+      [
+        0.0778999999165535,
+        0.816100001335144,
+        0.0,
+        0.051899999380111694
+      ],
+      [
+        0.5343999862670898,
+        0.1371999979019165,
+        9.999999747378752e-05,
+        0.008999999612569809
+      ],
+      [
+        0.03849999979138374,
+        0.15240000188350677,
+        0.023099999874830246,
+        0.18880000710487366
+      ],
+      [
+        0.7656999826431274,
+        0.18389999866485596,
+        0.0,
+        0.0
+      ],
+      [
+        0.45489999651908875,
+        0.4117000102996826,
+        0.0,
+        0.000699999975040555
+      ],
+      [
+        0.09380000084638596,
+        0.8385000228881836,
+        0.0,
+        0.0020000000949949026
+      ],
+      [
+        0.0012000000569969416,
+        0.004900000058114529,
+        0.00019999999494757503,
+        0.00039999998989515007
+      ],
+      [
+        0.038100000470876694,
+        0.0008999999845400453,
+        0.00139999995008111,
+        0.010200000368058681
+      ],
+      [
+        0.30160000920295715,
+        0.3903000056743622,
+        0.0,
+        0.00279999990016222
+      ],
+      [
+        0.015599999576807022,
+        0.9642000198364258,
+        0.0,
+        0.003100000089034438
+      ],
+      [
+        0.002400000113993883,
+        0.7738000154495239,
+        0.0,
+        0.04540000110864639
+      ],
+      [
+        0.29339998960494995,
+        0.0877000018954277,
+        0.0,
+        0.13590000569820404
+      ],
+      [
+        0.0005000000237487257,
+        0.9987000226974487,
+        0.0,
+        0.0
+      ],
+      [
+        0.019500000402331352,
+        0.6144000291824341,
+        0.0,
+        0.02449999935925007
+      ],
+      [
+        0.0066999997943639755,
+        0.9904999732971191,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.4657999873161316,
+        0.05380000174045563,
+        0.00559999980032444,
+        0.02590000070631504
+      ],
+      [
+        0.9952999949455261,
+        0.0032999999821186066,
+        0.0,
+        0.0
+      ],
+      [
+        0.10499999672174454,
+        0.8942999839782715,
+        0.0,
+        0.0
+      ],
+      [
+        0.8927000164985657,
+        0.10300000011920929,
+        0.0,
+        0.0010000000474974513
+      ],
+      [
+        0.5239999890327454,
+        0.40549999475479126,
+        0.0,
+        0.0031999999191612005
+      ],
+      [
+        0.032499998807907104,
+        0.06750000268220901,
+        0.0,
+        0.0
+      ],
+      [
+        0.9510999917984009,
+        0.04780000075697899,
+        0.0,
+        0.0
+      ],
+      [
+        0.3691999912261963,
+        0.6247000098228455,
+        0.0,
+        0.0
+      ],
+      [
+        0.024299999698996544,
+        0.5605999827384949,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.6079999804496765,
+        0.36970001459121704,
+        0.0,
+        0.0
+      ],
+      [
+        0.7583000063896179,
+        0.0012000000569969416,
+        0.0,
+        0.0
+      ],
+      [
+        0.5080000162124634,
+        0.45890000462532043,
+        0.0,
+        0.004699999932199717
+      ],
+      [
+        0.1340000033378601,
+        0.6837999820709229,
+        0.0,
+        0.07150000333786011
+      ],
+      [
+        0.0003000000142492354,
+        0.0,
+        0.024800000712275505,
+        0.9429000020027161
+      ],
+      [
+        0.004000000189989805,
+        0.4708000123500824,
+        9.999999747378752e-05,
+        0.0
+      ],
+      [
+        0.4932999908924103,
+        0.4860000014305115,
+        0.0,
+        0.0
+      ],
+      [
+        0.5866000056266785,
+        0.38199999928474426,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9993000030517578,
+        0.0005000000237487257
+      ],
+      [
+        0.0,
+        0.0,
+        0.9417999982833862,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9994000196456909,
+        9.999999747378752e-05
+      ],
+      [
+        0.006099999882280827,
+        0.006200000178068876,
+        0.22450000047683716,
+        0.26420000195503235
+      ],
+      [
+        0.0,
+        0.0,
+        0.9973000288009644,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9947999715805054,
+        0.003599999938160181
+      ],
+      [
+        0.0,
+        0.0,
+        0.9672999978065491,
+        0.01590000092983246
+      ],
+      [
+        0.0,
+        0.0,
+        0.9957000017166138,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9945999979972839,
+        0.0015999999595806003
+      ],
+      [
+        0.0,
+        0.0,
+        0.9987999796867371,
+        9.999999747378752e-05
+      ],
+      [
+        0.000699999975040555,
+        0.009499999694526196,
+        0.5342000126838684,
+        0.0032999999821186066
+      ],
+      [
+        0.0,
+        0.0,
+        0.002400000113993883,
+        0.00930000003427267
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9387000203132629,
+        0.00989999994635582
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998000264167786,
+        0.0
+      ],
+      [
+        0.02969999983906746,
+        0.2741999924182892,
+        0.49869999289512634,
+        0.012299999594688416
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9289000034332275,
+        0.04320000112056732
+      ],
+      [
+        0.0,
+        0.0,
+        0.9420999884605408,
+        0.05700000002980232
+      ],
+      [
+        0.0,
+        0.0,
+        0.996399998664856,
+        0.003000000026077032
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9384999871253967,
+        0.06040000170469284
+      ],
+      [
+        0.0,
+        0.0,
+        0.9872000217437744,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0008999999845400453,
+        0.00019999999494757503
+      ],
+      [
+        0.0024999999441206455,
+        0.0,
+        0.9700000286102295,
+        0.008100000210106373
+      ],
+      [
+        0.0,
+        0.0,
+        0.9722999930381775,
+        9.999999747378752e-05
+      ],
+      [
+        0.0012000000569969416,
+        0.0013000000035390258,
+        0.018300000578165054,
+        0.09520000219345093
+      ],
+      [
+        0.0,
+        0.0,
+        0.9994000196456909,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9984999895095825,
+        0.00139999995008111
+      ],
+      [
+        0.00019999999494757503,
+        9.999999747378752e-05,
+        0.0,
+        0.91839998960495
+      ],
+      [
+        0.0,
+        0.0003000000142492354,
+        0.0,
+        0.9988999962806702
+      ],
+      [
+        0.03420000150799751,
+        0.0,
+        0.029100000858306885,
+        0.5558000206947327
+      ],
+      [
+        0.0008999999845400453,
+        9.999999747378752e-05,
+        0.0026000000070780516,
+        0.925599992275238
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.6933000087738037
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9994000196456909
+      ],
+      [
+        0.0007999999797903001,
+        9.999999747378752e-05,
+        0.09679999947547913,
+        0.4350999891757965
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9836000204086304
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9944000244140625
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.012000000104308128
+      ],
+      [
+        9.999999747378752e-05,
+        0.00019999999494757503,
+        9.999999747378752e-05,
+        0.850600004196167
+      ],
+      [
+        0.0,
+        0.0,
+        0.0038999998942017555,
+        0.6819999814033508
+      ],
+      [
+        9.999999747378752e-05,
+        0.0003000000142492354,
+        0.01360000018030405,
+        0.8698999881744385
+      ],
+      [
+        0.00019999999494757503,
+        0.0007999999797903001,
+        0.0003000000142492354,
+        0.1607999950647354
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9635999798774719
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.8472999930381775
+      ],
+      [
+        0.8991000056266785,
+        0.06790000200271606,
+        0.0,
+        0.0
+      ],
+      [
+        0.006200000178068876,
+        0.9934999942779541,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.8064000010490417
+      ],
+      [
+        0.002199999988079071,
+        0.00139999995008111,
+        0.0012000000569969416,
+        0.9866999983787537
+      ],
+      [
+        0.15379999577999115,
+        0.47279998660087585,
+        0.0,
+        0.0
+      ],
+      [
+        0.9563000202178955,
+        0.01119999960064888,
+        0.0,
+        0.0
+      ],
+      [
+        0.40230000019073486,
+        0.11630000174045563,
+        0.0,
+        0.0
+      ],
+      [
+        0.44929999113082886,
+        0.5475000143051147,
+        0.0,
+        0.0
+      ],
+      [
+        0.05770000070333481,
+        0.08139999955892563,
+        0.002099999925121665,
+        0.0024999999441206455
+      ],
+      [
+        0.009700000286102295,
+        0.002899999963119626,
+        0.5156000256538391,
+        0.00139999995008111
+      ],
+      [
+        0.9180999994277954,
+        0.04270000010728836,
+        0.0,
+        0.0003000000142492354
+      ],
+      [
+        0.08389999717473984,
+        0.13779999315738678,
+        0.0,
+        0.0066999997943639755
+      ],
+      [
+        0.008700000122189522,
+        0.0003000000142492354,
+        0.0,
+        0.0
+      ],
+      [
+        0.5170999765396118,
+        0.4472000002861023,
+        0.0,
+        0.0
+      ],
+      [
+        0.0005000000237487257,
+        0.0,
+        0.0017999999690800905,
+        0.00019999999494757503
+      ],
+      [
+        0.16140000522136688,
+        0.031599998474121094,
+        0.5325000286102295,
+        0.005200000014156103
+      ],
+      [
+        0.9326000213623047,
+        0.026900000870227814,
+        0.0,
+        0.0
+      ],
+      [
+        0.4837999939918518,
+        0.4140999913215637,
+        9.999999747378752e-05,
+        0.0010000000474974513
+      ],
+      [
+        0.9036999940872192,
+        0.07039999961853027,
+        0.0,
+        0.01590000092983246
+      ],
+      [
+        0.8407999873161316,
+        0.15139999985694885,
+        0.0,
+        0.001500000013038516
+      ],
+      [
+        0.7164000272750854,
+        0.027300000190734863,
+        0.00039999998989515007,
+        0.013700000010430813
+      ],
+      [
+        0.6126000285148621,
+        0.03290000185370445,
+        0.0,
+        0.0
+      ],
+      [
+        0.6151999831199646,
+        0.3601999878883362,
+        0.0,
+        0.0
+      ],
+      [
+        0.30640000104904175,
+        0.39070001244544983,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.1858000010251999,
+        0.12049999833106995,
+        0.059700001031160355,
+        0.014100000262260437
+      ],
+      [
+        0.32510000467300415,
+        0.10090000182390213,
+        0.00800000037997961,
+        0.3756999969482422
+      ],
+      [
+        0.7991999983787537,
+        0.1988999992609024,
+        0.0,
+        0.0
+      ],
+      [
+        0.35420000553131104,
+        0.6456999778747559,
+        0.0,
+        0.0
+      ],
+      [
+        0.011300000362098217,
+        0.961899995803833,
+        0.0,
+        0.013000000268220901
+      ],
+      [
+        0.04769999906420708,
+        0.009800000116229057,
+        0.0,
+        0.3312999904155731
+      ],
+      [
+        0.019700000062584877,
+        0.6376000046730042,
+        0.0,
+        0.0
+      ],
+      [
+        0.1446000039577484,
+        0.06949999928474426,
+        0.0,
+        0.0010000000474974513
+      ],
+      [
+        0.7468000054359436,
+        0.18410000205039978,
+        0.0,
+        0.0003000000142492354
+      ],
+      [
+        9.999999747378752e-05,
+        0.9998999834060669,
+        0.0,
+        0.0
+      ],
+      [
+        0.6046000123023987,
+        0.22949999570846558,
+        0.0,
+        0.015300000086426735
+      ],
+      [
+        0.0617000013589859,
+        0.06769999861717224,
+        0.0003000000142492354,
+        0.3528999984264374
+      ],
+      [
+        0.6628000140190125,
+        0.2865999937057495,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.1762000024318695,
+        0.004600000102072954,
+        0.0,
+        0.0003000000142492354
+      ],
+      [
+        0.7717999815940857,
+        0.19200000166893005,
+        0.0,
+        0.0
+      ],
+      [
+        0.9973999857902527,
+        0.0010999999940395355,
+        0.0,
+        0.0
+      ],
+      [
+        0.008500000461935997,
+        0.8973000049591064,
+        0.0,
+        0.0006000000284984708
+      ],
+      [
+        0.6194999814033508,
+        0.05559999868273735,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.991100013256073,
+        0.0071000000461936,
+        0.0,
+        0.0
+      ],
+      [
+        0.5777000188827515,
+        0.006599999964237213,
+        0.0,
+        0.0
+      ],
+      [
+        0.7195000052452087,
+        0.2700999975204468,
+        0.0,
+        0.0010999999940395355
+      ],
+      [
+        9.999999747378752e-05,
+        0.00039999998989515007,
+        0.002199999988079071,
+        0.5986999869346619
+      ],
+      [
+        0.04320000112056732,
+        0.0142000000923872,
+        0.2304999977350235,
+        0.17409999668598175
+      ],
+      [
+        0.08590000122785568,
+        0.12680000066757202,
+        0.0,
+        0.033799998462200165
+      ],
+      [
+        0.9882000088691711,
+        0.0015999999595806003,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.026499999687075615,
+        0.0,
+        0.07199999690055847
+      ],
+      [
+        0.0,
+        0.0,
+        0.9955000281333923,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9799000024795532,
+        0.000699999975040555
+      ],
+      [
+        0.23090000450611115,
+        0.038600001484155655,
+        0.21050000190734863,
+        0.06759999692440033
+      ],
+      [
+        0.0010000000474974513,
+        0.0,
+        0.9959999918937683,
+        0.00019999999494757503
+      ],
+      [
+        0.0,
+        0.0,
+        0.9591000080108643,
+        0.0003000000142492354
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9988999962806702,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.994700014591217,
+        0.00019999999494757503
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        0.0034000000450760126,
+        9.999999747378752e-05,
+        0.8413000106811523,
+        0.005200000014156103
+      ],
+      [
+        0.0,
+        0.0,
+        0.9990000128746033,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.002300000051036477,
+        0.002400000113993883
+      ],
+      [
+        0.0,
+        0.0,
+        0.9736999869346619,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.003599999938160181,
+        0.8202000260353088
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998000264167786,
+        0.00019999999494757503
+      ],
+      [
+        0.0,
+        0.0,
+        0.3458000123500824,
+        0.5655999779701233
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.006300000008195639
+      ],
+      [
+        0.0,
+        0.0,
+        0.9839000105857849,
+        0.010999999940395355
+      ],
+      [
+        0.0,
+        0.0,
+        0.08879999816417694,
+        0.8884000182151794
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.595300018787384,
+        0.39559999108314514
+      ],
+      [
+        0.0,
+        0.0,
+        0.007699999958276749,
+        0.9922999739646912
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.2378000020980835
+      ],
+      [
+        0.017400000244379044,
+        0.0012000000569969416,
+        0.05889999866485596,
+        0.3179999887943268
+      ],
+      [
+        0.0003000000142492354,
+        0.0,
+        0.0,
+        0.6861000061035156
+      ],
+      [
+        0.004399999976158142,
+        0.002199999988079071,
+        0.3465000092983246,
+        0.02329999953508377
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998999834060669
+      ],
+      [
+        0.0,
+        0.005100000184029341,
+        0.0,
+        0.9947999715805054
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.07500000298023224,
+        0.9235000014305115
+      ],
+      [
+        0.0034000000450760126,
+        0.0010000000474974513,
+        0.0,
+        0.14589999616146088
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.014399999752640724,
+        0.9739000201225281
+      ],
+      [
+        0.0,
+        9.999999747378752e-05,
+        0.0,
+        0.9904000163078308
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998999834060669
+      ],
+      [
+        0.0,
+        0.0,
+        0.9771000146865845,
+        0.0015999999595806003
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9965999722480774
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.4047999978065491,
+        0.4489000141620636
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.7336999773979187
+      ],
+      [
+        0.08950000256299973,
+        0.01600000075995922,
+        0.011099999770522118,
+        0.034299999475479126
+      ],
+      [
+        0.00019999999494757503,
+        0.0015999999595806003,
+        0.0007999999797903001,
+        0.992900013923645
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9814000129699707
+      ],
+      [
+        0.10499999672174454,
+        0.04019999876618385,
+        0.0,
+        0.01940000057220459
+      ],
+      [
+        0.5755000114440918,
+        0.04830000177025795,
+        0.0013000000035390258,
+        0.002300000051036477
+      ],
+      [
+        0.666700005531311,
+        0.33160001039505005,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.22059999406337738,
+        0.5554999709129333,
+        0.0,
+        0.0017000000225380063
+      ],
+      [
+        0.9169999957084656,
+        0.0731000006198883,
+        0.0,
+        0.0
+      ],
+      [
+        0.0052999998442828655,
+        0.994700014591217,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.14139999449253082,
+        0.8572999835014343
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.004000000189989805,
+        0.002400000113993883,
+        0.0,
+        0.007899999618530273
+      ],
+      [
+        0.65420001745224,
+        0.3046000003814697,
+        0.0,
+        0.0
+      ],
+      [
+        0.8881000280380249,
+        0.11180000007152557,
+        0.0,
+        0.0
+      ],
+      [
+        0.052000001072883606,
+        0.016100000590085983,
+        0.0,
+        0.023099999874830246
+      ],
+      [
+        0.9769999980926514,
+        0.015799999237060547,
+        0.0,
+        0.0
+      ],
+      [
+        0.9995999932289124,
+        0.00039999998989515007,
+        0.0,
+        0.0
+      ],
+      [
+        0.3018999993801117,
+        0.6908000111579895,
+        0.0,
+        0.0
+      ],
+      [
+        0.993399977684021,
+        0.002899999963119626,
+        0.0,
+        0.0
+      ],
+      [
+        0.9345999956130981,
+        0.03779999911785126,
+        0.0,
+        0.003800000064074993
+      ],
+      [
+        0.026599999517202377,
+        0.00570000009611249,
+        0.2574999928474426,
+        0.12430000305175781
+      ],
+      [
+        0.9369999766349792,
+        0.05999999865889549,
+        0.0,
+        0.0
+      ],
+      [
+        0.7858999967575073,
+        0.006399999838322401,
+        0.0,
+        0.0008999999845400453
+      ],
+      [
+        0.34630000591278076,
+        0.43700000643730164,
+        0.0,
+        0.0010999999940395355
+      ],
+      [
+        0.9336000084877014,
+        0.05959999933838844,
+        0.0,
+        0.0
+      ],
+      [
+        0.009100000374019146,
+        0.9889000058174133,
+        0.0,
+        0.0
+      ],
+      [
+        0.09099999815225601,
+        0.7024999856948853,
+        0.0,
+        0.000699999975040555
+      ],
+      [
+        0.30149999260902405,
+        0.0908999964594841,
+        0.0017000000225380063,
+        0.029100000858306885
+      ],
+      [
+        0.025599999353289604,
+        0.9740999937057495,
+        0.0,
+        0.0
+      ],
+      [
+        0.4625000059604645,
+        0.38679999113082886,
+        0.0005000000237487257,
+        0.010400000028312206
+      ],
+      [
+        0.6956999897956848,
+        0.14740000665187836,
+        9.999999747378752e-05,
+        0.00139999995008111
+      ],
+      [
+        0.021400000900030136,
+        0.9785000085830688,
+        0.0,
+        0.0
+      ],
+      [
+        0.3034000098705292,
+        0.6316999793052673,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.7074999809265137,
+        0.17319999635219574,
+        0.0,
+        0.0
+      ],
+      [
+        0.20360000431537628,
+        0.7932000160217285,
+        0.0,
+        0.00039999998989515007
+      ],
+      [
+        9.999999747378752e-05,
+        0.0003000000142492354,
+        0.6061000227928162,
+        0.004900000058114529
+      ],
+      [
+        0.00839999970048666,
+        0.9639000296592712,
+        0.0,
+        0.018300000578165054
+      ],
+      [
+        0.3188000023365021,
+        0.011599999852478504,
+        0.0,
+        0.0
+      ],
+      [
+        0.9182000160217285,
+        0.07100000232458115,
+        0.0,
+        0.0012000000569969416
+      ],
+      [
+        0.018799999728798866,
+        0.01860000006854534,
+        0.0,
+        0.9124000072479248
+      ],
+      [
+        0.4122999906539917,
+        0.5860999822616577,
+        0.0,
+        0.0
+      ],
+      [
+        0.40689998865127563,
+        0.5440999865531921,
+        0.0,
+        0.00039999998989515007
+      ],
+      [
+        0.10180000215768814,
+        0.8289999961853027,
+        0.0013000000035390258,
+        0.04270000010728836
+      ],
+      [
+        0.8571000099182129,
+        0.13429999351501465,
+        0.0,
+        0.0
+      ],
+      [
+        0.14139999449253082,
+        0.8525000214576721,
+        0.0,
+        0.0
+      ],
+      [
+        0.005200000014156103,
+        0.9944999814033508,
+        0.0,
+        0.0
+      ],
+      [
+        0.8805999755859375,
+        0.09080000221729279,
+        0.0,
+        0.0027000000700354576
+      ],
+      [
+        0.6834999918937683,
+        0.29100000858306885,
+        0.0,
+        0.0
+      ],
+      [
+        0.07460000365972519,
+        0.03280000016093254,
+        0.006000000052154064,
+        0.6729000210762024
+      ],
+      [
+        0.9940999746322632,
+        0.00559999980032444,
+        0.0,
+        0.0
+      ],
+      [
+        0.00019999999494757503,
+        0.001500000013038516,
+        0.0,
+        0.0010999999940395355
+      ],
+      [
+        0.36579999327659607,
+        0.47760000824928284,
+        0.00019999999494757503,
+        0.023000000044703484
+      ],
+      [
+        0.8309999704360962,
+        0.002300000051036477,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.9164000153541565,
+        0.02759999968111515,
+        0.00039999998989515007,
+        0.0008999999845400453
+      ],
+      [
+        0.000699999975040555,
+        0.024800000712275505,
+        0.0,
+        0.9503999948501587
+      ],
+      [
+        0.11869999766349792,
+        0.09629999846220016,
+        0.0,
+        0.022600000724196434
+      ],
+      [
+        0.04320000112056732,
+        0.3555000126361847,
+        0.003599999938160181,
+        0.156700000166893
+      ],
+      [
+        0.10859999805688858,
+        0.22470000386238098,
+        0.0,
+        0.0017000000225380063
+      ],
+      [
+        0.00019999999494757503,
+        0.001500000013038516,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.9909999966621399,
+        0.007699999958276749,
+        0.0,
+        0.0
+      ],
+      [
+        0.0949999988079071,
+        0.22349999845027924,
+        0.017899999395012856,
+        0.10639999806880951
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        0.00019999999494757503,
+        0.0,
+        0.16500000655651093,
+        0.0012000000569969416
+      ],
+      [
+        0.002899999963119626,
+        9.999999747378752e-05,
+        0.9919000267982483,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        9.999999747378752e-05,
+        0.7520999908447266
+      ],
+      [
+        0.0,
+        0.0,
+        9.999999747378752e-05,
+        0.0026000000070780516
+      ],
+      [
+        0.0,
+        0.0,
+        0.20080000162124634,
+        0.7699000239372253
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9954000115394592,
+        0.00019999999494757503
+      ],
+      [
+        0.006599999964237213,
+        0.0,
+        0.5042999982833862,
+        0.007000000216066837
+      ],
+      [
+        0.000699999975040555,
+        0.0,
+        0.9976000189781189,
+        0.0006000000284984708
+      ],
+      [
+        0.0,
+        0.0,
+        0.9995999932289124,
+        9.999999747378752e-05
+      ],
+      [
+        0.004999999888241291,
+        9.999999747378752e-05,
+        0.9560999870300293,
+        0.006200000178068876
+      ],
+      [
+        0.0,
+        0.0,
+        0.9990000128746033,
+        0.00039999998989515007
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9247000217437744,
+        0.0421999990940094
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9271000027656555,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.9283999800682068,
+        0.0038999998942017555
+      ],
+      [
+        0.00019999999494757503,
+        0.002300000051036477,
+        0.9553999900817871,
+        0.0015999999595806003
+      ],
+      [
+        9.999999747378752e-05,
+        0.004399999976158142,
+        0.13019999861717224,
+        0.009499999694526196
+      ],
+      [
+        0.0,
+        0.0,
+        0.9966999888420105,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.9997000098228455,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9915000200271606,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9955999851226807,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9972000122070312,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998999834060669
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9801999926567078
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.0,
+        0.9944000244140625
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.3882000148296356
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.17090000212192535
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.3070000112056732
+      ],
+      [
+        0.0,
+        0.0005000000237487257,
+        0.0,
+        0.9865000247955322
+      ],
+      [
+        0.005400000140070915,
+        0.014800000004470348,
+        0.017799999564886093,
+        0.04919999837875366
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9847000241279602
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9858999848365784
+      ],
+      [
+        0.0,
+        0.0,
+        0.004600000102072954,
+        0.7717000246047974
+      ],
+      [
+        0.0,
+        0.0,
+        0.0005000000237487257,
+        0.968500018119812
+      ],
+      [
+        0.0,
+        0.0,
+        0.849399983882904,
+        0.039000000804662704
+      ],
+      [
+        0.0,
+        0.0,
+        0.004100000020116568,
+        0.9934999942779541
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998999834060669
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9972000122070312
+      ],
+      [
+        0.0,
+        0.0,
+        0.00019999999494757503,
+        0.056299999356269836
+      ],
+      [
+        0.9835000038146973,
+        0.015399999916553497,
+        0.0,
+        0.0
+      ],
+      [
+        0.0005000000237487257,
+        0.22390000522136688,
+        0.0,
+        0.11410000175237656
+      ],
+      [
+        0.017899999395012856,
+        0.958899974822998,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9728000164031982,
+        0.0017999999690800905
+      ],
+      [
+        0.0,
+        0.0,
+        0.9991000294685364,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        9.999999747378752e-05,
+        0.0006000000284984708,
+        0.8565999865531921
+      ],
+      [
+        0.0,
+        0.0,
+        0.0003000000142492354,
+        0.989300012588501
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.39640000462532043
+      ],
+      [
+        0.9894000291824341,
+        0.0019000000320374966,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.9514999985694885,
+        0.04729999974370003,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0010999999940395355,
+        0.0,
+        0.0
+      ],
+      [
+        0.0007999999797903001,
+        0.9991000294685364,
+        0.0,
+        0.0
+      ],
+      [
+        0.07670000195503235,
+        0.8754000067710876,
+        0.0,
+        0.0
+      ],
+      [
+        0.9794999957084656,
+        0.012199999764561653,
+        0.0,
+        0.0
+      ],
+      [
+        0.022600000724196434,
+        0.06350000202655792,
+        0.0,
+        0.0010000000474974513
+      ],
+      [
+        0.14429999887943268,
+        0.8519999980926514,
+        0.0,
+        0.0
+      ],
+      [
+        0.16439999639987946,
+        0.835099995136261,
+        0.0,
+        0.0
+      ],
+      [
+        0.4875999987125397,
+        0.16120000183582306,
+        0.05119999870657921,
+        0.004399999976158142
+      ],
+      [
+        0.9469000101089478,
+        0.007899999618530273,
+        0.0,
+        0.0
+      ],
+      [
+        0.9063000082969666,
+        0.018400000408291817,
+        0.0,
+        0.00039999998989515007
+      ],
+      [
+        0.3944999873638153,
+        0.0,
+        9.999999747378752e-05,
+        0.017899999395012856
+      ],
+      [
+        0.9998999834060669,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0008999999845400453,
+        0.9991000294685364,
+        0.0,
+        0.0
+      ],
+      [
+        0.4997999966144562,
+        0.11990000307559967,
+        0.019899999722838402,
+        0.0003000000142492354
+      ],
+      [
+        0.7954999804496765,
+        0.0006000000284984708,
+        0.0,
+        0.10750000178813934
+      ],
+      [
+        0.7749000191688538,
+        0.2168000042438507,
+        0.0,
+        0.0
+      ],
+      [
+        0.11699999868869781,
+        0.052000001072883606,
+        0.10890000313520432,
+        0.004900000058114529
+      ],
+      [
+        0.320499986410141,
+        0.025499999523162842,
+        0.17080000042915344,
+        0.0010999999940395355
+      ],
+      [
+        0.9082000255584717,
+        0.0333000011742115,
+        0.00019999999494757503,
+        0.0026000000070780516
+      ],
+      [
+        0.056299999356269836,
+        0.6794000267982483,
+        0.0,
+        0.011800000444054604
+      ],
+      [
+        0.15029999613761902,
+        0.8434000015258789,
+        0.0,
+        0.0
+      ],
+      [
+        0.02590000070631504,
+        0.9739999771118164,
+        0.0,
+        0.0
+      ],
+      [
+        0.20350000262260437,
+        0.7943000197410583,
+        0.0,
+        0.0008999999845400453
+      ],
+      [
+        0.5580999851226807,
+        0.035599999129772186,
+        0.0,
+        0.3939000070095062
+      ],
+      [
+        0.22470000386238098,
+        0.741100013256073,
+        0.0,
+        0.012400000356137753
+      ],
+      [
+        0.33320000767707825,
+        0.5449000000953674,
+        0.0,
+        0.004100000020116568
+      ],
+      [
+        0.8047999739646912,
+        0.03889999911189079,
+        0.0013000000035390258,
+        0.004999999888241291
+      ],
+      [
+        0.11190000176429749,
+        0.8784000277519226,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.9315999746322632,
+        0.025699999183416367,
+        0.0,
+        0.0032999999821186066
+      ],
+      [
+        0.23170000314712524,
+        0.7627000212669373,
+        0.0,
+        0.0
+      ],
+      [
+        0.828499972820282,
+        0.010900000110268593,
+        0.015300000086426735,
+        0.03189999982714653
+      ],
+      [
+        0.9229999780654907,
+        0.05130000039935112,
+        0.0,
+        0.00139999995008111
+      ],
+      [
+        0.0421999990940094,
+        0.19429999589920044,
+        0.0024999999441206455,
+        0.0044999998062849045
+      ],
+      [
+        9.999999747378752e-05,
+        0.9994999766349792,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0012000000569969416
+      ],
+      [
+        0.9908000230789185,
+        0.004399999976158142,
+        0.0,
+        0.0
+      ],
+      [
+        0.23010000586509705,
+        0.12189999967813492,
+        0.0,
+        0.0026000000070780516
+      ],
+      [
+        0.004999999888241291,
+        0.012000000104308128,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.4814000129699707,
+        0.38339999318122864,
+        0.0,
+        0.02250000089406967
+      ],
+      [
+        9.999999747378752e-05,
+        0.9998999834060669,
+        0.0,
+        0.0
+      ],
+      [
+        0.011099999770522118,
+        0.0003000000142492354,
+        0.00019999999494757503,
+        0.00019999999494757503
+      ],
+      [
+        0.025800000876188278,
+        0.0012000000569969416,
+        0.0003000000142492354,
+        0.00019999999494757503
+      ],
+      [
+        0.3359000086784363,
+        0.5914999842643738,
+        0.0,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.44749999046325684,
+        0.0,
+        0.00039999998989515007
+      ],
+      [
+        0.0,
+        0.00019999999494757503,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.002400000113993883,
+        0.0038999998942017555,
+        0.24809999763965607,
+        0.002099999925121665
+      ],
+      [
+        0.01640000008046627,
+        0.8787999749183655,
+        0.0,
+        0.016699999570846558
+      ],
+      [
+        0.7002000212669373,
+        0.29910001158714294,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9617999792098999,
+        0.0
+      ],
+      [
+        0.0031999999191612005,
+        0.0006000000284984708,
+        0.29179999232292175,
+        0.00860000029206276
+      ],
+      [
+        0.002400000113993883,
+        9.999999747378752e-05,
+        0.9779000282287598,
+        0.0052999998442828655
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9991999864578247,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9944999814033508,
+        0.002199999988079071
+      ],
+      [
+        0.0017000000225380063,
+        9.999999747378752e-05,
+        0.7121999859809875,
+        0.00019999999494757503
+      ],
+      [
+        0.002899999963119626,
+        0.0,
+        0.8626000285148621,
+        0.012199999764561653
+      ],
+      [
+        0.0,
+        0.0,
+        0.9954000115394592,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.00039999998989515007,
+        9.999999747378752e-05,
+        0.9919999837875366,
+        0.00019999999494757503
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.0006000000284984708,
+        0.9951000213623047
+      ],
+      [
+        0.012199999764561653,
+        0.0003000000142492354,
+        0.9825000166893005,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.7034000158309937,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.00019999999494757503,
+        0.975600004196167,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9979000091552734,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9993000030517578,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.03689999878406525,
+        0.7652000188827515
+      ],
+      [
+        0.011699999682605267,
+        0.0012000000569969416,
+        0.0,
+        0.9495000243186951
+      ],
+      [
+        0.00019999999494757503,
+        9.999999747378752e-05,
+        9.999999747378752e-05,
+        0.9641000032424927
+      ],
+      [
+        0.003599999938160181,
+        0.041600000113248825,
+        0.5752000212669373,
+        0.15919999778270721
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.0,
+        0.9190999865531921
+      ],
+      [
+        0.0,
+        0.0,
+        0.00019999999494757503,
+        0.7203999757766724
+      ],
+      [
+        0.00019999999494757503,
+        0.000699999975040555,
+        0.0,
+        0.1736000031232834
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.00039999998989515007
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998999834060669
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.78329998254776
+      ],
+      [
+        0.0,
+        0.0,
+        0.0052999998442828655,
+        0.9941999912261963
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.913100004196167
+      ],
+      [
+        0.0,
+        0.0,
+        0.8398000001907349,
+        0.059700001031160355
+      ],
+      [
+        0.0,
+        0.0,
+        0.0003000000142492354,
+        0.901199996471405
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9993000030517578
+      ],
+      [
+        0.0,
+        0.0,
+        0.613099992275238,
+        0.36230000853538513
+      ],
+      [
+        0.0,
+        0.0,
+        0.1266999989748001,
+        0.014000000432133675
+      ],
+      [
+        0.0,
+        0.0,
+        0.1128000020980835,
+        0.8769999742507935
+      ],
+      [
+        0.0,
+        0.0,
+        0.9172999858856201,
+        0.0020000000949949026
+      ],
+      [
+        0.0,
+        0.00019999999494757503,
+        0.0,
+        0.9968000054359436
+      ],
+      [
+        0.904699981212616,
+        0.09480000287294388,
+        0.0,
+        0.0
+      ],
+      [
+        0.001500000013038516,
+        0.9984999895095825,
+        0.0,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.5892999768257141,
+        0.3571999967098236
+      ],
+      [
+        0.0005000000237487257,
+        0.0,
+        0.0,
+        0.3411000072956085
+      ],
+      [
+        0.7156000137329102,
+        0.25690001249313354,
+        0.0,
+        0.0
+      ],
+      [
+        0.6227999925613403,
+        0.3677000105381012,
+        0.0,
+        0.0
+      ],
+      [
+        0.8894000053405762,
+        0.09889999777078629,
+        0.0,
+        0.0
+      ],
+      [
+        0.9861999750137329,
+        0.012900000438094139,
+        0.0,
+        0.0
+      ],
+      [
+        0.8237000107765198,
+        0.15489999949932098,
+        0.0,
+        0.004000000189989805
+      ],
+      [
+        0.8877000212669373,
+        0.00279999990016222,
+        0.0,
+        0.0
+      ],
+      [
+        0.9983999729156494,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.15219999849796295,
+        0.4584999978542328,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.9980000257492065,
+        0.0019000000320374966,
+        0.0,
+        0.0
+      ],
+      [
+        0.992900013923645,
+        0.005799999926239252,
+        0.0,
+        0.0
+      ],
+      [
+        0.2337000072002411,
+        0.00019999999494757503,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.5406000018119812,
+        0.2549999952316284,
+        0.0007999999797903001,
+        0.012000000104308128
+      ],
+      [
+        0.3303000032901764,
+        0.08820000290870667,
+        0.005900000222027302,
+        0.049400001764297485
+      ],
+      [
+        0.5756000280380249,
+        0.4099999964237213,
+        0.0,
+        0.0
+      ],
+      [
+        0.5408999919891357,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.33160001039505005,
+        0.5115000009536743,
+        0.0,
+        0.041600000113248825
+      ],
+      [
+        0.4309999942779541,
+        0.5432999730110168,
+        0.0003000000142492354,
+        0.0015999999595806003
+      ],
+      [
+        0.9659000039100647,
+        0.030899999663233757,
+        0.0,
+        0.0
+      ],
+      [
+        0.9384999871253967,
+        0.06109999865293503,
+        0.0,
+        0.0
+      ],
+      [
+        0.2750999927520752,
+        0.7096999883651733,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.009200000204145908,
+        0.38760000467300415,
+        0.0,
+        0.027499999850988388
+      ],
+      [
+        0.0006000000284984708,
+        9.999999747378752e-05,
+        0.00019999999494757503,
+        9.999999747378752e-05
+      ],
+      [
+        0.007199999876320362,
+        0.9926999807357788,
+        0.0,
+        0.0
+      ],
+      [
+        0.4650000035762787,
+        0.5282999873161316,
+        0.0,
+        0.0
+      ],
+      [
+        0.7519000172615051,
+        0.19189999997615814,
+        0.0,
+        0.0
+      ],
+      [
+        0.4927000105381012,
+        0.4699000120162964,
+        0.0015999999595806003,
+        0.004000000189989805
+      ],
+      [
+        0.9835000038146973,
+        0.0035000001080334187,
+        0.0,
+        0.004999999888241291
+      ],
+      [
+        0.20190000534057617,
+        0.304500013589859,
+        0.0,
+        0.16189999878406525
+      ],
+      [
+        0.11550000309944153,
+        0.42260000109672546,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.05490000173449516,
+        0.6355000138282776,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.9839000105857849,
+        0.013299999758601189,
+        0.0,
+        0.0
+      ],
+      [
+        0.06650000065565109,
+        0.2240999937057495,
+        0.0,
+        0.31839999556541443
+      ],
+      [
+        0.9940000176429749,
+        0.0052999998442828655,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.08429999649524689,
+        0.9083999991416931,
+        0.0,
+        0.0
+      ],
+      [
+        0.9502999782562256,
+        0.01979999989271164,
+        0.0,
+        9.999999747378752e-05
+      ],
+      [
+        0.23430000245571136,
+        0.20010000467300415,
+        0.0,
+        0.04259999841451645
+      ],
+      [
+        0.000699999975040555,
+        0.9993000030517578,
+        0.0,
+        0.0
+      ],
+      [
+        0.296099990606308,
+        0.6244000196456909,
+        0.0,
+        0.0
+      ],
+      [
+        0.8137000203132629,
+        0.025800000876188278,
+        0.0,
+        0.0007999999797903001
+      ],
+      [
+        0.8180000185966492,
+        0.06549999862909317,
+        0.0,
+        0.0007999999797903001
+      ],
+      [
+        0.4456999897956848,
+        0.12639999389648438,
+        0.0,
+        0.0
+      ],
+      [
+        0.0729999989271164,
+        0.9013000130653381,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.4828000068664551,
+        0.2102999985218048,
+        0.0005000000237487257,
+        0.00019999999494757503
+      ],
+      [
+        0.05429999902844429,
+        0.014800000004470348,
+        0.0007999999797903001,
+        0.1973000019788742
+      ],
+      [
+        0.8928999900817871,
+        0.052299998700618744,
+        0.0,
+        0.0010000000474974513
+      ],
+      [
+        0.010200000368058681,
+        0.5659000277519226,
+        0.00039999998989515007,
+        0.013199999928474426
+      ],
+      [
+        0.2989000082015991,
+        0.6782000064849854,
+        0.0,
+        0.00019999999494757503
+      ],
+      [
+        0.2378000020980835,
+        0.746999979019165,
+        0.0,
+        0.0
+      ],
+      [
+        0.22120000422000885,
+        0.7549999952316284,
+        0.0,
+        0.0
+      ],
+      [
+        0.00019999999494757503,
+        0.0,
+        0.08720000088214874,
+        0.2078000009059906
+      ],
+      [
+        0.015799999237060547,
+        0.000699999975040555,
+        0.963699996471405,
+        9.999999747378752e-05
+      ],
+      [
+        0.004000000189989805,
+        0.00019999999494757503,
+        0.9883999824523926,
+        0.0012000000569969416
+      ],
+      [
+        0.004000000189989805,
+        0.0,
+        0.9491999745368958,
+        0.0005000000237487257
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.07840000092983246,
+        0.8626000285148621
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9873999953269958,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.9959999918937683,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.8899999856948853,
+        0.004900000058114529
+      ],
+      [
+        0.0,
+        0.0,
+        0.5667999982833862,
+        0.31850001215934753
+      ],
+      [
+        0.0,
+        0.0,
+        0.9815000295639038,
+        0.000699999975040555
+      ],
+      [
+        0.0,
+        0.0,
+        0.9995999932289124,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9994999766349792,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9998000264167786,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9941999912261963,
+        9.999999747378752e-05
+      ],
+      [
+        0.008700000122189522,
+        0.0066999997943639755,
+        0.5318999886512756,
+        0.009399999864399433
+      ],
+      [
+        0.0,
+        0.0,
+        0.9980000257492065,
+        0.0005000000237487257
+      ],
+      [
+        0.0,
+        0.0,
+        0.9509999752044678,
+        0.016300000250339508
+      ],
+      [
+        0.0,
+        0.0,
+        0.9997000098228455,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9933000206947327,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.9998999834060669,
+        0.0
+      ],
+      [
+        0.00019999999494757503,
+        0.0,
+        0.9866999983787537,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.7439000010490417
+      ],
+      [
+        0.0,
+        0.0003000000142492354,
+        0.0,
+        0.9976000189781189
+      ],
+      [
+        0.0,
+        0.006099999882280827,
+        0.0,
+        0.010099999606609344
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.8485000133514404
+      ],
+      [
+        0.0003000000142492354,
+        0.0,
+        0.0,
+        0.9545999765396118
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9972000122070312
+      ],
+      [
+        0.30550000071525574,
+        0.0005000000237487257,
+        0.0,
+        0.06530000269412994
+      ],
+      [
+        0.0,
+        0.0,
+        0.05590000003576279,
+        0.9394999742507935
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9994000196456909
+      ],
+      [
+        0.0019000000320374966,
+        0.0007999999797903001,
+        0.18230000138282776,
+        0.05209999904036522
+      ],
+      [
+        0.0,
+        0.0,
+        0.006599999964237213,
+        0.9570000171661377
+      ],
+      [
+        0.001500000013038516,
+        9.999999747378752e-05,
+        0.00839999970048666,
+        0.9574999809265137
+      ],
+      [
+        0.0,
+        0.0,
+        0.0003000000142492354,
+        0.9961000084877014
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998000264167786
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9993000030517578
+      ],
+      [
+        0.07050000131130219,
+        0.23520000278949738,
+        0.1467999964952469,
+        0.10599999874830246
+      ],
+      [
+        0.1371999979019165,
+        0.18559999763965607,
+        0.0,
+        0.6227999925613403
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9508000016212463
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.7590000033378601
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.09399999678134918,
+        0.9059000015258789,
+        0.0,
+        0.0
+      ],
+      [
+        0.9345999956130981,
+        0.014499999582767487,
+        0.0,
+        0.0
+      ],
+      [
+        0.9984999895095825,
+        0.001500000013038516,
+        0.0,
+        0.0
+      ],
+      [
+        9.999999747378752e-05,
+        0.0,
+        0.9955999851226807,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9979000091552734,
+        9.999999747378752e-05
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.9998999834060669
+      ]
+    ]
+  },
+  "finished_at": "2026-09-19T02:37:58"
+}

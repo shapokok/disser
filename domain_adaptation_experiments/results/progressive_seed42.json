@@ -1,0 +1,3258 @@
+{
+  "name": "progressive_seed42",
+  "method": "progressive",
+  "init": "/Users/shapok/disser/models/mobilenet_model.pth",
+  "config": {
+    "threads": 4,
+    "batch_size": 32,
+    "workers": 3,
+    "seed": 42,
+    "init": null,
+    "name": null,
+    "device": "cpu"
+  },
+  "splits": {
+    "adapt": {
+      "n": 374,
+      "per_class": {
+        "Cercospora leaf spot Gray leaf spot": 51,
+        "Northern Leaf Blight": 144,
+        "Powdery mildew": 98,
+        "Late blight": 81
+      }
+    },
+    "dev": {
+      "n": 94,
+      "per_class": {
+        "Cercospora leaf spot Gray leaf spot": 13,
+        "Northern Leaf Blight": 36,
+        "Powdery mildew": 25,
+        "Late blight": 20
+      }
+    },
+    "test": {
+      "n": 32,
+      "per_class": {
+        "Cercospora leaf spot Gray leaf spot": 4,
+        "Northern Leaf Blight": 12,
+        "Powdery mildew": 6,
+        "Late blight": 10
+      }
+    }
+  },
+  "stages": {
+    "stage1_easy": {
+      "classes": [
+        25,
+        30
+      ],
+      "epochs": 8,
+      "lr": 5e-05,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 9.637120526596155,
+          "train_acc": 0.1340782122905028,
+          "seconds": 63.15039086341858,
+          "dev_acc": 0.3723404255319149
+        },
+        {
+          "epoch": 2,
+          "train_loss": 10.708101922573324,
+          "train_acc": 0.0893854748603352,
+          "seconds": 65.77167701721191,
+          "dev_acc": 0.3723404255319149
+        },
+        {
+          "epoch": 3,
+          "train_loss": 9.630185798559776,
+          "train_acc": 0.13966480446927373,
+          "seconds": 66.40333104133606,
+          "dev_acc": 0.32978723404255317
+        },
+        {
+          "epoch": 4,
+          "train_loss": 9.260353770335959,
+          "train_acc": 0.16759776536312848,
+          "seconds": 74.09081196784973,
+          "dev_acc": 0.30851063829787234
+        },
+        {
+          "epoch": 5,
+          "train_loss": 9.47565400533836,
+          "train_acc": 0.13966480446927373,
+          "seconds": 62.997490882873535,
+          "dev_acc": 0.30851063829787234
+        },
+        {
+          "epoch": 6,
+          "train_loss": 8.899014251858162,
+          "train_acc": 0.1340782122905028,
+          "seconds": 72.56664872169495,
+          "dev_acc": 0.3191489361702128
+        },
+        {
+          "epoch": 7,
+          "train_loss": 9.851969846800053,
+          "train_acc": 0.12290502793296089,
+          "seconds": 62.61924386024475,
+          "dev_acc": 0.2978723404255319
+        },
+        {
+          "epoch": 8,
+          "train_loss": 8.683513103250684,
+          "train_acc": 0.2011173184357542,
+          "seconds": 77.86753582954407,
+          "dev_acc": 0.3404255319148936
+        }
+      ],
+      "eval": {
+        "dev": {
+          "open": {
+            "n": 94,
+            "correct": 32,
+            "accuracy": 0.3404255319148936,
+            "ci95": [
+              0.2525882883005792,
+              0.4407936678407758
+            ],
+            "macro_f1": 0.4212779973649539,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5384615384615384,
+                "precision": 0.35,
+                "recall": 0.5384615384615384,
+                "f1": 0.42424242424242425,
+                "support": 13
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.3333333333333333,
+                "precision": 0.6,
+                "recall": 0.3333333333333333,
+                "f1": 0.42857142857142855,
+                "support": 36
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.4,
+                "precision": 1.0,
+                "recall": 0.4,
+                "f1": 0.5714285714285714,
+                "support": 25
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.15,
+                "precision": 1.0,
+                "recall": 0.15,
+                "f1": 0.2608695652173913,
+                "support": 20
+              }
+            },
+            "confusion_matrix": [
+              [
+                7,
+                3,
+                0,
+                0,
+                3
+              ],
+              [
+                11,
+                12,
+                0,
+                0,
+                13
+              ],
+              [
+                1,
+                2,
+                10,
+                0,
+                12
+              ],
+              [
+                1,
+                3,
+                0,
+                3,
+                13
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 94,
+            "correct": 53,
+            "accuracy": 0.5638297872340425,
+            "ci95": [
+              0.4630272317452771,
+              0.6596199857981808
+            ],
+            "macro_f1": 0.5873415118079752,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.7692307692307693,
+                "precision": 0.3125,
+                "recall": 0.7692307692307693,
+                "f1": 0.4444444444444444,
+                "support": 13
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.4722222222222222,
+                "precision": 0.5,
+                "recall": 0.4722222222222222,
+                "f1": 0.4857142857142857,
+                "support": 36
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.6,
+                "precision": 0.9375,
+                "recall": 0.6,
+                "f1": 0.7317073170731707,
+                "support": 25
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.55,
+                "precision": 0.9166666666666666,
+                "recall": 0.55,
+                "f1": 0.6875,
+                "support": 20
+              }
+            },
+            "confusion_matrix": [
+              [
+                10,
+                3,
+                0,
+                0,
+                0
+              ],
+              [
+                19,
+                17,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                8,
+                15,
+                1,
+                0
+              ],
+              [
+                2,
+                6,
+                1,
+                11,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        },
+        "test": {
+          "open": {
+            "n": 32,
+            "correct": 10,
+            "accuracy": 0.3125,
+            "ci95": [
+              0.17952352116618736,
+              0.4856699969803239
+            ],
+            "macro_f1": 0.40277777777777773,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5,
+                "precision": 0.25,
+                "recall": 0.5,
+                "f1": 0.3333333333333333,
+                "support": 4
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.3333333333333333,
+                "precision": 0.6666666666666666,
+                "recall": 0.3333333333333333,
+                "f1": 0.4444444444444444,
+                "support": 12
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.3333333333333333,
+                "precision": 1.0,
+                "recall": 0.3333333333333333,
+                "f1": 0.5,
+                "support": 6
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.2,
+                "precision": 1.0,
+                "recall": 0.2,
+                "f1": 0.3333333333333333,
+                "support": 10
+              }
+            },
+            "confusion_matrix": [
+              [
+                2,
+                1,
+                0,
+                0,
+                1
+              ],
+              [
+                6,
+                4,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                2,
+                0,
+                4
+              ],
+              [
+                0,
+                1,
+                0,
+                2,
+                7
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 32,
+            "correct": 19,
+            "accuracy": 0.59375,
+            "ci95": [
+              0.4225972657298823,
+              0.744805975196862
+            ],
+            "macro_f1": 0.6102335164835164,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.75,
+                "precision": 0.25,
+                "recall": 0.75,
+                "f1": 0.375,
+                "support": 4
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.5,
+                "precision": 0.6666666666666666,
+                "recall": 0.5,
+                "f1": 0.5714285714285714,
+                "support": 12
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 1.0,
+                "precision": 0.8571428571428571,
+                "recall": 1.0,
+                "f1": 0.9230769230769231,
+                "support": 6
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.4,
+                "precision": 1.0,
+                "recall": 0.4,
+                "f1": 0.5714285714285714,
+                "support": 10
+              }
+            },
+            "confusion_matrix": [
+              [
+                3,
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                6,
+                6,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                6,
+                0,
+                0
+              ],
+              [
+                3,
+                2,
+                1,
+                4,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        },
+        "eval": {
+          "open": {
+            "n": 126,
+            "correct": 42,
+            "accuracy": 0.3333333333333333,
+            "ci95": [
+              0.2570292256450891,
+              0.41949971423242316
+            ],
+            "macro_f1": 0.41907156325760975,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5294117647058824,
+                "precision": 0.32142857142857145,
+                "recall": 0.5294117647058824,
+                "f1": 0.4,
+                "support": 17
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.3333333333333333,
+                "precision": 0.6153846153846154,
+                "recall": 0.3333333333333333,
+                "f1": 0.43243243243243246,
+                "support": 48
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.3870967741935484,
+                "precision": 1.0,
+                "recall": 0.3870967741935484,
+                "f1": 0.5581395348837209,
+                "support": 31
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.16666666666666666,
+                "precision": 1.0,
+                "recall": 0.16666666666666666,
+                "f1": 0.2857142857142857,
+                "support": 30
+              }
+            },
+            "confusion_matrix": [
+              [
+                9,
+                4,
+                0,
+                0,
+                4
+              ],
+              [
+                17,
+                16,
+                0,
+                0,
+                15
+              ],
+              [
+                1,
+                2,
+                12,
+                0,
+                16
+              ],
+              [
+                1,
+                4,
+                0,
+                5,
+                20
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 126,
+            "correct": 72,
+            "accuracy": 0.5714285714285714,
+            "ci95": [
+              0.48416701538105367,
+              0.6544634389571552
+            ],
+            "macro_f1": 0.5904189261281207,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.7647058823529411,
+                "precision": 0.29545454545454547,
+                "recall": 0.7647058823529411,
+                "f1": 0.4262295081967213,
+                "support": 17
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.4791666666666667,
+                "precision": 0.5348837209302325,
+                "recall": 0.4791666666666667,
+                "f1": 0.5054945054945055,
+                "support": 48
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.6774193548387096,
+                "precision": 0.9130434782608695,
+                "recall": 0.6774193548387096,
+                "f1": 0.7777777777777778,
+                "support": 31
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.5,
+                "precision": 0.9375,
+                "recall": 0.5,
+                "f1": 0.6521739130434783,
+                "support": 30
+              }
+            },
+            "confusion_matrix": [
+              [
+                13,
+                4,
+                0,
+                0,
+                0
+              ],
+              [
+                25,
+                23,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                8,
+                21,
+                1,
+                0
+              ],
+              [
+                5,
+                8,
+                2,
+                15,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        }
+      }
+    },
+    "stage2_hard": {
+      "classes": [
+        7,
+        9
+      ],
+      "epochs": 10,
+      "lr": 3e-05,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 13.972346276503343,
+          "train_acc": 0.03076923076923077,
+          "seconds": 53.111684799194336,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 2,
+          "train_loss": 12.848028114514474,
+          "train_acc": 0.015384615384615385,
+          "seconds": 66.88211679458618,
+          "dev_acc": 0.3617021276595745
+        },
+        {
+          "epoch": 3,
+          "train_loss": 12.966719377957858,
+          "train_acc": 0.05641025641025641,
+          "seconds": 88.28278517723083,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 4,
+          "train_loss": 12.970749116555238,
+          "train_acc": 0.035897435897435895,
+          "seconds": 67.61555099487305,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 5,
+          "train_loss": 13.526684091030024,
+          "train_acc": 0.02564102564102564,
+          "seconds": 73.31002402305603,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 6,
+          "train_loss": 12.5434905174451,
+          "train_acc": 0.035897435897435895,
+          "seconds": 76.98439002037048,
+          "dev_acc": 0.3723404255319149
+        },
+        {
+          "epoch": 7,
+          "train_loss": 12.139470193324945,
+          "train_acc": 0.035897435897435895,
+          "seconds": 66.99944519996643,
+          "dev_acc": 0.3829787234042553
+        },
+        {
+          "epoch": 8,
+          "train_loss": 12.553502522982084,
+          "train_acc": 0.041025641025641026,
+          "seconds": 79.9450261592865,
+          "dev_acc": 0.39361702127659576
+        },
+        {
+          "epoch": 9,
+          "train_loss": 12.350815728994517,
+          "train_acc": 0.041025641025641026,
+          "seconds": 66.39190292358398,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 10,
+          "train_loss": 12.48395753518129,
+          "train_acc": 0.046153846153846156,
+          "seconds": 70.28771996498108,
+          "dev_acc": 0.35106382978723405
+        }
+      ],
+      "eval": {
+        "dev": {
+          "open": {
+            "n": 94,
+            "correct": 33,
+            "accuracy": 0.35106382978723405,
+            "ci95": [
+              0.2621533589409395,
+              0.4516698001243252
+            ],
+            "macro_f1": 0.4815307765618324,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.46153846153846156,
+                "precision": 0.6,
+                "recall": 0.46153846153846156,
+                "f1": 0.5217391304347826,
+                "support": 13
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.25,
+                "precision": 0.6923076923076923,
+                "recall": 0.25,
+                "f1": 0.3673469387755102,
+                "support": 36
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.52,
+                "precision": 0.9285714285714286,
+                "recall": 0.52,
+                "f1": 0.6666666666666666,
+                "support": 25
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.25,
+                "precision": 0.7142857142857143,
+                "recall": 0.25,
+                "f1": 0.37037037037037035,
+                "support": 20
+              }
+            },
+            "confusion_matrix": [
+              [
+                6,
+                4,
+                0,
+                0,
+                3
+              ],
+              [
+                4,
+                9,
+                1,
+                1,
+                21
+              ],
+              [
+                0,
+                0,
+                13,
+                1,
+                11
+              ],
+              [
+                0,
+                0,
+                0,
+                5,
+                15
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 94,
+            "correct": 65,
+            "accuracy": 0.6914893617021277,
+            "ci95": [
+              0.5921412315417918,
+              0.7758004210885823
+            ],
+            "macro_f1": 0.6766666666666666,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.6153846153846154,
+                "precision": 0.47058823529411764,
+                "recall": 0.6153846153846154,
+                "f1": 0.5333333333333333,
+                "support": 13
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.6111111111111112,
+                "precision": 0.7333333333333333,
+                "recall": 0.6111111111111112,
+                "f1": 0.6666666666666666,
+                "support": 36
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.84,
+                "precision": 0.84,
+                "recall": 0.84,
+                "f1": 0.84,
+                "support": 25
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.7,
+                "precision": 0.6363636363636364,
+                "recall": 0.7,
+                "f1": 0.6666666666666666,
+                "support": 20
+              }
+            },
+            "confusion_matrix": [
+              [
+                8,
+                4,
+                0,
+                1,
+                0
+              ],
+              [
+                8,
+                22,
+                2,
+                4,
+                0
+              ],
+              [
+                0,
+                1,
+                21,
+                3,
+                0
+              ],
+              [
+                1,
+                3,
+                2,
+                14,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        },
+        "test": {
+          "open": {
+            "n": 32,
+            "correct": 14,
+            "accuracy": 0.4375,
+            "ci95": [
+              0.2816508596944317,
+              0.6067469796877387
+            ],
+            "macro_f1": 0.5126068376068377,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.25,
+                "precision": 0.16666666666666666,
+                "recall": 0.25,
+                "f1": 0.2,
+                "support": 4
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.4166666666666667,
+                "precision": 0.8333333333333334,
+                "recall": 0.4166666666666667,
+                "f1": 0.5555555555555556,
+                "support": 12
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.8333333333333334,
+                "precision": 0.8333333333333334,
+                "recall": 0.8333333333333334,
+                "f1": 0.8333333333333334,
+                "support": 6
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.3,
+                "precision": 1.0,
+                "recall": 0.3,
+                "f1": 0.46153846153846156,
+                "support": 10
+              }
+            },
+            "confusion_matrix": [
+              [
+                1,
+                1,
+                0,
+                0,
+                2
+              ],
+              [
+                5,
+                5,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                5,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                1,
+                3,
+                6
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 32,
+            "correct": 20,
+            "accuracy": 0.625,
+            "ci95": [
+              0.45254100589525126,
+              0.7706633153404079
+            ],
+            "macro_f1": 0.5898989898989899,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.25,
+                "precision": 0.14285714285714285,
+                "recall": 0.25,
+                "f1": 0.18181818181818182,
+                "support": 4
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.5,
+                "precision": 0.75,
+                "recall": 0.5,
+                "f1": 0.6,
+                "support": 12
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 1.0,
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "support": 6
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.7,
+                "precision": 0.875,
+                "recall": 0.7,
+                "f1": 0.7777777777777778,
+                "support": 10
+              }
+            },
+            "confusion_matrix": [
+              [
+                1,
+                2,
+                1,
+                0,
+                0
+              ],
+              [
+                5,
+                6,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                6,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                2,
+                7,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        },
+        "eval": {
+          "open": {
+            "n": 126,
+            "correct": 47,
+            "accuracy": 0.373015873015873,
+            "ci95": [
+              0.2935038845287251,
+              0.46004197442557004
+            ],
+            "macro_f1": 0.4870088062361987,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.4117647058823529,
+                "precision": 0.4375,
+                "recall": 0.4117647058823529,
+                "f1": 0.42424242424242425,
+                "support": 17
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.2916666666666667,
+                "precision": 0.7368421052631579,
+                "recall": 0.2916666666666667,
+                "f1": 0.417910447761194,
+                "support": 48
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.5806451612903226,
+                "precision": 0.9,
+                "recall": 0.5806451612903226,
+                "f1": 0.7058823529411765,
+                "support": 31
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.26666666666666666,
+                "precision": 0.8,
+                "recall": 0.26666666666666666,
+                "f1": 0.4,
+                "support": 30
+              }
+            },
+            "confusion_matrix": [
+              [
+                7,
+                5,
+                0,
+                0,
+                5
+              ],
+              [
+                9,
+                14,
+                1,
+                1,
+                23
+              ],
+              [
+                0,
+                0,
+                18,
+                1,
+                12
+              ],
+              [
+                0,
+                0,
+                1,
+                8,
+                21
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 126,
+            "correct": 85,
+            "accuracy": 0.6746031746031746,
+            "ci95": [
+              0.588682034860208,
+              0.7501924090776364
+            ],
+            "macro_f1": 0.6552391029277018,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5294117647058824,
+                "precision": 0.375,
+                "recall": 0.5294117647058824,
+                "f1": 0.43902439024390244,
+                "support": 17
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.5833333333333334,
+                "precision": 0.7368421052631579,
+                "recall": 0.5833333333333334,
+                "f1": 0.6511627906976745,
+                "support": 48
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.8709677419354839,
+                "precision": 0.7941176470588235,
+                "recall": 0.8709677419354839,
+                "f1": 0.8307692307692308,
+                "support": 31
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.7,
+                "precision": 0.7,
+                "recall": 0.7,
+                "f1": 0.7,
+                "support": 30
+              }
+            },
+            "confusion_matrix": [
+              [
+                9,
+                6,
+                1,
+                1,
+                0
+              ],
+              [
+                13,
+                28,
+                2,
+                5,
+                0
+              ],
+              [
+                0,
+                1,
+                27,
+                3,
+                0
+              ],
+              [
+                2,
+                3,
+                4,
+                21,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        }
+      }
+    },
+    "stage3_joint": {
+      "classes": [
+        7,
+        9,
+        25,
+        30
+      ],
+      "epochs": 12,
+      "lr": 1e-05,
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 8.578080651594355,
+          "train_acc": 0.15240641711229946,
+          "seconds": 116.12117910385132,
+          "dev_acc": 0.32978723404255317
+        },
+        {
+          "epoch": 2,
+          "train_loss": 8.738577694816385,
+          "train_acc": 0.14171122994652408,
+          "seconds": 116.5829381942749,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 3,
+          "train_loss": 8.988694517370213,
+          "train_acc": 0.15508021390374332,
+          "seconds": 122.8313500881195,
+          "dev_acc": 0.35106382978723405
+        },
+        {
+          "epoch": 4,
+          "train_loss": 8.514693000099875,
+          "train_acc": 0.1711229946524064,
+          "seconds": 130.93620705604553,
+          "dev_acc": 0.3617021276595745
+        },
+        {
+          "epoch": 5,
+          "train_loss": 8.002062193212662,
+          "train_acc": 0.1657754010695187,
+          "seconds": 136.73625707626343,
+          "dev_acc": 0.3723404255319149
+        },
+        {
+          "epoch": 6,
+          "train_loss": 7.879931600336085,
+          "train_acc": 0.18449197860962566,
+          "seconds": 116.95718383789062,
+          "dev_acc": 0.3617021276595745
+        },
+        {
+          "epoch": 7,
+          "train_loss": 8.920644969226204,
+          "train_acc": 0.18449197860962566,
+          "seconds": 122.39672899246216,
+          "dev_acc": 0.39361702127659576
+        },
+        {
+          "epoch": 8,
+          "train_loss": 8.040649021373076,
+          "train_acc": 0.19518716577540107,
+          "seconds": 971.003032207489,
+          "dev_acc": 0.39361702127659576
+        },
+        {
+          "epoch": 9,
+          "train_loss": 8.68980790714529,
+          "train_acc": 0.1497326203208556,
+          "seconds": 107.37589001655579,
+          "dev_acc": 0.3829787234042553
+        },
+        {
+          "epoch": 10,
+          "train_loss": 8.552836418151855,
+          "train_acc": 0.16310160427807488,
+          "seconds": 121.9459798336029,
+          "dev_acc": 0.39361702127659576
+        },
+        {
+          "epoch": 11,
+          "train_loss": 8.004013479712174,
+          "train_acc": 0.18181818181818182,
+          "seconds": 116.14752697944641,
+          "dev_acc": 0.4148936170212766
+        },
+        {
+          "epoch": 12,
+          "train_loss": 8.461363348731382,
+          "train_acc": 0.16844919786096257,
+          "seconds": 121.90498518943787,
+          "dev_acc": 0.40425531914893614
+        }
+      ],
+      "eval": {
+        "dev": {
+          "open": {
+            "n": 94,
+            "correct": 38,
+            "accuracy": 0.40425531914893614,
+            "ci95": [
+              0.310700313212545,
+              0.505328860472268
+            ],
+            "macro_f1": 0.4941058235549761,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.38461538461538464,
+                "precision": 0.45454545454545453,
+                "recall": 0.38461538461538464,
+                "f1": 0.4166666666666667,
+                "support": 13
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.4166666666666667,
+                "precision": 0.6521739130434783,
+                "recall": 0.4166666666666667,
+                "f1": 0.5084745762711864,
+                "support": 36
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.52,
+                "precision": 0.9285714285714286,
+                "recall": 0.52,
+                "f1": 0.6666666666666666,
+                "support": 25
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.25,
+                "precision": 0.8333333333333334,
+                "recall": 0.25,
+                "f1": 0.38461538461538464,
+                "support": 20
+              }
+            },
+            "confusion_matrix": [
+              [
+                5,
+                5,
+                0,
+                0,
+                3
+              ],
+              [
+                6,
+                15,
+                0,
+                0,
+                15
+              ],
+              [
+                0,
+                1,
+                13,
+                1,
+                10
+              ],
+              [
+                0,
+                2,
+                1,
+                5,
+                12
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 94,
+            "correct": 59,
+            "accuracy": 0.6276595744680851,
+            "ci95": [
+              0.5267247800539883,
+              0.7185696550329277
+            ],
+            "macro_f1": 0.6233463280812893,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.6153846153846154,
+                "precision": 0.4,
+                "recall": 0.6153846153846154,
+                "f1": 0.48484848484848486,
+                "support": 13
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.6111111111111112,
+                "precision": 0.5945945945945946,
+                "recall": 0.6111111111111112,
+                "f1": 0.6027397260273972,
+                "support": 36
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.68,
+                "precision": 0.8095238095238095,
+                "recall": 0.68,
+                "f1": 0.7391304347826086,
+                "support": 25
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.6,
+                "precision": 0.75,
+                "recall": 0.6,
+                "f1": 0.6666666666666666,
+                "support": 20
+              }
+            },
+            "confusion_matrix": [
+              [
+                8,
+                5,
+                0,
+                0,
+                0
+              ],
+              [
+                11,
+                22,
+                1,
+                2,
+                0
+              ],
+              [
+                0,
+                6,
+                17,
+                2,
+                0
+              ],
+              [
+                1,
+                4,
+                3,
+                12,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        },
+        "test": {
+          "open": {
+            "n": 32,
+            "correct": 15,
+            "accuracy": 0.46875,
+            "ci95": [
+              0.30869129901682335,
+              0.6355076206742619
+            ],
+            "macro_f1": 0.5535159285159286,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5,
+                "precision": 0.2857142857142857,
+                "recall": 0.5,
+                "f1": 0.36363636363636365,
+                "support": 4
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.4166666666666667,
+                "precision": 0.8333333333333334,
+                "recall": 0.4166666666666667,
+                "f1": 0.5555555555555556,
+                "support": 12
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.8333333333333334,
+                "precision": 0.8333333333333334,
+                "recall": 0.8333333333333334,
+                "f1": 0.8333333333333334,
+                "support": 6
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.3,
+                "precision": 1.0,
+                "recall": 0.3,
+                "f1": 0.46153846153846156,
+                "support": 10
+              }
+            },
+            "confusion_matrix": [
+              [
+                2,
+                1,
+                0,
+                0,
+                1
+              ],
+              [
+                5,
+                5,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                5,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                1,
+                3,
+                6
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 32,
+            "correct": 21,
+            "accuracy": 0.65625,
+            "ci95": [
+              0.4831077350878594,
+              0.7958976664567146
+            ],
+            "macro_f1": 0.6442099567099567,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5,
+                "precision": 0.25,
+                "recall": 0.5,
+                "f1": 0.3333333333333333,
+                "support": 4
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.5833333333333334,
+                "precision": 0.7,
+                "recall": 0.5833333333333334,
+                "f1": 0.6363636363636364,
+                "support": 12
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 1.0,
+                "precision": 0.75,
+                "recall": 1.0,
+                "f1": 0.8571428571428571,
+                "support": 6
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.6,
+                "precision": 1.0,
+                "recall": 0.6,
+                "f1": 0.75,
+                "support": 10
+              }
+            },
+            "confusion_matrix": [
+              [
+                2,
+                2,
+                0,
+                0,
+                0
+              ],
+              [
+                5,
+                7,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                6,
+                0,
+                0
+              ],
+              [
+                1,
+                1,
+                2,
+                6,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        },
+        "eval": {
+          "open": {
+            "n": 126,
+            "correct": 53,
+            "accuracy": 0.42063492063492064,
+            "ci95": [
+              0.3380368812599529,
+              0.5079292805864816
+            ],
+            "macro_f1": 0.5089048206695266,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.4117647058823529,
+                "precision": 0.3888888888888889,
+                "recall": 0.4117647058823529,
+                "f1": 0.4,
+                "support": 17
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.4166666666666667,
+                "precision": 0.6896551724137931,
+                "recall": 0.4166666666666667,
+                "f1": 0.5194805194805194,
+                "support": 48
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.5806451612903226,
+                "precision": 0.9,
+                "recall": 0.5806451612903226,
+                "f1": 0.7058823529411765,
+                "support": 31
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.26666666666666666,
+                "precision": 0.8888888888888888,
+                "recall": 0.26666666666666666,
+                "f1": 0.41025641025641024,
+                "support": 30
+              }
+            },
+            "confusion_matrix": [
+              [
+                7,
+                6,
+                0,
+                0,
+                4
+              ],
+              [
+                11,
+                20,
+                0,
+                0,
+                17
+              ],
+              [
+                0,
+                1,
+                18,
+                1,
+                11
+              ],
+              [
+                0,
+                2,
+                2,
+                8,
+                18
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          },
+          "restricted": {
+            "n": 126,
+            "correct": 80,
+            "accuracy": 0.6349206349206349,
+            "ci95": [
+              0.5480188475637043,
+              0.7138386772973572
+            ],
+            "macro_f1": 0.6284862798020692,
+            "per_class": {
+              "7": {
+                "name": "Cercospora leaf spot Gray leaf spot",
+                "accuracy": 0.5882352941176471,
+                "precision": 0.35714285714285715,
+                "recall": 0.5882352941176471,
+                "f1": 0.4444444444444444,
+                "support": 17
+              },
+              "9": {
+                "name": "Northern Leaf Blight",
+                "accuracy": 0.6041666666666666,
+                "precision": 0.6170212765957447,
+                "recall": 0.6041666666666666,
+                "f1": 0.6105263157894737,
+                "support": 48
+              },
+              "25": {
+                "name": "Powdery mildew",
+                "accuracy": 0.7419354838709677,
+                "precision": 0.7931034482758621,
+                "recall": 0.7419354838709677,
+                "f1": 0.7666666666666667,
+                "support": 31
+              },
+              "30": {
+                "name": "Late blight",
+                "accuracy": 0.6,
+                "precision": 0.8181818181818182,
+                "recall": 0.6,
+                "f1": 0.6923076923076923,
+                "support": 30
+              }
+            },
+            "confusion_matrix": [
+              [
+                10,
+                7,
+                0,
+                0,
+                0
+              ],
+              [
+                16,
+                29,
+                1,
+                2,
+                0
+              ],
+              [
+                0,
+                6,
+                23,
+                2,
+                0
+              ],
+              [
+                2,
+                5,
+                5,
+                18,
+                0
+              ]
+            ],
+            "confusion_labels": [
+              "Cercospora leaf spot Gray leaf spot",
+              "Northern Leaf Blight",
+              "Powdery mildew",
+              "Late blight",
+              "other"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "best": {
+    "stage": "stage3_joint",
+    "epoch": 11,
+    "dev_acc": 0.4148936170212766
+  },
+  "start": {
+    "dev": {
+      "open": {
+        "n": 94,
+        "correct": 42,
+        "accuracy": 0.44680851063829785,
+        "ci95": [
+          0.35036203477936345,
+          0.5474319506010882
+        ],
+        "macro_f1": 0.5098215898825654,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.7692307692307693,
+            "precision": 0.35714285714285715,
+            "recall": 0.7692307692307693,
+            "f1": 0.4878048780487805,
+            "support": 13
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.3611111111111111,
+            "precision": 0.7222222222222222,
+            "recall": 0.3611111111111111,
+            "f1": 0.48148148148148145,
+            "support": 36
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.6,
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1": 0.75,
+            "support": 25
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.2,
+            "precision": 0.8,
+            "recall": 0.2,
+            "f1": 0.32,
+            "support": 20
+          }
+        },
+        "confusion_matrix": [
+          [
+            10,
+            2,
+            0,
+            0,
+            1
+          ],
+          [
+            17,
+            13,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            15,
+            1,
+            9
+          ],
+          [
+            1,
+            3,
+            0,
+            4,
+            12
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 94,
+        "correct": 57,
+        "accuracy": 0.6063829787234043,
+        "ci95": [
+          0.5053093955361283,
+          0.6991026337029684
+        ],
+        "macro_f1": 0.6142379598792276,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.8461538461538461,
+            "precision": 0.3235294117647059,
+            "recall": 0.8461538461538461,
+            "f1": 0.46808510638297873,
+            "support": 13
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4166666666666667,
+            "precision": 0.6521739130434783,
+            "recall": 0.4166666666666667,
+            "f1": 0.5084745762711864,
+            "support": 36
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.8,
+            "precision": 0.8695652173913043,
+            "recall": 0.8,
+            "f1": 0.8333333333333334,
+            "support": 25
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.55,
+            "precision": 0.7857142857142857,
+            "recall": 0.55,
+            "f1": 0.6470588235294118,
+            "support": 20
+          }
+        },
+        "confusion_matrix": [
+          [
+            11,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            19,
+            15,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            3,
+            20,
+            2,
+            0
+          ],
+          [
+            4,
+            3,
+            2,
+            11,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    },
+    "test": {
+      "open": {
+        "n": 32,
+        "correct": 15,
+        "accuracy": 0.46875,
+        "ci95": [
+          0.30869129901682335,
+          0.6355076206742619
+        ],
+        "macro_f1": 0.5256410256410257,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5,
+            "precision": 0.2222222222222222,
+            "recall": 0.5,
+            "f1": 0.3076923076923077,
+            "support": 4
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4166666666666667,
+            "precision": 0.625,
+            "recall": 0.4166666666666667,
+            "f1": 0.5,
+            "support": 12
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.8333333333333334,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1": 0.8333333333333334,
+            "support": 6
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.3,
+            "precision": 1.0,
+            "recall": 0.3,
+            "f1": 0.46153846153846156,
+            "support": 10
+          }
+        },
+        "confusion_matrix": [
+          [
+            2,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            5,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            5,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            3,
+            4
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 32,
+        "correct": 18,
+        "accuracy": 0.5625,
+        "ci95": [
+          0.3932530203122613,
+          0.7183491403055682
+        ],
+        "macro_f1": 0.5789835164835164,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5,
+            "precision": 0.16666666666666666,
+            "recall": 0.5,
+            "f1": 0.25,
+            "support": 4
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.5,
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1": 0.5714285714285714,
+            "support": 12
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 1.0,
+            "precision": 0.8571428571428571,
+            "recall": 1.0,
+            "f1": 0.9230769230769231,
+            "support": 6
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.4,
+            "precision": 1.0,
+            "recall": 0.4,
+            "f1": 0.5714285714285714,
+            "support": 10
+          }
+        },
+        "confusion_matrix": [
+          [
+            2,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            0,
+            0
+          ],
+          [
+            4,
+            1,
+            1,
+            4,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    },
+    "eval": {
+      "open": {
+        "n": 126,
+        "correct": 57,
+        "accuracy": 0.4523809523809524,
+        "ci95": [
+          0.3681650881010735,
+          0.5394146090067873
+        ],
+        "macro_f1": 0.5171456881983197,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.7058823529411765,
+            "precision": 0.32432432432432434,
+            "recall": 0.7058823529411765,
+            "f1": 0.4444444444444444,
+            "support": 17
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.375,
+            "precision": 0.6923076923076923,
+            "recall": 0.375,
+            "f1": 0.4864864864864865,
+            "support": 48
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.6451612903225806,
+            "precision": 0.9523809523809523,
+            "recall": 0.6451612903225806,
+            "f1": 0.7692307692307693,
+            "support": 31
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.23333333333333334,
+            "precision": 0.875,
+            "recall": 0.23333333333333334,
+            "f1": 0.3684210526315789,
+            "support": 30
+          }
+        },
+        "confusion_matrix": [
+          [
+            12,
+            4,
+            0,
+            0,
+            1
+          ],
+          [
+            23,
+            18,
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            20,
+            1,
+            10
+          ],
+          [
+            2,
+            4,
+            1,
+            7,
+            16
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 126,
+        "correct": 75,
+        "accuracy": 0.5952380952380952,
+        "ci95": [
+          0.507943775465677,
+          0.6768968303186016
+        ],
+        "macro_f1": 0.6037893572729638,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.7647058823529411,
+            "precision": 0.2826086956521739,
+            "recall": 0.7647058823529411,
+            "f1": 0.4126984126984127,
+            "support": 17
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4375,
+            "precision": 0.65625,
+            "recall": 0.4375,
+            "f1": 0.525,
+            "support": 48
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.8387096774193549,
+            "precision": 0.8666666666666667,
+            "recall": 0.8387096774193549,
+            "f1": 0.8524590163934426,
+            "support": 31
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.5,
+            "precision": 0.8333333333333334,
+            "recall": 0.5,
+            "f1": 0.625,
+            "support": 30
+          }
+        },
+        "confusion_matrix": [
+          [
+            13,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            25,
+            21,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            3,
+            26,
+            2,
+            0
+          ],
+          [
+            8,
+            4,
+            3,
+            15,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    }
+  },
+  "last_stage": {
+    "dev": {
+      "open": {
+        "n": 94,
+        "correct": 38,
+        "accuracy": 0.40425531914893614,
+        "ci95": [
+          0.310700313212545,
+          0.505328860472268
+        ],
+        "macro_f1": 0.4941058235549761,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.38461538461538464,
+            "precision": 0.45454545454545453,
+            "recall": 0.38461538461538464,
+            "f1": 0.4166666666666667,
+            "support": 13
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4166666666666667,
+            "precision": 0.6521739130434783,
+            "recall": 0.4166666666666667,
+            "f1": 0.5084745762711864,
+            "support": 36
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.52,
+            "precision": 0.9285714285714286,
+            "recall": 0.52,
+            "f1": 0.6666666666666666,
+            "support": 25
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.25,
+            "precision": 0.8333333333333334,
+            "recall": 0.25,
+            "f1": 0.38461538461538464,
+            "support": 20
+          }
+        },
+        "confusion_matrix": [
+          [
+            5,
+            5,
+            0,
+            0,
+            3
+          ],
+          [
+            6,
+            15,
+            0,
+            0,
+            15
+          ],
+          [
+            0,
+            1,
+            13,
+            1,
+            10
+          ],
+          [
+            0,
+            2,
+            1,
+            5,
+            12
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 94,
+        "correct": 59,
+        "accuracy": 0.6276595744680851,
+        "ci95": [
+          0.5267247800539883,
+          0.7185696550329277
+        ],
+        "macro_f1": 0.6233463280812893,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.6153846153846154,
+            "precision": 0.4,
+            "recall": 0.6153846153846154,
+            "f1": 0.48484848484848486,
+            "support": 13
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.6111111111111112,
+            "precision": 0.5945945945945946,
+            "recall": 0.6111111111111112,
+            "f1": 0.6027397260273972,
+            "support": 36
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.68,
+            "precision": 0.8095238095238095,
+            "recall": 0.68,
+            "f1": 0.7391304347826086,
+            "support": 25
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.6,
+            "precision": 0.75,
+            "recall": 0.6,
+            "f1": 0.6666666666666666,
+            "support": 20
+          }
+        },
+        "confusion_matrix": [
+          [
+            8,
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            11,
+            22,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            6,
+            17,
+            2,
+            0
+          ],
+          [
+            1,
+            4,
+            3,
+            12,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    },
+    "test": {
+      "open": {
+        "n": 32,
+        "correct": 15,
+        "accuracy": 0.46875,
+        "ci95": [
+          0.30869129901682335,
+          0.6355076206742619
+        ],
+        "macro_f1": 0.5535159285159286,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5,
+            "precision": 0.2857142857142857,
+            "recall": 0.5,
+            "f1": 0.36363636363636365,
+            "support": 4
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4166666666666667,
+            "precision": 0.8333333333333334,
+            "recall": 0.4166666666666667,
+            "f1": 0.5555555555555556,
+            "support": 12
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.8333333333333334,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1": 0.8333333333333334,
+            "support": 6
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.3,
+            "precision": 1.0,
+            "recall": 0.3,
+            "f1": 0.46153846153846156,
+            "support": 10
+          }
+        },
+        "confusion_matrix": [
+          [
+            2,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            5,
+            5,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            5,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            3,
+            6
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 32,
+        "correct": 21,
+        "accuracy": 0.65625,
+        "ci95": [
+          0.4831077350878594,
+          0.7958976664567146
+        ],
+        "macro_f1": 0.6442099567099567,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5,
+            "precision": 0.25,
+            "recall": 0.5,
+            "f1": 0.3333333333333333,
+            "support": 4
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.5833333333333334,
+            "precision": 0.7,
+            "recall": 0.5833333333333334,
+            "f1": 0.6363636363636364,
+            "support": 12
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 1.0,
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "support": 6
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.6,
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1": 0.75,
+            "support": 10
+          }
+        },
+        "confusion_matrix": [
+          [
+            2,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            7,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            2,
+            6,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    },
+    "eval": {
+      "open": {
+        "n": 126,
+        "correct": 53,
+        "accuracy": 0.42063492063492064,
+        "ci95": [
+          0.3380368812599529,
+          0.5079292805864816
+        ],
+        "macro_f1": 0.5089048206695266,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.4117647058823529,
+            "precision": 0.3888888888888889,
+            "recall": 0.4117647058823529,
+            "f1": 0.4,
+            "support": 17
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4166666666666667,
+            "precision": 0.6896551724137931,
+            "recall": 0.4166666666666667,
+            "f1": 0.5194805194805194,
+            "support": 48
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.5806451612903226,
+            "precision": 0.9,
+            "recall": 0.5806451612903226,
+            "f1": 0.7058823529411765,
+            "support": 31
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.26666666666666666,
+            "precision": 0.8888888888888888,
+            "recall": 0.26666666666666666,
+            "f1": 0.41025641025641024,
+            "support": 30
+          }
+        },
+        "confusion_matrix": [
+          [
+            7,
+            6,
+            0,
+            0,
+            4
+          ],
+          [
+            11,
+            20,
+            0,
+            0,
+            17
+          ],
+          [
+            0,
+            1,
+            18,
+            1,
+            11
+          ],
+          [
+            0,
+            2,
+            2,
+            8,
+            18
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 126,
+        "correct": 80,
+        "accuracy": 0.6349206349206349,
+        "ci95": [
+          0.5480188475637043,
+          0.7138386772973572
+        ],
+        "macro_f1": 0.6284862798020692,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5882352941176471,
+            "precision": 0.35714285714285715,
+            "recall": 0.5882352941176471,
+            "f1": 0.4444444444444444,
+            "support": 17
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.6041666666666666,
+            "precision": 0.6170212765957447,
+            "recall": 0.6041666666666666,
+            "f1": 0.6105263157894737,
+            "support": 48
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.7419354838709677,
+            "precision": 0.7931034482758621,
+            "recall": 0.7419354838709677,
+            "f1": 0.7666666666666667,
+            "support": 31
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.6,
+            "precision": 0.8181818181818182,
+            "recall": 0.6,
+            "f1": 0.6923076923076923,
+            "support": 30
+          }
+        },
+        "confusion_matrix": [
+          [
+            10,
+            7,
+            0,
+            0,
+            0
+          ],
+          [
+            16,
+            29,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            6,
+            23,
+            2,
+            0
+          ],
+          [
+            2,
+            5,
+            5,
+            18,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    }
+  },
+  "final": {
+    "dev": {
+      "open": {
+        "n": 94,
+        "correct": 39,
+        "accuracy": 0.4148936170212766,
+        "ci95": [
+          0.32054873736395484,
+          0.5159216392447679
+        ],
+        "macro_f1": 0.5210025062656641,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.46153846153846156,
+            "precision": 0.5,
+            "recall": 0.46153846153846156,
+            "f1": 0.48,
+            "support": 13
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.3888888888888889,
+            "precision": 0.6666666666666666,
+            "recall": 0.3888888888888889,
+            "f1": 0.49122807017543857,
+            "support": 36
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.52,
+            "precision": 1.0,
+            "recall": 0.52,
+            "f1": 0.6842105263157895,
+            "support": 25
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.3,
+            "precision": 0.75,
+            "recall": 0.3,
+            "f1": 0.42857142857142855,
+            "support": 20
+          }
+        },
+        "confusion_matrix": [
+          [
+            6,
+            4,
+            0,
+            0,
+            3
+          ],
+          [
+            6,
+            14,
+            0,
+            1,
+            15
+          ],
+          [
+            0,
+            1,
+            13,
+            1,
+            10
+          ],
+          [
+            0,
+            2,
+            0,
+            6,
+            12
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 94,
+        "correct": 61,
+        "accuracy": 0.648936170212766,
+        "ci95": [
+          0.5483301998756748,
+          0.7378466410590606
+        ],
+        "macro_f1": 0.6538510970126982,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.6923076923076923,
+            "precision": 0.4090909090909091,
+            "recall": 0.6923076923076923,
+            "f1": 0.5142857142857142,
+            "support": 13
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.5833333333333334,
+            "precision": 0.6,
+            "recall": 0.5833333333333334,
+            "f1": 0.5915492957746479,
+            "support": 36
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.68,
+            "precision": 0.8947368421052632,
+            "recall": 0.68,
+            "f1": 0.7727272727272727,
+            "support": 25
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.7,
+            "precision": 0.7777777777777778,
+            "recall": 0.7,
+            "f1": 0.7368421052631579,
+            "support": 20
+          }
+        },
+        "confusion_matrix": [
+          [
+            9,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            12,
+            21,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            6,
+            17,
+            2,
+            0
+          ],
+          [
+            1,
+            4,
+            1,
+            14,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    },
+    "test": {
+      "open": {
+        "n": 32,
+        "correct": 15,
+        "accuracy": 0.46875,
+        "ci95": [
+          0.30869129901682335,
+          0.6355076206742619
+        ],
+        "macro_f1": 0.5535159285159286,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5,
+            "precision": 0.2857142857142857,
+            "recall": 0.5,
+            "f1": 0.36363636363636365,
+            "support": 4
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.4166666666666667,
+            "precision": 0.8333333333333334,
+            "recall": 0.4166666666666667,
+            "f1": 0.5555555555555556,
+            "support": 12
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.8333333333333334,
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1": 0.8333333333333334,
+            "support": 6
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.3,
+            "precision": 1.0,
+            "recall": 0.3,
+            "f1": 0.46153846153846156,
+            "support": 10
+          }
+        },
+        "confusion_matrix": [
+          [
+            2,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            5,
+            5,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            5,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            3,
+            6
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 32,
+        "correct": 21,
+        "accuracy": 0.65625,
+        "ci95": [
+          0.4831077350878594,
+          0.7958976664567146
+        ],
+        "macro_f1": 0.6453754578754578,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.5,
+            "precision": 0.2222222222222222,
+            "recall": 0.5,
+            "f1": 0.3076923076923077,
+            "support": 4
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.5833333333333334,
+            "precision": 0.7777777777777778,
+            "recall": 0.5833333333333334,
+            "f1": 0.6666666666666666,
+            "support": 12
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 1.0,
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "support": 6
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.6,
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1": 0.75,
+            "support": 10
+          }
+        },
+        "confusion_matrix": [
+          [
+            2,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            7,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            2,
+            6,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    },
+    "eval": {
+      "open": {
+        "n": 126,
+        "correct": 54,
+        "accuracy": 0.42857142857142855,
+        "ci95": [
+          0.34553656104284475,
+          0.5158329846189462
+        ],
+        "macro_f1": 0.5275338753387534,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.47058823529411764,
+            "precision": 0.42105263157894735,
+            "recall": 0.47058823529411764,
+            "f1": 0.4444444444444444,
+            "support": 17
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.3958333333333333,
+            "precision": 0.7037037037037037,
+            "recall": 0.3958333333333333,
+            "f1": 0.5066666666666667,
+            "support": 48
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.5806451612903226,
+            "precision": 0.9473684210526315,
+            "recall": 0.5806451612903226,
+            "f1": 0.72,
+            "support": 31
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.3,
+            "precision": 0.8181818181818182,
+            "recall": 0.3,
+            "f1": 0.43902439024390244,
+            "support": 30
+          }
+        },
+        "confusion_matrix": [
+          [
+            8,
+            5,
+            0,
+            0,
+            4
+          ],
+          [
+            11,
+            19,
+            0,
+            1,
+            17
+          ],
+          [
+            0,
+            1,
+            18,
+            1,
+            11
+          ],
+          [
+            0,
+            2,
+            1,
+            9,
+            18
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      },
+      "restricted": {
+        "n": 126,
+        "correct": 82,
+        "accuracy": 0.6507936507936508,
+        "ci95": [
+          0.5642112392113556,
+          0.728453053280419
+        ],
+        "macro_f1": 0.6502182936309623,
+        "per_class": {
+          "7": {
+            "name": "Cercospora leaf spot Gray leaf spot",
+            "accuracy": 0.6470588235294118,
+            "precision": 0.3548387096774194,
+            "recall": 0.6470588235294118,
+            "f1": 0.4583333333333333,
+            "support": 17
+          },
+          "9": {
+            "name": "Northern Leaf Blight",
+            "accuracy": 0.5833333333333334,
+            "precision": 0.6363636363636364,
+            "recall": 0.5833333333333334,
+            "f1": 0.6086956521739131,
+            "support": 48
+          },
+          "25": {
+            "name": "Powdery mildew",
+            "accuracy": 0.7419354838709677,
+            "precision": 0.8518518518518519,
+            "recall": 0.7419354838709677,
+            "f1": 0.7931034482758621,
+            "support": 31
+          },
+          "30": {
+            "name": "Late blight",
+            "accuracy": 0.6666666666666666,
+            "precision": 0.8333333333333334,
+            "recall": 0.6666666666666666,
+            "f1": 0.7407407407407407,
+            "support": 30
+          }
+        },
+        "confusion_matrix": [
+          [
+            11,
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            17,
+            28,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            6,
+            23,
+            2,
+            0
+          ],
+          [
+            3,
+            4,
+            3,
+            20,
+            0
+          ]
+        ],
+        "confusion_labels": [
+          "Cercospora leaf spot Gray leaf spot",
+          "Northern Leaf Blight",
+          "Powdery mildew",
+          "Late blight",
+          "other"
+        ]
+      }
+    }
+  },
+  "checkpoint": "/Users/shapok/disser/domain_adaptation_experiments/results/checkpoints/progressive_seed42.pth",
+  "finished_at": "2026-09-19T02:20:01"
+}

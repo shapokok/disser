@@ -20,22 +20,46 @@ from torchvision.transforms import functional as TF
 from da import common as C
 
 
+class _View:
+    """Picklable deterministic view (DataLoader workers use spawn on macOS, so no lambdas)."""
+
+    def __init__(self, kind: str, value: float = 0.0):
+        self.kind, self.value = kind, value
+
+    def __call__(self, im):
+        if self.kind == "hflip":
+            return TF.hflip(im)
+        if self.kind == "vflip":
+            return TF.vflip(im)
+        if self.kind == "hvflip":
+            return TF.vflip(TF.hflip(im))
+        if self.kind == "rotate":
+            return TF.rotate(im, self.value)
+        if self.kind == "brightness":
+            return TF.adjust_brightness(im, self.value)
+        if self.kind == "contrast":
+            return TF.adjust_contrast(im, self.value)
+        if self.kind == "scale":
+            return TF.affine(im, angle=0, translate=[0, 0], scale=self.value, shear=[0.0])
+        return im
+
+
 def tta_views():
     base = [transforms.Resize((C.IMG_SIZE, C.IMG_SIZE))]
     tail = [transforms.ToTensor(), transforms.Normalize(C.MEAN, C.STD)]
     ops = {
-        "identity": [],
-        "hflip": [transforms.Lambda(TF.hflip)],
-        "vflip": [transforms.Lambda(TF.vflip)],
-        "hvflip": [transforms.Lambda(lambda im: TF.vflip(TF.hflip(im)))],
-        "rot+10": [transforms.Lambda(lambda im: TF.rotate(im, 10))],
-        "rot-10": [transforms.Lambda(lambda im: TF.rotate(im, -10))],
-        "bright": [transforms.Lambda(lambda im: TF.adjust_brightness(im, 1.2))],
-        "contrast": [transforms.Lambda(lambda im: TF.adjust_contrast(im, 1.2))],
-        "scale0.9": [transforms.Lambda(lambda im: TF.affine(im, angle=0, translate=[0, 0], scale=0.9, shear=[0.0]))],
-        "scale1.1": [transforms.Lambda(lambda im: TF.affine(im, angle=0, translate=[0, 0], scale=1.1, shear=[0.0]))],
+        "identity": _View("identity"),
+        "hflip": _View("hflip"),
+        "vflip": _View("vflip"),
+        "hvflip": _View("hvflip"),
+        "rot+10": _View("rotate", 10),
+        "rot-10": _View("rotate", -10),
+        "bright": _View("brightness", 1.2),
+        "contrast": _View("contrast", 1.2),
+        "scale0.9": _View("scale", 0.9),
+        "scale1.1": _View("scale", 1.1),
     }
-    return {k: transforms.Compose(base + v + tail) for k, v in ops.items()}
+    return {k: transforms.Compose([*base, v, *tail]) for k, v in ops.items()}
 
 
 @torch.no_grad()

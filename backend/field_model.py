@@ -11,8 +11,10 @@ from __future__ import annotations
 
 import json
 
+import numpy as np
 import torch
 import torch.nn.functional as F
+from torchvision.transforms import functional as TF
 
 import config
 from model import MobileNetModel
@@ -60,6 +62,28 @@ class FieldAdapter:
     def predict_probs(self, tensor: torch.Tensor):
         logits = self.model(tensor.to(self.device))
         return F.softmax(self.mask_logits(logits), dim=1)[0].float().cpu().numpy()
+
+    @torch.no_grad()
+    def tta_probs(self, image) -> np.ndarray:
+        """Test-time augmentation: the same 10 deterministic views as the DA experiments, averaged."""
+        from explain import to_tensor
+
+        small = image.resize(config.IMAGE_SIZE)
+        views = [
+            small,
+            TF.hflip(small),
+            TF.vflip(small),
+            TF.vflip(TF.hflip(small)),
+            TF.rotate(small, 10),
+            TF.rotate(small, -10),
+            TF.adjust_brightness(small, 1.2),
+            TF.adjust_contrast(small, 1.2),
+            TF.affine(small, angle=0, translate=[0, 0], scale=0.9, shear=[0.0]),
+            TF.affine(small, angle=0, translate=[0, 0], scale=1.1, shear=[0.0]),
+        ]
+        batch = torch.cat([to_tensor(v) for v in views]).to(self.device)
+        probs = F.softmax(self.mask_logits(self.model(batch)), dim=1)
+        return probs.mean(0).float().cpu().numpy()
 
     def describe(self) -> dict:
         return {

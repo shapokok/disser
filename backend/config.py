@@ -57,6 +57,8 @@ TRAINED_ACCURACY_THRESHOLD = float(os.environ.get("CROP_TRAINED_THRESHOLD", "0.5
 # Field-condition model produced by the domain adaptation experiments.
 FIELD_MODEL_PATH = _path("CROP_FIELD_MODEL", MODELS_DIR / "field_mobilenet_da.pth")
 FIELD_MODEL_INFO = MODELS_DIR / "field_model_info.json"
+# Average the field model over 10 deterministic views (+3-6 pp in cross-validation, ~10x inference).
+FIELD_TTA = _bool("CROP_FIELD_TTA", True)
 
 # --- Analysis journal (SQLite) -----------------------------------------------
 HISTORY_ENABLED = _bool("CROP_HISTORY", True)

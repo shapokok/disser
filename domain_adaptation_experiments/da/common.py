@@ -19,6 +19,7 @@ PLANTDOC_DIR / DA_RESULTS_DIR environment variables.
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import math
@@ -328,8 +329,8 @@ def compute_metrics(labels: np.ndarray, preds: np.ndarray, classes: list[int] | 
 def evaluate_model(
     model: nn.Module, device, splits: dict[str, list], batch_size=64, workers=0, classes: list[int] | None = None
 ) -> dict:
-    classes = list(classes) if classes is not None else list(ACTIVE_IDX)
     """Evaluate on dev, test and dev+test; both open-set (38-way) and restricted (4-way) argmax."""
+    classes = list(classes) if classes is not None else list(ACTIVE_IDX)
     out = {}
     tf = eval_transform()
     cache = {}
@@ -352,6 +353,122 @@ def headline(result: dict, split: str = "eval", mode: str = "open") -> str:
     m = result[split][mode]
     lo, hi = m["ci95"]
     return f"{m['accuracy'] * 100:.1f}% (95% CI {lo * 100:.0f}–{hi * 100:.0f}, n={m['n']}, macro-F1 {m['macro_f1'] * 100:.1f})"
+
+
+# --------------------------------------------------------------------------- source replay, augmentations, BN
+PLANTVILLAGE_TRAIN = PROJECT_ROOT / "data" / "PlantVillage" / "train"
+
+
+def source_items(per_class: int = 30, seed: int = 0) -> list[tuple[str, int]]:
+    """A fixed random subset of labelled PlantVillage training images (absolute paths), `per_class` per class."""
+    rng = random.Random(seed)
+    items = []
+    for idx, cls in enumerate(CLASS_NAMES):
+        d = PLANTVILLAGE_TRAIN / cls
+        if not d.is_dir():
+            continue
+        files = sorted(p for p in d.iterdir() if p.suffix.lower() in IMAGE_EXT)
+        for p in rng.sample(files, min(per_class, len(files))):
+            items.append((str(p), idx))
+    return items
+
+
+class PathDataset(Dataset):
+    """(absolute path, label) pairs, used for the PlantVillage source replay."""
+
+    def __init__(self, items, transform):
+        self.items, self.transform = list(items), transform
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, i):
+        path, label = self.items[i]
+        return self.transform(Image.open(path).convert("RGB")), label, i
+
+
+def infinite(loader):
+    while True:
+        yield from loader
+
+
+def field_augment():
+    """Augmentation aimed at field photos: random crops of cluttered scenes, light/colour shifts, blur."""
+    return transforms.Compose(
+        [
+            transforms.RandomResizedCrop(IMG_SIZE, scale=(0.35, 1.0), ratio=(0.75, 1.33)),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(0.2),
+            transforms.RandomRotation(20),
+            transforms.ColorJitter(brightness=0.35, contrast=0.35, saturation=0.35, hue=0.08),
+            transforms.RandomApply([transforms.GaussianBlur(5, sigma=(0.1, 2.0))], p=0.3),
+            transforms.RandomGrayscale(0.05),
+            transforms.ToTensor(),
+            transforms.Normalize(MEAN, STD),
+            transforms.RandomErasing(p=0.25, scale=(0.02, 0.12)),
+        ]
+    )
+
+
+AUGMENTATIONS = {"heavy": heavy_augment, "light": light_augment, "field": field_augment}
+
+
+def bn_layers(model):
+    return [m for m in model.modules() if isinstance(m, nn.modules.batchnorm._BatchNorm)]
+
+
+@torch.no_grad()
+def adapt_bn(model: nn.Module, items, device, batch_size: int = 64, workers: int = 0) -> nn.Module:
+    """AdaBN (Li et al., 2016): re-estimate BatchNorm statistics on unlabelled target images."""
+    for m in bn_layers(model):
+        m.reset_running_stats()
+        m.momentum = None  # cumulative average over the whole pass
+    model.train()
+    for x, _, _ in make_loader(items, eval_transform(), batch_size=batch_size, workers=workers):
+        model(x.to(device))
+    for m in bn_layers(model):
+        m.momentum = 0.1
+    return model.eval()
+
+
+class bn_frozen_stats:
+    """Context manager: BN layers normalise with batch statistics but do not update running stats (source batches)."""
+
+    def __init__(self, model):
+        self.layers = bn_layers(model)
+
+    def __enter__(self):
+        self.saved = [m.momentum for m in self.layers]
+        for m in self.layers:
+            m.momentum = 0.0
+
+    def __exit__(self, *exc):
+        for m, mom in zip(self.layers, self.saved):
+            m.momentum = mom
+
+
+class EMA:
+    """Exponential moving average of parameters and buffers (mean teacher / Polyak averaging)."""
+
+    def __init__(self, model: nn.Module, decay: float = 0.99):
+        self.decay = decay
+        self.model = copy.deepcopy(model).eval()
+        for p in self.model.parameters():
+            p.requires_grad_(False)
+
+    @torch.no_grad()
+    def update(self, model: nn.Module):
+        for e, m in zip(self.model.state_dict().values(), model.state_dict().values()):
+            if e.dtype.is_floating_point:
+                e.mul_(self.decay).add_(m.detach(), alpha=1 - self.decay)
+            else:
+                e.copy_(m)
+
+
+def closed_set_probs(probs: np.ndarray, classes: list[int]) -> np.ndarray:
+    """Renormalise the softmax over the target label set (closed-set / partial-DA assumption)."""
+    sub = probs[:, classes]
+    return sub / np.clip(sub.sum(1, keepdims=True), 1e-12, None)
 
 
 # --------------------------------------------------------------------------- training

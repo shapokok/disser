@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{Тест МакНемара для методов адаптации (одни и те же 500 изображений)}
+\label{tab:da-cv-mcnemar}
+\begin{tabular}{llrrr}
+\toprule
+Метод A & Метод B & A верно, B нет & B верно, A нет & p \\
+\midrule
+Без адаптации & Joint fine-tuning (исходный) & 18 & 117 & < 0.001 \\
+Без адаптации & Self-training v2 (CBST + EMA-учитель) & 61 & 32 & 0.004 \\
+Self-training (исходный) & Self-training v2 (CBST + EMA-учитель) & 7 & 103 & < 0.001 \\
+25 \% разметки & 25 \% разметки + псевдометки & 10 & 7 & 0.628 \\
+Joint fine-tuning (исходный) & Joint fine-tuning v2 & 41 & 39 & 0.911 \\
+\bottomrule
+\end{tabular}
+\end{table}

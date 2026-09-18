@@ -179,7 +179,59 @@ def main():
         )
         md += ["## Утечка train/valid", "", md_table(header_d, rows_d)]
 
-    # --- 3. Domain adaptation
+    # --- 3a. Domain adaptation, cross-validation (main protocol)
+    cv = load(DA_RESULTS / "cv_summary.json")
+    if cv:
+        header_cv = ["Метод", "Разметка поля", "Точность, 38 кл., %", "95 % ДИ", "Точность, 4 кл., %", "Macro-F1, %"]
+        rows_cv = []
+        for key, m in cv["methods"].items():
+            o, r = m["open"], m["restricted"]
+            multi = len(m["seeds"]) > 1
+            lab = "нет" if m["unsupervised"] else ("25 %" if key in ("sup25", "semi25") else "да")
+            rows_cv.append(
+                [
+                    m["label"],
+                    lab,
+                    pct(o["accuracy_mean"], 1) + (f" ± {100 * o['accuracy_std']:.1f}" if multi else ""),
+                    f"{100 * o['ci95'][0]:.0f}–{100 * o['ci95'][1]:.0f}",
+                    pct(r["accuracy_mean"], 1) + (f" ± {100 * r['accuracy_std']:.1f}" if multi else ""),
+                    pct(o["macro_f1_mean"], 1),
+                ]
+            )
+        cap_cv = (
+            f"Доменная адаптация PlantVillage → PlantDoc: 5-кратная кросс-валидация, n = {cv['protocol']['n']} "
+            "(каждое изображение оценено один раз как отложенное)"
+        )
+        (OUT / "table_da_cv.tex").write_text(
+            tex_table(cap_cv, "tab:da-cv", header_cv, rows_cv, "llrrrr"), encoding="utf-8"
+        )
+        md += ["## Доменная адаптация: кросс-валидация (основной протокол)", "", md_table(header_cv, rows_cv)]
+        if cv.get("mcnemar"):
+            header_t = ["Метод A", "Метод B", "A верно, B нет", "B верно, A нет", "p"]
+            name = lambda k: cv["methods"][k]["label"] if k in cv["methods"] else k  # noqa: E731
+            rows_t = [
+                [
+                    name(t["a"]),
+                    name(t["b"]),
+                    t["a_only"],
+                    t["b_only"],
+                    "< 0.001" if t["p_value"] < 0.001 else f"{t['p_value']:.3f}",
+                ]
+                for t in cv["mcnemar"]
+            ]
+            (OUT / "table_da_cv_mcnemar.tex").write_text(
+                tex_table(
+                    "Тест МакНемара для методов адаптации (одни и те же 500 изображений)",
+                    "tab:da-cv-mcnemar",
+                    header_t,
+                    rows_t,
+                    "llrrr",
+                ),
+                encoding="utf-8",
+            )
+            md += ["### Тест МакНемара", "", md_table(header_t, rows_t)]
+
+    # --- 3b. Domain adaptation, fixed dev/test split (secondary)
     summ = load(DA_RESULTS / "summary.json")
     if summ:
         header_da = [

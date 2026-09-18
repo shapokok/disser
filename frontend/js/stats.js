@@ -242,59 +242,108 @@
     const body = clear($("#researchBody"));
     const meta = clear($("#researchMeta"));
     const r = state.research;
-    if (!r || !r.available || !r.summary) {
+    if (!r || !r.available) {
       body.append(el("div", { class: "card" }, el("div", { class: "card-body" }, [el("p", { class: "note", text: t("stats.research_pending") }), el("p", { class: "small muted", text: t("stats.legacy_note") })])));
       return;
     }
-    const s = r.summary;
-    const splits = (s.protocol && s.protocol.splits) || {};
-    meta.append(el("span", { text: `${t("stats.splits")}: ${Object.entries(splits).map(([k, v]) => `${k} = ${v.n}`).join(", ")}` }), el("span", { text: `${t("stats.seeds")}: ${(s.seeds || []).join(", ")}` }), el("span", { text: s.generated_at ? new Date(s.generated_at).toLocaleString() : "" }));
+    const cv = r.cv;
+    if (cv) renderCV(cv, body, meta);
+    if (r.summary) renderSplit(r.summary, body, !cv);
+  }
 
+  function labelGroup(key, m) {
+    if (m.unsupervised) return key === "zero_shot" ? "none0" : "none";
+    return key === "sup25" || key === "semi25" ? "partial" : "full";
+  }
+
+  function renderCV(cv, body, meta) {
+    const methods = Object.entries(cv.methods || {});
+    const seeds = [...new Set(methods.flatMap(([, m]) => m.seeds))].sort();
+    meta.append(el("span", { text: `${t("stats.cv_protocol")}: n = ${cv.protocol.n}` }), el("span", { text: `${t("stats.seeds")}: ${seeds.join(", ")}` }), el("span", { text: cv.generated_at ? new Date(cv.generated_at).toLocaleString(i18n.lang === "ru" ? "ru-RU" : "en-US") : "" }));
+    const chipFor = (g) => (g === "full" ? el("span", { class: "chip accent", text: t("stats.labels_full") }) : g === "partial" ? el("span", { class: "chip warning", text: t("stats.labels_partial") }) : el("span", { class: "chip", text: t("stats.labels_none") }));
+    const best = cv.best_supervised;
+    const rows = methods.map(([k, m]) => {
+      const o = m.open, rr = m.restricted, multi = m.seeds.length > 1;
+      return el("tr", { style: k === best ? { background: "var(--accent-soft)" } : null }, [
+        el("td", {}, [m.label, k === best ? el("span", { class: "chip good", style: { marginLeft: ".5rem" }, text: t("common.best") }) : null]),
+        el("td", {}, chipFor(labelGroup(k, m))),
+        el("td", { class: "num", text: `${fmt.pct(o.accuracy_mean)}${multi ? ` ± ${(o.accuracy_std * 100).toFixed(1)}` : ""}` }),
+        el("td", { class: "num", text: `${(o.ci95[0] * 100).toFixed(0)}–${(o.ci95[1] * 100).toFixed(0)}` }),
+        el("td", { class: "num", text: `${fmt.pct(rr.accuracy_mean)}${multi ? ` ± ${(rr.accuracy_std * 100).toFixed(1)}` : ""}` }),
+        el("td", { class: "num", text: fmt.pct(o.macro_f1_mean) }),
+      ]);
+    });
+    body.append(el("div", { class: "card" }, [
+      el("div", { class: "card-head" }, [el("div", {}, [el("h3", { text: t("stats.cv_title") }), el("p", { class: "small muted", style: { margin: 0 }, text: t("stats.cv_sub") })])]),
+      el("div", { class: "table-wrap" }, el("table", { class: "data" }, [
+        el("thead", {}, el("tr", {}, [el("th", { text: t("stats.method") }), el("th", { text: t("stats.labels_used") }), el("th", { class: "num", text: t("stats.acc38") }), el("th", { class: "num", text: t("stats.ci") }), el("th", { class: "num", text: t("stats.acc4") }), el("th", { class: "num", text: t("common.f1") })])),
+        el("tbody", {}, rows),
+      ])),
+    ]));
+
+    const c1 = el("canvas", { id: "daChart" });
+    const c2 = el("canvas", { id: "pcChart" });
+    body.append(el("div", { class: "grid grid-2" }, [
+      el("div", { class: "card chart-card" }, el("div", { class: "card-body" }, [el("p", { class: "chart-title", text: t("stats.chart_da_title") }), el("p", { class: "chart-sub", text: t("stats.chart_cv_sub") }), el("div", { class: "legend", style: { marginBottom: ".5rem" } }, [["--ink-3", t("stats.zero_shot")], ["--s3", t("stats.labels_none")], ["--s2", t("stats.labels_partial")], ["--s1", t("stats.labels_full")]].map(([c, l]) => el("span", { class: "key" }, [el("span", { class: "sw", style: { background: cssVar(c) } }), l]))), el("div", { class: "chart-box tall" }, c1)])),
+      el("div", { class: "card chart-card" }, el("div", { class: "card-body" }, [el("p", { class: "chart-title", text: t("stats.chart_pc_title") }), el("p", { class: "chart-sub", text: t("stats.chart_pc_sub_cv") }), el("div", { class: "chart-box tall" }, c2)])),
+    ]));
+    const groupColor = { none0: "--ink-3", none: "--s3", partial: "--s2", full: "--s1" };
+    const labels = methods.map(([, m]) => m.label);
+    const vals = methods.map(([, m]) => m.open.accuracy_mean * 100);
+    const ci = methods.map(([, m]) => m.open.ci95.map((x) => x * 100));
+    chart("daChart", {
+      type: "bar",
+      data: { labels, datasets: [{ data: vals, backgroundColor: methods.map(([k, m]) => cssVar(groupColor[labelGroup(k, m)])), maxBarThickness: 16 }] },
+      options: { indexAxis: "y", maintainAspectRatio: false, layout: { padding: { right: 56 } }, scales: { x: { min: 0, max: 100, ticks: { callback: (v) => v + " %" } }, y: { grid: { display: false }, ticks: { callback: (v, i) => (labels[i].length > 34 ? labels[i].slice(0, 32) + "…" : labels[i]) } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.parsed.x.toFixed(1)} % (95 % CI ${ci[c.dataIndex][0].toFixed(0)}–${ci[c.dataIndex][1].toFixed(0)})` } }, errorBars: { ci }, barValues: { format: (v) => v.toFixed(1) + " %" } } },
+      plugins: [errorBarPlugin, barValuePlugin],
+    });
+    const zs = cv.methods.zero_shot, bm = best && cv.methods[best];
+    if (zs && bm) {
+      const keys = Object.keys(zs.open.per_class);
+      const names = keys.map((k) => (cv.class_names && cv.class_names[k]) || k);
+      chart("pcChart", {
+        type: "bar",
+        data: { labels: names, datasets: [
+          { label: t("stats.zero_shot"), data: keys.map((k) => zs.open.per_class[k] * 100), backgroundColor: cssVar("--ink-3"), maxBarThickness: 18 },
+          { label: bm.label, data: keys.map((k) => bm.open.per_class[k] * 100), backgroundColor: cssVar("--s1"), maxBarThickness: 18 },
+        ] },
+        options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 100, ticks: { callback: (v) => v + " %" } }, x: { grid: { display: false } } }, plugins: { legend: { position: "bottom" }, tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} %` } } } },
+      });
+    }
+    if (cv.mcnemar && cv.mcnemar.length) {
+      const name = (k) => (cv.methods[k] ? cv.methods[k].label : k);
+      body.append(el("div", { class: "card" }, [
+        el("div", { class: "card-head" }, [el("div", {}, [el("h3", { text: t("stats.mcnemar") }), el("p", { class: "small muted", style: { margin: 0 }, text: t("stats.mcnemar_cv_sub") })])]),
+        el("div", { class: "table-wrap" }, el("table", { class: "data" }, [
+          el("thead", {}, el("tr", {}, [el("th", { text: "A" }), el("th", { text: "B" }), el("th", { class: "num", text: t("stats.a_only") }), el("th", { class: "num", text: t("stats.b_only") }), el("th", { class: "num", text: "p" }), el("th")])),
+          el("tbody", {}, cv.mcnemar.map((x) => { const sig = x.p_value < 0.05; return el("tr", {}, [el("td", { text: name(x.a) }), el("td", { text: name(x.b) }), el("td", { class: "num", text: x.a_only }), el("td", { class: "num", text: x.b_only }), el("td", { class: "num", text: x.p_value < 0.001 ? "< 0.001" : x.p_value.toFixed(3) }), el("td", {}, el("span", { class: "chip " + (sig ? "accent" : ""), text: sig ? t("stats.significant") : t("stats.not_significant") }))]); })),
+        ])),
+      ]));
+    }
+  }
+
+  function renderSplit(s, body, primary) {
     const methods = Object.entries(s.methods || {});
     const rows = methods.map(([k, m]) => el("tr", {}, [
       el("td", { text: k === "baseline" ? t("stats.zero_shot") : m.label }),
       el("td", { class: "num", text: `${fmt.pct(m.eval_open.accuracy_mean)}${m.eval_open.runs > 1 ? ` ± ${(m.eval_open.accuracy_std * 100).toFixed(1)}` : ""}` }),
       el("td", { class: "num", text: `${(m.eval_open.ci95_pooled[0] * 100).toFixed(0)}–${(m.eval_open.ci95_pooled[1] * 100).toFixed(0)}` }),
-      el("td", { class: "num", text: fmt.pct(m.eval_open.macro_f1_mean) }),
       el("td", { class: "num", text: fmt.pct(m.test_open.accuracy_mean) }),
       el("td", { class: "num", text: fmt.pct(m.eval_restricted.accuracy_mean) }),
     ]));
-    body.append(el("div", { class: "card" }, [el("div", { class: "card-head" }, el("h3", { text: t("stats.chart_da_title") })), el("div", { class: "table-wrap" }, el("table", { class: "data" }, [
-      el("thead", {}, el("tr", {}, [el("th", { text: t("stats.method") }), el("th", { class: "num", text: t("stats.eval_acc") }), el("th", { class: "num", text: t("stats.ci") }), el("th", { class: "num", text: t("stats.macro_f1") || t("common.f1") }), el("th", { class: "num", text: t("stats.test_acc") }), el("th", { class: "num", text: t("stats.restricted") })])),
+    const table = el("div", { class: "table-wrap" }, el("table", { class: "data" }, [
+      el("thead", {}, el("tr", {}, [el("th", { text: t("stats.method") }), el("th", { class: "num", text: t("stats.eval_acc") }), el("th", { class: "num", text: t("stats.ci") }), el("th", { class: "num", text: t("stats.test_acc") }), el("th", { class: "num", text: t("stats.restricted") })])),
       el("tbody", {}, rows),
-    ]))]));
-
-    // chart: methods (emphasis: baseline gray, adapted methods one hue), CI error bars
-    const c1 = el("canvas", { id: "daChart" });
-    const c2 = el("canvas", { id: "pcChart" });
-    body.append(el("div", { class: "grid grid-2" }, [
-      el("div", { class: "card chart-card" }, el("div", { class: "card-body" }, [el("p", { class: "chart-title", text: t("stats.chart_da_title") }), el("p", { class: "chart-sub", text: t("stats.chart_da_sub") }), el("div", { class: "chart-box" }, c1)])),
-      el("div", { class: "card chart-card" }, el("div", { class: "card-body" }, [el("p", { class: "chart-title", text: t("stats.chart_pc_title") }), el("p", { class: "chart-sub", text: t("stats.chart_pc_sub") }), el("div", { class: "chart-box" }, c2)])),
     ]));
-    const labels = methods.map(([k, m]) => (k === "baseline" ? t("stats.zero_shot") : m.label));
-    const vals = methods.map(([, m]) => m.eval_open.accuracy_mean * 100);
-    const ci = methods.map(([, m]) => m.eval_open.ci95_pooled.map((x) => x * 100));
-    const colors = methods.map(([k]) => (k === "baseline" ? cssVar("--ink-3") : cssVar("--s1")));
-    chart("daChart", {
-      type: "bar",
-      data: { labels, datasets: [{ data: vals, backgroundColor: colors, maxBarThickness: 22 }] },
-      options: { indexAxis: "y", maintainAspectRatio: false, layout: { padding: { right: 60 } }, scales: { x: { min: 0, max: 100, ticks: { callback: (v) => v + " %" } }, y: { grid: { display: false } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.parsed.x.toFixed(1)} % (95 % CI ${ci[c.dataIndex][0].toFixed(0)}–${ci[c.dataIndex][1].toFixed(0)})` } }, errorBars: { ci }, barValues: { format: (v) => v.toFixed(1) + " %" } } },
-      plugins: [errorBarPlugin, barValuePlugin],
-    });
-    const pc = Object.entries(s.per_class_eval_open || {});
-    chart("pcChart", {
-      type: "bar",
-      data: { labels: pc.map(([k]) => k), datasets: [
-        { label: t("stats.zero_shot"), data: pc.map(([, v]) => v.baseline * 100), backgroundColor: cssVar("--ink-3"), maxBarThickness: 18 },
-        { label: t("stats.adapted"), data: pc.map(([, v]) => v.joint * 100), backgroundColor: cssVar("--s1"), maxBarThickness: 18 },
-      ] },
-      options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 100, ticks: { callback: (v) => v + " %" } }, x: { grid: { display: false } } }, plugins: { legend: { position: "bottom" }, tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} %` } } } },
-    });
     const a27 = s.baseline_all27_test;
-    body.append(el("div", { class: "card" }, el("div", { class: "card-body small" }, [
+    const zsa = s.zero_shot_by_arch || {};
+    const extra = el("div", { class: "card-body small" }, [
       a27 ? el("p", { text: `${t("stats.all27")}: ${fmt.pct(a27.open.accuracy)} (n = ${a27.open.n}, top-5 ${fmt.pct(a27.top5_open)})` }) : null,
+      Object.keys(zsa).length ? el("p", { text: `${t("stats.zero_shot_archs")}: ` + Object.entries(zsa).map(([a, v]) => `${a} ${fmt.pct(v.focus_eval_open)}`).join(" · ") }) : null,
       el("p", { class: "muted", text: t("stats.legacy_note") }),
-    ])));
+    ]);
+    const details = el("details", { open: primary }, [el("summary", { class: "card-head", style: { cursor: "pointer" } }, el("h3", { text: t("stats.split_title") })), table, extra]);
+    body.append(el("div", { class: "card" }, details));
   }
 
   // ------------------------------------------------------------------ load

@@ -189,6 +189,10 @@ def create_app(load_models: bool = True, models=None) -> Flask:
 
         if ensemble_info is not None:  # the ensemble decides, the best model explains
             probs, idx = ens["probabilities"], ens["predicted_idx"]
+        elif field_info and field_info.get("adapted_model") and config.FIELD_TTA:
+            probs = field.tta_probs(load_image(image_path))  # TTA decides, the identity view explains
+            idx = int(probs.argmax())
+            field_info["tta"] = True
 
         prediction, top = format_prediction(probs, idx)
         result = {
@@ -426,14 +430,19 @@ def create_app(load_models: bool = True, models=None) -> Flask:
     def research():
         """Domain adaptation study summary (written by domain_adaptation_experiments/da/run_all.py)."""
         summary_path = config.DA_RESULTS_DIR / "summary.json"
+        cv_path = config.DA_RESULTS_DIR / "cv_summary.json"
         summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else None
+        cv = json.loads(cv_path.read_text(encoding="utf-8")) if cv_path.exists() else None
         runs = sorted(
-            p.stem for p in config.DA_RESULTS_DIR.glob("*.json") if not p.stem.startswith(("splits_", "summary"))
+            p.stem
+            for p in config.DA_RESULTS_DIR.glob("*.json")
+            if not p.stem.startswith(("splits_", "summary", "cv_summary"))
         )
         return jsonify(
             {
                 "success": True,
-                "available": summary is not None,
+                "available": summary is not None or cv is not None,
+                "cv": cv,
                 "summary": summary,
                 "runs": runs,
                 "field_model": field.describe(),

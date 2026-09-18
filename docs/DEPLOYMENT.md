@@ -28,6 +28,7 @@ python backend/app.py
 | `CROP_MODELS` | `baseline,efficientnet,mobilenet,hybrid` | какие модели загружать |
 | `CROP_MODELS_DIR`, `CROP_DATA_DIR`, `CROP_UPLOAD_DIR`, `CROP_RESULTS_DIR` | `models/`, `data/`, … | пути |
 | `CROP_FIELD_MODEL` | `models/field_mobilenet_da.pth` | адаптированная полевая модель |
+| `CROP_FIELD_TTA` | `true` | усреднять полевую модель по 10 видам снимка (TTA) |
 | `CROP_TRAINED_THRESHOLD` | `0.5` | ниже этой точности модель считается необученной |
 | `CROP_LIME_SAMPLES` | `300` | число возмущений LIME (меньше — быстрее) |
 | `CROP_MAX_FILE_MB` | `16` | лимит загрузки |
