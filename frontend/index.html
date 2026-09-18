@@ -5,59 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CropAI Monitor — диагностика болезней растений</title>
   <meta name="description" content="Intelligent crop condition monitoring with computer vision: disease detection, explainable AI, domain adaptation.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e7a46'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231b7a45'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="home">
   <header class="site-header">
-    <div class="container navbar">
-      <a href="/" class="brand"><span class="brand-mark" data-icon="leaf"></span><span data-i18n="app.name">CropAI Monitor</span></a>
-      <button class="icon-btn menu-toggle" id="menuToggle" data-i18n-title="nav.menu" data-icon="menu"></button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
-        <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
-        <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
-      </ul>
-      <div class="nav-tools">
-        <div class="lang-switch" role="group" aria-label="Language"><button data-lang="ru" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button></div>
-        <button class="icon-btn" id="themeToggle" data-i18n-title="nav.theme"></button>
-      </div>
+    <div class="container">
+      <nav class="navbar">
+        <a href="/" class="brand"><span class="brand-mark" data-icon="leaf"></span><span data-i18n="app.name">CropAI Monitor</span></a>
+        <button class="icon-btn menu-toggle" id="menuToggle" data-i18n-title="nav.menu" data-icon="menu"></button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
+          <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
+          <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
+        </ul>
+        <div class="nav-tools">
+          <div class="lang-switch" role="group" aria-label="Language"><button data-lang="ru" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button></div>
+          <button class="icon-btn" id="themeToggle" data-i18n-title="nav.theme"></button>
+        </div>
+      </nav>
     </div>
   </header>
 
   <main>
     <section class="hero">
       <div class="container hero-grid">
-        <div>
-          <div class="eyebrow" data-i18n="home.eyebrow"></div>
+        <div class="reveal in">
+          <span class="eyebrow" data-i18n="home.eyebrow"></span>
           <h1 data-i18n="home.title"></h1>
           <p class="lead" data-i18n="home.lead"></p>
           <div class="hero-actions">
             <a class="btn primary lg" href="/analyze" data-i18n="home.cta_analyze"></a>
             <a class="btn lg" href="/stats" data-i18n="home.cta_stats"></a>
           </div>
+          <div class="hero-badges">
+            <span class="chip" data-i18n="home.badge_xai"></span>
+            <span class="chip" data-i18n="home.badge_models"></span>
+            <span class="chip" data-i18n="home.badge_field"></span>
+          </div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="leafg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#3fbf74"/><stop offset="1" stop-color="#165f36"/></linearGradient>
-              <radialGradient id="heat" cx="0.55" cy="0.45" r="0.5"><stop offset="0" stop-color="#e34948" stop-opacity="0.85"/><stop offset="0.45" stop-color="#eda100" stop-opacity="0.55"/><stop offset="1" stop-color="#2a78d6" stop-opacity="0"/></radialGradient>
-            </defs>
-            <rect x="0" y="0" width="400" height="300" rx="16" fill="var(--surface-2)"/>
-            <path d="M200 40 C 120 60, 70 140, 90 240 C 170 250, 250 210, 290 130 C 310 90, 270 50, 200 40 Z" fill="url(#leafg)"/>
-            <path d="M200 40 C 160 110, 130 180, 95 236" stroke="rgba(255,255,255,.45)" stroke-width="3" fill="none"/>
-            <path d="M175 95 C 150 105, 130 115, 118 140 M190 130 C 168 140, 150 160, 140 185 M212 160 C 195 176, 178 195, 168 215" stroke="rgba(255,255,255,.35)" stroke-width="2" fill="none"/>
-            <ellipse cx="215" cy="150" rx="70" ry="60" fill="url(#heat)"/>
-            <circle cx="215" cy="150" r="14" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4"/>
-            <g font-family="system-ui, sans-serif" font-size="11" fill="var(--ink-2)">
-              <rect x="300" y="200" width="88" height="80" rx="8" fill="var(--surface)" stroke="var(--hairline)"/>
-              <text x="310" y="220" font-weight="700" fill="var(--ink)">Grad-CAM</text>
-              <text x="310" y="238">Late blight</text>
-              <rect x="310" y="246" width="68" height="6" rx="3" fill="var(--seq-100)"/>
-              <rect x="310" y="246" width="60" height="6" rx="3" fill="#2a78d6"/>
-              <text x="310" y="268">92.4 %</text>
-            </g>
-          </svg>
+        <div class="preview-stage" aria-hidden="true">
+          <div class="preview-photo">
+            <img src="img/hero-leaf.jpg" alt="">
+            <img class="heat" src="img/hero-gradcam.jpg" alt="">
+            <span class="tag">Grad-CAM</span>
+          </div>
+          <div class="preview-pill"><span class="dot"></span><span data-i18n="home.preview_pill"></span></div>
+          <div class="preview-card">
+            <div class="label" data-i18n="analyze.diagnosis"></div>
+            <div class="name" data-i18n="home.preview_name"></div>
+            <div class="bars">
+              <div><span data-i18n="home.preview_c1"></span><span>94.9 %</span><i><b style="width:95%"></b></i></div>
+              <div><span data-i18n="home.preview_c2"></span><span>3.1 %</span><i><b style="width:3%"></b></i></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -65,51 +66,52 @@
     <section class="section">
       <div class="container">
         <div class="grid grid-4" id="kpis">
-          <div class="card tile"><div class="label" data-i18n="home.kpi_images"></div><div class="value" id="kpiImages">—</div></div>
-          <div class="card tile"><div class="label" data-i18n="home.kpi_classes"></div><div class="value" id="kpiClasses">—</div></div>
-          <div class="card tile"><div class="label" data-i18n="home.kpi_plants"></div><div class="value" id="kpiPlants">—</div></div>
-          <div class="card tile"><div class="label" data-i18n="home.kpi_best"></div><div class="value" id="kpiBest">—</div><div class="delta" id="kpiBestModel"></div></div>
+          <div class="card tile reveal"><div class="label" data-i18n="home.kpi_images"></div><div class="value" id="kpiImages" data-count>—</div></div>
+          <div class="card tile reveal"><div class="label" data-i18n="home.kpi_classes"></div><div class="value" id="kpiClasses" data-count>—</div></div>
+          <div class="card tile reveal"><div class="label" data-i18n="home.kpi_plants"></div><div class="value" id="kpiPlants" data-count>—</div></div>
+          <div class="card tile reveal"><div class="label" data-i18n="home.kpi_best"></div><div class="value" id="kpiBest">—</div><div class="delta" id="kpiBestModel"></div></div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="section-head"><div><h2 data-i18n="home.how_title"></h2><p data-i18n="home.how_sub"></p></div></div>
+        <div class="section-head reveal"><div><span class="eyebrow" data-i18n="home.how_eyebrow"></span><h2 data-i18n="home.how_title"></h2><p data-i18n="home.how_sub"></p></div></div>
         <div class="steps">
-          <div class="card step"><h3 data-i18n="home.step1_t"></h3><p data-i18n="home.step1_p"></p></div>
-          <div class="card step"><h3 data-i18n="home.step2_t"></h3><p data-i18n="home.step2_p"></p></div>
-          <div class="card step"><h3 data-i18n="home.step3_t"></h3><p data-i18n="home.step3_p"></p></div>
+          <div class="card step lift reveal"><h3 data-i18n="home.step1_t"></h3><p data-i18n="home.step1_p"></p></div>
+          <div class="card step lift reveal"><h3 data-i18n="home.step2_t"></h3><p data-i18n="home.step2_p"></p></div>
+          <div class="card step lift reveal"><h3 data-i18n="home.step3_t"></h3><p data-i18n="home.step3_p"></p></div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="section-head"><div><h2 data-i18n="home.models_title"></h2><p data-i18n="home.models_sub"></p></div></div>
+        <div class="section-head reveal"><div><span class="eyebrow" data-i18n="home.models_eyebrow"></span><h2 data-i18n="home.models_title"></h2><p data-i18n="home.models_sub"></p></div></div>
         <div class="grid grid-4" id="modelCards"></div>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="section-head"><div><h2 data-i18n="home.features_title"></h2></div></div>
+        <div class="section-head reveal"><div><span class="eyebrow" data-i18n="home.features_eyebrow"></span><h2 data-i18n="home.features_title"></h2></div></div>
         <div class="grid grid-3">
-          <div class="card feature"><div class="icon" data-icon="leaf"></div><h3 data-i18n="home.f1_t"></h3><p data-i18n="home.f1_p"></p></div>
-          <div class="card feature"><div class="icon" data-icon="eye"></div><h3 data-i18n="home.f2_t"></h3><p data-i18n="home.f2_p"></p></div>
-          <div class="card feature"><div class="icon" data-icon="layers"></div><h3 data-i18n="home.f3_t"></h3><p data-i18n="home.f3_p"></p></div>
-          <div class="card feature"><div class="icon" data-icon="pill"></div><h3 data-i18n="home.f4_t"></h3><p data-i18n="home.f4_p"></p></div>
-          <div class="card feature"><div class="icon" data-icon="file"></div><h3 data-i18n="home.f5_t"></h3><p data-i18n="home.f5_p"></p></div>
-          <div class="card feature"><div class="icon" data-icon="field"></div><h3 data-i18n="home.f6_t"></h3><p data-i18n="home.f6_p"></p><p class="small" id="fieldStatus" style="margin-top:.5rem"></p></div>
+          <div class="card feature lift reveal"><div class="icon" data-icon="leaf"></div><h3 data-i18n="home.f1_t"></h3><p data-i18n="home.f1_p"></p></div>
+          <div class="card feature lift reveal"><div class="icon" data-icon="eye"></div><h3 data-i18n="home.f2_t"></h3><p data-i18n="home.f2_p"></p></div>
+          <div class="card feature lift reveal"><div class="icon" data-icon="layers"></div><h3 data-i18n="home.f3_t"></h3><p data-i18n="home.f3_p"></p></div>
+          <div class="card feature lift reveal"><div class="icon" data-icon="pill"></div><h3 data-i18n="home.f4_t"></h3><p data-i18n="home.f4_p"></p></div>
+          <div class="card feature lift reveal"><div class="icon" data-icon="file"></div><h3 data-i18n="home.f5_t"></h3><p data-i18n="home.f5_p"></p></div>
+          <div class="card feature lift reveal"><div class="icon" data-icon="field"></div><h3 data-i18n="home.f6_t"></h3><p data-i18n="home.f6_p"></p><p class="small muted" id="fieldStatus" style="margin-top:.6rem"></p></div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="card"><div class="card-body">
+        <div class="band reveal">
           <div class="grid grid-2" style="align-items:center">
             <div class="prose">
+              <span class="eyebrow" data-i18n="home.research_eyebrow"></span>
               <h2 data-i18n="home.research_title"></h2>
               <p data-i18n="home.research_p1"></p>
               <p data-i18n="home.research_p2"></p>
@@ -117,7 +119,7 @@
             </div>
             <div class="grid grid-2" id="researchTiles"></div>
           </div>
-        </div></div>
+        </div>
       </div>
     </section>
   </main>

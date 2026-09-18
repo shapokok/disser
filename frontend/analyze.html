@@ -4,35 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Анализ изображений — CropAI Monitor</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e7a46'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231b7a45'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="analyze">
   <header class="site-header">
-    <div class="container navbar">
-      <a href="/" class="brand"><span class="brand-mark" data-icon="leaf"></span><span data-i18n="app.name">CropAI Monitor</span></a>
-      <button class="icon-btn menu-toggle" id="menuToggle" data-i18n-title="nav.menu" data-icon="menu"></button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
-        <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
-        <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
-      </ul>
-      <div class="nav-tools">
-        <div class="lang-switch" role="group" aria-label="Language"><button data-lang="ru" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button></div>
-        <button class="icon-btn" id="themeToggle" data-i18n-title="nav.theme"></button>
-      </div>
+    <div class="container">
+      <nav class="navbar">
+        <a href="/" class="brand"><span class="brand-mark" data-icon="leaf"></span><span data-i18n="app.name">CropAI Monitor</span></a>
+        <button class="icon-btn menu-toggle" id="menuToggle" data-i18n-title="nav.menu" data-icon="menu"></button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
+          <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
+          <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
+        </ul>
+        <div class="nav-tools">
+          <div class="lang-switch" role="group" aria-label="Language"><button data-lang="ru" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button></div>
+          <button class="icon-btn" id="themeToggle" data-i18n-title="nav.theme"></button>
+        </div>
+      </nav>
     </div>
   </header>
 
   <main class="section">
     <div class="container">
-      <div class="section-head"><div><h1 style="font-size:1.8rem" data-i18n="analyze.title"></h1><p data-i18n="analyze.sub"></p></div></div>
+      <div class="page-title"><span class="eyebrow" data-i18n="nav.analyze"></span><h1 data-i18n="analyze.title"></h1><p data-i18n="analyze.sub"></p></div>
 
       <div class="analyze-layout">
         <aside class="stack sticky">
           <div class="card">
             <div class="card-head"><h3 data-i18n="analyze.settings"></h3></div>
-            <div class="card-body stack">
+            <div class="panel-section stack">
               <div class="field">
                 <label for="modelSelect" data-i18n="analyze.model"></label>
                 <select id="modelSelect" class="select"></select>
@@ -59,7 +61,7 @@
           </div>
 
           <div class="card">
-            <div class="card-body">
+            <div class="panel-section">
               <div class="dropzone" id="dropzone" tabindex="0" role="button">
                 <div class="icon" data-icon="upload"></div>
                 <strong data-i18n="analyze.drop_title"></strong>
@@ -67,10 +69,12 @@
                 <input type="file" id="fileInput" class="visually-hidden" accept="image/*,.jfif" multiple>
               </div>
               <div class="previews" id="previews"></div>
-              <div class="row" style="margin-top:1rem">
-                <button class="btn primary grow" id="analyzeBtn" disabled><span data-i18n="analyze.run"></span></button>
-                <button class="btn" id="compareBtn" disabled data-i18n="analyze.compare"></button>
-                <button class="btn ghost sm" id="clearBtn" data-i18n="analyze.clear"></button>
+              <div class="stack" style="margin-top:1rem">
+                <button class="btn primary lg" id="analyzeBtn" style="width:100%" disabled><span data-i18n="analyze.run"></span></button>
+                <div class="row">
+                  <button class="btn grow" id="compareBtn" disabled data-i18n="analyze.compare"></button>
+                  <button class="btn ghost sm" id="clearBtn" data-i18n="analyze.clear"></button>
+                </div>
               </div>
             </div>
           </div>

@@ -226,6 +226,33 @@
     },
   };
 
+  // ----------------------------------------------------------------- visual helpers
+  /** Circular progress ring. value in [0,1]; color = CSS color for the arc. */
+  function ring(value, color, opts) {
+    const o = Object.assign({ size: "", label: null }, opts || {});
+    const r = 30, c = 2 * Math.PI * r;
+    const v = Math.max(0, Math.min(1, Number(value) || 0));
+    const wrap = el("div", { class: "ring " + o.size, style: color ? { "--ring-color": color } : null });
+    wrap.innerHTML = `<svg viewBox="0 0 70 70"><circle class="track" cx="35" cy="35" r="${r}"/><circle class="bar" cx="35" cy="35" r="${r}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${c.toFixed(2)}"/></svg>`;
+    wrap.append(el("div", { class: "txt", text: o.label !== null ? o.label : `${Math.round(v * 100)}%` }));
+    requestAnimationFrame(() => requestAnimationFrame(() => { wrap.querySelector(".bar").style.strokeDashoffset = (c * (1 - v)).toFixed(2); }));
+    return wrap;
+  }
+  /** Animate a number from 0 to target inside `node` (respects reduced motion). */
+  function countUp(node, target, format) {
+    const fmtFn = format || ((x) => fmt.num(Math.round(x)));
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !isFinite(target)) { node.textContent = fmtFn(target); return; }
+    const start = performance.now(), dur = 900;
+    const step = (now) => { const p = Math.min(1, (now - start) / dur); const e = 1 - Math.pow(1 - p, 3); node.textContent = fmtFn(target * e); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  function initReveal() {
+    const items = $$(".reveal:not(.in)");
+    if (!("IntersectionObserver" in window)) { items.forEach((n) => n.classList.add("in")); return; }
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+    items.forEach((n) => io.observe(n));
+  }
+
   // ----------------------------------------------------------------- page chrome
   function initChrome() {
     const themeBtn = $("#themeToggle");
@@ -240,9 +267,10 @@
     $$("[data-icon]").forEach((n) => { clear(n).append(icon(n.dataset.icon)); });
     i18n.apply();
     chartDefaults();
+    initReveal();
     document.addEventListener("themechange", chartDefaults);
   }
 
-  window.App = { el, $, $$, clear, icon, ICONS, toast, api, downloadBlob, fmt, modelColor, cssVar, initChrome, endLabelPlugin, errorBarPlugin, API_BASE };
+  window.App = { el, $, $$, clear, icon, ICONS, toast, api, downloadBlob, fmt, modelColor, cssVar, initChrome, initReveal, ring, countUp, endLabelPlugin, errorBarPlugin, API_BASE };
   document.addEventListener("DOMContentLoaded", initChrome);
 })();

@@ -1,13 +1,13 @@
 (function () {
-  const { el, $, clear, api, fmt, toast, modelColor } = App;
+  const { el, $, clear, api, fmt, toast, modelColor, ring, countUp, initReveal } = App;
   let data = null;
 
   function render() {
     if (!data) return;
     const { stats, models, research } = data;
-    $("#kpiImages").textContent = fmt.num(stats.dataset.total_images);
-    $("#kpiClasses").textContent = fmt.num(stats.total_classes);
-    $("#kpiPlants").textContent = fmt.num(stats.dataset.plant_types);
+    countUp($("#kpiImages"), stats.dataset.total_images);
+    countUp($("#kpiClasses"), stats.total_classes);
+    countUp($("#kpiPlants"), stats.dataset.plant_types);
     const best = stats.best_model && stats.statistics[stats.best_model];
     $("#kpiBest").textContent = best ? fmt.pct(best.accuracy, 2) : t("common.na");
     const bestInfo = models.models.find((m) => m.name === stats.best_model);
@@ -20,18 +20,21 @@
       const chip = m.trained
         ? el("span", { class: "chip good", text: m.name === stats.best_model ? t("common.best") : fmt.modelTag(m) })
         : el("span", { class: "chip warning", text: t("common.needs_training") });
+      const color = modelColor(m.name);
       cards.append(
-        el("div", { class: "card model-card" }, [
-          el("div", { class: "row between" }, [
-            el("h3", {}, [el("span", { class: "swatch", style: { background: modelColor(m.name) } }), fmt.modelLabel(m)]),
-            chip,
+        el("div", { class: "card model-card lift reveal", style: { "--model-color": color } }, [
+          el("div", { class: "row between" }, [el("h3", {}, [el("span", { class: "swatch" }), fmt.modelLabel(m)]), chip]),
+          el("div", { class: "ring-row" }, [
+            ring(m.accuracy || 0, color, { label: m.accuracy === null || m.accuracy === undefined ? "—" : `${(m.accuracy * 100).toFixed(1)}%` }),
+            el("div", { class: "kv" }, [
+              el("div", {}, [t("common.f1"), el("strong", { text: fmt.pct(m.f1_score, 2) })]),
+              el("div", {}, [t("common.inference"), el("strong", { text: fmt.ms(m.inference_time_ms) })]),
+            ]),
           ]),
-          el("p", { class: "muted small", text: fmt.modelDesc(m) }),
+          el("p", { class: "desc", text: fmt.modelDesc(m) }),
           el("div", { class: "metrics" }, [
-            el("div", {}, [t("common.accuracy"), el("strong", { text: m.trained || m.accuracy !== null ? fmt.pct(m.accuracy, 2) : t("common.na") })]),
-            el("div", {}, [t("common.f1"), el("strong", { text: fmt.pct(m.f1_score, 2) })]),
             el("div", {}, [t("common.params"), el("strong", { text: m.parameters || t("common.na") })]),
-            el("div", {}, [t("common.inference"), el("strong", { text: fmt.ms(m.inference_time_ms) })]),
+            el("div", {}, [t("common.size"), el("strong", { text: fmt.mb(m.size_mb) })]),
           ]),
         ])
       );
@@ -47,6 +50,7 @@
     } else {
       tiles.append(el("div", { class: "card tile" }, [el("div", { class: "label", text: t("stats.tab_research") }), el("div", { class: "muted small", text: t("stats.research_pending") })]));
     }
+    initReveal();
   }
 
   async function load() {

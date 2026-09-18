@@ -1,5 +1,5 @@
 (function () {
-  const { el, $, $$, clear, icon, api, downloadBlob, toast, fmt, modelColor } = App;
+  const { el, $, $$, clear, icon, api, downloadBlob, toast, fmt, modelColor, ring } = App;
   const MAX_MB = 16;
   const state = { files: [], results: [], compare: null, models: null, field: null, explanation: "gradcam", mode: "controlled", busy: false };
 
@@ -228,12 +228,15 @@
       ]),
     ]);
 
+    const confColor = conf >= 0.8 ? "var(--good)" : conf >= 0.5 ? "var(--warning)" : "var(--critical)";
     const diagnosis = el("div", { class: "diagnosis stack" }, [
-      el("div", {}, [
-        el("div", { class: "plant", text: `${t("analyze.diagnosis")} · ${fmt.plant(p)}` }),
-        el("div", { class: "disease" }, [p.healthy ? el("span", { class: "chip good", style: { marginRight: ".5rem", verticalAlign: "middle" } }, [icon("check"), t("analyze.healthy")]) : null, fmt.disease(p)]),
-        el("div", { class: "meter " + confidenceClass(conf) }, el("span", { style: { width: `${Math.round(conf * 100)}%` } })),
-        el("div", { class: "small muted", text: `${t("common.confidence")}: ${p.confidence_percent}` }),
+      el("div", { class: "diagnosis-head" }, [
+        ring(conf, confColor, { size: "lg", label: `${(conf * 100).toFixed(1)}%` }),
+        el("div", {}, [
+          el("div", { class: "plant", text: `${t("analyze.diagnosis")} · ${fmt.plant(p)}` }),
+          el("div", { class: "disease", text: fmt.disease(p) }),
+          p.healthy ? el("span", { class: "chip good" }, [icon("check"), t("analyze.healthy")]) : el("span", { class: "chip " + confidenceClass(conf), text: `${t("common.confidence")}: ${p.confidence_percent}` }),
+        ]),
       ]),
       r.field_mode ? el("div", { class: "note " + (r.field_mode.adapted_model ? "info" : "") , text: r.field_mode.adapted_model ? t("analyze.field_used") : t("analyze.field_missing") }) : null,
       el("div", {}, [
