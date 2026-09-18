@@ -214,8 +214,8 @@
     }
     const s = state.stats.statistics || {};
     table.append(el("table", { class: "data" }, [
-      el("thead", {}, el("tr", {}, [el("th", { text: t("common.model") }), el("th", { class: "num", text: "ECE" }), el("th", { class: "num", text: "ECE (T)" }), el("th", { class: "num", text: "T" }), el("th", { class: "num", text: "NLL" }), el("th", { class: "num", text: t("stats.mean_conf") })])),
-      el("tbody", {}, names.map((n) => { const c = reports[n].calibration; return el("tr", {}, [el("td", { text: modelLabel(n) }), el("td", { class: "num", text: c.ece.toFixed(4) }), el("td", { class: "num", text: c.ece_after_temperature.toFixed(4) }), el("td", { class: "num", text: c.temperature.toFixed(2) }), el("td", { class: "num", text: c.nll.toFixed(3) }), el("td", { class: "num", text: fmt.pct(c.mean_confidence, 1) })]); })),
+      el("thead", {}, el("tr", {}, [el("th", { text: t("common.model") }), el("th", { class: "num", text: "ECE" }), el("th", { class: "num", text: "ECE (T)" }), el("th", { class: "num", text: "T" }), el("th", { class: "num", text: "NLL" })])),
+      el("tbody", {}, names.map((n) => { const c = reports[n].calibration; return el("tr", {}, [el("td", { text: modelLabel(n) }), el("td", { class: "num", text: c.ece.toFixed(4) }), el("td", { class: "num", text: c.ece_after_temperature.toFixed(4) }), el("td", { class: "num", text: c.temperature.toFixed(2) }), el("td", { class: "num", text: c.nll.toFixed(3) })]); })),
     ]));
     const comp = state.comparison;
     if (comp && comp.mcnemar && comp.mcnemar.length) {
