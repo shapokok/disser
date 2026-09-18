@@ -13,7 +13,7 @@
 | ✅ | CI (GitHub Actions): ruff, pytest без весов, Playwright chromium |
 | ✅ | Ветка `clean-main` запушена в https://github.com/shapokok/disser и сделана основной |
 | ✅ | CI на GitHub зелёный (ruff + pytest, Playwright) |
-| ⬜ | Опубликовать веса как GitHub Release: `gh release create v2.0.0 models/*.pth models/model_metrics.json`; `scripts/download_weights.py` уже готов и скачает их на чужой машине |
+| ⬜ | Опубликовать веса как GitHub Release после завершения DA (с полевой моделью): `gh release create v2.0.0 models/*.pth models/model_metrics.json models/field_model_info.json`; `scripts/download_weights.py` уже готов |
 
 ## 2. Бэкенд
 
