@@ -158,9 +158,19 @@ def figure4(plt, summary):
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
             if cm[i, j]:
-                ax.text(j, i, f"{int(cm[i, j])}\n{norm[i, j]*100:.0f} %", ha="center", va="center", fontsize=7, color="white" if norm[i, j] > 0.55 else INK)
+                ax.text(
+                    j,
+                    i,
+                    f"{int(cm[i, j])}\n{norm[i, j] * 100:.0f} %",
+                    ha="center",
+                    va="center",
+                    fontsize=7,
+                    color="white" if norm[i, j] > 0.55 else INK,
+                )
     ax.set(xlabel="Predicted", ylabel="True")
-    ax.set_title(f"{info['method']} (seed {info['seed']}), dev + test, acc {m['accuracy']*100:.1f} %", loc="left", fontsize=9)
+    ax.set_title(
+        f"{info['method']} (seed {info['seed']}), dev + test, acc {m['accuracy'] * 100:.1f} %", loc="left", fontsize=9
+    )
     fig.colorbar(im, ax=ax, fraction=0.046, pad=0.03, label="Share of the true class")
     fig.tight_layout()
     _save(fig, "figure4")

@@ -152,7 +152,9 @@ def list_images(split: str, mapping: dict[str, int]) -> list[tuple[str, int]]:
     return items
 
 
-def make_splits(mapping: dict[str, int] = FOCUS_CLASSES, dev_fraction: float = DEV_FRACTION, seed: int = SPLIT_SEED) -> dict[str, list]:
+def make_splits(
+    mapping: dict[str, int] = FOCUS_CLASSES, dev_fraction: float = DEV_FRACTION, seed: int = SPLIT_SEED
+) -> dict[str, list]:
     """Stratified adapt/dev split of PlantDoc train + the official test split. Cached on disk."""
     key = hashlib.md5(json.dumps(sorted(mapping.items())).encode()).hexdigest()[:8]
     cache = RESULTS_DIR / f"splits_{key}_seed{seed}.json"
@@ -165,7 +167,7 @@ def make_splits(mapping: dict[str, int] = FOCUS_CLASSES, dev_fraction: float = D
     by_label: dict[int, list] = {}
     for item in train:
         by_label.setdefault(item[1], []).append(item)
-    for label, items in sorted(by_label.items()):
+    for _label, items in sorted(by_label.items()):
         rng.shuffle(items)
         n_dev = max(1, round(len(items) * dev_fraction))
         dev += items[:n_dev]
@@ -184,7 +186,7 @@ class PlantDocDataset(Dataset):
 
     @property
     def labels(self) -> list[int]:
-        return [self.pseudo_labels.get(p, l) for p, l in self.items]
+        return [self.pseudo_labels.get(p, lbl) for p, lbl in self.items]
 
     def __len__(self):
         return len(self.items)
@@ -202,7 +204,9 @@ class PlantDocDataset(Dataset):
 
 
 def eval_transform():
-    return transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.ToTensor(), transforms.Normalize(MEAN, STD)])
+    return transforms.Compose(
+        [transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.ToTensor(), transforms.Normalize(MEAN, STD)]
+    )
 
 
 def heavy_augment():
@@ -242,7 +246,7 @@ def make_loader(items, transform, batch_size=32, shuffle=False, balanced=False, 
     sampler = None
     if balanced and len(ds):
         counts = Counter(ds.labels)
-        weights = [1.0 / counts[l] for l in ds.labels]
+        weights = [1.0 / counts[lbl] for lbl in ds.labels]
         sampler = WeightedRandomSampler(weights, num_samples=len(ds), replacement=True)
         shuffle = False
     return DataLoader(ds, batch_size=batch_size, shuffle=shuffle, sampler=sampler, num_workers=workers, drop_last=False)
@@ -319,7 +323,9 @@ def compute_metrics(labels: np.ndarray, preds: np.ndarray, classes: list[int] = 
     }
 
 
-def evaluate_model(model: nn.Module, device, splits: dict[str, list], batch_size=64, workers=0, classes: list[int] = FOCUS_IDX) -> dict:
+def evaluate_model(
+    model: nn.Module, device, splits: dict[str, list], batch_size=64, workers=0, classes: list[int] = FOCUS_IDX
+) -> dict:
     """Evaluate on dev, test and dev+test; both open-set (38-way) and restricted (4-way) argmax."""
     out = {}
     tf = eval_transform()
@@ -327,7 +333,10 @@ def evaluate_model(model: nn.Module, device, splits: dict[str, list], batch_size
     for name in ("dev", "test"):
         loader = make_loader(splits[name], tf, batch_size=batch_size, workers=workers)
         cache[name] = predict(model, loader, device)
-    cache["eval"] = (np.concatenate([cache["dev"][0], cache["test"][0]]), np.concatenate([cache["dev"][1], cache["test"][1]]))
+    cache["eval"] = (
+        np.concatenate([cache["dev"][0], cache["test"][0]]),
+        np.concatenate([cache["dev"][1], cache["test"][1]]),
+    )
     for name, (probs, labels) in cache.items():
         out[name] = {
             "open": compute_metrics(labels, probs.argmax(1), classes),
@@ -339,11 +348,13 @@ def evaluate_model(model: nn.Module, device, splits: dict[str, list], batch_size
 def headline(result: dict, split: str = "eval", mode: str = "open") -> str:
     m = result[split][mode]
     lo, hi = m["ci95"]
-    return f"{m['accuracy']*100:.1f}% (95% CI {lo*100:.0f}–{hi*100:.0f}, n={m['n']}, macro-F1 {m['macro_f1']*100:.1f})"
+    return f"{m['accuracy'] * 100:.1f}% (95% CI {lo * 100:.0f}–{hi * 100:.0f}, n={m['n']}, macro-F1 {m['macro_f1'] * 100:.1f})"
 
 
 # --------------------------------------------------------------------------- training
-def train_epochs(model, loader, device, epochs, lr, weight_decay=1e-4, on_epoch_end=None, label_smoothing=0.0, log_prefix=""):
+def train_epochs(
+    model, loader, device, epochs, lr, weight_decay=1e-4, on_epoch_end=None, label_smoothing=0.0, log_prefix=""
+):
     """AdamW + cosine schedule. `on_epoch_end(epoch, train_loss, train_acc)` may return a dict merged into the history."""
     criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
@@ -363,12 +374,20 @@ def train_epochs(model, loader, device, epochs, lr, weight_decay=1e-4, on_epoch_
             correct += (out.argmax(1) == y).sum().item()
             total += y.size(0)
         scheduler.step()
-        row = {"epoch": epoch, "train_loss": loss_sum / max(1, total), "train_acc": correct / max(1, total), "seconds": time.time() - t0}
+        row = {
+            "epoch": epoch,
+            "train_loss": loss_sum / max(1, total),
+            "train_acc": correct / max(1, total),
+            "seconds": time.time() - t0,
+        }
         if on_epoch_end:
             row.update(on_epoch_end(epoch, row["train_loss"], row["train_acc"]) or {})
         history.append(row)
-        extra = "  ".join(f"{k} {v*100:.1f}%" for k, v in row.items() if k.endswith("_acc") and k != "train_acc")
-        print(f"{log_prefix}epoch {epoch:3d}/{epochs}  loss {row['train_loss']:.4f}  train {row['train_acc']*100:.1f}%  {extra}  ({row['seconds']:.0f}s)", flush=True)
+        extra = "  ".join(f"{k} {v * 100:.1f}%" for k, v in row.items() if k.endswith("_acc") and k != "train_acc")
+        print(
+            f"{log_prefix}epoch {epoch:3d}/{epochs}  loss {row['train_loss']:.4f}  train {row['train_acc'] * 100:.1f}%  {extra}  ({row['seconds']:.0f}s)",
+            flush=True,
+        )
     return history
 
 
@@ -384,7 +403,11 @@ def dev_accuracy_fn(model, device, splits, batch_size=64, workers=0, mode="open"
 
 
 def describe_splits(splits: dict) -> dict:
-    return {name: {"n": len(items), "per_class": {short_name(c): sum(1 for _, l in items if l == c) for c in FOCUS_IDX}} for name, items in splits.items() if not name.startswith("_")}
+    return {
+        name: {"n": len(items), "per_class": {short_name(c): sum(1 for _, lbl in items if lbl == c) for c in FOCUS_IDX}}
+        for name, items in splits.items()
+        if not name.startswith("_")
+    }
 
 
 def common_args(parser):

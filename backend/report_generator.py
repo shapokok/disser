@@ -98,10 +98,36 @@ def _styles():
     _register_fonts()
     base = getSampleStyleSheet()
     return {
-        "title": ParagraphStyle("t", parent=base["Title"], fontName=_FONT_BOLD, fontSize=20, textColor=colors.HexColor("#1f5130"), alignment=TA_CENTER, spaceAfter=4),
-        "meta": ParagraphStyle("m", parent=base["Normal"], fontName=_FONT, fontSize=9, textColor=colors.grey, alignment=TA_CENTER, spaceAfter=10),
-        "h2": ParagraphStyle("h", parent=base["Heading2"], fontName=_FONT_BOLD, fontSize=13, textColor=colors.HexColor("#1f2933"), spaceBefore=8, spaceAfter=6),
-        "h3": ParagraphStyle("h3", parent=base["Heading3"], fontName=_FONT_BOLD, fontSize=10.5, spaceBefore=6, spaceAfter=3),
+        "title": ParagraphStyle(
+            "t",
+            parent=base["Title"],
+            fontName=_FONT_BOLD,
+            fontSize=20,
+            textColor=colors.HexColor("#1f5130"),
+            alignment=TA_CENTER,
+            spaceAfter=4,
+        ),
+        "meta": ParagraphStyle(
+            "m",
+            parent=base["Normal"],
+            fontName=_FONT,
+            fontSize=9,
+            textColor=colors.grey,
+            alignment=TA_CENTER,
+            spaceAfter=10,
+        ),
+        "h2": ParagraphStyle(
+            "h",
+            parent=base["Heading2"],
+            fontName=_FONT_BOLD,
+            fontSize=13,
+            textColor=colors.HexColor("#1f2933"),
+            spaceBefore=8,
+            spaceAfter=6,
+        ),
+        "h3": ParagraphStyle(
+            "h3", parent=base["Heading3"], fontName=_FONT_BOLD, fontSize=10.5, spaceBefore=6, spaceAfter=3
+        ),
         "body": ParagraphStyle("b", parent=base["Normal"], fontName=_FONT, fontSize=9.5, leading=13),
         "small": ParagraphStyle("s", parent=base["Normal"], fontName=_FONT, fontSize=8, textColor=colors.grey),
     }
@@ -148,7 +174,9 @@ def _bullets(items, st):
 
 
 def _doc(buf, title):
-    return SimpleDocTemplate(buf, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=16 * mm, title=title)
+    return SimpleDocTemplate(
+        buf, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=16 * mm, title=title
+    )
 
 
 def create_pdf_report(results: list[dict], lang: str = "en") -> bytes:
@@ -156,14 +184,21 @@ def create_pdf_report(results: list[dict], lang: str = "en") -> bytes:
     t, st = T[lang], _styles()
     buf = io.BytesIO()
     doc = _doc(buf, t["title"])
-    story = [Paragraph(t["title"], st["title"]), Paragraph(f"{t['generated']}: {datetime.now():%Y-%m-%d %H:%M}", st["meta"])]
+    story = [
+        Paragraph(t["title"], st["title"]),
+        Paragraph(f"{t['generated']}: {datetime.now():%Y-%m-%d %H:%M}", st["meta"]),
+    ]
 
     for n, r in enumerate(results, 1):
         pred = r.get("prediction", {})
         block = [Paragraph(f"{n}. {r.get('image_name', t['image'])}", st["h2"])]
 
         imgs = r.get("images") or {}
-        pics = [(t["original"], imgs.get("original")), (t["overlay"], imgs.get("overlay")), (t["lime"], imgs.get("lime"))]
+        pics = [
+            (t["original"], imgs.get("original")),
+            (t["overlay"], imgs.get("overlay")),
+            (t["lime"], imgs.get("lime")),
+        ]
         pics = [(cap, b) for cap, b in pics if b]
         if pics:
             width = min(55.0, 170.0 / len(pics) - 4)
@@ -180,12 +215,24 @@ def create_pdf_report(results: list[dict], lang: str = "en") -> bytes:
             [t["mode"], r.get("dataset_type", "")],
             [t["time"], f"{r.get('inference_time_ms', '')} ms"],
         ]
-        block.append(_table([[Paragraph(f"<b>{a}</b>", st["body"]), Paragraph(str(b), st["body"])] for a, b in info], [45 * mm, 120 * mm], header=False))
+        block.append(
+            _table(
+                [[Paragraph(f"<b>{a}</b>", st["body"]), Paragraph(str(b), st["body"])] for a, b in info],
+                [45 * mm, 120 * mm],
+                header=False,
+            )
+        )
 
         top = r.get("top_predictions") or []
         if len(top) > 1:
             block.append(Paragraph(t["top"], st["h3"]))
-            block.append(_table([[t["class"], t["confidence"]]] + [[_cls(x, lang), x.get("confidence_percent", "")] for x in top[:5]], [120 * mm, 45 * mm]))
+            block.append(
+                _table(
+                    [[t["class"], t["confidence"]]]
+                    + [[_cls(x, lang), x.get("confidence_percent", "")] for x in top[:5]],
+                    [120 * mm, 45 * mm],
+                )
+            )
 
         tr = r.get("treatment")
         if tr:
@@ -194,7 +241,11 @@ def create_pdf_report(results: list[dict], lang: str = "en") -> bytes:
                 block.append(Paragraph(f"<b>{t['severity']}:</b> {tr['severity']}", st["body"]))
             if tr.get("symptoms"):
                 block.append(Paragraph(f"<b>{t['symptoms']}:</b> {tr['symptoms']}", st["body"]))
-            for key, label in (("treatments", "treatments"), ("prevention", "prevention"), ("organic_options", "organic")):
+            for key, label in (
+                ("treatments", "treatments"),
+                ("prevention", "prevention"),
+                ("organic_options", "organic"),
+            ):
                 if tr.get(key):
                     block.append(Paragraph(f"<b>{t[label]}</b>", st["body"]))
                     block += _bullets(tr[key], st)
@@ -213,18 +264,33 @@ def create_comparison_report(data: dict, lang: str = "en") -> bytes:
     t, st = T[lang], _styles()
     buf = io.BytesIO()
     doc = _doc(buf, t["comparison"])
-    story = [Paragraph(t["comparison"], st["title"]), Paragraph(f"{t['generated']}: {datetime.now():%Y-%m-%d %H:%M}", st["meta"])]
+    story = [
+        Paragraph(t["comparison"], st["title"]),
+        Paragraph(f"{t['generated']}: {datetime.now():%Y-%m-%d %H:%M}", st["meta"]),
+    ]
     if data.get("image_name"):
         story.append(Paragraph(f"{t['image']}: {data['image_name']}", st["body"]))
     story.append(Spacer(1, 6))
     rows = [[t["model"], t["class"], t["confidence"], t["time"]]]
     for name, r in (data.get("comparisons") or {}).items():
-        rows.append([r.get("label") or name, _cls(r, lang), r.get("confidence_percent", ""), f"{r.get('inference_time_ms', '')} ms"])
+        rows.append(
+            [
+                r.get("label") or name,
+                _cls(r, lang),
+                r.get("confidence_percent", ""),
+                f"{r.get('inference_time_ms', '')} ms",
+            ]
+        )
     story.append(_table(rows, [45 * mm, 75 * mm, 25 * mm, 25 * mm]))
     agr = data.get("agreement")
     if agr:
         story.append(Spacer(1, 6))
-        story.append(Paragraph(f"{t['agreement']}: {agr.get('models_agreeing')}/{agr.get('models_total')} → {_cls(agr.get('class', {}), lang)}", st["body"]))
+        story.append(
+            Paragraph(
+                f"{t['agreement']}: {agr.get('models_agreeing')}/{agr.get('models_total')} → {_cls(agr.get('class', {}), lang)}",
+                st["body"],
+            )
+        )
     story.append(Spacer(1, 10))
     story.append(Paragraph(t["footer"], st["small"]))
     doc.build(story)

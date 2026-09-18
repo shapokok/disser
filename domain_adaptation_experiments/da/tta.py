@@ -51,7 +51,9 @@ def predict_tta(model, items, device, batch_size, workers):
 
 
 def main():
-    p = C.common_args(argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter))
+    p = C.common_args(
+        argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    )
     p.add_argument("--checkpoint", required=True)
     p.add_argument("--name", default=None)
     args = p.parse_args()
@@ -64,9 +66,15 @@ def main():
     cache = {}
     for split in ("dev", "test"):
         cache[split] = predict_tta(model, splits[split], device, args.batch_size, args.workers)
-    cache["eval"] = (np.concatenate([cache["dev"][0], cache["test"][0]]), np.concatenate([cache["dev"][1], cache["test"][1]]))
+    cache["eval"] = (
+        np.concatenate([cache["dev"][0], cache["test"][0]]),
+        np.concatenate([cache["dev"][1], cache["test"][1]]),
+    )
     for split, (probs, labels) in cache.items():
-        out[split] = {"open": C.compute_metrics(labels, probs.argmax(1)), "restricted": C.compute_metrics(labels, C.restricted_argmax(probs, C.FOCUS_IDX))}
+        out[split] = {
+            "open": C.compute_metrics(labels, probs.argmax(1)),
+            "restricted": C.compute_metrics(labels, C.restricted_argmax(probs, C.FOCUS_IDX)),
+        }
     print(f"standard: {C.headline(standard)}\nTTA     : {C.headline(out)}   test only: {C.headline(out, 'test')}")
     C.save_json(
         {

@@ -318,7 +318,7 @@ class ModelManager:
             "loaded": model is not None,
             "weights_loaded": bool(entry.get("weights_loaded")),
             "trained": self.is_trained(model_name),
-            "parameters": m.get("parameters") or (f"{count_parameters(model)/1e6:.1f}M" if model else None),
+            "parameters": m.get("parameters") or (f"{count_parameters(model) / 1e6:.1f}M" if model else None),
             "size_mb": m.get("size_mb"),
             "accuracy": m.get("accuracy"),
             "f1_score": m.get("f1_score"),
@@ -399,7 +399,11 @@ class ModelManager:
             "models_used": names,
             "weights": self.ensemble_weights(names) if method == "weighted" else None,
             "individual_predictions": {
-                n: {"predicted_class": self.class_names[preds[i]], "predicted_idx": preds[i], "confidence": float(stack[i].max())}
+                n: {
+                    "predicted_class": self.class_names[preds[i]],
+                    "predicted_idx": preds[i],
+                    "confidence": float(stack[i].max()),
+                }
                 for i, n in enumerate(names)
             },
             "agreement_rate": agreement,

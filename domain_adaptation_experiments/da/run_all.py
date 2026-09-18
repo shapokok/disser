@@ -87,7 +87,9 @@ def summarise(seeds: list[int]) -> dict:
         for c in C.FOCUS_IDX:
             per_class[C.short_name(c)] = {
                 "baseline": baseline["eval"]["open"]["per_class"][str(c)]["accuracy"],
-                "joint": statistics.mean(r["final"]["eval"]["open"]["per_class"][str(c)]["accuracy"] for r in joint_runs),
+                "joint": statistics.mean(
+                    r["final"]["eval"]["open"]["per_class"][str(c)]["accuracy"] for r in joint_runs
+                ),
                 "support": baseline["eval"]["open"]["per_class"][str(c)]["support"],
             }
 
@@ -108,25 +110,36 @@ def summarise(seeds: list[int]) -> dict:
 
 
 def write_markdown(summary: dict):
-    lines = ["# Domain adaptation results (PlantVillage -> PlantDoc)", "", f"Generated {summary['generated_at']}, seeds {summary['seeds']}.", ""]
+    lines = [
+        "# Domain adaptation results (PlantVillage -> PlantDoc)",
+        "",
+        f"Generated {summary['generated_at']}, seeds {summary['seeds']}.",
+        "",
+    ]
     splits = summary["protocol"]["splits"] or {}
     if splits:
         lines += ["Splits: " + ", ".join(f"{k} = {v['n']}" for k, v in splits.items()), ""]
-    lines += ["| Method | eval acc (open) | 95 % CI | macro-F1 | test acc (open) | eval acc (restricted) |", "|---|---|---|---|---|---|"]
-    for m, r in summary["methods"].items():
+    lines += [
+        "| Method | eval acc (open) | 95 % CI | macro-F1 | test acc (open) | eval acc (restricted) |",
+        "|---|---|---|---|---|---|",
+    ]
+    for r in summary["methods"].values():
         e, t, rr = r["eval_open"], r["test_open"], r["eval_restricted"]
-        pm = f" ± {e['accuracy_std']*100:.1f}" if e["runs"] > 1 else ""
+        pm = f" ± {e['accuracy_std'] * 100:.1f}" if e["runs"] > 1 else ""
         lines.append(
-            f"| {r['label']} | {e['accuracy_mean']*100:.1f}{pm} | {e['ci95_pooled'][0]*100:.0f}–{e['ci95_pooled'][1]*100:.0f} | "
-            f"{e['macro_f1_mean']*100:.1f} | {t['accuracy_mean']*100:.1f} | {rr['accuracy_mean']*100:.1f} |"
+            f"| {r['label']} | {e['accuracy_mean'] * 100:.1f}{pm} | {e['ci95_pooled'][0] * 100:.0f}–{e['ci95_pooled'][1] * 100:.0f} | "
+            f"{e['macro_f1_mean'] * 100:.1f} | {t['accuracy_mean'] * 100:.1f} | {rr['accuracy_mean'] * 100:.1f} |"
         )
     if summary["per_class_eval_open"]:
         lines += ["", "| Class | n | zero-shot | joint fine-tuning |", "|---|---|---|---|"]
         for cls, v in summary["per_class_eval_open"].items():
-            lines.append(f"| {cls} | {v['support']} | {v['baseline']*100:.1f} | {v['joint']*100:.1f} |")
+            lines.append(f"| {cls} | {v['support']} | {v['baseline'] * 100:.1f} | {v['joint'] * 100:.1f} |")
     if summary["baseline_all27_test"]:
         a = summary["baseline_all27_test"]
-        lines += ["", f"Zero-shot on all 27 overlapping classes (PlantDoc test, n={a['open']['n']}): open {a['open']['accuracy']*100:.1f} %, restricted {a['restricted']['accuracy']*100:.1f} %, top-5 {a['top5_open']*100:.1f} %."]
+        lines += [
+            "",
+            f"Zero-shot on all 27 overlapping classes (PlantDoc test, n={a['open']['n']}): open {a['open']['accuracy'] * 100:.1f} %, restricted {a['restricted']['accuracy'] * 100:.1f} %, top-5 {a['top5_open'] * 100:.1f} %.",
+        ]
     path = C.RESULTS_DIR / "summary.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"saved {path.relative_to(C.PROJECT_ROOT)}")
@@ -162,7 +175,9 @@ def export_best(seeds: list[int], summary: dict):
     }
     with open(C.MODELS_DIR / "field_model_info.json", "w", encoding="utf-8") as f:
         json.dump(info, f, indent=2, ensure_ascii=False)
-    print(f"exported {method} seed {seed} (dev {dev_acc*100:.1f}%, test {info['accuracy_test']*100:.1f}%) -> models/field_mobilenet_da.pth")
+    print(
+        f"exported {method} seed {seed} (dev {dev_acc * 100:.1f}%, test {info['accuracy_test'] * 100:.1f}%) -> models/field_mobilenet_da.pth"
+    )
 
 
 def main():
@@ -173,9 +188,16 @@ def main():
     p.add_argument("--workers", type=int, default=0)
     p.add_argument("--epochs", type=int, default=25, help="epochs for joint training")
     p.add_argument("--skip-existing", action="store_true")
-    p.add_argument("--only", nargs="*", default=None, choices=["baseline", "self_training", "joint", "joint_from_st", "progressive", "tta", "summary", "figures"])
+    p.add_argument(
+        "--only",
+        nargs="*",
+        default=None,
+        choices=["baseline", "self_training", "joint", "joint_from_st", "progressive", "tta", "summary", "figures"],
+    )
     args = p.parse_args()
-    common = ["--device", args.device, "--workers", str(args.workers)] + (["--threads", str(args.threads)] if args.threads else [])
+    common = ["--device", args.device, "--workers", str(args.workers)] + (
+        ["--threads", str(args.threads)] if args.threads else []
+    )
     want = lambda step: args.only is None or step in args.only
     skip = (lambda name: C.RESULTS_DIR / f"{name}.json") if args.skip_existing else (lambda name: None)
 
@@ -189,11 +211,33 @@ def main():
         if want("joint"):
             run("da.joint_training", *s, "--epochs", str(args.epochs), *common, skip_if=skip(f"joint_seed{seed}"))
         if want("joint_from_st"):
-            run("da.joint_training", *s, "--epochs", str(args.epochs), "--lr", "5e-5", "--init", str(C.CHECKPOINT_DIR / f"self_training_seed{seed}.pth"), "--name", f"joint_from_st_seed{seed}", *common, skip_if=skip(f"joint_from_st_seed{seed}"))
+            run(
+                "da.joint_training",
+                *s,
+                "--epochs",
+                str(args.epochs),
+                "--lr",
+                "5e-5",
+                "--init",
+                str(C.CHECKPOINT_DIR / f"self_training_seed{seed}.pth"),
+                "--name",
+                f"joint_from_st_seed{seed}",
+                *common,
+                skip_if=skip(f"joint_from_st_seed{seed}"),
+            )
         if want("progressive"):
             run("da.progressive", *s, *common, skip_if=skip(f"progressive_seed{seed}"))
         if want("tta"):
-            run("da.tta", "--checkpoint", str(C.CHECKPOINT_DIR / f"joint_seed{seed}.pth"), "--name", f"tta_joint_seed{seed}", *s, *common, skip_if=skip(f"tta_joint_seed{seed}"))
+            run(
+                "da.tta",
+                "--checkpoint",
+                str(C.CHECKPOINT_DIR / f"joint_seed{seed}.pth"),
+                "--name",
+                f"tta_joint_seed{seed}",
+                *s,
+                *common,
+                skip_if=skip(f"tta_joint_seed{seed}"),
+            )
 
     if want("summary"):
         summary = summarise(args.seeds)

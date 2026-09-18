@@ -33,7 +33,9 @@ def evaluate_all_classes(model, device, batch_size, workers) -> dict:
 
 
 def main():
-    p = C.common_args(argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter))
+    p = C.common_args(
+        argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    )
     p.add_argument("--checkpoint", default=None, help="state dict to evaluate (default: PlantVillage MobileNet-V2)")
     p.add_argument("--name", default=None)
     p.add_argument("--classes", default="focus", choices=["focus", "all"])
@@ -45,15 +47,30 @@ def main():
     model = C.load_checkpoint(ckpt, device)
 
     if args.classes == "all":
-        result = {"name": name, "checkpoint": str(ckpt), "classes": "all_27_overlapping", "test": evaluate_all_classes(model, device, args.batch_size, args.workers)}
+        result = {
+            "name": name,
+            "checkpoint": str(ckpt),
+            "classes": "all_27_overlapping",
+            "test": evaluate_all_classes(model, device, args.batch_size, args.workers),
+        }
         m = result["test"]
-        print(f"{name} on all 27 classes / test: open {m['open']['accuracy']*100:.1f}%  restricted {m['restricted']['accuracy']*100:.1f}%  top-5 {m['top5_open']*100:.1f}%")
+        print(
+            f"{name} on all 27 classes / test: open {m['open']['accuracy'] * 100:.1f}%  restricted {m['restricted']['accuracy'] * 100:.1f}%  top-5 {m['top5_open'] * 100:.1f}%"
+        )
         C.save_json(result, C.RESULTS_DIR / f"eval_{name}_all27.json")
         return
 
-    result = {"name": name, "checkpoint": str(ckpt), "classes": "focus4", "splits": C.describe_splits(splits), **C.evaluate_model(model, device, splits, args.batch_size, args.workers)}
+    result = {
+        "name": name,
+        "checkpoint": str(ckpt),
+        "classes": "focus4",
+        "splits": C.describe_splits(splits),
+        **C.evaluate_model(model, device, splits, args.batch_size, args.workers),
+    }
     for split in ("dev", "test", "eval"):
-        print(f"{name:24s} {split:5s} open {C.headline(result, split, 'open')}   | restricted {result[split]['restricted']['accuracy']*100:.1f}%")
+        print(
+            f"{name:24s} {split:5s} open {C.headline(result, split, 'open')}   | restricted {result[split]['restricted']['accuracy'] * 100:.1f}%"
+        )
     C.save_json(result, C.RESULTS_DIR / f"eval_{name}.json")
 
 

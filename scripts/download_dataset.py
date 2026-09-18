@@ -26,15 +26,18 @@ def download_file(url, destination):
     print(f"📥 Downloading dataset to {destination}...")
 
     response = requests.get(url, stream=True)
-    total_size = int(response.headers.get('content-length', 0))
+    total_size = int(response.headers.get("content-length", 0))
 
-    with open(destination, 'wb') as file, tqdm(
-        desc="Downloading",
-        total=total_size,
-        unit='iB',
-        unit_scale=True,
-        unit_divisor=1024,
-    ) as progress_bar:
+    with (
+        open(destination, "wb") as file,
+        tqdm(
+            desc="Downloading",
+            total=total_size,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as progress_bar,
+    ):
         for data in response.iter_content(chunk_size=1024):
             size = file.write(data)
             progress_bar.update(size)
@@ -46,7 +49,7 @@ def extract_zip(zip_path, extract_to):
     """Extract ZIP file with progress"""
     print(f"📦 Extracting to {extract_to}...")
 
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
         members = zip_ref.namelist()
         with tqdm(total=len(members), desc="Extracting") as progress_bar:
             for member in members:
@@ -73,12 +76,11 @@ def main():
         print(f"📁 Location: {DATASET_DIR}")
 
         # Count images
-        image_count = sum(1 for _ in DATASET_DIR.rglob("*.jpg")) + \
-                      sum(1 for _ in DATASET_DIR.rglob("*.JPG"))
+        image_count = sum(1 for _ in DATASET_DIR.rglob("*.jpg")) + sum(1 for _ in DATASET_DIR.rglob("*.JPG"))
         print(f"📊 Total images: {image_count:,}")
 
         response = input("\nRe-download dataset? (y/n): ")
-        if response.lower() != 'y':
+        if response.lower() != "y":
             print("Using existing dataset.")
             return
 
@@ -106,8 +108,7 @@ def main():
         extract_zip(zip_path, DATA_DIR)
 
         # Count images
-        image_count = sum(1 for _ in DATASET_DIR.rglob("*.jpg")) + \
-                      sum(1 for _ in DATASET_DIR.rglob("*.JPG"))
+        image_count = sum(1 for _ in DATASET_DIR.rglob("*.jpg")) + sum(1 for _ in DATASET_DIR.rglob("*.JPG"))
         print()
         print("=" * 60)
         print("✅ Dataset Ready!")

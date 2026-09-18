@@ -14,6 +14,7 @@ VALID_DIR = PROJECT_ROOT / "data" / "PlantVillage" / "valid"
 
 SPLIT_RATIO = 0.2  # 20% for validation
 
+
 def split_dataset():
     """Split train into train/valid"""
 
@@ -23,7 +24,7 @@ def split_dataset():
 
     if VALID_DIR.exists():
         response = input("⚠️  Valid directory already exists. Overwrite? (y/n): ")
-        if response.lower() != 'y':
+        if response.lower() != "y":
             print("Cancelled.")
             return
         shutil.rmtree(VALID_DIR)
@@ -31,7 +32,7 @@ def split_dataset():
     print("=" * 60)
     print("🔀 Splitting train dataset into train/valid")
     print("=" * 60)
-    print(f"Split ratio: {int((1-SPLIT_RATIO)*100)}% train, {int(SPLIT_RATIO*100)}% valid")
+    print(f"Split ratio: {int((1 - SPLIT_RATIO) * 100)}% train, {int(SPLIT_RATIO * 100)}% valid")
     print()
 
     # Create valid directory
@@ -79,6 +80,7 @@ def split_dataset():
     print()
     print("Ready to train! Run:")
     print("  python scripts/train_models.py")
+
 
 if __name__ == "__main__":
     split_dataset()

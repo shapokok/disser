@@ -21,7 +21,9 @@ from da import common as C
 
 
 def main():
-    p = C.common_args(argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter))
+    p = C.common_args(
+        argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    )
     p.add_argument("--epochs", type=int, default=25)
     p.add_argument("--lr", type=float, default=1e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
@@ -37,7 +39,11 @@ def main():
     print(f"start: {C.headline(baseline)}")
 
     loader = C.make_loader(
-        splits["adapt"], C.heavy_augment() if args.augment == "heavy" else C.light_augment(), args.batch_size, balanced=True, workers=args.workers
+        splits["adapt"],
+        C.heavy_augment() if args.augment == "heavy" else C.light_augment(),
+        args.batch_size,
+        balanced=True,
+        workers=args.workers,
     )
     dev_fn = C.dev_accuracy_fn(model, device, splits, args.batch_size, args.workers)
 
@@ -49,11 +55,23 @@ def main():
             best.update(dev_acc=row["dev_acc"], epoch=epoch, state=copy.deepcopy(model.state_dict()))
         return row
 
-    history = C.train_epochs(model, loader, device, args.epochs, args.lr, args.weight_decay, on_epoch_end, label_smoothing=0.05, log_prefix=f"[{name}] ")
+    history = C.train_epochs(
+        model,
+        loader,
+        device,
+        args.epochs,
+        args.lr,
+        args.weight_decay,
+        on_epoch_end,
+        label_smoothing=0.05,
+        log_prefix=f"[{name}] ",
+    )
 
     model.load_state_dict(best["state"])
     final = C.evaluate_model(model, device, splits, args.batch_size, args.workers)
-    print(f"best epoch {best['epoch']} (dev {best['dev_acc']*100:.1f}%)  ->  final: {C.headline(final)}   test only: {C.headline(final, 'test')}")
+    print(
+        f"best epoch {best['epoch']} (dev {best['dev_acc'] * 100:.1f}%)  ->  final: {C.headline(final)}   test only: {C.headline(final, 'test')}"
+    )
 
     ckpt = C.CHECKPOINT_DIR / f"{name}.pth"
     C.save_checkpoint(model, ckpt)

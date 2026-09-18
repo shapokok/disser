@@ -82,7 +82,7 @@ def collect_probs(model, loader, device, tag):
         labels.append(y)
         seen += y.size(0)
         if i % 20 == 0 or i == len(loader):
-            print(f"  {tag}: {seen}/{len(loader.dataset)}  {seen/(time.time()-start):.0f} img/s", flush=True)
+            print(f"  {tag}: {seen}/{len(loader.dataset)}  {seen / (time.time() - start):.0f} img/s", flush=True)
     return torch.cat(probs).numpy(), torch.cat(labels).numpy()
 
 
@@ -150,7 +150,7 @@ def summarise(name, probs, labels, class_names, elapsed_ms_per_image, model):
         "recall": round(float(r_macro), 4),
         "f1_score": round(float(f_macro), 4),
         "inference_time_ms": round(elapsed_ms_per_image, 1),
-        "parameters": f"{n_params/1e6:.1f}M",
+        "parameters": f"{n_params / 1e6:.1f}M",
         "parameters_count": n_params,
         "size_mb": round(weights_file.stat().st_size / 1e6, 1) if weights_file.exists() else None,
         "validation_samples": len(labels),
@@ -211,7 +211,7 @@ def main():
             "recall": round(float(r_macro), 4),
             "f1_score": round(float(f_macro), 4),
             "inference_time_ms": round(sum(trained[n]["inference_time_ms"] for n in trained), 1),
-            "parameters": f"{sum(trained[n]['parameters_count'] for n in trained)/1e6:.1f}M",
+            "parameters": f"{sum(trained[n]['parameters_count'] for n in trained) / 1e6:.1f}M",
             "size_mb": round(sum(trained[n]["size_mb"] or 0 for n in trained), 1),
             "models_combined": list(trained),
             "method": "accuracy-weighted average of softmax outputs",

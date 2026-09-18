@@ -22,7 +22,9 @@ from da import common as C
 
 
 def main():
-    p = C.common_args(argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter))
+    p = C.common_args(
+        argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    )
     p.add_argument("--iterations", type=int, default=5)
     p.add_argument("--epochs-per-iteration", type=int, default=3)
     p.add_argument("--lr", type=float, default=1e-4)
@@ -52,16 +54,34 @@ def main():
         keep = conf >= threshold
         pseudo_labels = {splits["adapt"][i][0]: int(pseudo[i]) for i in np.where(keep)[0]}
         pseudo_acc = float((pseudo[keep] == true_labels[keep]).mean()) if keep.any() else 0.0  # diagnostic only
-        print(f"[{name}] iteration {it}: threshold {threshold:.2f}  pseudo-labels {keep.sum()}/{len(keep)}  (pseudo-label accuracy {pseudo_acc*100:.1f}%, diagnostic)")
+        print(
+            f"[{name}] iteration {it}: threshold {threshold:.2f}  pseudo-labels {keep.sum()}/{len(keep)}  (pseudo-label accuracy {pseudo_acc * 100:.1f}%, diagnostic)"
+        )
         if keep.sum() < args.batch_size:
             print("   too few confident samples, stopping")
             break
 
         items = [splits["adapt"][i] for i in np.where(keep)[0]]
-        loader = C.make_loader(items, C.light_augment(), args.batch_size, balanced=True, workers=args.workers, pseudo_labels=pseudo_labels)
-        history = C.train_epochs(model, loader, device, args.epochs_per_iteration, args.lr, on_epoch_end=dev_fn, log_prefix=f"[{name} it{it}] ")
+        loader = C.make_loader(
+            items, C.light_augment(), args.batch_size, balanced=True, workers=args.workers, pseudo_labels=pseudo_labels
+        )
+        history = C.train_epochs(
+            model,
+            loader,
+            device,
+            args.epochs_per_iteration,
+            args.lr,
+            on_epoch_end=dev_fn,
+            log_prefix=f"[{name} it{it}] ",
+        )
         iterations.append(
-            {"iteration": it, "threshold": threshold, "num_pseudo": int(keep.sum()), "pseudo_label_accuracy": pseudo_acc, "history": history}
+            {
+                "iteration": it,
+                "threshold": threshold,
+                "num_pseudo": int(keep.sum()),
+                "pseudo_label_accuracy": pseudo_acc,
+                "history": history,
+            }
         )
 
     final = C.evaluate_model(model, device, splits, args.batch_size, args.workers)

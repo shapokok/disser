@@ -46,9 +46,7 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "jfif", "webp", "bmp"}
 # --- Models ------------------------------------------------------------------
 # Which architectures to load at start-up (comma separated).
 MODELS_TO_LOAD = [
-    m.strip()
-    for m in os.environ.get("CROP_MODELS", "baseline,efficientnet,mobilenet,hybrid").split(",")
-    if m.strip()
+    m.strip() for m in os.environ.get("CROP_MODELS", "baseline,efficientnet,mobilenet,hybrid").split(",") if m.strip()
 ]
 # auto | cpu | cuda | mps
 DEVICE = os.environ.get("CROP_DEVICE", "auto")

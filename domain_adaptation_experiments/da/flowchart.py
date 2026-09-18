@@ -93,9 +93,7 @@ def create_arrow(ax, x1, y1, x2, y2, label="", color=COLOR_ARROW, linewidth=2):
             fontsize=7,
             style="italic",
             color=color,
-            bbox=dict(
-                boxstyle="round,pad=0.3", facecolor="white", edgecolor="none", alpha=0.8
-            ),
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="none", alpha=0.8),
         )
 
 
@@ -207,9 +205,7 @@ def create_flowchart():
         COLOR_METHOD_WEAK,
         border_color="#E74C3C",
     )
-    ax.text(
-        1.75, 3.3, "63.0%", ha="center", fontsize=8, fontweight="bold", color="#C0392B"
-    )
+    ax.text(1.75, 3.3, "63.0%", ha="center", fontsize=8, fontweight="bold", color="#C0392B")
 
     # Method 2: Progressive DA
     create_box(
@@ -222,9 +218,7 @@ def create_flowchart():
         COLOR_METHOD_GOOD,
         border_color="#E67E22",
     )
-    ax.text(
-        4.75, 3.3, "66.5%", ha="center", fontsize=8, fontweight="bold", color="#D35400"
-    )
+    ax.text(4.75, 3.3, "66.5%", ha="center", fontsize=8, fontweight="bold", color="#D35400")
     ax.text(
         4.75,
         3.05,
@@ -247,9 +241,7 @@ def create_flowchart():
         border_color=COLOR_SUCCESS,
         border_width=2.5,
     )
-    ax.text(
-        7.75, 3.3, "79.1%", ha="center", fontsize=9, fontweight="bold", color="green"
-    )
+    ax.text(7.75, 3.3, "79.1%", ha="center", fontsize=9, fontweight="bold", color="green")
     ax.text(
         7.75,
         3.05,
@@ -285,9 +277,7 @@ def create_flowchart():
     )
 
     # Baseline accuracy
-    ax.text(
-        5, 0.95, "Baseline: 41.9%", ha="center", fontsize=7, style="italic", color="red"
-    )
+    ax.text(5, 0.95, "Baseline: 41.9%", ha="center", fontsize=7, style="italic", color="red")
 
     # Final best result
     ax.text(

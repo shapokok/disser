@@ -15,10 +15,36 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 HEADERS = {
-    "en": ["Timestamp", "Image", "Predicted class", "Confidence", "Model", "Explanation", "Mode", "Inference (ms)",
-           "Top-2 class", "Top-2 conf.", "Top-3 class", "Top-3 conf.", "Severity"],
-    "ru": ["Время", "Изображение", "Предсказанный класс", "Уверенность", "Модель", "Объяснение", "Режим", "Инференс (мс)",
-           "Класс №2", "Уверенность №2", "Класс №3", "Уверенность №3", "Серьёзность"],
+    "en": [
+        "Timestamp",
+        "Image",
+        "Predicted class",
+        "Confidence",
+        "Model",
+        "Explanation",
+        "Mode",
+        "Inference (ms)",
+        "Top-2 class",
+        "Top-2 conf.",
+        "Top-3 class",
+        "Top-3 conf.",
+        "Severity",
+    ],
+    "ru": [
+        "Время",
+        "Изображение",
+        "Предсказанный класс",
+        "Уверенность",
+        "Модель",
+        "Объяснение",
+        "Режим",
+        "Инференс (мс)",
+        "Класс №2",
+        "Уверенность №2",
+        "Класс №3",
+        "Уверенность №3",
+        "Серьёзность",
+    ],
 }
 COMPARISON_HEADERS = {
     "en": ["Model", "Predicted class", "Confidence", "Inference (ms)", "Trained"],
@@ -66,7 +92,11 @@ def results_to_json(results: list[dict]) -> str:
     slim = []
     for r in results:
         slim.append({k: v for k, v in r.items() if k != "images"})
-    return json.dumps({"exported_at": datetime.now().isoformat(timespec="seconds"), "total": len(slim), "results": slim}, ensure_ascii=False, indent=2)
+    return json.dumps(
+        {"exported_at": datetime.now().isoformat(timespec="seconds"), "total": len(slim), "results": slim},
+        ensure_ascii=False,
+        indent=2,
+    )
 
 
 def _style_sheet(ws, headers, rows, percent_cols=()):

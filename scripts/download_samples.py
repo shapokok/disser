@@ -42,9 +42,7 @@ def print_instructions():
     # Option 2
     print("OPTION 2: PlantVillage Dataset (For Training/Research)")
     print("-" * 70)
-    print(
-        "1. Visit Kaggle: https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset"
-    )
+    print("1. Visit Kaggle: https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset")
     print("2. Download the dataset (requires Kaggle account - free)")
     print("3. Extract sample images to data/sample_images/")
     print()

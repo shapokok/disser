@@ -25,7 +25,9 @@ STAGES = [
 
 
 def main():
-    p = C.common_args(argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter))
+    p = C.common_args(
+        argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    )
     p.add_argument("--init", default=None)
     p.add_argument("--name", default=None)
     args = p.parse_args()
@@ -51,15 +53,32 @@ def main():
                 best.update(dev_acc=row["dev_acc"], stage=_stage, epoch=epoch, state=copy.deepcopy(model.state_dict()))
             return row
 
-        history = C.train_epochs(model, loader, device, epochs, lr, on_epoch_end=on_epoch_end, label_smoothing=0.05, log_prefix=f"[{name} {stage_name}] ")
-        stages_out[stage_name] = {"classes": sorted(allowed), "epochs": epochs, "lr": lr, "history": history, "eval": C.evaluate_model(model, device, splits, args.batch_size, args.workers)}
+        history = C.train_epochs(
+            model,
+            loader,
+            device,
+            epochs,
+            lr,
+            on_epoch_end=on_epoch_end,
+            label_smoothing=0.05,
+            log_prefix=f"[{name} {stage_name}] ",
+        )
+        stages_out[stage_name] = {
+            "classes": sorted(allowed),
+            "epochs": epochs,
+            "lr": lr,
+            "history": history,
+            "eval": C.evaluate_model(model, device, splits, args.batch_size, args.workers),
+        }
         print(f"   after {stage_name}: {C.headline(stages_out[stage_name]['eval'])}")
         C.save_checkpoint(model, C.CHECKPOINT_DIR / f"{name}_{stage_name}.pth")
 
     last = C.evaluate_model(model, device, splits, args.batch_size, args.workers)
     model.load_state_dict(best["state"])
     final = C.evaluate_model(model, device, splits, args.batch_size, args.workers)
-    print(f"\nlast stage: {C.headline(last)}\nbest by dev ({best['stage']} epoch {best['epoch']}): {C.headline(final)}   test only: {C.headline(final, 'test')}")
+    print(
+        f"\nlast stage: {C.headline(last)}\nbest by dev ({best['stage']} epoch {best['epoch']}): {C.headline(final)}   test only: {C.headline(final, 'test')}"
+    )
     ckpt = C.CHECKPOINT_DIR / f"{name}.pth"
     C.save_checkpoint(model, ckpt)
     C.save_json(

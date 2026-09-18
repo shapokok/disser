@@ -144,8 +144,8 @@ def run_epoch(model, loader, criterion, device, optimizer=None, scheduler=None, 
             if i % log_every == 0 or i == len(loader):
                 rate = seen / (time.time() - start)
                 print(
-                    f"  {tag} batch {i}/{len(loader)}  loss {total_loss/seen:.4f}  "
-                    f"acc {100*correct/seen:.2f}%  {rate:.0f} img/s",
+                    f"  {tag} batch {i}/{len(loader)}  loss {total_loss / seen:.4f}  "
+                    f"acc {100 * correct / seen:.2f}%  {rate:.0f} img/s",
                     flush=True,
                 )
     return total_loss / seen, 100.0 * correct / seen
@@ -217,7 +217,7 @@ def train_one(name, args, device, train_loader, valid_loader, class_names):
         dt = time.time() - t0
         for k, v in zip(hist, (tr_loss, va_loss, tr_acc, va_acc, dt)):
             hist[k].append(v)
-        print(f"==> epoch {epoch + 1}: train {tr_acc:.2f}%  valid {va_acc:.2f}%  ({dt/60:.1f} min)", flush=True)
+        print(f"==> epoch {epoch + 1}: train {tr_acc:.2f}%  valid {va_acc:.2f}%  ({dt / 60:.1f} min)", flush=True)
 
         if va_acc > best_acc:
             best_acc = va_acc

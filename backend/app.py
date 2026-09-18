@@ -90,14 +90,24 @@ def create_app(load_models: bool = True, models=None) -> Flask:
 
     def format_prediction(probs, idx: int, top_k: int = 5) -> tuple[dict, list]:
         order = probs.argsort()[::-1][:top_k]
-        pred = {**describe_class(manager.class_names[idx]), "confidence": float(probs[idx]), "confidence_percent": _percent(float(probs[idx]))}
+        pred = {
+            **describe_class(manager.class_names[idx]),
+            "confidence": float(probs[idx]),
+            "confidence_percent": _percent(float(probs[idx])),
+        }
         top = [
-            {**describe_class(manager.class_names[i]), "confidence": float(probs[i]), "confidence_percent": _percent(float(probs[i]))}
+            {
+                **describe_class(manager.class_names[i]),
+                "confidence": float(probs[i]),
+                "confidence_percent": _percent(float(probs[i])),
+            }
             for i in order
         ]
         return pred, top
 
-    def run_prediction(image_path: Path, model_name: str, explanation: str, dataset_type: str, lang: str, ensemble_method=None) -> dict:
+    def run_prediction(
+        image_path: Path, model_name: str, explanation: str, dataset_type: str, lang: str, ensemble_method=None
+    ) -> dict:
         start = time.time()
         tensor = to_tensor(load_image(image_path))
         field_info = None
@@ -127,7 +137,11 @@ def create_app(load_models: bool = True, models=None) -> Flask:
                 "agreement_rate": ens["agreement_rate"],
                 "agreement_percent": f"{ens['agreement_rate'] * 100:.0f}%",
                 "individual_predictions": {
-                    n: {**describe_class(p["predicted_class"]), "confidence": p["confidence"], "confidence_percent": _percent(p["confidence"])}
+                    n: {
+                        **describe_class(p["predicted_class"]),
+                        "confidence": p["confidence"],
+                        "confidence_percent": _percent(p["confidence"]),
+                    }
                     for n, p in ens["individual_predictions"].items()
                 },
                 "uncertainty_metrics": ens["uncertainty_metrics"],
@@ -191,7 +205,9 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         counts = {}
         for split in ("train", "valid", "test"):
             d = config.PLANTVILLAGE_DIR / split
-            counts[split] = sum(1 for p in d.rglob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png"}) if d.exists() else 0
+            counts[split] = (
+                sum(1 for p in d.rglob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png"}) if d.exists() else 0
+            )
         plants = {c.split("___")[0] for c in manager.class_names}
         return {
             "available": counts["train"] > 0,
@@ -271,7 +287,9 @@ def create_app(load_models: bool = True, models=None) -> Flask:
 
     @app.route("/api/dataset_info")
     def get_dataset_info():
-        return jsonify({"success": True, **dataset_info(), "model_architectures": len(manager.models), "timestamp": _now()})
+        return jsonify(
+            {"success": True, **dataset_info(), "model_architectures": len(manager.models), "timestamp": _now()}
+        )
 
     @app.route("/api/stats")
     def stats():
@@ -323,12 +341,25 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         """Domain adaptation study summary (written by domain_adaptation_experiments/da/run_all.py)."""
         summary_path = config.DA_RESULTS_DIR / "summary.json"
         summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else None
-        runs = sorted(p.stem for p in config.DA_RESULTS_DIR.glob("*.json") if not p.stem.startswith(("splits_", "summary")))
-        return jsonify({"success": True, "available": summary is not None, "summary": summary, "runs": runs, "field_model": field.describe(), "timestamp": _now()})
+        runs = sorted(
+            p.stem for p in config.DA_RESULTS_DIR.glob("*.json") if not p.stem.startswith(("splits_", "summary"))
+        )
+        return jsonify(
+            {
+                "success": True,
+                "available": summary is not None,
+                "summary": summary,
+                "runs": runs,
+                "field_model": field.describe(),
+                "timestamp": _now(),
+            }
+        )
 
     @app.route("/api/treatment/<path:disease_class>")
     def treatment(disease_class):
-        return jsonify({"success": True, "disease_class": disease_class, "treatment": get_treatment(disease_class, _lang())})
+        return jsonify(
+            {"success": True, "disease_class": disease_class, "treatment": get_treatment(disease_class, _lang())}
+        )
 
     # ------------------------------------------------------------------ inference
     @app.route("/api/upload", methods=["POST"])
@@ -388,7 +419,12 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         except ValueError as e:
             return _error(str(e))
         result = run_prediction(
-            path, "ensemble", data.get("explanation", "gradcam"), data.get("dataset_type", "controlled"), _lang(), data.get("ensemble_method", "weighted")
+            path,
+            "ensemble",
+            data.get("explanation", "gradcam"),
+            data.get("dataset_type", "controlled"),
+            _lang(),
+            data.get("ensemble_method", "weighted"),
         )
         return jsonify(result)
 
@@ -426,7 +462,11 @@ def create_app(load_models: bool = True, models=None) -> Flask:
                 "image_name": path.name,
                 "image_url": f"/api/uploads/{path.name}",
                 "comparisons": results,
-                "agreement": {"class": describe_class(majority), "models_agreeing": predicted.count(majority), "models_total": len(predicted)},
+                "agreement": {
+                    "class": describe_class(majority),
+                    "models_agreeing": predicted.count(majority),
+                    "models_total": len(predicted),
+                },
                 "timestamp": _now(),
             }
         )
@@ -442,7 +482,13 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             try:
                 path = resolve_image(name)
                 results.append(
-                    run_prediction(path, data.get("model", "efficientnet"), data.get("explanation", "gradcam"), data.get("dataset_type", "controlled"), _lang())
+                    run_prediction(
+                        path,
+                        data.get("model", "efficientnet"),
+                        data.get("explanation", "gradcam"),
+                        data.get("dataset_type", "controlled"),
+                        _lang(),
+                    )
                 )
             except Exception as e:
                 results.append({"success": False, "image_name": name, "error": str(e)})
@@ -463,9 +509,13 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         lang = _lang()
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         if fmt == "csv":
-            return _send(export_utils.results_to_csv(results, lang).encode("utf-8-sig"), "text/csv", f"crop_analysis_{stamp}.csv")
+            return _send(
+                export_utils.results_to_csv(results, lang).encode("utf-8-sig"), "text/csv", f"crop_analysis_{stamp}.csv"
+            )
         if fmt == "json":
-            return _send(export_utils.results_to_json(results).encode("utf-8"), "application/json", f"crop_analysis_{stamp}.json")
+            return _send(
+                export_utils.results_to_json(results).encode("utf-8"), "application/json", f"crop_analysis_{stamp}.json"
+            )
         if fmt in ("excel", "xlsx"):
             return _send(
                 export_utils.results_to_excel(results, lang),
@@ -484,7 +534,11 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         lang = _lang()
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         if fmt == "csv":
-            return _send(export_utils.comparison_to_csv(data, lang).encode("utf-8-sig"), "text/csv", f"model_comparison_{stamp}.csv")
+            return _send(
+                export_utils.comparison_to_csv(data, lang).encode("utf-8-sig"),
+                "text/csv",
+                f"model_comparison_{stamp}.csv",
+            )
         if fmt in ("excel", "xlsx"):
             return _send(
                 export_utils.comparison_to_excel(data, lang),
@@ -499,7 +553,9 @@ def create_app(load_models: bool = True, models=None) -> Flask:
     def generate_report():  # backwards compatible alias
         data = request.get_json(silent=True) or {}
         results = data.get("results") or [data]
-        return _send(create_pdf_report(results, _lang()), "application/pdf", f"crop_analysis_{datetime.now():%Y%m%d_%H%M%S}.pdf")
+        return _send(
+            create_pdf_report(results, _lang()), "application/pdf", f"crop_analysis_{datetime.now():%Y%m%d_%H%M%S}.pdf"
+        )
 
     # ------------------------------------------------------------------ errors
     @app.errorhandler(413)

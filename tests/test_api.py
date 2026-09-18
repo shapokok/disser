@@ -137,7 +137,9 @@ def test_upload_rejects_non_image(client):
 
 def test_upload_accepts_image(client, leaf_image):
     with open(leaf_image, "rb") as f:
-        body = client.post("/api/upload", data={"files": (f, "leaf.jfif")}, content_type="multipart/form-data").get_json()
+        body = client.post(
+            "/api/upload", data={"files": (f, "leaf.jfif")}, content_type="multipart/form-data"
+        ).get_json()
     assert body["count"] == 1
     saved = config.UPLOAD_DIR / body["uploaded"][0]["saved_name"]
     assert saved.exists()
@@ -154,17 +156,45 @@ def _fake_result():
         "dataset_type": "controlled",
         "inference_time_ms": 12.3,
         "timestamp": "2026-09-18T12:00:00",
-        "prediction": {"class_raw": "Tomato___Late_blight", "class": "Tomato — Late blight", "class_ru": "Томат — Фитофтороз", "confidence": 0.91, "confidence_percent": "91.00%"},
+        "prediction": {
+            "class_raw": "Tomato___Late_blight",
+            "class": "Tomato — Late blight",
+            "class_ru": "Томат — Фитофтороз",
+            "confidence": 0.91,
+            "confidence_percent": "91.00%",
+        },
         "top_predictions": [
-            {"class_raw": "Tomato___Late_blight", "class": "Tomato — Late blight", "class_ru": "Томат — Фитофтороз", "confidence": 0.91, "confidence_percent": "91.00%"},
-            {"class_raw": "Tomato___Early_blight", "class": "Tomato — Early blight", "class_ru": "Томат — Альтернариоз", "confidence": 0.05, "confidence_percent": "5.00%"},
+            {
+                "class_raw": "Tomato___Late_blight",
+                "class": "Tomato — Late blight",
+                "class_ru": "Томат — Фитофтороз",
+                "confidence": 0.91,
+                "confidence_percent": "91.00%",
+            },
+            {
+                "class_raw": "Tomato___Early_blight",
+                "class": "Tomato — Early blight",
+                "class_ru": "Томат — Альтернариоз",
+                "confidence": 0.05,
+                "confidence_percent": "5.00%",
+            },
         ],
-        "treatment": {"disease_name": "Фитофтороз", "severity": "критическая", "symptoms": "…", "treatments": ["a"], "prevention": ["b"], "organic_options": ["c"]},
+        "treatment": {
+            "disease_name": "Фитофтороз",
+            "severity": "критическая",
+            "symptoms": "…",
+            "treatments": ["a"],
+            "prevention": ["b"],
+            "organic_options": ["c"],
+        },
         "images": {},
     }
 
 
-@pytest.mark.parametrize("fmt,mime", [("csv", "text/csv"), ("json", "application/json"), ("excel", "spreadsheetml"), ("pdf", "application/pdf")])
+@pytest.mark.parametrize(
+    "fmt,mime",
+    [("csv", "text/csv"), ("json", "application/json"), ("excel", "spreadsheetml"), ("pdf", "application/pdf")],
+)
 def test_export_formats(client, fmt, mime):
     r = client.post(f"/api/export/{fmt}?lang=ru", json={"results": [_fake_result()]})
     assert r.status_code == 200, r.data[:200]
@@ -182,8 +212,22 @@ def test_export_requires_results(client):
 def test_comparison_export(client):
     payload = {
         "image_name": "leaf.jpg",
-        "comparisons": {"efficientnet": {"label": "EfficientNet-B0", "class": "Tomato — Late blight", "class_ru": "Томат — Фитофтороз", "confidence": 0.9, "confidence_percent": "90.00%", "inference_time_ms": 10, "trained": True}},
-        "agreement": {"class": {"class": "Tomato — Late blight", "class_ru": "Томат — Фитофтороз"}, "models_agreeing": 1, "models_total": 1},
+        "comparisons": {
+            "efficientnet": {
+                "label": "EfficientNet-B0",
+                "class": "Tomato — Late blight",
+                "class_ru": "Томат — Фитофтороз",
+                "confidence": 0.9,
+                "confidence_percent": "90.00%",
+                "inference_time_ms": 10,
+                "trained": True,
+            }
+        },
+        "agreement": {
+            "class": {"class": "Tomato — Late blight", "class_ru": "Томат — Фитофтороз"},
+            "models_agreeing": 1,
+            "models_total": 1,
+        },
     }
     for fmt in ("csv", "excel", "pdf"):
         r = client.post(f"/api/export/comparison/{fmt}?lang=en", json=payload)
@@ -194,7 +238,7 @@ def test_validation_endpoint_shape(client):
     r = client.get("/api/validation/all?lang=en")
     assert r.status_code == 200
     reports = r.get_json()["reports"]
-    for name, rep in reports.items():
+    for rep in reports.values():
         assert len(rep["confusion_matrix"]) == 38
         assert len(rep["per_class"]) == 38
         assert rep["overall"]["accuracy"] <= 1.0
@@ -211,10 +255,14 @@ def test_stats_and_research(client):
 @skip_without_weights
 def test_predict_gradcam_and_compare(model_client, leaf_image):
     with open(leaf_image, "rb") as f:
-        up = model_client.post("/api/upload", data={"files": (f, "leaf.jpg")}, content_type="multipart/form-data").get_json()
+        up = model_client.post(
+            "/api/upload", data={"files": (f, "leaf.jpg")}, content_type="multipart/form-data"
+        ).get_json()
     name = up["uploaded"][0]["saved_name"]
     try:
-        r = model_client.post("/api/predict", json={"image_path": name, "model": "efficientnet", "explanation": "gradcam", "lang": "ru"})
+        r = model_client.post(
+            "/api/predict", json={"image_path": name, "model": "efficientnet", "explanation": "gradcam", "lang": "ru"}
+        )
         assert r.status_code == 200, r.data[:300]
         data = r.get_json()
         assert data["success"]
@@ -243,7 +291,9 @@ def test_predict_gradcam_and_compare(model_client, leaf_image):
 @skip_without_weights
 def test_ensemble_when_enough_trained_models(model_client, leaf_image):
     with open(leaf_image, "rb") as f:
-        up = model_client.post("/api/upload", data={"files": (f, "leaf.jpg")}, content_type="multipart/form-data").get_json()
+        up = model_client.post(
+            "/api/upload", data={"files": (f, "leaf.jpg")}, content_type="multipart/form-data"
+        ).get_json()
     name = up["uploaded"][0]["saved_name"]
     try:
         r = model_client.post("/api/ensemble", json={"image_path": name, "explanation": "none"})
