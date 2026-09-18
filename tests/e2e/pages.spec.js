@@ -13,12 +13,13 @@ async function health(request) {
 }
 
 test.describe("Home page", () => {
-  test("renders hero, KPIs and model cards", async ({ page }) => {
+  test("renders hero, KPIs and model cards", async ({ page, request }) => {
+    const h = await health(request);
     await page.goto("/");
     await expect(page).toHaveTitle(/CropAI/);
     await expect(page.locator("h1")).toContainText(/диагностика|diagnosis/i);
     await expect(page.locator("#kpiClasses")).toHaveText("38");
-    await expect(page.locator("#modelCards .model-card")).toHaveCount(4);
+    await expect(page.locator("#modelCards .model-card")).toHaveCount(h.models_loaded.length);
   });
 
   test("language switch and theme toggle work and persist", async ({ page }) => {

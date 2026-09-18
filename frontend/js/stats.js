@@ -58,7 +58,7 @@
     const s = state.stats;
     const tiles = clear($("#overviewTiles"));
     const best = s.best_model && s.statistics[s.best_model];
-    tiles.append(el("div", { class: "card tile hero-figure" }, [el("div", { class: "label", text: `${t("stats.tile_best")} · ${modelLabel(s.best_model)}` }), el("div", { class: "value", text: best ? fmt.pct(best.accuracy, 2) : t("common.na") }), el("div", { class: "delta", text: best ? `${t("common.f1")} ${fmt.pct(best.f1_score, 2)}` : "" })]));
+    tiles.append(el("div", { class: "card tile hero-figure" }, [el("div", { class: "label", text: `${t("stats.tile_best")}${s.best_model ? " · " + modelLabel(s.best_model) : ""}` }), el("div", { class: "value", text: best ? fmt.pct(best.accuracy, 2) : t("common.na") }), el("div", { class: "delta", text: best ? `${t("common.f1")} ${fmt.pct(best.f1_score, 2)}` : "" })]));
     const ens = s.statistics.ensemble;
     tiles.append(el("div", { class: "card tile" }, [el("div", { class: "label", text: t("stats.tile_ensemble") }), el("div", { class: "value", text: ens ? fmt.pct(ens.accuracy, 2) : t("common.na") }), el("div", { class: "delta", text: ens ? (Array.isArray(ens.models_combined) ? ens.models_combined.map(modelLabel).join(" + ") : `${ens.models_combined} ×`) : "" })]));
     tiles.append(el("div", { class: "card tile" }, [el("div", { class: "label", text: t("stats.evaluated_on") }), el("div", { class: "value", text: best ? fmt.num(best.validation_samples) : t("common.na") }), el("div", { class: "delta", text: t("stats.valid_images") })]));
