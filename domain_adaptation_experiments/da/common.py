@@ -31,9 +31,9 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn as nn
 from PIL import Image
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from torch import nn
 from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 from torchvision import transforms
 
@@ -41,7 +41,7 @@ DA_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = DA_DIR.parent
 sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 
-from model import MobileNetModel, pick_device  # noqa: E402
+from model import MobileNetModel, pick_device
 
 PLANTDOC_DIR = Path(os.environ.get("PLANTDOC_DIR", DA_DIR / "datasets" / "plantdoc"))
 RESULTS_DIR = Path(os.environ.get("DA_RESULTS_DIR", DA_DIR / "results"))
@@ -117,7 +117,8 @@ def save_json(obj, path: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
-    print(f"saved {path.relative_to(PROJECT_ROOT)}")
+    shown = path.relative_to(PROJECT_ROOT) if path.is_relative_to(PROJECT_ROOT) else path
+    print(f"saved {shown}")
 
 
 def load_json(path: Path):
@@ -156,7 +157,7 @@ def make_splits(mapping: dict[str, int] = FOCUS_CLASSES, dev_fraction: float = D
     key = hashlib.md5(json.dumps(sorted(mapping.items())).encode()).hexdigest()[:8]
     cache = RESULTS_DIR / f"splits_{key}_seed{seed}.json"
     if cache.exists():
-        return load_json(cache)
+        return {k: v for k, v in load_json(cache).items() if not k.startswith("_")}
 
     train = list_images("train", mapping)
     rng = random.Random(seed)
@@ -170,6 +171,7 @@ def make_splits(mapping: dict[str, int] = FOCUS_CLASSES, dev_fraction: float = D
         dev += items[:n_dev]
         adapt += items[n_dev:]
     splits = {"adapt": sorted(adapt), "dev": sorted(dev), "test": list_images("test", mapping)}
+    splits = {k: [list(item) for item in v] for k, v in splits.items()}  # same shape as the JSON cache
     save_json({**splits, "_meta": {"seed": seed, "dev_fraction": dev_fraction, "classes": mapping}}, cache)
     return splits
 
@@ -286,7 +288,7 @@ def restricted_argmax(probs: np.ndarray, allowed: list[int]) -> np.ndarray:
 
 def compute_metrics(labels: np.ndarray, preds: np.ndarray, classes: list[int] = FOCUS_IDX) -> dict:
     correct = int((labels == preds).sum())
-    n = int(len(labels))
+    n = len(labels)
     acc = correct / n if n else 0.0
     p, r, f, s = precision_recall_fscore_support(labels, preds, labels=classes, zero_division=0)
     per_class = {}

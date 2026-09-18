@@ -22,15 +22,15 @@ from werkzeug.utils import secure_filename
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import config  # noqa: E402
-import export_utils  # noqa: E402
-import validation  # noqa: E402
-from explain import explain_gradcam, explain_lime, load_image, to_tensor  # noqa: E402
-from field_model import FieldAdapter  # noqa: E402
-from labels import describe_class  # noqa: E402
-from model import MODEL_TYPES, MaskedModel, ModelManager  # noqa: E402
-from report_generator import create_comparison_report, create_pdf_report  # noqa: E402
-from treatments import get_treatment  # noqa: E402
+import config
+import export_utils
+import validation
+from explain import explain_gradcam, explain_lime, load_image, to_tensor
+from field_model import FieldAdapter
+from labels import describe_class
+from model import MODEL_TYPES, MaskedModel, ModelManager
+from report_generator import create_comparison_report, create_pdf_report
+from treatments import get_treatment
 
 
 def _now() -> str:
@@ -75,6 +75,8 @@ def create_app(load_models: bool = True, models=None) -> Flask:
 
     # ------------------------------------------------------------------ helpers
     def resolve_image(name: str) -> Path:
+        if not name or not str(name).strip():
+            raise ValueError("image_path is required")
         p = Path(name)
         if not p.is_absolute():
             p = config.UPLOAD_DIR / secure_filename(name)
@@ -82,7 +84,7 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         allowed_roots = (config.UPLOAD_DIR, config.DATA_DIR)
         if not any(str(p).startswith(str(root)) for root in allowed_roots):
             raise PermissionError("Image path is outside the allowed directories")
-        if not p.exists():
+        if not p.is_file():
             raise FileNotFoundError(f"Image not found: {name}")
         return p
 
@@ -316,6 +318,14 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             }
         )
 
+    @app.route("/api/research")
+    def research():
+        """Domain adaptation study summary (written by domain_adaptation_experiments/da/run_all.py)."""
+        summary_path = config.DA_RESULTS_DIR / "summary.json"
+        summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else None
+        runs = sorted(p.stem for p in config.DA_RESULTS_DIR.glob("*.json") if not p.stem.startswith(("splits_", "summary")))
+        return jsonify({"success": True, "available": summary is not None, "summary": summary, "runs": runs, "field_model": field.describe(), "timestamp": _now()})
+
     @app.route("/api/treatment/<path:disease_class>")
     def treatment(disease_class):
         return jsonify({"success": True, "disease_class": disease_class, "treatment": get_treatment(disease_class, _lang())})
@@ -351,8 +361,8 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             path = resolve_image(data.get("image_path") or "")
         except (FileNotFoundError, PermissionError) as e:
             return _error(str(e), 404)
-        except Exception:
-            return _error("image_path is required")
+        except ValueError as e:
+            return _error(str(e))
         try:
             result = run_prediction(
                 path,
@@ -375,8 +385,8 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             path = resolve_image(data.get("image_path") or "")
         except (FileNotFoundError, PermissionError) as e:
             return _error(str(e), 404)
-        except Exception:
-            return _error("image_path is required")
+        except ValueError as e:
+            return _error(str(e))
         result = run_prediction(
             path, "ensemble", data.get("explanation", "gradcam"), data.get("dataset_type", "controlled"), _lang(), data.get("ensemble_method", "weighted")
         )
@@ -389,8 +399,8 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             path = resolve_image(data.get("image_path") or "")
         except (FileNotFoundError, PermissionError) as e:
             return _error(str(e), 404)
-        except Exception:
-            return _error("image_path is required")
+        except ValueError as e:
+            return _error(str(e))
         names = [n for n in (data.get("models") or list(manager.models)) if n in manager.models]
         if not names:
             return _error("None of the requested models are loaded", 400, available_models=list(manager.models))

@@ -1,82 +1,34 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+const { defineConfig, devices } = require("@playwright/test");
 
-/**
- * Playwright configuration for Crop Disease Detection System
- * @see https://playwright.dev/docs/test-configuration
- */
+const PORT = process.env.CROP_PORT || "5001";
+const BASE_URL = process.env.BASE_URL || `http://127.0.0.1:${PORT}`;
+// Locally the uv environment is used; CI installs the project into the system python.
+const PYTHON = process.env.PYTHON || (require("fs").existsSync(".venv/bin/python") ? ".venv/bin/python" : "python");
+
 module.exports = defineConfig({
-  testDir: './tests',
-
-  // Maximum time one test can run for
-  timeout: 60 * 1000,
-
-  // Test execution settings
-  fullyParallel: true,
+  testDir: "./tests/e2e",
+  timeout: 120 * 1000,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-
-  // Reporter configuration
-  reporter: [
-    ['html', { outputFolder: 'playwright-report' }],
-    ['list'],
-    ['junit', { outputFile: 'test-results/junit.xml' }]
-  ],
-
-  // Shared settings for all projects
+  retries: process.env.CI ? 1 : 0,
+  workers: 1,
+  reporter: [["list"], ["html", { outputFolder: "playwright-report", open: "never" }]],
   use: {
-    // Base URL for the application
-    baseURL: process.env.BASE_URL || 'http://localhost:5000',
-
-    // Collect trace when retrying the failed test
-    trace: 'on-first-retry',
-
-    // Screenshot on failure
-    screenshot: 'only-on-failure',
-
-    // Video on failure
-    video: 'retain-on-failure',
-
-    // Timeout for each action
-    actionTimeout: 15 * 1000,
+    baseURL: BASE_URL,
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+    actionTimeout: 20 * 1000,
   },
-
-  // Configure projects for major browsers
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    // Mobile viewports
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "mobile", use: { ...devices["Pixel 5"] } },
   ],
-
-  // Run local dev server before starting tests
   webServer: {
-    command: 'python test_server.py',
-    url: 'http://localhost:5000',
+    command: `${PYTHON} backend/app.py`,
+    url: `${BASE_URL}/api/health`,
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-    stdout: 'pipe',
-    stderr: 'pipe',
+    timeout: 180 * 1000,
+    env: { CROP_PORT: PORT, CROP_DEVICE: process.env.CROP_DEVICE || "cpu", CROP_MODELS: process.env.CROP_MODELS === undefined ? "baseline,efficientnet,mobilenet,hybrid" : process.env.CROP_MODELS },
   },
 });

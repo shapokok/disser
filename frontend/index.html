@@ -1,307 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crop Disease Detection System - AI-Powered Plant Health Monitoring</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CropAI Monitor — диагностика болезней растений</title>
+  <meta name="description" content="Intelligent crop condition monitoring with computer vision: disease detection, explainable AI, domain adaptation.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e7a46'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body data-page="home">
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="/" class="brand"><span class="brand-mark" data-icon="leaf"></span><span data-i18n="app.name">CropAI Monitor</span></a>
+      <button class="icon-btn menu-toggle" id="menuToggle" data-i18n-title="nav.menu" data-icon="menu"></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
+        <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
+        <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
+      </ul>
+      <div class="nav-tools">
+        <div class="lang-switch" role="group" aria-label="Language"><button data-lang="ru" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button></div>
+        <button class="icon-btn" id="themeToggle" data-i18n-title="nav.theme"></button>
+      </div>
+    </div>
+  </header>
 
-<body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="navbar">
-            <a href="index.html" class="logo">
-                <span class="logo-icon"></span>
-                <span>CropAI Monitor</span>
-            </a>
-            <div class="menu-toggle" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="analyze.html">Analyze</a></li>
-                <li><a href="stats.html">Statistics</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
+  <main>
     <section class="hero">
-        <div class="container">
-            <h1>Intelligent Crop Disease Detection</h1>
-            <p>Advanced AI system for monitoring agricultural crop health using computer vision and deep neural networks
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <a href="analyze.html" class="btn btn-primary btn-large">Start Analysis</a>
-                <a href="stats.html" class="btn btn-outline btn-large">View Statistics</a>
-            </div>
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow" data-i18n="home.eyebrow"></div>
+          <h1 data-i18n="home.title"></h1>
+          <p class="lead" data-i18n="home.lead"></p>
+          <div class="hero-actions">
+            <a class="btn primary lg" href="/analyze" data-i18n="home.cta_analyze"></a>
+            <a class="btn lg" href="/stats" data-i18n="home.cta_stats"></a>
+          </div>
         </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="leafg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#3fbf74"/><stop offset="1" stop-color="#165f36"/></linearGradient>
+              <radialGradient id="heat" cx="0.55" cy="0.45" r="0.5"><stop offset="0" stop-color="#e34948" stop-opacity="0.85"/><stop offset="0.45" stop-color="#eda100" stop-opacity="0.55"/><stop offset="1" stop-color="#2a78d6" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect x="0" y="0" width="400" height="300" rx="16" fill="var(--surface-2)"/>
+            <path d="M200 40 C 120 60, 70 140, 90 240 C 170 250, 250 210, 290 130 C 310 90, 270 50, 200 40 Z" fill="url(#leafg)"/>
+            <path d="M200 40 C 160 110, 130 180, 95 236" stroke="rgba(255,255,255,.45)" stroke-width="3" fill="none"/>
+            <path d="M175 95 C 150 105, 130 115, 118 140 M190 130 C 168 140, 150 160, 140 185 M212 160 C 195 176, 178 195, 168 215" stroke="rgba(255,255,255,.35)" stroke-width="2" fill="none"/>
+            <ellipse cx="215" cy="150" rx="70" ry="60" fill="url(#heat)"/>
+            <circle cx="215" cy="150" r="14" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4"/>
+            <g font-family="system-ui, sans-serif" font-size="11" fill="var(--ink-2)">
+              <rect x="300" y="200" width="88" height="80" rx="8" fill="var(--surface)" stroke="var(--hairline)"/>
+              <text x="310" y="220" font-weight="700" fill="var(--ink)">Grad-CAM</text>
+              <text x="310" y="238">Late blight</text>
+              <rect x="310" y="246" width="68" height="6" rx="3" fill="var(--seq-100)"/>
+              <rect x="310" y="246" width="60" height="6" rx="3" fill="#2a78d6"/>
+              <text x="310" y="268">92.4 %</text>
+            </g>
+          </svg>
+        </div>
+      </div>
     </section>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- About Section -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">About This System</h2>
-                <p class="card-subtitle">Master's Thesis Project - Intelligent Agricultural Monitoring</p>
-            </div>
-            <div class="card-body">
-                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--dark-gray);">
-                    This application demonstrates an <strong>intelligent system for monitoring the condition of
-                        agricultural crops</strong>
-                    using state-of-the-art computer vision and neural network technologies. The system can analyze plant
-                    images
-                    from both controlled datasets (PlantVillage) and real field conditions, providing accurate disease
-                    detection
-                    with explainable AI visualizations.
-                </p>
-            </div>
+    <section class="section">
+      <div class="container">
+        <div class="grid grid-4" id="kpis">
+          <div class="card tile"><div class="label" data-i18n="home.kpi_images"></div><div class="value" id="kpiImages">—</div></div>
+          <div class="card tile"><div class="label" data-i18n="home.kpi_classes"></div><div class="value" id="kpiClasses">—</div></div>
+          <div class="card tile"><div class="label" data-i18n="home.kpi_plants"></div><div class="value" id="kpiPlants">—</div></div>
+          <div class="card tile"><div class="label" data-i18n="home.kpi_best"></div><div class="value" id="kpiBest">—</div><div class="delta" id="kpiBestModel"></div></div>
         </div>
+      </div>
+    </section>
 
-        <!-- Features Grid -->
-        <div class="card">
-            <h2 class="card-title text-center mb-3">Key Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3 class="feature-title">Image Upload</h3>
-                    <p class="feature-description">
-                        Upload single or multiple plant images in JPG/PNG format for instant analysis
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3 class="feature-title">AI Detection</h3>
-                    <p class="feature-description">
-                        Multiple deep learning models: Baseline CNN, EfficientNet, MobileNet, and Hybrid CNN-Transformer
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3 class="feature-title">Explainable AI</h3>
-                    <p class="feature-description">
-                        Grad-CAM and LIME visualizations show which image regions influence predictions
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3 class="feature-title">Performance Metrics</h3>
-                    <p class="feature-description">
-                        Compare accuracy, precision, recall, and F1-scores across different model architectures
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3 class="feature-title">Real-time Results</h3>
-                    <p class="feature-description">
-                        Get instant disease classification with confidence scores and detailed visualizations
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3 class="feature-title">Download Results</h3>
-                    <p class="feature-description">
-                        Save heatmaps and analysis results for further examination and reporting
-                    </p>
-                </div>
-            </div>
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><div><h2 data-i18n="home.how_title"></h2><p data-i18n="home.how_sub"></p></div></div>
+        <div class="steps">
+          <div class="card step"><h3 data-i18n="home.step1_t"></h3><p data-i18n="home.step1_p"></p></div>
+          <div class="card step"><h3 data-i18n="home.step2_t"></h3><p data-i18n="home.step2_p"></p></div>
+          <div class="card step"><h3 data-i18n="home.step3_t"></h3><p data-i18n="home.step3_p"></p></div>
         </div>
+      </div>
+    </section>
 
-        <!-- Supported Diseases -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Supported Crops & Diseases</h2>
-                <p class="card-subtitle">38 disease classes across multiple crop types</p>
-            </div>
-            <div class="card-body">
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Apple</h3>
-                        <p class="feature-description">Scab, Black Rot, Cedar Apple Rust, Healthy</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Corn</h3>
-                        <p class="feature-description">Gray Leaf Spot, Common Rust, Northern Leaf Blight, Healthy</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Grape</h3>
-                        <p class="feature-description">Black Rot, Esca, Leaf Blight, Healthy</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Peach</h3>
-                        <p class="feature-description">Bacterial Spot, Healthy</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Potato</h3>
-                        <p class="feature-description">Early Blight, Late Blight, Healthy</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Tomato</h3>
-                        <p class="feature-description">10 disease types including Early Blight, Late Blight, Leaf Mold,
-                            and more</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Pepper</h3>
-                        <p class="feature-description">Bacterial Spot, Healthy</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"></div>
-                        <h3 class="feature-title">Citrus</h3>
-                        <p class="feature-description">Huanglongbing (Citrus Greening)</p>
-                    </div>
-                </div>
-            </div>
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><div><h2 data-i18n="home.models_title"></h2><p data-i18n="home.models_sub"></p></div></div>
+        <div class="grid grid-4" id="modelCards"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><div><h2 data-i18n="home.features_title"></h2></div></div>
+        <div class="grid grid-3">
+          <div class="card feature"><div class="icon" data-icon="leaf"></div><h3 data-i18n="home.f1_t"></h3><p data-i18n="home.f1_p"></p></div>
+          <div class="card feature"><div class="icon" data-icon="eye"></div><h3 data-i18n="home.f2_t"></h3><p data-i18n="home.f2_p"></p></div>
+          <div class="card feature"><div class="icon" data-icon="layers"></div><h3 data-i18n="home.f3_t"></h3><p data-i18n="home.f3_p"></p></div>
+          <div class="card feature"><div class="icon" data-icon="pill"></div><h3 data-i18n="home.f4_t"></h3><p data-i18n="home.f4_p"></p></div>
+          <div class="card feature"><div class="icon" data-icon="file"></div><h3 data-i18n="home.f5_t"></h3><p data-i18n="home.f5_p"></p></div>
+          <div class="card feature"><div class="icon" data-icon="field"></div><h3 data-i18n="home.f6_t"></h3><p data-i18n="home.f6_p"></p><p class="small" id="fieldStatus" style="margin-top:.5rem"></p></div>
         </div>
+      </div>
+    </section>
 
-        <!-- Model Architecture -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Model Architectures</h2>
-                <p class="card-subtitle">Four different neural network architectures for comprehensive comparison</p>
+    <section class="section">
+      <div class="container">
+        <div class="card"><div class="card-body">
+          <div class="grid grid-2" style="align-items:center">
+            <div class="prose">
+              <h2 data-i18n="home.research_title"></h2>
+              <p data-i18n="home.research_p1"></p>
+              <p data-i18n="home.research_p2"></p>
+              <a class="btn primary" href="/stats#research" data-i18n="home.research_cta"></a>
             </div>
-            <div class="card-body">
-                <div class="models-grid">
-                    <div class="model-card">
-                        <h3 class="model-name">Baseline CNN</h3>
-                        <p style="color: var(--gray); margin-bottom: 1rem;">
-                            Custom 4-layer convolutional neural network designed for plant disease classification
-                        </p>
-                        <ul class="model-stats">
-                            <li>
-                                <span class="stat-label">Parameters</span>
-                                <span class="stat-value">1.2M</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Size</span>
-                                <span class="stat-value">4.8 MB</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Speed</span>
-                                <span class="stat-value">Fast</span>
-                            </li>
-                        </ul>
-                    </div>
+            <div class="grid grid-2" id="researchTiles"></div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+  </main>
 
-                    <div class="model-card">
-                        <h3 class="model-name">EfficientNet-B0</h3>
-                        <p style="color: var(--gray); margin-bottom: 1rem;">
-                            State-of-the-art efficient architecture with compound scaling, pre-trained on ImageNet
-                        </p>
-                        <ul class="model-stats">
-                            <li>
-                                <span class="stat-label">Parameters</span>
-                                <span class="stat-value">4.0M</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Size</span>
-                                <span class="stat-value">16.2 MB</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Speed</span>
-                                <span class="stat-value">Medium</span>
-                            </li>
-                        </ul>
-                    </div>
+  <footer class="site-footer"><div class="container row"><span data-i18n="app.tagline"></span><span id="version"></span></div></footer>
 
-                    <div class="model-card">
-                        <h3 class="model-name">MobileNet-V2</h3>
-                        <p style="color: var(--gray); margin-bottom: 1rem;">
-                            Lightweight architecture optimized for mobile and edge devices
-                        </p>
-                        <ul class="model-stats">
-                            <li>
-                                <span class="stat-label">Parameters</span>
-                                <span class="stat-value">2.3M</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Size</span>
-                                <span class="stat-value">9.1 MB</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Speed</span>
-                                <span class="stat-value">Very Fast</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="model-card">
-                        <h3 class="model-name">Hybrid CNN-Transformer</h3>
-                        <p style="color: var(--gray); margin-bottom: 1rem;">
-                            Advanced architecture combining CNN feature extraction with transformer self-attention
-                        </p>
-                        <ul class="model-stats">
-                            <li>
-                                <span class="stat-label">Parameters</span>
-                                <span class="stat-value">25.6M</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Size</span>
-                                <span class="stat-value">102.4 MB</span>
-                            </li>
-                            <li>
-                                <span class="stat-label">Speed</span>
-                                <span class="stat-value">Slower</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Call to Action -->
-        <div class="card"
-            style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-align: center;">
-            <h2 style="color: white; margin-bottom: 1rem; font-size: 2rem;">Ready to Analyze Your Crops?</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
-                Upload your plant images and get instant AI-powered disease detection with explainable visualizations
-            </p>
-            <a href="analyze.html" class="btn btn-large" style="background: white; color: var(--primary-color);">
-                Start Analysis Now →
-            </a>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p><strong>Crop Disease Detection System</strong> - Master's Thesis Project</p>
-        <p>Intelligent Agricultural Monitoring using Computer Vision and Neural Networks</p>
-        <p style="margin-top: 1rem; color: var(--light-gray);">© 2025 - For Educational and Research Purposes</p>
-    </footer>
-
-    <!-- JavaScript -->
-    <script>
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function (event) {
-            const navLinks = document.getElementById('navLinks');
-            const menuToggle = document.querySelector('.menu-toggle');
-
-            if (!event.target.closest('.navbar') && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-            }
-        });
-    </script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/home.js"></script>
 </body>
-
 </html>

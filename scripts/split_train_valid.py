@@ -4,10 +4,9 @@ Split train folder into train/valid (80/20) if valid folder doesn't exist
 Use this if you only downloaded train folder
 """
 
-import os
+import random
 import shutil
 from pathlib import Path
-import random
 
 PROJECT_ROOT = Path(__file__).parent.parent
 TRAIN_DIR = PROJECT_ROOT / "data" / "PlantVillage" / "train"
@@ -23,7 +22,7 @@ def split_dataset():
         return
 
     if VALID_DIR.exists():
-        response = input(f"⚠️  Valid directory already exists. Overwrite? (y/n): ")
+        response = input("⚠️  Valid directory already exists. Overwrite? (y/n): ")
         if response.lower() != 'y':
             print("Cancelled.")
             return

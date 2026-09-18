@@ -8,14 +8,13 @@ models/*.pth, so their module names are unchanged.
 from __future__ import annotations
 
 import json
-import os
 from collections import Counter
 from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 from torchvision import models
 
 # ---------------------------------------------------------------------------
@@ -434,13 +433,13 @@ class MaskedModel(nn.Module):
 
 
 __all__ = [
+    "MODEL_TYPES",
     "BaselineCNN",
     "EfficientNetModel",
-    "MobileNetModel",
     "HybridCNNTransformer",
-    "MODEL_TYPES",
-    "ModelManager",
     "MaskedModel",
+    "MobileNetModel",
+    "ModelManager",
     "count_parameters",
     "pick_device",
 ]

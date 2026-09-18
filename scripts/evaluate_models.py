@@ -32,7 +32,7 @@ from torchvision import datasets, transforms
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 
-from model import MODEL_TYPES, ModelManager, count_parameters  # noqa: E402
+from model import MODEL_TYPES, ModelManager, count_parameters
 
 DATA_DIR = PROJECT_ROOT / "data" / "PlantVillage"
 MODELS_DIR = PROJECT_ROOT / "models"
@@ -130,7 +130,7 @@ def summarise(name, probs, labels, class_names, elapsed_ms_per_image, model):
     validation = {
         "model_name": name,
         "evaluated_at": datetime.now().isoformat(timespec="seconds"),
-        "num_samples": int(len(labels)),
+        "num_samples": len(labels),
         "overall": {
             "accuracy": acc,
             "top5_accuracy": top5,
@@ -153,7 +153,7 @@ def summarise(name, probs, labels, class_names, elapsed_ms_per_image, model):
         "parameters": f"{n_params/1e6:.1f}M",
         "parameters_count": n_params,
         "size_mb": round(weights_file.stat().st_size / 1e6, 1) if weights_file.exists() else None,
-        "validation_samples": int(len(labels)),
+        "validation_samples": len(labels),
         "trained": acc > 0.5,
         "evaluated_at": validation["evaluated_at"],
     }
@@ -215,7 +215,7 @@ def main():
             "size_mb": round(sum(trained[n]["size_mb"] or 0 for n in trained), 1),
             "models_combined": list(trained),
             "method": "accuracy-weighted average of softmax outputs",
-            "validation_samples": int(len(labels)),
+            "validation_samples": len(labels),
             "trained": True,
             "evaluated_at": datetime.now().isoformat(timespec="seconds"),
         }

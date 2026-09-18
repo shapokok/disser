@@ -80,6 +80,7 @@ class GradCAM:
     def __call__(self, tensor: torch.Tensor, class_idx: int | None = None):
         self.model.eval()
         self.model.zero_grad(set_to_none=True)
+        tensor = tensor.detach().requires_grad_(True)
         with torch.enable_grad():
             output = self.model(tensor)
             if class_idx is None:

@@ -26,15 +26,14 @@ from datetime import datetime
 from pathlib import Path
 
 import torch
-import torch.nn as nn
-import torch.optim as optim
+from torch import nn, optim
 from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 
-from model import (  # noqa: E402
+from model import (
     BaselineCNN,
     EfficientNetModel,
     HybridCNNTransformer,

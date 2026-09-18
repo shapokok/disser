@@ -30,6 +30,7 @@ RESULTS_DIR = _path("CROP_RESULTS_DIR", PROJECT_ROOT / "results")
 METRICS_DIR = RESULTS_DIR / "metrics"
 FRONTEND_DIR = _path("CROP_FRONTEND_DIR", PROJECT_ROOT / "frontend")
 PLANTVILLAGE_DIR = DATA_DIR / "PlantVillage"
+DA_RESULTS_DIR = _path("CROP_DA_RESULTS_DIR", PROJECT_ROOT / "domain_adaptation_experiments" / "results")
 
 # --- Server ------------------------------------------------------------------
 HOST = os.environ.get("CROP_HOST", "0.0.0.0")

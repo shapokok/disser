@@ -1,73 +1,24 @@
-# Git
 .git
-.gitignore
-.gitattributes
-
-# Python
-__pycache__
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
-*.egg-info/
-dist/
-build/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-test_results_*.json
-
-# Data (exclude large datasets, keep structure)
-data/uploads/*
-!data/uploads/.gitkeep
-data/test_images/*
-!data/test_images/.gitkeep
-
-# Models (exclude large model files unless needed)
+.venv
+venv
+node_modules
+data/PlantVillage
+data/uploads
+domain_adaptation_experiments/datasets
+domain_adaptation_experiments/legacy
+results/checkpoints
+results/heatmaps
+results/logs
 models/*.pth
-models/*.pt
-models/*.h5
-!models/.gitkeep
-
-# Results
-results/
-*.png
-*.jpg
-*.jpeg
-
-# Documentation (not needed in container)
-*.md
-!README.md
-
-# Docker
-docker-compose.override.yml
-Dockerfile.dev
-
-# Node (if any)
-node_modules/
-npm-debug.log
-
-# Logs
-*.log
-logs/
-
-# Temporary files
-tmp/
-temp/
-*.tmp
+*.pth
+playwright-report
+test-results
+tests
+docs
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.github
+.vscode
+.DS_Store

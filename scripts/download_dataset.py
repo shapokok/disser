@@ -3,11 +3,11 @@
 Download and prepare PlantVillage dataset for training
 """
 
-import os
 import sys
 import zipfile
-import requests
 from pathlib import Path
+
+import requests
 from tqdm import tqdm
 
 # Dataset info

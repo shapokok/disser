@@ -23,7 +23,7 @@ from da import common as C
 def main():
     p = C.common_args(argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter))
     p.add_argument("--epochs", type=int, default=25)
-    p.add_argument("--lr", type=float, default=5e-5)
+    p.add_argument("--lr", type=float, default=1e-4)
     p.add_argument("--weight-decay", type=float, default=1e-4)
     p.add_argument("--init", default=None, help="starting checkpoint (default: PlantVillage source model)")
     p.add_argument("--name", default=None)

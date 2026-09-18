@@ -8,7 +8,6 @@ or provides links to download them manually.
 """
 
 import os
-import sys
 
 
 def print_banner():

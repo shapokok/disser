@@ -1,45 +1,20 @@
 @echo off
-REM Crop Disease Detection System - Quick Start Script (Windows)
-REM This script starts the backend server
+rem Start the Crop Disease Detection app on Windows (creates the environment on first run).
+cd /d "%~dp0\.."
 
-echo =========================================
-echo Crop Disease Detection System
-echo =========================================
-echo.
-
-REM Check if virtual environment exists
-if not exist "venv\" (
-    echo WARNING: Virtual environment not found!
-    echo Creating virtual environment...
-    python -m venv venv
-
-    echo Installing dependencies...
-    call venv\Scripts\activate
-    cd backend
-    pip install -r requirements.txt
-    cd ..
+where uv >nul 2>nul
+if %errorlevel%==0 (
+  uv sync --extra dev || exit /b 1
+  set PY=uv run python
+) else (
+  if not exist .venv (
+    python -m venv .venv || exit /b 1
+    .venv\Scripts\pip install --upgrade pip
+    .venv\Scripts\pip install -r requirements.txt || exit /b 1
+  )
+  set PY=.venv\Scripts\python
 )
 
-REM Activate virtual environment
-echo Activating virtual environment...
-call venv\Scripts\activate
-
-REM Check if in correct directory
-if not exist "backend\app.py" (
-    echo ERROR: backend\app.py not found!
-    echo Please run this script from the crop_monitoring_app directory
-    pause
-    exit /b 1
-)
-
-REM Start backend server
-echo.
-echo Starting backend server...
-echo Backend will be available at: http://localhost:5000
-echo Open frontend at: frontend\index.html
-echo.
-echo Press Ctrl+C to stop the server
-echo.
-
-cd backend
-python app.py
+if "%CROP_PORT%"=="" set CROP_PORT=5001
+echo Open http://localhost:%CROP_PORT%/
+%PY% backend\app.py

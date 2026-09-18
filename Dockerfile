@@ -1,55 +1,38 @@
-# Multi-stage Docker build for Crop Disease Detection System
-# Stage 1: Base image with Python and dependencies
-FROM python:3.9-slim as base
+# Crop Disease Detection API + frontend
+#
+#   docker build -t crop-disease .
+#   docker run -p 5001:5001 -v $(pwd)/models:/app/models crop-disease
+#
+# Model weights (models/*.pth) are NOT baked into the image: mount the models/
+# directory (see docker-compose.yml).
 
-# Set working directory
-WORKDIR /app
+FROM python:3.12-slim AS base
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libgomp1 \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    libgl1 \
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    CROP_HOST=0.0.0.0 \
+    CROP_PORT=5001 \
+    CROP_DEVICE=cpu
+
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY backend/requirements.txt /app/backend/
+WORKDIR /app
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r /app/backend/requirements.txt
+# CPU-only torch keeps the image ~1.5 GB smaller than the default CUDA build.
+COPY requirements.txt .
+RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
-# Stage 2: Application
-FROM base as app
+COPY backend ./backend
+COPY frontend ./frontend
+COPY models/class_names.json models/model_metrics.json ./models/
+COPY results/metrics ./results/metrics
+COPY data/sample_images ./data/sample_images
 
-# Copy application code
-COPY backend /app/backend
-COPY frontend /app/frontend
-COPY models /app/models
-COPY data /app/data
+RUN mkdir -p data/uploads results/heatmaps
 
-# Create necessary directories
-RUN mkdir -p /app/data/uploads \
-    /app/data/test_images \
-    /app/models \
-    /app/results/heatmaps
+EXPOSE 5001
+HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=3 \
+    CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:5001/api/health').status==200 else 1)"
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV FLASK_APP=/app/backend/app.py
-ENV FLASK_ENV=production
-
-# Expose port
-EXPOSE 5000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:5000/')" || exit 1
-
-# Set working directory to backend
-WORKDIR /app/backend
-
-# Run the application
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--chdir", "backend", "--bind", "0.0.0.0:5001", "--workers", "1", "--threads", "4", "--timeout", "300", "app:app"]

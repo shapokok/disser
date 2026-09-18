@@ -1,941 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Statistics - Crop Disease Detection</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Chart.js for interactive charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статистика моделей — CropAI Monitor</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231e7a46'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body data-page="stats">
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="/" class="brand"><span class="brand-mark" data-icon="leaf"></span><span data-i18n="app.name">CropAI Monitor</span></a>
+      <button class="icon-btn menu-toggle" id="menuToggle" data-i18n-title="nav.menu" data-icon="menu"></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
+        <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
+        <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
+      </ul>
+      <div class="nav-tools">
+        <div class="lang-switch" role="group" aria-label="Language"><button data-lang="ru" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button></div>
+        <button class="icon-btn" id="themeToggle" data-i18n-title="nav.theme"></button>
+      </div>
+    </div>
+  </header>
 
-<body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="navbar">
-            <a href="index.html" class="logo">
-                <span class="logo-icon"></span>
-                <span>CropAI Monitor</span>
-            </a>
-            <div class="menu-toggle" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="analyze.html">Analyze</a></li>
-                <li><a href="stats.html" class="active">Statistics</a></li>
-            </ul>
-        </nav>
-    </header>
+  <main class="section">
+    <div class="container">
+      <div class="section-head"><div><h1 style="font-size:1.8rem" data-i18n="stats.title"></h1><p data-i18n="stats.sub"></p></div><div id="evalInfo" class="small muted"></div></div>
 
-    <!-- Main Content -->
-    <div class="container" style="margin-top: 2rem;">
+      <div class="tabs" role="tablist" id="tabs">
+        <button role="tab" data-tab="overview" aria-selected="true" data-i18n="stats.tab_overview"></button>
+        <button role="tab" data-tab="training" aria-selected="false" data-i18n="stats.tab_training"></button>
+        <button role="tab" data-tab="classes" aria-selected="false" data-i18n="stats.tab_classes"></button>
+        <button role="tab" data-tab="confusion" aria-selected="false" data-i18n="stats.tab_confusion"></button>
+        <button role="tab" data-tab="research" aria-selected="false" data-i18n="stats.tab_research"></button>
+      </div>
+
+      <section class="tab-panel stack" id="tab-overview">
+        <div class="grid grid-4" id="overviewTiles"></div>
+        <div class="card"><div class="card-head"><h3 data-i18n="home.models_title"></h3></div><div class="table-wrap" id="modelsTable"></div></div>
+        <div class="grid grid-2">
+          <div class="card chart-card"><div class="card-body"><p class="chart-title" data-i18n="stats.chart_acc_title"></p><p class="chart-sub" data-i18n="stats.chart_acc_sub"></p><div class="chart-box short"><canvas id="accChart"></canvas></div></div></div>
+          <div class="card chart-card"><div class="card-body"><p class="chart-title" data-i18n="stats.chart_time_title"></p><p class="chart-sub" data-i18n="stats.chart_time_sub"></p><div class="chart-box short"><canvas id="timeChart"></canvas></div></div></div>
+        </div>
+      </section>
+
+      <section class="tab-panel stack" id="tab-training" hidden>
+        <div class="grid grid-2">
+          <div class="card chart-card"><div class="card-body"><p class="chart-title" data-i18n="stats.chart_curves_title"></p><p class="chart-sub" data-i18n="stats.chart_curves_sub"></p><div class="chart-box"><canvas id="curvesChart"></canvas></div></div></div>
+          <div class="card chart-card"><div class="card-body"><p class="chart-title" data-i18n="stats.chart_loss_title"></p><p class="chart-sub" data-i18n="stats.chart_loss_sub"></p><div class="chart-box"><canvas id="lossChart"></canvas></div></div></div>
+        </div>
+        <div class="card"><div class="card-head"><h3 data-i18n="stats.training_config"></h3></div><div class="table-wrap" id="trainingTable"></div></div>
+      </section>
+
+      <section class="tab-panel stack" id="tab-classes" hidden>
         <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Model Performance Statistics</h2>
-                <p class="card-subtitle">Comparative analysis of different neural network architectures</p>
+          <div class="card-head">
+            <h3 data-i18n="stats.per_class_title"></h3>
+            <div class="row">
+              <select class="select" id="classModelSelect" style="width:auto"></select>
+              <input class="input" id="classSearch" style="width:220px" data-i18n-placeholder="stats.search">
             </div>
+          </div>
+          <div class="card-body" id="classHighlights"></div>
+          <div class="table-wrap" id="classTable"></div>
         </div>
+      </section>
 
-        <!-- Loading Indicator -->
-        <div id="loadingStats" class="card">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">Loading model statistics...</div>
+      <section class="tab-panel stack" id="tab-confusion" hidden>
+        <div class="card">
+          <div class="card-head">
+            <div><h3 data-i18n="stats.confusion_title"></h3><p class="small muted" style="margin:0" data-i18n="stats.confusion_sub"></p></div>
+            <div class="row">
+              <select class="select" id="cmModelSelect" style="width:auto"></select>
+              <label class="small row" style="gap:.35rem"><input type="checkbox" id="cmHideDiag"> <span id="cmHideDiagLabel"></span></label>
+            </div>
+          </div>
+          <div class="card-body"><div class="cm-wrap" id="cmGrid"></div></div>
         </div>
-
-        <!-- Statistics Container -->
-        <div id="statsContainer" class="hidden">
-            <!-- Overall Performance -->
-            <div class="card">
-                <h2 class="card-title mb-3">Performance Comparison</h2>
-                <div id="performanceTable"></div>
-            </div>
-
-            <!-- Model Cards -->
-            <div id="modelCardsContainer" class="models-grid">
-                <!-- Model cards will be inserted here -->
-            </div>
-
-            <!-- Interactive Charts -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Interactive Performance Dashboard</h2>
-                    <p class="card-subtitle">Explore model metrics with interactive charts</p>
-                </div>
-                <div class="card-body">
-                    <!-- Chart Grid -->
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
-                        <!-- Radar Chart -->
-                        <div
-                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
-                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">Overall Performance
-                                Radar</h3>
-                            <div style="background: white; padding: 1rem; border-radius: 8px;">
-                                <canvas id="radarChart"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Scatter Chart -->
-                        <div
-                            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);">
-                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">Accuracy vs Speed
-                                Trade-off</h3>
-                            <div style="background: white; padding: 1rem; border-radius: 8px;">
-                                <canvas id="scatterChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
-                        <!-- Bar Chart -->
-                        <div
-                            style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);">
-                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">Accuracy Comparison
-                            </h3>
-                            <div style="background: white; padding: 1rem; border-radius: 8px;">
-                                <canvas id="barChart"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Doughnut Chart -->
-                        <div
-                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);">
-                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;">Model Size Distribution
-                            </h3>
-                            <div style="background: white; padding: 1rem; border-radius: 8px;">
-                                <canvas id="doughnutChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Export Button -->
-                    <div style="margin-top: 2rem; text-align: center;">
-                        <button onclick="exportCharts()" class="btn btn-primary" style="padding: 0.75rem 2rem;">
-                            Export Charts as Images
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Confusion Matrices -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Confusion Matrix Analysis</h2>
-                    <p class="card-subtitle">Visualize model predictions vs. true labels</p>
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="max-width: 300px; margin-bottom: 2rem;">
-                        <label class="form-label">Select Model</label>
-                        <select id="confusionModelSelect" class="form-select" onchange="loadConfusionMatrix()">
-                            <option value="efficientnet">EfficientNet-B0</option>
-                            <option value="hybrid">Hybrid CNN-Transformer</option>
-                            <option value="mobilenet">MobileNet-V2</option>
-                            <option value="baseline">Baseline CNN</option>
-                        </select>
-                    </div>
-
-                    <div id="confusionMatrixContainer">
-                        <!-- Confusion matrix will be loaded here -->
-                        <div class="loading-spinner"></div>
-                        <div class="loading-text">Loading confusion matrix...</div>
-                    </div>
-
-                    <div id="confusedPairsContainer" class="mt-4" style="display: none;">
-                        <h3 style="margin-bottom: 1rem; color: var(--dark);">Top Confused Class Pairs</h3>
-                        <div id="confusedPairsList"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Per-Class Performance -->
-            <div class="card" id="perClassPerformance" style="display: none;">
-                <div class="card-header">
-                    <h2 class="card-title">Per-Class Performance Metrics</h2>
-                    <p class="card-subtitle">Detailed metrics for each disease class</p>
-                </div>
-                <div class="card-body">
-                    <div id="perClassContainer">
-                        <!-- Per-class metrics will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Model Comparison -->
-            <div class="card">
-                <h2 class="card-title mb-3">Model Recommendations</h2>
-                <div class="features-grid">
-                    <div class="feature-card" style="border: 2px solid var(--success-color);">
-                        <div class="feature-icon">🏆</div>
-                        <h3 class="feature-title">Best Accuracy</h3>
-                        <p style="font-size: 1.5rem; color: var(--primary-color); font-weight: bold; margin: 1rem 0;">
-                            Hybrid CNN-Transformer</p>
-                        <p class="feature-description">96.7% accuracy - Best for research and high-accuracy requirements
-                        </p>
-                    </div>
-                    <div class="feature-card" style="border: 2px solid var(--secondary-color);">
-                        <div class="feature-icon">⚡</div>
-                        <h3 class="feature-title">Best Speed</h3>
-                        <p style="font-size: 1.5rem; color: var(--secondary-color); font-weight: bold; margin: 1rem 0;">
-                            MobileNet-V2</p>
-                        <p class="feature-description">32ms inference - Best for mobile and real-time applications</p>
-                    </div>
-                    <div class="feature-card" style="border: 2px solid var(--warning-color);">
-                        <div class="feature-icon">⚖️</div>
-                        <h3 class="feature-title">Best Balance</h3>
-                        <p style="font-size: 1.5rem; color: var(--warning-color); font-weight: bold; margin: 1rem 0;">
-                            EfficientNet-B0</p>
-                        <p class="feature-description">95.4% accuracy with reasonable speed - Recommended for most use
-                            cases</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Training Details
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Training Configuration</h2>
-                    <p class="card-subtitle">Common training parameters used for all models</p>
-                </div>
-                <div class="card-body">
-                    <div style="background: var(--light); padding: 2rem; border-radius: 10px;">
-                        <div
-                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Optimizer:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">Adam</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Learning Rate:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">0.001 (with decay)</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Batch Size:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">32</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Epochs:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">50 (early stopping)</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Loss Function:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">Cross-Entropy</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Data Augmentation:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">Rotation, Flip, Color
-                                    Jitter</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Validation Split:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">20%</span>
-                            </div>
-                            <div style="padding: 1rem;">
-                                <strong style="color: var(--dark);">Input Size:</strong>
-                                <span style="color: var(--gray); margin-left: 0.5rem;">224x224</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-            <!-- Footer -->
-            <footer class="footer">
-                <p><strong>Crop Disease Detection System</strong> - Master's Thesis Project</p>
-                <p>© 2025 - For Educational and Research Purposes</p>
-            </footer>
-
-            <!-- JavaScript -->
-            <script src="script.js"></script>
-
-            <script>
-
-                function toggleMenu() {
-
-                    const navLinks = document.getElementById('navLinks');
-
-                    navLinks.classList.toggle('active');
-
-                }
-
-
-
-                // Load statistics on page load
-
-                document.addEventListener('DOMContentLoaded', loadStatistics);
-
-
-
-                async function loadStatistics() {
-
-                    try {
-
-                        const response = await fetch(`${API_BASE_URL}/api/stats`);
-
-                        const data = await response.json();
-
-
-
-                        if (data.success) {
-
-                            displayStatistics(data.statistics);
-
-                            document.getElementById('totalClasses').textContent = data.total_classes;
-
-                            // Load dataset info
-                            loadDatasetInfo();
-
-                        } else {
-
-                            throw new Error('Failed to load statistics');
-
-                        }
-
-                    } catch (error) {
-
-                        console.error('Error loading statistics:', error);
-
-                        document.getElementById('loadingStats').innerHTML = `
-
-                    <div class="alert alert-error">
-
-                        <strong>Error:</strong> Could not load statistics. Please ensure the backend server is running.
-                    </div>
-                `;
-                    }
-                }
-
-                async function loadDatasetInfo() {
-                    try {
-                        const response = await fetch(`${API_BASE_URL}/api/dataset_info`);
-                        const data = await response.json();
-
-                        if (data.success) {
-                            // Update dataset information in the HTML
-                            const datasetInfoHTML = `
-                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
-                            <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;">${data.total_classes}</div>
-                            <div style="color: var(--gray); margin-top: 0.5rem;">Disease Classes</div>
-                        </div>
-                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
-                            <div style="font-size: 2.5rem; color: var(--secondary-color); font-weight: bold;">${data.plant_types}</div>
-                            <div style="color: var(--gray); margin-top: 0.5rem;">Plant Types</div>
-                        </div>
-                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
-                            <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;">${data.total_images.toLocaleString()}</div>
-                            <div style="color: var(--gray); margin-top: 0.5rem;">Total Images</div>
-                            <div style="color: var(--gray); font-size: 0.8rem; margin-top: 0.25rem;">
-                                Train: ${data.train_images.toLocaleString()} | Val: ${data.valid_images.toLocaleString()}
-                            </div>
-                        </div>
-                        <div style="text-align: center; padding: 1.5rem; background: var(--light); border-radius: 10px;">
-                            <div style="font-size: 2.5rem; color: var(--secondary-color); font-weight: bold;">${data.model_architectures}</div>
-                            <div style="color: var(--gray); margin-top: 0.5rem;">Model Architectures</div>
-                        </div>
-                    `;
-
-                            // Find the dataset info grid and update it
-                            const datasetGrid = document.querySelector('.card-body div[style*="grid-template-columns"]');
-                            if (datasetGrid) {
-                                datasetGrid.innerHTML = datasetInfoHTML;
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error loading dataset info:', error);
-                    }
-                }
-
-                function displayStatistics(stats) {
-                    // Hide loading, show stats
-                    document.getElementById('loadingStats').classList.add('hidden');
-                    document.getElementById('statsContainer').classList.remove('hidden');
-
-                    // Create performance table
-                    const performanceTable = document.getElementById('performanceTable');
-                    performanceTable.innerHTML = `
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background: var(--primary-color); color: white;">
-                                <th style="padding: 1rem; text-align: left;">Model</th>
-                                <th style="padding: 1rem; text-align: center;">Accuracy</th>
-                                <th style="padding: 1rem; text-align: center;">Precision</th>
-                                <th style="padding: 1rem; text-align: center;">Recall</th>
-                                <th style="padding: 1rem; text-align: center;">F1-Score</th>
-                                <th style="padding: 1rem; text-align: center;">Inference Time</th>
-                                <th style="padding: 1rem; text-align: center;">Model Size</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${Object.entries(stats).map(([name, data], index) => `
-                                <tr style="background: ${index % 2 === 0 ? 'white' : 'var(--light)'};">
-                                    <td style="padding: 1rem; font-weight: bold; color: var(--dark);">${formatModelName(name)}</td>
-                                    <td style="padding: 1rem; text-align: center; color: var(--primary-color); font-weight: bold;">${(data.accuracy * 100).toFixed(1)}%</td>
-                                    <td style="padding: 1rem; text-align: center;">${(data.precision * 100).toFixed(1)}%</td>
-                                    <td style="padding: 1rem; text-align: center;">${(data.recall * 100).toFixed(1)}%</td>
-                                    <td style="padding: 1rem; text-align: center;">${(data.f1_score * 100).toFixed(1)}%</td>
-                                    <td style="padding: 1rem; text-align: center;">${data.inference_time_ms}ms</td>
-                                    <td style="padding: 1rem; text-align: center;">${data.size_mb}MB</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-
-                    // Create model cards
-                    const modelCardsContainer = document.getElementById('modelCardsContainer');
-                    modelCardsContainer.innerHTML = Object.entries(stats).map(([name, data]) => `
-                <div class="model-card">
-                    <h3 class="model-name">${formatModelName(name)}</h3>
-                    <ul class="model-stats">
-                        <li>
-                            <span class="stat-label">Accuracy</span>
-                            <span class="stat-value" style="color: var(--primary-color);">${(data.accuracy * 100).toFixed(2)}%</span>
-                        </li>
-                        <li>
-                            <span class="stat-label">Precision</span>
-                            <span class="stat-value">${(data.precision * 100).toFixed(2)}%</span>
-                        </li>
-                        <li>
-                            <span class="stat-label">Recall</span>
-                            <span class="stat-value">${(data.recall * 100).toFixed(2)}%</span>
-                        </li>
-                        <li>
-                            <span class="stat-label">F1-Score</span>
-                            <span class="stat-value">${(data.f1_score * 100).toFixed(2)}%</span>
-                        </li>
-                        <li>
-                            <span class="stat-label">Inference Time</span>
-                            <span class="stat-value">${data.inference_time_ms}ms</span>
-                        </li>
-                        <li>
-                            <span class="stat-label">Parameters</span>
-                            <span class="stat-value">${data.parameters}</span>
-                        </li>
-                        <li>
-                            <span class="stat-label">Model Size</span>
-                            <span class="stat-value">${data.size_mb}MB</span>
-                        </li>
-                    </ul>
-                </div>
-            `).join('');
-
-                    // Create visual charts
-                    createCharts(stats);
-
-                    // Update Model Recommendations with real data
-                    updateModelRecommendations(stats);
-                }
-
-                // Store chart instances globally for export
-                let chartInstances = {};
-
-                function createCharts(stats) {
-                    // Prepare data
-                    const models = Object.keys(stats);
-                    const modelNames = models.map(m => formatModelName(m));
-                    const colors = {
-                        baseline: 'rgba(255, 99, 132, 0.8)',
-                        efficientnet: 'rgba(54, 162, 235, 0.8)',
-                        mobilenet: 'rgba(255, 206, 86, 0.8)',
-                        hybrid: 'rgba(75, 192, 192, 0.8)',
-                        ensemble: 'rgba(153, 102, 255, 0.8)'  // Purple for ensemble
-                    };
-
-                    // 1. Radar Chart - Overall Performance
-                    const radarCtx = document.getElementById('radarChart').getContext('2d');
-                    if (chartInstances.radar) chartInstances.radar.destroy();
-                    chartInstances.radar = new Chart(radarCtx, {
-                        type: 'radar',
-                        data: {
-                            labels: ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'Speed'],
-                            datasets: models.map(model => ({
-                                label: formatModelName(model),
-                                data: [
-                                    stats[model].accuracy * 100,
-                                    stats[model].precision * 100,
-                                    stats[model].recall * 100,
-                                    stats[model].f1_score * 100,
-                                    100 - (stats[model].inference_time_ms / 125 * 100) // Inverted speed
-                                ],
-                                backgroundColor: colors[model].replace('0.8', '0.2'),
-                                borderColor: colors[model],
-                                borderWidth: 2,
-                                pointBackgroundColor: colors[model],
-                                pointBorderColor: '#fff',
-                                pointHoverBackgroundColor: '#fff',
-                                pointHoverBorderColor: colors[model]
-                            }))
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            scales: {
-                                r: {
-                                    beginAtZero: true,
-                                    max: 100,
-                                    ticks: {
-                                        stepSize: 20,
-                                        callback: function (value) {
-                                            return value + '%';
-                                        }
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: { boxWidth: 12, padding: 10 }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (context) {
-                                            return context.dataset.label + ': ' + context.parsed.r.toFixed(1) + '%';
-                                        }
-                                    }
-                                }
-                            },
-                            animation: {
-                                duration: 1500,
-                                easing: 'easeInOutQuart'
-                            }
-                        }
-                    });
-
-                    // 2. Scatter Chart - Accuracy vs Speed
-                    const scatterCtx = document.getElementById('scatterChart').getContext('2d');
-                    if (chartInstances.scatter) chartInstances.scatter.destroy();
-                    chartInstances.scatter = new Chart(scatterCtx, {
-                        type: 'scatter',
-                        data: {
-                            datasets: models.map(model => ({
-                                label: formatModelName(model),
-                                data: [{
-                                    x: stats[model].inference_time_ms,
-                                    y: stats[model].accuracy * 100
-                                }],
-                                backgroundColor: colors[model],
-                                borderColor: colors[model],
-                                pointRadius: 10,
-                                pointHoverRadius: 15
-                            }))
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            scales: {
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Inference Time (ms)',
-                                        font: { size: 14, weight: 'bold' }
-                                    },
-                                    ticks: { stepSize: 25 }
-                                },
-                                y: {
-                                    title: {
-                                        display: true,
-                                        text: 'Accuracy (%)',
-                                        font: { size: 14, weight: 'bold' }
-                                    },
-                                    min: 85,
-                                    max: 100
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: { boxWidth: 12, padding: 10 }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (context) {
-                                            return context.dataset.label + ': ' +
-                                                context.parsed.y.toFixed(2) + '% @ ' +
-                                                context.parsed.x + 'ms';
-                                        }
-                                    }
-                                }
-                            },
-                            animation: {
-                                duration: 1500,
-                                easing: 'easeInOutQuart'
-                            }
-                        }
-                    });
-
-                    // 3. Bar Chart - Accuracy Comparison
-                    const barCtx = document.getElementById('barChart').getContext('2d');
-                    if (chartInstances.bar) chartInstances.bar.destroy();
-                    chartInstances.bar = new Chart(barCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: modelNames,
-                            datasets: [{
-                                label: 'Accuracy (%)',
-                                data: models.map(m => stats[m].accuracy * 100),
-                                backgroundColor: models.map(m => colors[m]),
-                                borderColor: models.map(m => colors[m].replace('0.8', '1')),
-                                borderWidth: 2,
-                                borderRadius: 8
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            scales: {
-                                y: {
-                                    beginAtZero: false,
-                                    min: 85,
-                                    max: 100,
-                                    ticks: {
-                                        callback: function (value) {
-                                            return value + '%';
-                                        }
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (context) {
-                                            return 'Accuracy: ' + context.parsed.y.toFixed(2) + '%';
-                                        }
-                                    }
-                                }
-                            },
-                            animation: {
-                                duration: 1500,
-                                easing: 'easeInOutQuart'
-                            }
-                        }
-                    });
-
-                    // 4. Doughnut Chart - Model Size Distribution
-                    const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
-                    if (chartInstances.doughnut) chartInstances.doughnut.destroy();
-                    chartInstances.doughnut = new Chart(doughnutCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: modelNames,
-                            datasets: [{
-                                data: models.map(m => stats[m].size_mb),
-                                backgroundColor: models.map(m => colors[m]),
-                                borderColor: '#fff',
-                                borderWidth: 3
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: { boxWidth: 12, padding: 10 }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (context) {
-                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                            const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                            return context.label + ': ' + context.parsed + 'MB (' + percentage + '%)';
-                                        }
-                                    }
-                                }
-                            },
-                            animation: {
-                                duration: 1500,
-                                easing: 'easeInOutQuart'
-                            }
-                        }
-                    });
-                }
-
-                // Export all charts as images
-                function exportCharts() {
-                    const charts = ['radar', 'scatter', 'bar', 'doughnut'];
-                    charts.forEach((chartType, index) => {
-                        setTimeout(() => {
-                            const chart = chartInstances[chartType];
-                            if (chart) {
-                                const url = chart.toBase64Image();
-                                const link = document.createElement('a');
-                                link.download = `${chartType}-chart.png`;
-                                link.href = url;
-                                link.click();
-                            }
-                        }, index * 200); // Stagger downloads
-                    });
-
-                    alert('📥 Exporting 4 charts as PNG images...');
-                }
-
-                function formatModelName(name) {
-                    const names = {
-                        'baseline': 'Baseline CNN',
-                        'efficientnet': 'EfficientNet-B0',
-                        'mobilenet': 'MobileNet-V2',
-                        'hybrid': 'Hybrid CNN-Transformer',
-                        'ensemble': 'Ensemble (All Models)'
-                    };
-                    return names[name] || name;
-                }
-
-                // Update Model Recommendations section with real data
-                function updateModelRecommendations(stats) {
-                    // Filter out ensemble for individual model comparisons
-                    const models = Object.entries(stats).filter(([name]) => name !== 'ensemble');
-
-                    // Find best accuracy (excluding ensemble)
-                    const bestAccuracy = models.reduce((best, [name, data]) =>
-                        data.accuracy > best.accuracy ? { name, ...data } : best,
-                        { name: '', accuracy: 0 }
-                    );
-
-                    // Find fastest (lowest inference time)
-                    const fastest = models.reduce((fast, [name, data]) =>
-                        data.inference_time_ms < fast.inference_time_ms ? { name, ...data } : fast,
-                        { name: '', inference_time_ms: Infinity }
-                    );
-
-                    // Find best balance (high accuracy with reasonable speed)
-                    // Score = accuracy * 100 - (inference_time_ms / 10)
-                    const bestBalance = models.reduce((best, [name, data]) => {
-                        const score = data.accuracy * 100 - (data.inference_time_ms / 10);
-                        const bestScore = best.accuracy * 100 - (best.inference_time_ms / 10);
-                        return score > bestScore ? { name, ...data } : best;
-                    }, { name: '', accuracy: 0, inference_time_ms: 0 });
-
-                    // Update HTML - find the Model Recommendations card
-                    const recommendationsHTML = `
-                <div class="feature-card" style="border: 2px solid var(--success-color);">
-                    <div class="feature-icon">🏆</div>
-                    <h3 class="feature-title">Best Accuracy</h3>
-                    <p style="font-size: 1.5rem; color: var(--primary-color); font-weight: bold; margin: 1rem 0;">
-                        ${formatModelName(bestAccuracy.name)}</p>
-                    <p class="feature-description">${(bestAccuracy.accuracy * 100).toFixed(2)}% accuracy - Best for research and high-accuracy requirements</p>
-                </div>
-                <div class="feature-card" style="border: 2px solid var(--secondary-color);">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Best Speed</h3>
-                    <p style="font-size: 1.5rem; color: var(--secondary-color); font-weight: bold; margin: 1rem 0;">
-                        ${formatModelName(fastest.name)}</p>
-                    <p class="feature-description">${fastest.inference_time_ms}ms inference - Best for mobile and real-time applications</p>
-                </div>
-                <div class="feature-card" style="border: 2px solid var(--warning-color);">
-                    <div class="feature-icon">⚖️</div>
-                    <h3 class="feature-title">Best Balance</h3>
-                    <p style="font-size: 1.5rem; color: var(--warning-color); font-weight: bold; margin: 1rem 0;">
-                        ${formatModelName(bestBalance.name)}</p>
-                    <p class="feature-description">${(bestBalance.accuracy * 100).toFixed(2)}% accuracy at ${bestBalance.inference_time_ms}ms - Recommended for most use cases</p>
-                </div>
-            `;
-
-                    // Find and update the features-grid
-                    const featuresGrid = document.querySelector('.features-grid');
-                    if (featuresGrid) {
-                        featuresGrid.innerHTML = recommendationsHTML;
-                    }
-                }
-
-                // Load confusion matrix for selected model
-                async function loadConfusionMatrix() {
-                    const model = document.getElementById('confusionModelSelect').value;
-                    const container = document.getElementById('confusionMatrixContainer');
-                    const confusedPairsContainer = document.getElementById('confusedPairsContainer');
-                    const perClassContainer = document.getElementById('perClassPerformance');
-
-                    // Show loading
-                    container.innerHTML = `
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Loading confusion matrix for ${formatModelName(model)}...</div>
-            `;
-
-                    try {
-                        // Fetch confusion matrix
-                        const cmResponse = await fetch(`${API_BASE_URL}/api/confusion_matrix/${model}`);
-                        const cmData = await cmResponse.json();
-
-                        if (!cmData.success) {
-                            throw new Error('Failed to load confusion matrix');
-                        }
-
-                        // Display confusion matrix image
-                        container.innerHTML = `
-                    <div style="margin-bottom: 2rem;">
-                        <h3 style="margin-bottom: 1rem; color: var(--dark);">Confusion Matrix - ${formatModelName(model)}</h3>
-                        <img src="data:image/png;base64,${cmData.confusion_matrix_image}"
-                             alt="Confusion Matrix"
-                             style="width: 100%; max-width: 1000px; border-radius: 10px; box-shadow: var(--shadow-md);">
-                    </div>
-                    <div>
-                        <h3 style="margin-bottom: 1rem; color: var(--dark);">Normalized Confusion Matrix</h3>
-                        <img src="data:image/png;base64,${cmData.confusion_matrix_normalized_image}"
-                             alt="Normalized Confusion Matrix"
-                             style="width: 100%; max-width: 1000px; border-radius: 10px; box-shadow: var(--shadow-md);">
-                        <p style="color: var(--gray); font-size: 0.9rem; margin-top: 1rem;">
-                            The normalized confusion matrix shows prediction accuracy as percentages for each class.
-                            Diagonal elements (bright blue) represent correct classifications.
-                        </p>
-                    </div>
-                `;
-
-                        // Display confused pairs
-                        if (cmData.top_confused_pairs && cmData.top_confused_pairs.length > 0) {
-                            confusedPairsContainer.style.display = 'block';
-                            const confusedPairsList = document.getElementById('confusedPairsList');
-
-                            confusedPairsList.innerHTML = `
-                        <div style="background: var(--light); padding: 1.5rem; border-radius: 10px;">
-                            <p style="margin-bottom: 1rem; color: var(--gray);">
-                                These class pairs are most frequently confused by the model:
-                            </p>
-                            <div style="display: grid; gap: 0.5rem;">
-                                ${cmData.top_confused_pairs.map((pair, idx) => `
-                                    <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: white; border-radius: 8px; border-left: 4px solid var(--warning-color);">
-                                        <div>
-                                            <strong>${idx + 1}.</strong>
-                                            <span style="color: var(--dark);">${pair.true_class}</span>
-                                            <span style="color: var(--gray);"> misclassified as </span>
-                                            <span style="color: var(--accent-color);">${pair.predicted_class}</span>
-                                        </div>
-                                        <div>
-                                            <span style="background: var(--warning-color); color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: bold;">
-                                                ${pair.count} times (${pair.percentage.toFixed(1)}%)
-                                            </span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                        } else {
-                            confusedPairsContainer.style.display = 'none';
-                        }
-
-                        // Fetch and display per-class metrics
-                        const validationResponse = await fetch(`${API_BASE_URL}/api/validation/${model}`);
-                        const validationData = await validationResponse.json();
-
-                        if (validationData.success && validationData.report) {
-                            perClassContainer.style.display = 'block';
-                            const perClassDiv = document.getElementById('perClassContainer');
-
-                            const metrics = validationData.report.per_class_metrics;
-
-                            // Show best and worst classes
-                            perClassDiv.innerHTML = `
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
-                            <div>
-                                <h3 style="margin-bottom: 1rem; color: var(--success-color);">
-                                    Top 5 Best Performing Classes
-                                </h3>
-                                <div style="background: var(--light); padding: 1.5rem; border-radius: 10px;">
-                                    ${validationData.report.best_classes.map((cls, idx) => `
-                                        <div style="margin-bottom: 1rem; padding-bottom: 1rem; ${idx < 4 ? 'border-bottom: 1px solid var(--light-gray);' : ''}">
-                                            <div style="font-weight: bold; color: var(--dark); margin-bottom: 0.5rem;">
-                                                ${idx + 1}. ${cls.class_name}
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                                <span style="color: var(--gray);">F1-Score:</span>
-                                                <strong style="color: var(--success-color);">${(cls.f1_score * 100).toFixed(2)}%</strong>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                                <span style="color: var(--gray);">Precision:</span>
-                                                <strong>${(cls.precision * 100).toFixed(2)}%</strong>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                                <span style="color: var(--gray);">Recall:</span>
-                                                <strong>${(cls.recall * 100).toFixed(2)}%</strong>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                            <div>
-                                <h3 style="margin-bottom: 1rem; color: var(--accent-color);">
-                                    Bottom 5 Classes (Need Improvement)
-                                </h3>
-                                <div style="background: var(--light); padding: 1.5rem; border-radius: 10px;">
-                                    ${validationData.report.worst_classes.map((cls, idx) => `
-                                        <div style="margin-bottom: 1rem; padding-bottom: 1rem; ${idx < 4 ? 'border-bottom: 1px solid var(--light-gray);' : ''}">
-                                            <div style="font-weight: bold; color: var(--dark); margin-bottom: 0.5rem;">
-                                                ${idx + 1}. ${cls.class_name}
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                                <span style="color: var(--gray);">F1-Score:</span>
-                                                <strong style="color: var(--accent-color);">${(cls.f1_score * 100).toFixed(2)}%</strong>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                                <span style="color: var(--gray);">Precision:</span>
-                                                <strong>${(cls.precision * 100).toFixed(2)}%</strong>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                                <span style="color: var(--gray);">Recall:</span>
-                                                <strong>${(cls.recall * 100).toFixed(2)}%</strong>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-
-                        <details style="margin-top: 2rem;">
-                            <summary style="cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 1rem; background: var(--light); border-radius: 8px; margin-bottom: 1rem;">
-                                View All Per-Class Metrics (${metrics.length} classes)
-                            </summary>
-                            <div style="max-height: 500px; overflow-y: auto; background: var(--light); padding: 1rem; border-radius: 8px;">
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <thead style="position: sticky; top: 0; background: var(--primary-color); color: white;">
-                                        <tr>
-                                            <th style="padding: 0.8rem; text-align: left;">Class</th>
-                                            <th style="padding: 0.8rem; text-align: center;">Precision</th>
-                                            <th style="padding: 0.8rem; text-align: center;">Recall</th>
-                                            <th style="padding: 0.8rem; text-align: center;">F1-Score</th>
-                                            <th style="padding: 0.8rem; text-align: center;">Support</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${metrics.map((cls, idx) => `
-                                            <tr style="background: ${idx % 2 === 0 ? 'white' : '#f5f5f5'};">
-                                                <td style="padding: 0.8rem;">${cls.class_name}</td>
-                                                <td style="padding: 0.8rem; text-align: center;">${(cls.precision * 100).toFixed(2)}%</td>
-                                                <td style="padding: 0.8rem; text-align: center;">${(cls.recall * 100).toFixed(2)}%</td>
-                                                <td style="padding: 0.8rem; text-align: center; font-weight: bold; color: var(--primary-color);">${(cls.f1_score * 100).toFixed(2)}%</td>
-                                                <td style="padding: 0.8rem; text-align: center;">${cls.support}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </details>
-                    `;
-                        }
-
-                    } catch (error) {
-                        console.error('Error loading confusion matrix:', error);
-                        container.innerHTML = `
-                    <div class="alert alert-error">
-                        <strong>Error:</strong> Could not load confusion matrix. Please ensure the backend server is running.
-                    </div>
-                `;
-                    }
-                }
-
-                // Load initial confusion matrix on page load
-                document.addEventListener('DOMContentLoaded', () => {
-                    loadStatistics();
-                    setTimeout(loadConfusionMatrix, 1000); // Load after stats
-                });
-            </script>
+        <div class="card"><div class="card-head"><h3 data-i18n="stats.confused_pairs"></h3></div><div class="table-wrap" id="cmPairs"></div></div>
+      </section>
+
+      <section class="tab-panel stack" id="tab-research" hidden>
+        <div class="card"><div class="card-body prose">
+          <h2 data-i18n="stats.research_title"></h2>
+          <p class="muted" data-i18n="stats.research_sub"></p>
+          <p class="small" data-i18n="stats.protocol_text"></p>
+          <div id="researchMeta" class="row small muted"></div>
+        </div></div>
+        <div id="researchBody" class="stack"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container row"><span data-i18n="app.tagline"></span></div></footer>
+
+  <script src="vendor/chart.umd.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/stats.js"></script>
 </body>
-
 </html>

@@ -47,7 +47,7 @@ def main():
 
         probs, true_labels = C.predict(model, unlabeled_loader, device)
         focus_probs = probs[:, C.FOCUS_IDX]
-        conf = focus_probs.max(1) / focus_probs.sum(1).clip(min=1e-8)  # renormalised within the focus classes
+        conf = focus_probs.max(1)  # raw 38-way probability of the best focus class: only truly confident samples pass
         pseudo = np.array(C.FOCUS_IDX)[focus_probs.argmax(1)]
         keep = conf >= threshold
         pseudo_labels = {splits["adapt"][i][0]: int(pseudo[i]) for i in np.where(keep)[0]}

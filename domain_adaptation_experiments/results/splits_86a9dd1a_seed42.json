@@ -1,0 +1,2018 @@
+{
+  "adapt": [
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (1).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (10).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (11).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (12).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (13).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (14).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (15).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (17).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (19).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (2).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (20).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (21).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (22).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (23).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (24).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (25).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (28).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (29).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (31).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (33).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (34).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (35).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (36).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (37).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (38).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (39).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (40).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (41).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (42).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (43).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (44).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (45).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (47).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (49).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (5).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (52).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (53).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (54).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (55).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (56).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (57).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (58).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (59).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (6).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (60).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (61).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (62).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (64).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (7).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (8).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (9).jpg",
+      7
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (1).jpeg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (1).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (10).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (101).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (104).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (105).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (107).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (109).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (11).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (110).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (112).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (114).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (115).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (116).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (118).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (119).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (120).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (122).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (123).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (125).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (127).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (128).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (129).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (13).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (130).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (131).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (132).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (133).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (135).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (136).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (137).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (138).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (14).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (140).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (141).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (142).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (143).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (145).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (146).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (147).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (148).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (149).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (15).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (150).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (151).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (154).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (155).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (156).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (157).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (158).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (159).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (16).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (160).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (161).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (162).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (164).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (165).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (167).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (168).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (170).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (171).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (172).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (173).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (174).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (175).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (176).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (177).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (178).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (18).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (19).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (2).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (20).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (21).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (22).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (23).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (24).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (25).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (27).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (28).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (29).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (30).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (31).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (32).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (33).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (34).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (35).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (36).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (38).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (39).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (4).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (40).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (41).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (42).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (43).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (45).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (46).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (47).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (48).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (49).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (5).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (50).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (51).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (52).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (54).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (56).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (57).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (59).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (6).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (60).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (61).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (63).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (64).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (65).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (66).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (67).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (68).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (69).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (7).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (70).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (71).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (72).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (73).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (74).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (75).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (76).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (77).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (78).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (79).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (80).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (81).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (82).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (83).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (84).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (86).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (88).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (89).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (90).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (92).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (93).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (94).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (95).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (97).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (98).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (99).jpg",
+      9
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (1).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (10).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (100).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (101).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (102).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (103).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (104).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (105).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (106).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (107).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (108).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (109).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (11).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (110).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (112).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (113).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (114).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (116).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (117).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (118).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (119).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (12).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (120).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (121).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (122).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (123).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (15).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (16).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (17).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (18).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (19).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (2).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (20).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (21).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (22).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (24).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (26).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (27).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (29).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (30).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (31).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (32).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (33).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (34).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (35).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (36).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (37).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (38).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (39).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (4).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (40).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (41).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (42).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (43).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (44).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (46).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (49).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (5).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (50).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (51).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (52).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (55).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (56).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (57).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (59).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (6).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (60).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (62).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (63).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (64).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (66).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (67).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (68).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (72).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (73).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (76).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (78).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (79).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (8).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (80).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (81).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (83).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (84).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (86).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (87).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (88).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (89).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (9).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (90).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (91).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (92).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (93).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (94).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (95).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (96).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (97).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (98).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (99).jpg",
+      25
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (1).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (10).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (100).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (11).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (12).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (13).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (14).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (15).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (16).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (17).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (18).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (2).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (20).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (21).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (22).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (23).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (25).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (26).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (28).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (29).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (3).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (30).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (31).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (32).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (33).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (36).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (37).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (38).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (39).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (4).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (40).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (41).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (42).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (43).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (44).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (46).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (47).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (48).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (49).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (5).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (50).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (52).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (53).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (54).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (55).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (56).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (57).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (58).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (59).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (6).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (61).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (62).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (64).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (65).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (66).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (67).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (68).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (69).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (7).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (70).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (71).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (73).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (76).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (78).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (79).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (8).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (80).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (81).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (82).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (83).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (84).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (85).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (87).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (89).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (9).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (90).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (92).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (93).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (94).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (95).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (96).jpg",
+      30
+    ]
+  ],
+  "dev": [
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (16).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (18).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (26).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (27).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (3).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (30).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (32).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (4).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (46).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (48).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (50).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (51).jpg",
+      7
+    ],
+    [
+      "train/Corn Gray leaf spot/Corn Gray leaf spot (63).jpg",
+      7
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (100).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (102).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (103).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (106).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (108).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (111).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (113).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (117).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (12).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (121).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (124).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (126).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (134).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (139).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (144).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (152).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (153).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (163).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (166).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (169).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (17).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (179).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (26).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (3).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (37).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (44).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (53).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (55).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (58).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (62).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (8).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (85).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (87).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (9).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (91).jpg",
+      9
+    ],
+    [
+      "train/Corn leaf blight/Corn leaf blight (96).jpg",
+      9
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (111).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (115).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (13).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (14).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (23).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (25).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (28).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (3).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (45).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (47).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (48).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (53).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (54).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (58).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (61).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (65).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (69).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (7).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (70).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (71).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (74).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (75).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (77).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (82).jpg",
+      25
+    ],
+    [
+      "train/Squash Powdery mildew leaf/Squash Powdery mildew leaf (85).jpg",
+      25
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (101).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (19).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (24).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (27).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (34).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (35).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (45).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (51).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (60).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (63).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (72).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (74).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (75).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (77).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (86).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (88).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (91).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (97).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (98).jpg",
+      30
+    ],
+    [
+      "train/Tomato leaf late blight/Tomato leaf late blight (99).jpg",
+      30
+    ]
+  ],
+  "test": [
+    [
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (1).jpg",
+      7
+    ],
+    [
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (2).jpg",
+      7
+    ],
+    [
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (3).jpg",
+      7
+    ],
+    [
+      "test/Corn Gray leaf spot/Corn Gray leaf spot (4).jpg",
+      7
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (1).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (10).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (11).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (12).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (2).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (3).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (4).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (5).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (6).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (7).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (8).jpg",
+      9
+    ],
+    [
+      "test/Corn leaf blight/Corn leaf blight (9).jpg",
+      9
+    ],
+    [
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (1).jpg",
+      25
+    ],
+    [
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (2).jpg",
+      25
+    ],
+    [
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (3).jpg",
+      25
+    ],
+    [
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (4).jpg",
+      25
+    ],
+    [
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (5).jpg",
+      25
+    ],
+    [
+      "test/Squash Powdery mildew leaf/Squash Powdery mildew leaf (6).jpg",
+      25
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (1).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (10).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (2).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (3).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (4).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (5).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (6).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (7).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (8).jpg",
+      30
+    ],
+    [
+      "test/Tomato leaf late blight/Tomato leaf late blight (9).jpg",
+      30
+    ]
+  ],
+  "_meta": {
+    "seed": 42,
+    "dev_fraction": 0.2,
+    "classes": {
+      "Corn Gray leaf spot": 7,
+      "Corn leaf blight": 9,
+      "Squash Powdery mildew leaf": 25,
+      "Tomato leaf late blight": 30
+    }
+  }
+}
