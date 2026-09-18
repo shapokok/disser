@@ -388,6 +388,8 @@ code { font-family: var(--mono); font-size: .9em; background: var(--surface-2); 
 .dropzone .icon svg { width: 26px; height: 26px; }
 .dropzone strong { display: block; font-family: var(--display); font-weight: 800; letter-spacing: -0.01em; }
 .dropzone span { color: var(--ink-2); font-size: .86rem; }
+.camera-btn { display: none; }
+@media (hover: none) and (pointer: coarse) { .camera-btn { display: inline-flex; } }
 .previews { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: .6rem; margin-top: .85rem; }
 .preview { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--hairline); aspect-ratio: 1; background: var(--surface-2); }
 .preview img { width: 100%; height: 100%; object-fit: cover; }

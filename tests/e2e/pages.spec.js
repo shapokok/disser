@@ -138,3 +138,30 @@ test.describe("Statistics page", () => {
     await expect(page.locator("#tab-overview")).toBeHidden();
   });
 });
+
+test.describe("Journal page", () => {
+  test("renders tiles, filters and the table or empty state", async ({ page }) => {
+    await page.goto("/history");
+    await expect(page.locator("#historyTiles .tile")).toHaveCount(4);
+    await expect(page.locator("#filterModel option").first()).toBeAttached();
+    const hasTable = await page.locator("#historyTable table").count();
+    const hasEmpty = await page.locator("#historyTable .empty").count();
+    expect(hasTable + hasEmpty).toBeGreaterThan(0);
+  });
+
+  test("an analysis creates a journal entry", async ({ page, request }) => {
+    const h = await health(request);
+    test.skip(!h.models_trained.includes("efficientnet"), "efficientnet weights are not available");
+    const before = (await (await request.get("/api/history?limit=1")).json()).total;
+    await page.goto("/analyze");
+    await page.setInputFiles("#fileInput", IMAGE);
+    await page.selectOption("#modelSelect", "efficientnet");
+    await page.click('#explanationSeg button[data-value="none"]');
+    await page.click("#analyzeBtn");
+    await expect(page.locator("article.result-card").first()).toBeVisible({ timeout: 60 * 1000 });
+    const after = (await (await request.get("/api/history?limit=1")).json()).total;
+    expect(after).toBe(before + 1);
+    await page.goto("/history");
+    await expect(page.locator("#historyTable table tbody tr").first()).toBeVisible();
+  });
+});

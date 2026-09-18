@@ -27,6 +27,7 @@ import export_utils
 import validation
 from explain import explain_gradcam, explain_lime, load_image, to_tensor
 from field_model import FieldAdapter
+from history import History
 from labels import describe_class
 from model import MODEL_TYPES, MaskedModel, ModelManager
 from report_generator import create_comparison_report, create_pdf_report
@@ -69,6 +70,8 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             except Exception as e:  # keep serving with the models that did load
                 print(f"Could not load model '{name}': {e}")
     field = FieldAdapter(manager.class_names, manager.device)
+    history = History(config.HISTORY_DB) if config.HISTORY_ENABLED else None
+    app.extensions["history"] = history
     app.extensions["manager"] = manager
     app.extensions["field"] = field
     print(f"Loaded models: {list(manager.models)}  field model: {'yes' if field.available else 'no'}")
@@ -106,7 +109,13 @@ def create_app(load_models: bool = True, models=None) -> Flask:
         return pred, top
 
     def run_prediction(
-        image_path: Path, model_name: str, explanation: str, dataset_type: str, lang: str, ensemble_method=None
+        image_path: Path,
+        model_name: str,
+        explanation: str,
+        dataset_type: str,
+        lang: str,
+        ensemble_method=None,
+        record: bool = True,
     ) -> dict:
         start = time.time()
         tensor = to_tensor(load_image(image_path))
@@ -182,7 +191,7 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             probs, idx = ens["probabilities"], ens["predicted_idx"]
 
         prediction, top = format_prediction(probs, idx)
-        return {
+        result = {
             "success": True,
             "image_name": image_path.name,
             "image_url": f"/api/uploads/{image_path.name}" if image_path.parent == config.UPLOAD_DIR else None,
@@ -199,6 +208,16 @@ def create_app(load_models: bool = True, models=None) -> Flask:
             "inference_time_ms": round((time.time() - start) * 1000, 1),
             "timestamp": _now(),
         }
+        if history is not None and record:
+            try:
+                from explain import encode_jpeg
+
+                result["history_id"] = history.add(
+                    result, encode_jpeg(load_image(image_path), max_side=160, quality=70)
+                )
+            except Exception as e:  # the journal must never break a prediction
+                app.logger.warning("history: %s", e)
+        return result
 
     @lru_cache(maxsize=1)
     def dataset_info() -> dict:
@@ -335,6 +354,65 @@ def create_app(load_models: bool = True, models=None) -> Flask:
                 "top_confused_pairs": report["top_confused_pairs"],
             }
         )
+
+    @app.route("/api/history")
+    def history_list():
+        if history is None:
+            return _error("History is disabled", 404)
+        args = request.args
+        limit = max(1, min(int(args.get("limit", 50)), 500))
+        offset = max(0, int(args.get("offset", 0)))
+        healthy = args.get("healthy")
+        items, total = history.list(
+            limit=limit,
+            offset=offset,
+            model=args.get("model") or None,
+            plant=args.get("plant") or None,
+            query=args.get("q") or None,
+            healthy=None if healthy in (None, "") else healthy in ("1", "true", "yes"),
+        )
+        for it in items:
+            it["prediction"] = (
+                {
+                    **describe_class(it["class_raw"]),
+                    "confidence": it["confidence"],
+                    "confidence_percent": _percent(it["confidence"] or 0),
+                }
+                if it.get("class_raw")
+                else None
+            )
+        return jsonify({"success": True, "items": items, "total": total, "limit": limit, "offset": offset})
+
+    @app.route("/api/history/stats")
+    def history_stats():
+        if history is None:
+            return _error("History is disabled", 404)
+        st = history.stats()
+        for row in st["by_class"]:
+            row.update(describe_class(row["class_raw"]) if row.get("class_raw") else {})
+        return jsonify({"success": True, **st, "timestamp": _now()})
+
+    @app.route("/api/history/<int:item_id>", methods=["GET", "DELETE"])
+    def history_item(item_id):
+        if history is None:
+            return _error("History is disabled", 404)
+        if request.method == "DELETE":
+            return jsonify({"success": history.delete(item_id)})
+        item = history.get(item_id)
+        if not item:
+            return _error("Not found", 404)
+        return jsonify({"success": True, "item": item})
+
+    @app.route("/api/history", methods=["DELETE"])
+    def history_clear():
+        if history is None:
+            return _error("History is disabled", 404)
+        return jsonify({"success": True, "deleted": history.clear()})
+
+    @app.route("/history")
+    @app.route("/history.html")
+    def history_page():
+        return send_from_directory(config.FRONTEND_DIR, "history.html")
 
     @app.route("/api/research")
     def research():

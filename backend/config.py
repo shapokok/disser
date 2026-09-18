@@ -58,6 +58,10 @@ TRAINED_ACCURACY_THRESHOLD = float(os.environ.get("CROP_TRAINED_THRESHOLD", "0.5
 FIELD_MODEL_PATH = _path("CROP_FIELD_MODEL", MODELS_DIR / "field_mobilenet_da.pth")
 FIELD_MODEL_INFO = MODELS_DIR / "field_model_info.json"
 
+# --- Analysis journal (SQLite) -----------------------------------------------
+HISTORY_ENABLED = _bool("CROP_HISTORY", True)
+HISTORY_DB = _path("CROP_HISTORY_DB", RESULTS_DIR / "history.sqlite")
+
 # --- Image processing --------------------------------------------------------
 IMAGE_SIZE = (224, 224)
 IMAGENET_MEAN = [0.485, 0.456, 0.406]

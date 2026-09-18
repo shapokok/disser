@@ -39,12 +39,19 @@ def main():
     p.add_argument("--checkpoint", default=None, help="state dict to evaluate (default: PlantVillage MobileNet-V2)")
     p.add_argument("--name", default=None)
     p.add_argument("--classes", default="focus", choices=["focus", "all"])
+    p.add_argument(
+        "--arch",
+        default="mobilenet",
+        choices=["baseline", "efficientnet", "mobilenet", "hybrid"],
+        help="architecture of the checkpoint",
+    )
     args = p.parse_args()
     device, splits = C.setup(args)
 
-    ckpt = Path(args.checkpoint) if args.checkpoint else C.SOURCE_CHECKPOINT
-    name = args.name or (ckpt.stem if args.checkpoint else "baseline_source")
-    model = C.load_checkpoint(ckpt, device)
+    ckpt = Path(args.checkpoint) if args.checkpoint else C.MODELS_DIR / f"{args.arch}_model.pth"
+    default_name = "baseline_source" if args.arch == "mobilenet" else f"baseline_{args.arch}"
+    name = args.name or (ckpt.stem if args.checkpoint else default_name)
+    model = C.load_checkpoint(ckpt, device, args.arch)
 
     if args.classes == "all":
         result = {

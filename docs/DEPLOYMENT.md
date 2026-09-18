@@ -32,6 +32,8 @@ python backend/app.py
 | `CROP_LIME_SAMPLES` | `300` | число возмущений LIME (меньше — быстрее) |
 | `CROP_MAX_FILE_MB` | `16` | лимит загрузки |
 | `CROP_CORS_ORIGINS` | `*` | CORS для `/api/*` |
+| `CROP_HISTORY` | `true` | вести журнал анализов |
+| `CROP_HISTORY_DB` | `results/history.sqlite` | путь к базе журнала |
 
 ## Docker
 
@@ -39,8 +41,10 @@ python backend/app.py
 docker compose up --build           # http://localhost:5001
 ```
 
-Образ содержит код, фронтенд и метрики; веса моделей монтируются из `./models`, результаты
-DA-экспериментов — из `./domain_adaptation_experiments/results`. Внутри контейнера работает
+Образ содержит зависимости и метрики; код (`backend/`, `frontend/`) монтируется из репозитория, поэтому после
+правок достаточно `docker compose restart`. Веса моделей монтируются из `./models`, результаты
+DA-экспериментов — из `./domain_adaptation_experiments/results`. Пересборка образа нужна только при смене
+зависимостей: `docker compose up --build -d`. Внутри контейнера работает
 gunicorn (1 воркер × 4 потока, таймаут 300 с для LIME). Используется CPU-сборка torch.
 
 ## Продакшен без Docker

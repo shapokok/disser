@@ -6,6 +6,8 @@ services:
     ports:
       - "5001:5001"
     volumes:
+      - ./backend:/app/backend:ro     # code is mounted, so edits only need `docker compose restart`
+      - ./frontend:/app/frontend:ro
       - ./models:/app/models          # trained weights (+ field model) live outside the image
       - ./results:/app/results        # evaluation files shown on the statistics page
       - ./data/uploads:/app/data/uploads

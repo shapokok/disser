@@ -373,6 +373,9 @@
     dz.addEventListener("click", () => input.click());
     dz.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
     input.addEventListener("change", () => { addFiles(input.files); input.value = ""; });
+    const cam = $("#cameraInput");
+    $("#cameraBtn").addEventListener("click", () => cam.click());
+    cam.addEventListener("change", () => { addFiles(cam.files); cam.value = ""; });
     ["dragenter", "dragover"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("drag"); }));
     ["dragleave", "drop"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("drag"); }));
     dz.addEventListener("drop", (e) => addFiles(e.dataTransfer.files));

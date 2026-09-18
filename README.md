@@ -42,6 +42,7 @@ uv run python backend/app.py        # → http://localhost:5001
 |---|---|
 | **Главная** | ключевые цифры датасета, реальные метрики четырёх архитектур, статус полевой модели |
 | **Анализ** | загрузка нескольких изображений (drag-and-drop, вставка из буфера), выбор модели или ансамбля, Grad-CAM / LIME / без объяснения, лабораторный или полевой режим, диагноз с уверенностью и top-5, рекомендации (симптомы, лечение, профилактика, органические меры), сравнение всех моделей, экспорт PDF / Excel / CSV / JSON |
+| **Журнал** | все выполненные анализы: динамика по дням, частые диагнозы, доля здоровых, фильтры по модели/культуре/состоянию, поиск, удаление |
 | **Статистика** | обзор моделей (точность, top-5, precision/recall/F1, время, размер), кривые обучения, метрики по 38 классам с поиском и сортировкой, интерактивная матрица ошибок 38×38, результаты доменной адаптации с доверительными интервалами |
 
 ![Анализ](docs/screenshots/analyze.png)
@@ -57,7 +58,9 @@ uv run python backend/app.py        # → http://localhost:5001
 ```bash
 python scripts/download_dataset.py             # PlantVillage (Kaggle) → data/PlantVillage/{train,valid}
 python scripts/train_models.py                 # обучить все модели (или --models hybrid)
-python scripts/evaluate_models.py              # метрики для приложения (обязательно после обучения)
+python scripts/check_duplicates.py             # утечка train/valid (почти-дубликаты)
+python scripts/evaluate_models.py              # метрики, калибровка (ECE), тест МакНемара — обязательно после обучения
+python scripts/make_thesis_tables.py           # LaTeX/Markdown-таблицы для текста диссертации → docs/thesis/
 ```
 
 Подробности и параметры — в [docs/TRAINING.md](docs/TRAINING.md).
@@ -83,11 +86,13 @@ backend/                  Flask API и статика фронтенда
   explain.py              Grad-CAM, LIME, препроцессинг
   field_model.py          адаптированная полевая модель
   validation.py           отчёты валидации из results/metrics
+  history.py              журнал анализов (SQLite)
   treatments.py, treatment_database.json   рекомендации (ru/en, 38 классов)
   labels.py, class_labels.json             названия классов (ru/en)
   report_generator.py, export_utils.py     PDF / Excel / CSV / JSON
-frontend/                 index.html, analyze.html, stats.html, css/, js/ (i18n, темы, Chart.js локально)
-scripts/                  download_dataset.py, split_train_valid.py, train_models.py, evaluate_models.py, run.sh/bat
+frontend/                 index.html, analyze.html, history.html, stats.html, css/, js/, fonts/ (i18n, темы, Chart.js локально)
+scripts/                  download_dataset.py, split_train_valid.py, train_models.py, evaluate_models.py,
+                          check_duplicates.py, make_thesis_tables.py, run.sh/bat
 domain_adaptation_experiments/
   da/                     evaluate, self_training, joint_training, progressive, tta, run_all, figures
   results/, figures/      результаты и рисунки; legacy/ — старые скрипты

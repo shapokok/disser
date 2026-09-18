@@ -41,7 +41,7 @@ DA_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = DA_DIR.parent
 sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 
-from model import MobileNetModel, pick_device
+from model import MODEL_TYPES, pick_device
 
 PLANTDOC_DIR = Path(os.environ.get("PLANTDOC_DIR", DA_DIR / "datasets" / "plantdoc"))
 RESULTS_DIR = Path(os.environ.get("DA_RESULTS_DIR", DA_DIR / "results"))
@@ -253,13 +253,13 @@ def make_loader(items, transform, batch_size=32, shuffle=False, balanced=False, 
 
 
 # --------------------------------------------------------------------------- models
-def load_source_model(device) -> nn.Module:
-    """MobileNet-V2 trained on PlantVillage (the source domain)."""
-    return load_checkpoint(SOURCE_CHECKPOINT, device)
+def load_source_model(device, arch: str = "mobilenet") -> nn.Module:
+    """A PlantVillage-trained classifier (the source domain); MobileNet-V2 is the one the DA methods adapt."""
+    return load_checkpoint(MODELS_DIR / f"{arch}_model.pth", device, arch)
 
 
-def load_checkpoint(path: Path, device) -> nn.Module:
-    model = MobileNetModel(num_classes=len(CLASS_NAMES), pretrained=False)
+def load_checkpoint(path: Path, device, arch: str = "mobilenet") -> nn.Module:
+    model = MODEL_TYPES[arch]["factory"](num_classes=len(CLASS_NAMES), pretrained=False)
     state = torch.load(path, map_location="cpu")
     if isinstance(state, dict) and "model_state_dict" in state:
         state = state["model_state_dict"]

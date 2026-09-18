@@ -1,48 +1,76 @@
 {
-    "baseline": {
-        "accuracy": 0.9862,
-        "precision": 0.9842,
-        "recall": 0.9832,
-        "f1_score": 0.9837,
-        "inference_time_ms": 45,
-        "parameters": "1.2M",
-        "size_mb": 2.1,
-        "validation_samples": 7600,
-        "notes": "Real validation accuracy: 98.62% from 5 epochs training"
-    },
-    "efficientnet": {
-        "accuracy": 0.9893,
-        "precision": 0.9873,
-        "recall": 0.9863,
-        "f1_score": 0.9868,
-        "inference_time_ms": 78,
-        "parameters": "4.0M",
-        "size_mb": 15.8,
-        "validation_samples": 7600,
-        "notes": "Real validation accuracy: 98.93% from 5 epochs training"
-    },
-    "mobilenet": {
-        "accuracy": 0.9887,
-        "precision": 0.9867,
-        "recall": 0.9857,
-        "f1_score": 0.9862,
-        "inference_time_ms": 32,
-        "parameters": "2.3M",
-        "size_mb": 8.9,
-        "validation_samples": 7600,
-        "notes": "Real validation accuracy: 98.87% from 5 epochs training"
-    },
-    "ensemble": {
-        "accuracy": 0.9905,
-        "precision": 0.9903,
-        "recall": 0.9901,
-        "f1_score": 0.9902,
-        "inference_time_ms": 95,
-        "parameters": "33.1M",
-        "size_mb": 309.4,
-        "description": "Weighted ensemble of all 4 models",
-        "models_combined": 4,
-        "validation_samples": 7600,
-        "notes": "Ensemble typically 0.5-1% better than best individual model"
-    }
+  "baseline": {
+    "accuracy": 0.9844,
+    "top5_accuracy": 0.9997,
+    "precision": 0.9846,
+    "recall": 0.9843,
+    "f1_score": 0.9843,
+    "inference_time_ms": 9.5,
+    "parameters": "0.5M",
+    "parameters_count": 540454,
+    "size_mb": 2.2,
+    "validation_samples": 17572,
+    "trained": true,
+    "evaluated_at": "2026-09-18T19:58:45"
+  },
+  "efficientnet": {
+    "accuracy": 0.9894,
+    "top5_accuracy": 0.9999,
+    "precision": 0.9893,
+    "recall": 0.9895,
+    "f1_score": 0.9893,
+    "inference_time_ms": 93.3,
+    "parameters": "4.1M",
+    "parameters_count": 4056226,
+    "size_mb": 16.5,
+    "validation_samples": 17572,
+    "trained": true,
+    "evaluated_at": "2026-09-18T20:26:06"
+  },
+  "mobilenet": {
+    "accuracy": 0.9854,
+    "top5_accuracy": 1.0,
+    "precision": 0.9853,
+    "recall": 0.9852,
+    "f1_score": 0.9852,
+    "inference_time_ms": 48.0,
+    "parameters": "2.3M",
+    "parameters_count": 2272550,
+    "size_mb": 9.3,
+    "validation_samples": 17572,
+    "trained": true,
+    "evaluated_at": "2026-09-18T20:40:10"
+  },
+  "ensemble": {
+    "accuracy": 0.9963,
+    "precision": 0.9963,
+    "recall": 0.9963,
+    "f1_score": 0.9963,
+    "inference_time_ms": 150.8,
+    "parameters": "6.9M",
+    "size_mb": 28.0,
+    "models_combined": [
+      "baseline",
+      "efficientnet",
+      "mobilenet"
+    ],
+    "method": "accuracy-weighted average of softmax outputs",
+    "validation_samples": 17572,
+    "trained": true,
+    "evaluated_at": "2026-09-18T21:08:12"
+  },
+  "hybrid": {
+    "accuracy": 0.046,
+    "top5_accuracy": 0.2119,
+    "precision": 0.004,
+    "recall": 0.0433,
+    "f1_score": 0.0052,
+    "inference_time_ms": 95.7,
+    "parameters": "74.0M",
+    "parameters_count": 73958502,
+    "size_mb": 296.2,
+    "validation_samples": 17572,
+    "trained": false,
+    "evaluated_at": "2026-09-18T21:08:12"
+  }
 }

@@ -16,6 +16,7 @@
         <ul class="nav-links" id="navLinks">
           <li><a href="/" data-page="home" data-i18n="nav.home">Главная</a></li>
           <li><a href="/analyze" data-page="analyze" data-i18n="nav.analyze">Анализ</a></li>
+          <li><a href="/history" data-page="history" data-i18n="nav.history">Журнал</a></li>
           <li><a href="/stats" data-page="stats" data-i18n="nav.stats">Статистика</a></li>
         </ul>
         <div class="nav-tools">
@@ -68,6 +69,8 @@
                 <span data-i18n="analyze.drop_sub"></span>
                 <input type="file" id="fileInput" class="visually-hidden" accept="image/*,.jfif" multiple>
               </div>
+              <button type="button" class="btn camera-btn" id="cameraBtn" style="width:100%;margin-top:.6rem"><span data-i18n="analyze.camera"></span></button>
+              <input type="file" id="cameraInput" class="visually-hidden" accept="image/*" capture="environment">
               <div class="previews" id="previews"></div>
               <div class="stack" style="margin-top:1rem">
                 <button class="btn primary lg" id="analyzeBtn" style="width:100%" disabled><span data-i18n="analyze.run"></span></button>

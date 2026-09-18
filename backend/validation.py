@@ -47,9 +47,15 @@ def load_training_history(model_name: str):
     return history
 
 
-@lru_cache(maxsize=16)
 def build_report(model_name: str, lang: str = "en"):
-    """Report for the statistics page: per-class metrics, confusion matrix, confused pairs."""
+    """Report for the statistics page: per-class metrics, confusion matrix, confused pairs (cached per file version)."""
+    path = config.METRICS_DIR / f"{model_name}_validation.json"
+    mtime = path.stat().st_mtime if path.exists() else None
+    return _build_report(model_name, lang, mtime)
+
+
+@lru_cache(maxsize=32)
+def _build_report(model_name: str, lang: str, _mtime):
     data = load_validation(model_name)
     if not data:
         return None
@@ -84,8 +90,9 @@ def build_report(model_name: str, lang: str = "en"):
         "best_classes": list(reversed(by_f1[-5:])),
         "worst_classes": by_f1[:5],
         "inference_time_ms": data.get("inference_time_ms"),
+        "calibration": data.get("calibration"),
     }
 
 
 def clear_cache():
-    build_report.cache_clear()
+    _build_report.cache_clear()

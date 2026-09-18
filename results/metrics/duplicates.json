@@ -1,0 +1,2513 @@
+{
+ "distance": 4,
+ "train_images": 70295,
+ "valid_images": 17572,
+ "valid_with_near_duplicate_in_train": 385,
+ "share": 0.021909856590029593,
+ "exact_duplicates": 42,
+ "cross_class_duplicates": 25,
+ "per_class": {
+  "Apple___Apple_scab": {
+   "valid": 504,
+   "leaked": 3,
+   "share": 0.005952380952380952
+  },
+  "Apple___Black_rot": {
+   "valid": 497,
+   "leaked": 5,
+   "share": 0.01006036217303823
+  },
+  "Apple___Cedar_apple_rust": {
+   "valid": 440,
+   "leaked": 80,
+   "share": 0.18181818181818182
+  },
+  "Apple___healthy": {
+   "valid": 502,
+   "leaked": 5,
+   "share": 0.0099601593625498
+  },
+  "Blueberry___healthy": {
+   "valid": 454,
+   "leaked": 8,
+   "share": 0.01762114537444934
+  },
+  "Cherry_(including_sour)___Powdery_mildew": {
+   "valid": 421,
+   "leaked": 7,
+   "share": 0.0166270783847981
+  },
+  "Cherry_(including_sour)___healthy": {
+   "valid": 456,
+   "leaked": 10,
+   "share": 0.021929824561403508
+  },
+  "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+   "valid": 410,
+   "leaked": 1,
+   "share": 0.0024390243902439024
+  },
+  "Corn_(maize)___Common_rust_": {
+   "valid": 477,
+   "leaked": 1,
+   "share": 0.0020964360587002098
+  },
+  "Corn_(maize)___Northern_Leaf_Blight": {
+   "valid": 477,
+   "leaked": 3,
+   "share": 0.006289308176100629
+  },
+  "Corn_(maize)___healthy": {
+   "valid": 465,
+   "leaked": 5,
+   "share": 0.010752688172043012
+  },
+  "Grape___Black_rot": {
+   "valid": 472,
+   "leaked": 1,
+   "share": 0.00211864406779661
+  },
+  "Grape___Esca_(Black_Measles)": {
+   "valid": 480,
+   "leaked": 6,
+   "share": 0.0125
+  },
+  "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+   "valid": 430,
+   "leaked": 3,
+   "share": 0.0069767441860465115
+  },
+  "Grape___healthy": {
+   "valid": 423,
+   "leaked": 3,
+   "share": 0.0070921985815602835
+  },
+  "Orange___Haunglongbing_(Citrus_greening)": {
+   "valid": 503,
+   "leaked": 5,
+   "share": 0.009940357852882704
+  },
+  "Peach___Bacterial_spot": {
+   "valid": 459,
+   "leaked": 4,
+   "share": 0.008714596949891068
+  },
+  "Peach___healthy": {
+   "valid": 432,
+   "leaked": 15,
+   "share": 0.034722222222222224
+  },
+  "Pepper,_bell___Bacterial_spot": {
+   "valid": 478,
+   "leaked": 1,
+   "share": 0.0020920502092050207
+  },
+  "Pepper,_bell___healthy": {
+   "valid": 497,
+   "leaked": 3,
+   "share": 0.006036217303822937
+  },
+  "Potato___Early_blight": {
+   "valid": 485,
+   "leaked": 1,
+   "share": 0.002061855670103093
+  },
+  "Potato___Late_blight": {
+   "valid": 485,
+   "leaked": 0,
+   "share": 0.0
+  },
+  "Potato___healthy": {
+   "valid": 456,
+   "leaked": 96,
+   "share": 0.21052631578947367
+  },
+  "Raspberry___healthy": {
+   "valid": 445,
+   "leaked": 30,
+   "share": 0.06741573033707865
+  },
+  "Soybean___healthy": {
+   "valid": 505,
+   "leaked": 8,
+   "share": 0.015841584158415842
+  },
+  "Squash___Powdery_mildew": {
+   "valid": 434,
+   "leaked": 0,
+   "share": 0.0
+  },
+  "Strawberry___Leaf_scorch": {
+   "valid": 444,
+   "leaked": 3,
+   "share": 0.006756756756756757
+  },
+  "Strawberry___healthy": {
+   "valid": 456,
+   "leaked": 7,
+   "share": 0.015350877192982455
+  },
+  "Tomato___Bacterial_spot": {
+   "valid": 425,
+   "leaked": 1,
+   "share": 0.002352941176470588
+  },
+  "Tomato___Early_blight": {
+   "valid": 480,
+   "leaked": 0,
+   "share": 0.0
+  },
+  "Tomato___Late_blight": {
+   "valid": 463,
+   "leaked": 4,
+   "share": 0.008639308855291577
+  },
+  "Tomato___Leaf_Mold": {
+   "valid": 470,
+   "leaked": 0,
+   "share": 0.0
+  },
+  "Tomato___Septoria_leaf_spot": {
+   "valid": 436,
+   "leaked": 0,
+   "share": 0.0
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+   "valid": 435,
+   "leaked": 1,
+   "share": 0.0022988505747126436
+  },
+  "Tomato___Target_Spot": {
+   "valid": 457,
+   "leaked": 25,
+   "share": 0.05470459518599562
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+   "valid": 490,
+   "leaked": 1,
+   "share": 0.0020408163265306124
+  },
+  "Tomato___Tomato_mosaic_virus": {
+   "valid": 448,
+   "leaked": 19,
+   "share": 0.04241071428571429
+  },
+  "Tomato___healthy": {
+   "valid": 481,
+   "leaked": 20,
+   "share": 0.04158004158004158
+  }
+ },
+ "leaked": [
+  {
+   "valid": "valid/Apple___Apple_scab/08c42d78-aa7b-4106-b0c1-b260f898dcba___FREC_Scab 3151_new30degFlipLR.JPG",
+   "train": "train/Apple___Apple_scab/ab7d0d06-b45c-4472-a708-c2a1d65ee748___FREC_Scab 3152_new30degFlipLR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Apple_scab/4a7f12ff-a785-4d12-8943-f1644789a21b___FREC_Scab 2916_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/8eef072d-0f99-4ba4-9003-249f5395d6f5___Mary_HL 6400_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Apple___Apple_scab/add9ce00-e304-4632-82f2-ddc86a6be5f6___FREC_Scab 3472_270deg.JPG",
+   "train": "train/Apple___Apple_scab/2dd8b8f8-46b0-4bc6-b817-ea7163f4b28b___FREC_Scab 3473_270deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Black_rot/6af96fb3-002f-48b3-a2e8-fb5cf30dfa63___JR_FrgE.S 2998_270deg.JPG",
+   "train": "train/Apple___Black_rot/f83c1286-8bdb-48e6-ac8f-bd8a5209afc7___JR_FrgE.S 3001_270deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Black_rot/717c4f62-f05f-4345-a5d7-3b34f3a2efb6___JR_FrgE.S 2836_new30degFlipLR.JPG",
+   "train": "train/Apple___Black_rot/8a1bb676-5d3e-423b-a667-c72d099215ab___JR_FrgE.S 2842_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Black_rot/977c9b03-47f2-412d-a73d-7e647e973336___JR_FrgE.S 2887_new30degFlipLR.JPG",
+   "train": "train/Apple___Black_rot/3bfaa3d6-96ab-4131-a569-ac6650045079___JR_FrgE.S 2890_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Black_rot/a2eb846a-da47-4d4d-97db-d954a20bb22a___JR_FrgE.S 2868_new30degFlipLR.JPG",
+   "train": "train/Apple___Black_rot/39148cb8-c7fa-4760-b708-b4e399047bb6___JR_FrgE.S 2869_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Black_rot/a79f3789-8c2c-4a04-acb4-f96544b93082___JR_FrgE.S 2880.JPG",
+   "train": "train/Apple___Black_rot/0f3d45f4-e121-42cd-a5b6-be2f866a0574___JR_FrgE.S 2870.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/025b2b9a-0ec4-4132-96ac-7f2832d0db4a___FREC_C.Rust 3655_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/025b2b9a-0ec4-4132-96ac-7f2832d0db4a___FREC_C.Rust 3655.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/064b14b5-af1b-4bcf-afe7-a061e5669dbb___FREC_C.Rust 9839.JPG",
+   "train": "train/Apple___Cedar_apple_rust/064b14b5-af1b-4bcf-afe7-a061e5669dbb___FREC_C.Rust 9839_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/072f23fb-0b1a-43b9-a548-3981120ff33c___FREC_C.Rust 0133_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/072f23fb-0b1a-43b9-a548-3981120ff33c___FREC_C.Rust 0133.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/1440b8ad-ba66-44dc-aeff-13515fe5eb68___FREC_C.Rust 3816.JPG",
+   "train": "train/Apple___Cedar_apple_rust/1440b8ad-ba66-44dc-aeff-13515fe5eb68___FREC_C.Rust 3816_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/19335371-d443-4629-bb10-ef4e0b7215c0___FREC_C.Rust 0064_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/19335371-d443-4629-bb10-ef4e0b7215c0___FREC_C.Rust 0064.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/1b567c7d-1041-4240-a56c-8ea94e6252b4___FREC_C.Rust 4245.JPG",
+   "train": "train/Apple___Cedar_apple_rust/1b567c7d-1041-4240-a56c-8ea94e6252b4___FREC_C.Rust 4245_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/252e347b-262e-4dd8-8d6d-852324d5bcfd___FREC_C.Rust 3841.JPG",
+   "train": "train/Apple___Cedar_apple_rust/252e347b-262e-4dd8-8d6d-852324d5bcfd___FREC_C.Rust 3841_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/2770fd33-4612-4c09-80a7-dbac2ec8ff82___FREC_C.Rust 4049_new30degFlipLR.JPG",
+   "train": "train/Tomato___healthy/1d598eb4-b055-4c4c-8b7e-b60990804957___RS_HL 9838_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/27d7abba-647b-4f0c-aa4a-3978dccd4f5b___FREC_C.Rust 4092.JPG",
+   "train": "train/Apple___Cedar_apple_rust/27d7abba-647b-4f0c-aa4a-3978dccd4f5b___FREC_C.Rust 4092_newGRR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/3762c9a3-83db-44b7-88be-07c048ad293b___FREC_C.Rust 9945.JPG",
+   "train": "train/Apple___Cedar_apple_rust/3762c9a3-83db-44b7-88be-07c048ad293b___FREC_C.Rust 9945_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/3b1e5132-71dd-4e75-b04a-513a3851ca02___FREC_C.Rust 4439_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/3b1e5132-71dd-4e75-b04a-513a3851ca02___FREC_C.Rust 4439.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/3c412dc8-dbe2-43db-92ba-28ce72f835f6___FREC_C.Rust 9930_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/3c412dc8-dbe2-43db-92ba-28ce72f835f6___FREC_C.Rust 9930.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/3dc7b8db-79dd-4206-b3f0-7091d28475b2___FREC_C.Rust 0079_new30degFlipTB.JPG",
+   "train": "train/Apple___Cedar_apple_rust/064b14b5-af1b-4bcf-afe7-a061e5669dbb___FREC_C.Rust 9839_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/3dde7bc6-90e6-4057-a1e7-c2580ccf03a2___FREC_C.Rust 0092_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/3dde7bc6-90e6-4057-a1e7-c2580ccf03a2___FREC_C.Rust 0092.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/3e123b1b-a57d-4689-8211-e270c19fd4a9___FREC_C.Rust 9962.JPG",
+   "train": "train/Apple___Cedar_apple_rust/3e123b1b-a57d-4689-8211-e270c19fd4a9___FREC_C.Rust 9962_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/43850a33-b2c2-4d67-aa90-685f8f76da3a___FREC_C.Rust 3664.JPG",
+   "train": "train/Apple___Cedar_apple_rust/43850a33-b2c2-4d67-aa90-685f8f76da3a___FREC_C.Rust 3664_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/492e83ef-7407-42f1-a0e2-e272cf1cdbc1___FREC_C.Rust 0024.JPG",
+   "train": "train/Apple___Cedar_apple_rust/492e83ef-7407-42f1-a0e2-e272cf1cdbc1___FREC_C.Rust 0024_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/4abb2c64-458c-473b-bbe4-4b9bc69cd035___FREC_C.Rust 9974.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4abb2c64-458c-473b-bbe4-4b9bc69cd035___FREC_C.Rust 9974_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/4bd5f28f-beb3-4b27-b4f1-7e94b332ef93___FREC_C.Rust 9932.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4bd5f28f-beb3-4b27-b4f1-7e94b332ef93___FREC_C.Rust 9932_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/4d7f4b74-59f6-431e-afa3-6fbbb9ac90ea___FREC_C.Rust 0145.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4d7f4b74-59f6-431e-afa3-6fbbb9ac90ea___FREC_C.Rust 0145_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/4dc8e2a8-4374-488a-afc6-fd0ea7f15c88___FREC_C.Rust 3991.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4dc8e2a8-4374-488a-afc6-fd0ea7f15c88___FREC_C.Rust 3991_newGRR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/4e6676b6-154c-4f7d-a355-bcc00a397c3d___FREC_C.Rust 9853_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4e6676b6-154c-4f7d-a355-bcc00a397c3d___FREC_C.Rust 9853.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/4fe22d35-3e93-414a-83fc-1be230cec721___FREC_C.Rust 4424_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4fe22d35-3e93-414a-83fc-1be230cec721___FREC_C.Rust 4424.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/5b1f2adb-5065-4b7f-8b51-bc5695ad5ebb___FREC_C.Rust 9802_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/5b1f2adb-5065-4b7f-8b51-bc5695ad5ebb___FREC_C.Rust 9802.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/669c0bde-c75a-4495-92ea-e7d6be6de1bc___FREC_C.Rust 4410_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/669c0bde-c75a-4495-92ea-e7d6be6de1bc___FREC_C.Rust 4410.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/68a4878f-c220-49ff-a858-5b026e56e7b0___FREC_C.Rust 9844.JPG",
+   "train": "train/Apple___Cedar_apple_rust/68a4878f-c220-49ff-a858-5b026e56e7b0___FREC_C.Rust 9844_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/69ceb6f0-6e63-4676-90a6-288ae97b0c2f___FREC_C.Rust 0107.JPG",
+   "train": "train/Apple___Cedar_apple_rust/69ceb6f0-6e63-4676-90a6-288ae97b0c2f___FREC_C.Rust 0107_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/69ceb6f0-6e63-4676-90a6-288ae97b0c2f___FREC_C.Rust 0107_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/69ceb6f0-6e63-4676-90a6-288ae97b0c2f___FREC_C.Rust 0107_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/6fe0e179-4491-4257-a1d3-9cff9e9e2d27___FREC_C.Rust 0225_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/6fe0e179-4491-4257-a1d3-9cff9e9e2d27___FREC_C.Rust 0225.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/77f413dd-06cd-4e01-92f9-fdb8d0320b68___FREC_C.Rust 0089_newPixel25.JPG",
+   "train": "train/Apple___Cedar_apple_rust/77f413dd-06cd-4e01-92f9-fdb8d0320b68___FREC_C.Rust 0089_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/79e57aaf-f825-4818-9594-621327134e0b___FREC_C.Rust 4219.JPG",
+   "train": "train/Apple___Cedar_apple_rust/79e57aaf-f825-4818-9594-621327134e0b___FREC_C.Rust 4219_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/7b2dd7f1-d16e-47b6-8750-cfaf315aad87___FREC_C.Rust 0109.JPG",
+   "train": "train/Apple___Cedar_apple_rust/7b2dd7f1-d16e-47b6-8750-cfaf315aad87___FREC_C.Rust 0109_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/7ba80ce1-562a-404b-a8e9-273cd917081a___FREC_C.Rust 9833_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/7ba80ce1-562a-404b-a8e9-273cd917081a___FREC_C.Rust 9833.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/7d3aae9a-3fdd-4b83-b41f-7dd3e0400986___FREC_C.Rust 3616.JPG",
+   "train": "train/Apple___Cedar_apple_rust/7d3aae9a-3fdd-4b83-b41f-7dd3e0400986___FREC_C.Rust 3616_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/7e32ce27-bc89-4fca-9f49-c50de91210d1___FREC_C.Rust 4425_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/7e32ce27-bc89-4fca-9f49-c50de91210d1___FREC_C.Rust 4425.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/809c7104-6f46-4117-8c8c-6d5491b2178d___FREC_C.Rust 3839.JPG",
+   "train": "train/Apple___Cedar_apple_rust/809c7104-6f46-4117-8c8c-6d5491b2178d___FREC_C.Rust 3839_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/81049e31-d2ea-4372-9865-c7f1479a513a___FREC_C.Rust 3833_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/81049e31-d2ea-4372-9865-c7f1479a513a___FREC_C.Rust 3833.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/85eb91f6-f8f0-438e-afbc-ca12551ee404___FREC_C.Rust 9884.JPG",
+   "train": "train/Apple___Cedar_apple_rust/85eb91f6-f8f0-438e-afbc-ca12551ee404___FREC_C.Rust 9884_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/891545af-a393-4733-89a9-847a6da455ab___FREC_C.Rust 4182_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/891545af-a393-4733-89a9-847a6da455ab___FREC_C.Rust 4182.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/8a2c7dda-c639-47f2-8f10-3bd33d24a08e___FREC_C.Rust 3929.JPG",
+   "train": "train/Apple___Cedar_apple_rust/8a2c7dda-c639-47f2-8f10-3bd33d24a08e___FREC_C.Rust 3929_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/90a124ff-56a1-46be-bac4-0bd424599cbc___FREC_C.Rust 4300_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/90a124ff-56a1-46be-bac4-0bd424599cbc___FREC_C.Rust 4300.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/90bff1e0-f71d-4963-93cb-8a9a16f49e74___FREC_C.Rust 9939_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/90bff1e0-f71d-4963-93cb-8a9a16f49e74___FREC_C.Rust 9939.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/92d7ce46-da77-4c87-a58b-81a44b0a9a58___FREC_C.Rust 4351.JPG",
+   "train": "train/Apple___Cedar_apple_rust/92d7ce46-da77-4c87-a58b-81a44b0a9a58___FREC_C.Rust 4351_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/94d6b99f-2ac4-4a88-823f-3c607358d057___FREC_C.Rust 9826_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/94d6b99f-2ac4-4a88-823f-3c607358d057___FREC_C.Rust 9826.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/96a1d021-2c27-46a0-9891-41e449e4910e___FREC_C.Rust 3610.JPG",
+   "train": "train/Apple___Cedar_apple_rust/96a1d021-2c27-46a0-9891-41e449e4910e___FREC_C.Rust 3610_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/96bec7bd-9c12-4284-a298-d20379abb4a2___FREC_C.Rust 3815_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/96bec7bd-9c12-4284-a298-d20379abb4a2___FREC_C.Rust 3815.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/99efb674-1e97-4f94-978a-a87c24dde48a___FREC_C.Rust 9995.JPG",
+   "train": "train/Apple___Cedar_apple_rust/99efb674-1e97-4f94-978a-a87c24dde48a___FREC_C.Rust 9995_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9ace7aaf-8950-43b5-bafb-2c63f8839c20___FREC_C.Rust 9867.JPG",
+   "train": "train/Apple___Cedar_apple_rust/9ace7aaf-8950-43b5-bafb-2c63f8839c20___FREC_C.Rust 9867_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9b3023a6-f35a-46b4-be98-022eb2ac42e4___FREC_C.Rust 9801.JPG",
+   "train": "train/Apple___Cedar_apple_rust/9b3023a6-f35a-46b4-be98-022eb2ac42e4___FREC_C.Rust 9801_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9d03ec86-ab87-4193-8589-9cfeada9fe70___FREC_C.Rust 4442_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/9d03ec86-ab87-4193-8589-9cfeada9fe70___FREC_C.Rust 4442.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9dad463d-4f26-4fa5-b500-7b85613dbf46___FREC_C.Rust 9824_180deg.JPG",
+   "train": "train/Apple___Cedar_apple_rust/8fd46690-5e57-47f6-8d99-235d4738411f___FREC_C.Rust 0074_270deg.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9e83b384-97cc-4b00-a283-cbed301e876a___FREC_C.Rust 4052_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/9e83b384-97cc-4b00-a283-cbed301e876a___FREC_C.Rust 4052.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9f7d070e-f51d-4b14-86e4-6f059ea4eca7___FREC_C.Rust 0210_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/9f7d070e-f51d-4b14-86e4-6f059ea4eca7___FREC_C.Rust 0210.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/9f8d81c0-6a20-47df-b52a-46820078fd74___FREC_C.Rust 3626.JPG",
+   "train": "train/Apple___Cedar_apple_rust/9f8d81c0-6a20-47df-b52a-46820078fd74___FREC_C.Rust 3626_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/a523f082-e20a-40a4-b91a-6806b3794f29___FREC_C.Rust 3965_newPixel25.JPG",
+   "train": "train/Apple___Cedar_apple_rust/a523f082-e20a-40a4-b91a-6806b3794f29___FREC_C.Rust 3965.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/a5644e1f-cc61-4ecc-a642-a39cb32cf157___FREC_C.Rust 4450_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/a5644e1f-cc61-4ecc-a642-a39cb32cf157___FREC_C.Rust 4450.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/a6ff61c5-74e4-48a5-b3c4-f8a80d3a1eca___FREC_C.Rust 4327_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/a6ff61c5-74e4-48a5-b3c4-f8a80d3a1eca___FREC_C.Rust 4327.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/a88eb7c4-930a-448e-923e-bef22327fe25___FREC_C.Rust 0044_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/a88eb7c4-930a-448e-923e-bef22327fe25___FREC_C.Rust 0044.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/a9c36955-73f5-43d5-9e1e-03672ed95b38___FREC_C.Rust 3893_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/a9c36955-73f5-43d5-9e1e-03672ed95b38___FREC_C.Rust 3893.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/affae282-693e-4078-b037-de7037ecdcdc___FREC_C.Rust 9909_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/affae282-693e-4078-b037-de7037ecdcdc___FREC_C.Rust 9909.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/b75430d8-c8a2-4620-9bbb-88c301cba700___FREC_C.Rust 4385_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/b75430d8-c8a2-4620-9bbb-88c301cba700___FREC_C.Rust 4385.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/b884b0a2-44bb-4bf5-b335-946b1757c822___FREC_C.Rust 3955_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/b884b0a2-44bb-4bf5-b335-946b1757c822___FREC_C.Rust 3955.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/bd0ead39-9628-46b3-9feb-c3496af0ae8b___FREC_C.Rust 0015_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/bd0ead39-9628-46b3-9feb-c3496af0ae8b___FREC_C.Rust 0015.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/bdf1ac66-9dd3-4590-8e49-ee0e754a69f5___FREC_C.Rust 0151_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/bdf1ac66-9dd3-4590-8e49-ee0e754a69f5___FREC_C.Rust 0151.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/bee59bef-1155-40bd-97a3-8c600c33e6b5___FREC_C.Rust 0082_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/bee59bef-1155-40bd-97a3-8c600c33e6b5___FREC_C.Rust 0082.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/c16bbb5c-bd59-4568-80a4-ac10eb488a4e___FREC_C.Rust 4274_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/c16bbb5c-bd59-4568-80a4-ac10eb488a4e___FREC_C.Rust 4274.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/c1d81b03-9e29-4f99-813b-1a9578defbc8___FREC_C.Rust 3942_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/c1d81b03-9e29-4f99-813b-1a9578defbc8___FREC_C.Rust 3942.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/cdb4821f-1d1b-4f61-982f-2057ca1b7ecb___FREC_C.Rust 4270.JPG",
+   "train": "train/Apple___Cedar_apple_rust/cdb4821f-1d1b-4f61-982f-2057ca1b7ecb___FREC_C.Rust 4270_newGRR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/d2465b2c-5b95-4557-b086-211e6e7a73d2___FREC_C.Rust 0045.JPG",
+   "train": "train/Apple___Cedar_apple_rust/d2465b2c-5b95-4557-b086-211e6e7a73d2___FREC_C.Rust 0045_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/d523dfa0-a337-44db-a994-669ac6e0a87c___FREC_C.Rust 4006_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/d523dfa0-a337-44db-a994-669ac6e0a87c___FREC_C.Rust 4006.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/d5839d69-9c98-4ea7-811b-03b40e7fc991___FREC_C.Rust 3869_newPixel25.JPG",
+   "train": "train/Apple___Cedar_apple_rust/d5839d69-9c98-4ea7-811b-03b40e7fc991___FREC_C.Rust 3869.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/dec47754-abfe-496b-a310-47d1fbb077ba___FREC_C.Rust 9910_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/dec47754-abfe-496b-a310-47d1fbb077ba___FREC_C.Rust 9910.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/dee4cbf1-9bdd-451a-b1bb-21756fd981e9___FREC_C.Rust 3727.JPG",
+   "train": "train/Apple___Cedar_apple_rust/dee4cbf1-9bdd-451a-b1bb-21756fd981e9___FREC_C.Rust 3727_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/e4b8b876-3bfa-4e82-bb17-92293b4b5be8___FREC_C.Rust 4170.JPG",
+   "train": "train/Apple___Cedar_apple_rust/e4b8b876-3bfa-4e82-bb17-92293b4b5be8___FREC_C.Rust 4170_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/ea119d19-1b3a-4767-af1d-e8b148a3bb8d___FREC_C.Rust 3579.JPG",
+   "train": "train/Apple___Cedar_apple_rust/ea119d19-1b3a-4767-af1d-e8b148a3bb8d___FREC_C.Rust 3579_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/ea119d19-1b3a-4767-af1d-e8b148a3bb8d___FREC_C.Rust 3579_newPixel25.JPG",
+   "train": "train/Apple___Cedar_apple_rust/ea119d19-1b3a-4767-af1d-e8b148a3bb8d___FREC_C.Rust 3579_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/fb27b16c-4ac1-45e9-abd2-487a1a528fb0___FREC_C.Rust 0206.JPG",
+   "train": "train/Apple___Cedar_apple_rust/fb27b16c-4ac1-45e9-abd2-487a1a528fb0___FREC_C.Rust 0206_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/fdaecc2c-c48c-447d-9cdc-5d52efdc979a___FREC_C.Rust 3858_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/fdaecc2c-c48c-447d-9cdc-5d52efdc979a___FREC_C.Rust 3858.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/fdaecc2c-c48c-447d-9cdc-5d52efdc979a___FREC_C.Rust 3858_newPixel25.JPG",
+   "train": "train/Apple___Cedar_apple_rust/fdaecc2c-c48c-447d-9cdc-5d52efdc979a___FREC_C.Rust 3858.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___Cedar_apple_rust/ffd73dc5-8b5b-4d7b-b44d-640ae3489190___FREC_C.Rust 9944_newGRR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/ffd73dc5-8b5b-4d7b-b44d-640ae3489190___FREC_C.Rust 9944.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___healthy/11beda66-01e9-4bfd-be37-c0f8646d1478___RS_HL 6271.JPG",
+   "train": "train/Apple___healthy/13298d36-4425-437d-ae8e-c7d70e200084___RS_HL 6271.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___healthy/14896dc0-688d-456f-b5ec-a037695b0193___RS_HL 6268.JPG",
+   "train": "train/Apple___healthy/c21cf428-bfc3-4710-b5d2-69d1c0e94748___RS_HL 6268.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Apple___healthy/23b5f9bf-18d8-43d3-a289-6398a7abde91___RS_HL 7914.JPG",
+   "train": "train/Tomato___Bacterial_spot/5faeaff0-1dcd-4c79-b6ad-22908cc519ac___GCREC_Bact.Sp 5655.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Apple___healthy/bf26ad48-1ebb-4186-a52c-e249dc19317e___RS_HL 8195_flipTB.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/73be89b4-f57a-4230-a0e4-4a0f50230fc7___PSU_CG 2142_90deg.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Apple___healthy/d830e2b3-a724-448b-978b-2529bcdb35bf___RS_HL 6087.JPG",
+   "train": "train/Tomato___Bacterial_spot/4126165c-f9e0-4a17-9d87-d41bf356afb9___GCREC_Bact.Sp 3517.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Blueberry___healthy/1adda0b0-34d6-4675-a3c3-ee47536bd01b___RS_HL 2363.JPG",
+   "train": "train/Blueberry___healthy/1adda0b0-34d6-4675-a3c3-ee47536bd01b___RS_HL 2363_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Blueberry___healthy/1cbf66bf-6df6-4c25-a6b1-a00e2d2b2578___RS_HL 4913.JPG",
+   "train": "train/Blueberry___healthy/1cbf66bf-6df6-4c25-a6b1-a00e2d2b2578___RS_HL 4913_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Blueberry___healthy/2e428743-0761-47bd-b30a-31a12fad4bd1___RS_HL 2639_180deg.JPG",
+   "train": "train/Blueberry___healthy/3f10abbd-238e-4ef2-abdf-651e85a385e5___RS_HL 2520_flipTB.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Blueberry___healthy/2f677184-b22d-4088-85f8-2cb0a8380269___RS_HL 2560_new30degFlipLR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/4abb2c64-458c-473b-bbe4-4b9bc69cd035___FREC_C.Rust 9974_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Blueberry___healthy/3b4ab949-7b1d-4127-a1d3-8f125989f495___RS_HL 5019.JPG",
+   "train": "train/Blueberry___healthy/3b4ab949-7b1d-4127-a1d3-8f125989f495___RS_HL 5019_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Blueberry___healthy/3ec4ef19-11af-4fdd-b831-806d4c4fe410___RS_HL 5340.JPG",
+   "train": "train/Blueberry___healthy/3ec4ef19-11af-4fdd-b831-806d4c4fe410___RS_HL 5340_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Blueberry___healthy/61cc5d34-d79c-4680-bff4-eef976f885cf___RS_HL 4881.JPG",
+   "train": "train/Blueberry___healthy/859bef22-475f-4c8d-a12d-465bd766104b___RS_HL 5327.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Blueberry___healthy/78128cc7-ab5b-4820-a3a3-413952dc0ab5___RS_HL 2600.JPG",
+   "train": "train/Blueberry___healthy/ed4cbad2-ce47-47c0-83af-8948c6243ffe___RS_HL 2529.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/0b6b9fbc-9c62-4be9-bfc2-ff3126de6458___FREC_Pwd.M 0459.JPG",
+   "train": "train/Cherry_(including_sour)___Powdery_mildew/6549d4d7-4649-4059-8f94-e106f268119c___FREC_Pwd.M 0458.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/17a1b5f6-cd54-4c25-b9b5-23e098ac16d0___FREC_Pwd.M 0542.JPG",
+   "train": "train/Cherry_(including_sour)___Powdery_mildew/e7fe2094-95a1-40fe-ba1d-687ab0756edb___FREC_Pwd.M 0541.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/581c8e0d-54e0-4a4e-937d-919d0b914c9b___FREC_Pwd.M 0371_flipLR.JPG",
+   "train": "train/Cherry_(including_sour)___Powdery_mildew/c0ae9762-af5a-489d-9399-96732dc40391___FREC_Pwd.M 0370_flipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/6d3cf9a5-37ab-41e6-b786-4ba6e245560a___FREC_Pwd.M 0521_flipLR.JPG",
+   "train": "train/Cherry_(including_sour)___Powdery_mildew/d184dd0f-62f4-4354-8b8a-d876f404cf8c___FREC_Pwd.M 0520_flipLR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/af17d4b3-3193-4f16-9449-28cd5a204499___FREC_Pwd.M 5058.JPG",
+   "train": "train/Cherry_(including_sour)___Powdery_mildew/98735a23-9c85-4110-a4b7-f3614a7e168d___FREC_Pwd.M 5055.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/c871d4ee-1726-4873-9e5c-ffe67de425fb___FREC_Pwd.M 4705_flipLR.JPG",
+   "train": "train/Cherry_(including_sour)___Powdery_mildew/525ea422-bb9d-47fd-b3e5-cfabf3e989fd___FREC_Pwd.M 4704_flipLR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___Powdery_mildew/ddfca5ac-a909-43ca-b8c7-66aeb996c8ad___FREC_Pwd.M 5036_flipLR.JPG",
+   "train": "train/Corn_(maize)___healthy/94203353-1fc1-4092-95d1-c8672077776c___R.S_HL 0635 copy_flipLR.jpg",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/162dc895-00e6-4f02-ab49-a7030ec8984d___JR_HL 9445_180deg.JPG",
+   "train": "train/Apple___healthy/51cb81e8-dd15-40cd-b4f2-5287379dfe74___RS_HL 6104.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/16952b2d-daf9-47c6-b15e-c2c465bd5cf0___JR_HL 9882_180deg.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/33ebcc8a-b2a9-4ae0-b95a-670e01b81c01___JR_HL 9694_180deg.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/a0f50c57-dd13-45a8-b9d3-b8f270e496f0___JR_HL 4314_180deg.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/9705f45b-e0e3-4d0e-a0f0-ad1c9b3b32a0___JR_HL 4311_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/a52b26ec-29a5-4bb6-b3e4-f7599240e0d3___JR_HL 4021.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/0e74a030-4b86-4c3f-8944-31e68d1911ba___JR_HL 4016.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/af0a0059-222f-4991-94da-a4501a9d3c50___JR_HL 9533_flipTB.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/ded8ae3a-2f72-4ee5-a7d2-c682bfd59d6b___JR_HL 9875 copy_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/c0ef1466-26c8-460c-a2b8-d72c5caf0792___JR_HL 4275_180deg.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/70cd29ea-fe96-4f8e-961b-3aa02db4a014___JR_HL 4278_180deg.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/cbb4bd24-9572-4235-a9c1-e6b73118b7d5___JR_HL 4120_180deg.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/6ed358a8-f503-43ab-a5de-bbdb07ade6b6___JR_HL 4118_180deg.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/ee08caf8-fa0d-4a79-bb2e-5399197d01e4___JR_HL 4279_180deg.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/7feb145d-637f-4ce2-8f79-eb0be1160a86___JR_HL 4285_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/fd42f40b-d7f2-467f-a00f-9800d63e0946___JR_HL 9718.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/a34f6c1e-7e15-4988-906d-47aa21d341c2___JR_HL 9822_180deg.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Cherry_(including_sour)___healthy/ff11a187-14dc-4743-9930-1e1cf276273b___JR_HL 4101_flipTB.JPG",
+   "train": "train/Tomato___healthy/3e51f746-2ed2-4eb4-96e7-f6717ec068fd___RS_HL 0122_180deg.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot/df225045-fc7e-4207-a8fa-072f0f262b8b___RS_GLSp 4674.JPG",
+   "train": "train/Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot/c517891d-1411-4f7a-8d34-286ff2a7571f___RS_GLSp 4404.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___Common_rust_/RS_Rust 2595_flipLR.JPG",
+   "train": "train/Corn_(maize)___Common_rust_/RS_Rust 2692.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___Northern_Leaf_Blight/83327a8d-9bfd-49d6-9fc9-bc065a379bce___RS_NLB 4044 copy 2_180deg.jpg",
+   "train": "train/Corn_(maize)___Northern_Leaf_Blight/b7ec2193-2a49-43b9-9962-7a13d472e668___RS_NLB 4044_180deg.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___Northern_Leaf_Blight/9943cc83-f708-487b-b45e-a9ac23ee3973___RS_NLB 4045.JPG",
+   "train": "train/Corn_(maize)___Northern_Leaf_Blight/3513a96e-7db5-4a2b-9dd8-79847c92e75b___RS_NLB 4045 copy 2.jpg",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___Northern_Leaf_Blight/bd00b453-4675-428d-ad49-ade22d21ae9d___RS_NLB 3787.JPG",
+   "train": "train/Corn_(maize)___Northern_Leaf_Blight/29450131-41f6-4bd4-92c7-c4973ae445da___RS_NLB 3787 copy 2_180deg.jpg",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___healthy/6aaf943e-fb16-4f8f-86c5-dc36724e25e5___R.S_HL 0607.JPG",
+   "train": "train/Corn_(maize)___healthy/49ecc957-9ec7-45f7-a3c9-d1e63cf224df___R.S_HL 0607 copy 2.jpg",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___healthy/8afc9635-c5e3-41be-aac0-74109d6112ed___R.S_HL 0601 copy 2.jpg",
+   "train": "train/Corn_(maize)___healthy/94ca39a0-d4df-44c6-b5cc-a38a754506e5___R.S_HL 0601 copy 3.jpg",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___healthy/94ca39a0-d4df-44c6-b5cc-a38a754506e5___R.S_HL 0601 copy 3_flipLR.jpg",
+   "train": "train/Corn_(maize)___healthy/8afc9635-c5e3-41be-aac0-74109d6112ed___R.S_HL 0601 copy 2_flipLR.jpg",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___healthy/f73f38b8-0938-44f2-a229-6baa3114fe40___R.S_HL 0630 copy 3.jpg",
+   "train": "train/Corn_(maize)___healthy/d2eeaaf5-97f6-4fc0-a2b5-09e98e483648___R.S_HL 0630 copy.jpg",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Corn_(maize)___healthy/f73f38b8-0938-44f2-a229-6baa3114fe40___R.S_HL 0630 copy 3_flipLR.jpg",
+   "train": "train/Corn_(maize)___healthy/d2eeaaf5-97f6-4fc0-a2b5-09e98e483648___R.S_HL 0630 copy_flipLR.jpg",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Black_rot/3588f6c1-e117-4f85-b9e5-b2082d6dcf52___FAM_B.Rot 3419_flipLR.JPG",
+   "train": "train/Grape___Black_rot/5e12ba62-8d95-4348-9278-6ec81b8b7eea___FAM_B.Rot 3186_flipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Esca_(Black_Measles)/0598129d-b448-4576-9c66-650388302622___FAM_B.Msls 4097_flipLR.JPG",
+   "train": "train/Blueberry___healthy/0a0b8f78-df2d-4cfc-becf-cde10fa2766b___RS_HL 5487_flipTB.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Grape___Esca_(Black_Measles)/1a605788-78ec-4d62-9f87-3ad62309d58f___FAM_B.Msls 4371.JPG",
+   "train": "train/Grape___Black_rot/d5c7a5e5-2a4a-4c3c-a01e-e6ed208017a7___FAM_B.Rot 3329.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Grape___Esca_(Black_Measles)/31bd4f43-7895-46af-bead-3da25e5d650d___FAM_B.Msls 4459.JPG",
+   "train": "train/Grape___Esca_(Black_Measles)/587ab471-2fa6-41da-a73c-eaae92b4a28f___FAM_B.Msls 4088.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Esca_(Black_Measles)/49c6ee9e-8bc4-4187-82db-b9caba8bb168___FAM_B.Msls 1134.JPG",
+   "train": "train/Grape___Esca_(Black_Measles)/ffc0847a-e88d-4332-8c7c-4b63ba65a471___FAM_B.Msls 1130.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Esca_(Black_Measles)/b6f9d1c9-f433-41d6-bdee-0e3cf5e80791___FAM_B.Msls 1235_flipLR.JPG",
+   "train": "train/Grape___Black_rot/c5c1d84a-d4c4-4771-94ff-8fb105e55b9e___FAM_B.Rot 5103.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Grape___Esca_(Black_Measles)/fb850331-28fc-4d99-bd31-ed2b27bd2b97___FAM_B.Msls 1196_flipLR.JPG",
+   "train": "train/Grape___Esca_(Black_Measles)/460f1783-64fd-4398-9859-25242f4e1614___FAM_B.Msls 1124.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Leaf_blight_(Isariopsis_Leaf_Spot)/6fad4de0-54bf-4869-80ac-d290bd7d0da8___FAM_L.Blight 1432_flipLR.JPG",
+   "train": "train/Grape___Leaf_blight_(Isariopsis_Leaf_Spot)/97119aac-1404-4dc7-9f2f-fd1fb1622fbf___FAM_L.Blight 1500_flipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Leaf_blight_(Isariopsis_Leaf_Spot)/87738ce1-94f8-45bf-95e0-9836abc0f5aa___FAM_L.Blight 1446.JPG",
+   "train": "train/Grape___Leaf_blight_(Isariopsis_Leaf_Spot)/3b49b5f5-1066-4913-9eb4-e74b9a21af03___FAM_L.Blight 1364_flipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___Leaf_blight_(Isariopsis_Leaf_Spot)/9be77817-23c5-469e-8363-eb1d115f9bb0___FAM_L.Blight 1470.JPG",
+   "train": "train/Grape___Leaf_blight_(Isariopsis_Leaf_Spot)/33489f41-ac64-4a51-85a8-0a628c128b29___FAM_L.Blight 1384_flipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___healthy/28c615fe-bb32-4003-9178-1f130c84c0a3___Mt.N.V_HL 9129.JPG",
+   "train": "train/Grape___healthy/0c1667a2-61d7-4dee-b4d9-0d141a1ceb20___Mt.N.V_HL 9127.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___healthy/7664a68e-5bf7-4ca4-988d-12d9360bb512___Mt.N.V_HL 9095_new30degFlipLR.JPG",
+   "train": "train/Grape___healthy/7276406c-b1ce-4c23-af0a-2c1c38e6e1a2___Mt.N.V_HL 9099_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Grape___healthy/a47c4d69-8888-45dd-93bf-8f3421960604___Mt.N.V_HL 9082_180deg.JPG",
+   "train": "train/Grape___healthy/f7c74956-3e0c-4669-b313-bf6e4559a91d___Mt.N.V_HL 9086_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Orange___Haunglongbing_(Citrus_greening)/98217596-dd6d-47c3-b7ac-64f00199e835___CREC_HLB 5223.JPG",
+   "train": "train/Orange___Haunglongbing_(Citrus_greening)/5249009b-0e88-4284-a8aa-50ded4cf607d___CREC_HLB 5519.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Orange___Haunglongbing_(Citrus_greening)/993037e3-6118-44aa-aff0-dfc09189201b___UF.Citrus_HLB_Lab 9965.JPG",
+   "train": "train/Orange___Haunglongbing_(Citrus_greening)/d7a6cd79-4470-4c89-8c77-1f1bdf0daa90___UF.Citrus_HLB_Lab 9963.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Orange___Haunglongbing_(Citrus_greening)/bfc23629-c9cd-4c81-b6b0-d11f07dbc204___CREC_HLB 7824.JPG",
+   "train": "train/Orange___Haunglongbing_(Citrus_greening)/26680011-8f2c-4099-b7ff-574a349d1146___CREC_HLB 7242.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Orange___Haunglongbing_(Citrus_greening)/e115a0a7-c035-4bdd-b1d0-c2cf633a805a___UF.Citrus_HLB_Lab 1128.JPG",
+   "train": "train/Orange___Haunglongbing_(Citrus_greening)/43064e65-08d1-43a0-9d33-430f4f820580___UF.Citrus_HLB_Lab 1129.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Orange___Haunglongbing_(Citrus_greening)/f1196567-5fdf-48d7-aabe-953f4f55bccd___UF.Citrus_HLB_Lab 1235.JPG",
+   "train": "train/Orange___Haunglongbing_(Citrus_greening)/ec929a81-01f4-492e-9a5d-fadefcb93d19___UF.Citrus_HLB_Lab 1236.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___Bacterial_spot/4fd4fd59-b5ad-4ff5-9c3b-3d5c74a23361___Rut._Bact.S 0767.JPG",
+   "train": "train/Peach___Bacterial_spot/a7b3c4d8-c94c-4cac-901b-fb6c9624e7a3___Rut._Bact.S 0970.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___Bacterial_spot/50e07867-1835-4031-9752-b5c62bb94f12___Rut._Bact.S 1277.JPG",
+   "train": "train/Peach___Bacterial_spot/a7b3c4d8-c94c-4cac-901b-fb6c9624e7a3___Rut._Bact.S 0970.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___Bacterial_spot/9fda3bc0-49f8-4486-bc9e-93118af2c836___Rut._Bact.S 1329.JPG",
+   "train": "train/Peach___Bacterial_spot/468388a5-ddd5-42e3-8e19-27cc95675f78___Rut._Bact.S 1376.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___Bacterial_spot/a2f81059-9171-41d2-acca-ef3d02d81438___Rut._Bact.S 1209.JPG",
+   "train": "train/Peach___Bacterial_spot/640a41e4-32af-417b-8055-00012097725f___Rut._Bact.S 0856.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/0f9f9b7d-8396-4c62-8700-5008ca0b9db4___Rutg._HL 3613.JPG",
+   "train": "train/Peach___healthy/0f9f9b7d-8396-4c62-8700-5008ca0b9db4___Rutg._HL 3613_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/15fa9ad3-5775-47e7-a8eb-4218000625c9___Rutg._HL 3605_new30degFlipLR.JPG",
+   "train": "train/Peach___healthy/02e47796-808b-449e-bbba-f6e0262fa589___Rutg._HL 3714_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/16e5ee89-643d-4033-9586-1f5b7fb08a70___Rutg._HL 2467.JPG",
+   "train": "train/Peach___healthy/16e5ee89-643d-4033-9586-1f5b7fb08a70___Rutg._HL 2467_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/35d97a27-1462-4c2a-9e56-840ddb6a034b___Rutg._HL 3509_180deg.JPG",
+   "train": "train/Peach___healthy/ad535bed-68fa-4808-94b3-f2d7472f23f3___Rutg._HL 2478_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/5222ca45-657d-42ac-81c4-58aa0d6b9c93___Rutg._HL 3715.JPG",
+   "train": "train/Peach___healthy/5222ca45-657d-42ac-81c4-58aa0d6b9c93___Rutg._HL 3715_newPixel25.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/5defc887-a5af-4a56-aabb-0430136f1f25___Rutg._HL 3692_newPixel25.JPG",
+   "train": "train/Peach___healthy/5defc887-a5af-4a56-aabb-0430136f1f25___Rutg._HL 3692.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/7aca3720-b4c3-4eb8-96a7-44079b3d5171___Rutg._HL 3616.JPG",
+   "train": "train/Peach___healthy/0999b486-f391-4b79-8c3f-41e957e606a7___Rutg._HL 3701.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/7d0b4717-b247-444e-8b05-90884c31d795___Rutg._HL 2444_newPixel25.JPG",
+   "train": "train/Peach___healthy/7d0b4717-b247-444e-8b05-90884c31d795___Rutg._HL 2444.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/82e60026-cb82-4ccf-a39b-820080c78c5e___Rutg._HL 2399_newPixel25.JPG",
+   "train": "train/Peach___healthy/82e60026-cb82-4ccf-a39b-820080c78c5e___Rutg._HL 2399.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/97052680-ea06-4e00-866a-7ceda1ed1118___Rutg._HL 3656_270deg.JPG",
+   "train": "train/Tomato___Late_blight/01c391d2-1b3a-4b58-b205-a75674bba6e9___GHLB2 Leaf 8824.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Peach___healthy/a61c536d-7c39-42dd-9296-c9543f30da91___Rutg._HL 3567.JPG",
+   "train": "train/Peach___healthy/e95e665b-4b1d-4442-a047-7c03c58ce7c6___Rutg._HL 3537.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/b182f03d-3b0c-4226-86fc-ca246937c7cc___Rutg._HL 3752_newPixel25.JPG",
+   "train": "train/Peach___healthy/b182f03d-3b0c-4226-86fc-ca246937c7cc___Rutg._HL 3752.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/d3d98000-30ff-4ed5-bdb8-42fc9abcaf5d___Rutg._HL 3582_new30degFlipLR.JPG",
+   "train": "train/Peach___healthy/9b46117f-ba00-490d-8af4-3878524300f7___Rutg._HL 3590_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/d6248627-9a42-424d-95d3-ca56eb076206___Rutg._HL 3629_new30degFlipLR.JPG",
+   "train": "train/Peach___healthy/0999b486-f391-4b79-8c3f-41e957e606a7___Rutg._HL 3701_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Peach___healthy/e3eb6226-c213-4a4a-9746-596a38458350___Rutg._HL 3738_newPixel25.JPG",
+   "train": "train/Peach___healthy/e3eb6226-c213-4a4a-9746-596a38458350___Rutg._HL 3738.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Pepper,_bell___Bacterial_spot/3294ec88-cc8d-4e3a-af08-f2f9d7f4a73b___JR_B.Spot 3196_180deg.JPG",
+   "train": "train/Pepper,_bell___Bacterial_spot/b8c7fc71-e9f0-4246-9a64-f535eba91fa4___JR_B.Spot 3302_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Pepper,_bell___healthy/5ff1097d-5e9e-40bc-8987-ccf15d465d77___JR_HL 8081_newPixel25.JPG",
+   "train": "train/Pepper,_bell___healthy/5ff1097d-5e9e-40bc-8987-ccf15d465d77___JR_HL 8081.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Pepper,_bell___healthy/6ec06fd0-c4c6-4c8d-88f7-b2ff9a2b87c1___JR_HL 8521_newPixel25.JPG",
+   "train": "train/Pepper,_bell___healthy/6ec06fd0-c4c6-4c8d-88f7-b2ff9a2b87c1___JR_HL 8521.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Pepper,_bell___healthy/7e48d50d-d877-4b5d-9aad-6a451e0ba067___JR_HL 8103.JPG",
+   "train": "train/Pepper,_bell___healthy/dd87a0c1-aa21-4ad9-8f89-21735ee16a26___JR_HL 8097.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___Early_blight/a3ed964c-36f1-403c-8146-b2a3b79a352d___RS_Early.B 8310.JPG",
+   "train": "train/Potato___Early_blight/46819687-0705-4628-8748-9cb356587f30___RS_Early.B 8421.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/00fc2ee5-729f-4757-8aeb-65c3355874f2___RS_HL 1864_newGGR.JPG",
+   "train": "train/Potato___healthy/00fc2ee5-729f-4757-8aeb-65c3355874f2___RS_HL 1864.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/00fc2ee5-729f-4757-8aeb-65c3355874f2___RS_HL 1864_newGRR.JPG",
+   "train": "train/Potato___healthy/00fc2ee5-729f-4757-8aeb-65c3355874f2___RS_HL 1864.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/0b3e5032-8ae8-49ac-8157-a1cac3df01dd___RS_HL 1817.JPG",
+   "train": "train/Potato___healthy/0b3e5032-8ae8-49ac-8157-a1cac3df01dd___RS_HL 1817_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/0be9d721-82f5-42c3-b535-7494afe01dbe___RS_HL 1814.JPG",
+   "train": "train/Potato___healthy/0be9d721-82f5-42c3-b535-7494afe01dbe___RS_HL 1814_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/0f4ebc5a-d646-436a-919d-961342997cde___RS_HL 4183.JPG",
+   "train": "train/Potato___healthy/0f4ebc5a-d646-436a-919d-961342997cde___RS_HL 4183_newGGR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/111cd9d8-4d27-4225-be9e-d29b21cf56b9___RS_HL 5419_newGGR.JPG",
+   "train": "train/Potato___healthy/111cd9d8-4d27-4225-be9e-d29b21cf56b9___RS_HL 5419.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/111cd9d8-4d27-4225-be9e-d29b21cf56b9___RS_HL 5419_newGRR.JPG",
+   "train": "train/Potato___healthy/111cd9d8-4d27-4225-be9e-d29b21cf56b9___RS_HL 5419.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/142fb983-2166-4a0f-b99b-a6c21e99987e___RS_HL 5398.JPG",
+   "train": "train/Potato___healthy/142fb983-2166-4a0f-b99b-a6c21e99987e___RS_HL 5398_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/14484ea5-9c34-427c-abe4-2743265aced0___RS_HL 4204_newPixel25.JPG",
+   "train": "train/Potato___healthy/14484ea5-9c34-427c-abe4-2743265aced0___RS_HL 4204.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/144d2475-21ab-4bdc-a67c-9672a9b711e6___RS_HL 5376.JPG",
+   "train": "train/Potato___healthy/144d2475-21ab-4bdc-a67c-9672a9b711e6___RS_HL 5376_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/144d2475-21ab-4bdc-a67c-9672a9b711e6___RS_HL 5376_newGGR.JPG",
+   "train": "train/Potato___healthy/144d2475-21ab-4bdc-a67c-9672a9b711e6___RS_HL 5376_newGRR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/163ada72-4288-4f85-a3c1-feed23c8d1de___RS_HL 1940_newGGR.JPG",
+   "train": "train/Potato___healthy/163ada72-4288-4f85-a3c1-feed23c8d1de___RS_HL 1940.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/1a1184f8-c414-4ead-a4c4-41ae78e29a82___RS_HL 1971.JPG",
+   "train": "train/Potato___healthy/1a1184f8-c414-4ead-a4c4-41ae78e29a82___RS_HL 1971_newGRR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/1b434c52-7be4-40c4-90d5-13220f1a3eba___RS_HL 5418_newGRR.JPG",
+   "train": "train/Potato___healthy/1b434c52-7be4-40c4-90d5-13220f1a3eba___RS_HL 5418.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/1dcfeaa9-006d-470c-b3e5-d67609d07d4e___RS_HL 1808_newGRR.JPG",
+   "train": "train/Potato___healthy/1dcfeaa9-006d-470c-b3e5-d67609d07d4e___RS_HL 1808_newGGR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/20ac28d6-5708-4e31-8676-1b1979de094f___RS_HL 1735.JPG",
+   "train": "train/Potato___healthy/20ac28d6-5708-4e31-8676-1b1979de094f___RS_HL 1735_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/22322780-95b4-4b45-b626-26b22965d55e___RS_HL 1880_newGGR.JPG",
+   "train": "train/Potato___healthy/22322780-95b4-4b45-b626-26b22965d55e___RS_HL 1880.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/23f1ab77-d664-49c4-92eb-41eb66c6d101___RS_HL 4169_newGRR.JPG",
+   "train": "train/Potato___healthy/23f1ab77-d664-49c4-92eb-41eb66c6d101___RS_HL 4169.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/23f4d3b1-23f4-43fb-96c2-dae37224ec74___RS_HL 1803.JPG",
+   "train": "train/Potato___healthy/23f4d3b1-23f4-43fb-96c2-dae37224ec74___RS_HL 1803_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/30126310-39de-4c02-b10a-23409417a4f6___RS_HL 1826_newGRR.JPG",
+   "train": "train/Potato___healthy/30126310-39de-4c02-b10a-23409417a4f6___RS_HL 1826.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/30937333-8898-4634-8c00-af57d3020ba6___RS_HL 1922_newGGR.JPG",
+   "train": "train/Potato___healthy/30937333-8898-4634-8c00-af57d3020ba6___RS_HL 1922.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/38faf81d-c83b-42ca-b4c3-e3bbfa070589___RS_HL 1805.JPG",
+   "train": "train/Potato___healthy/38faf81d-c83b-42ca-b4c3-e3bbfa070589___RS_HL 1805_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/38faf81d-c83b-42ca-b4c3-e3bbfa070589___RS_HL 1805_newGRR.JPG",
+   "train": "train/Potato___healthy/38faf81d-c83b-42ca-b4c3-e3bbfa070589___RS_HL 1805_newGGR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/3a00204c-5e53-4e5d-95a6-f8819031744e___RS_HL 5420_newGRR.JPG",
+   "train": "train/Potato___healthy/3a00204c-5e53-4e5d-95a6-f8819031744e___RS_HL 5420_newGGR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/3edf7c3f-73e0-439c-870d-76cfd7c3bc45___RS_HL 1859.JPG",
+   "train": "train/Potato___healthy/3edf7c3f-73e0-439c-870d-76cfd7c3bc45___RS_HL 1859_newGRR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/46b2555a-c0a6-48c2-af13-0816e147e4de___RS_HL 1943_newGGR.JPG",
+   "train": "train/Potato___healthy/46b2555a-c0a6-48c2-af13-0816e147e4de___RS_HL 1943.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/46b2555a-c0a6-48c2-af13-0816e147e4de___RS_HL 1943_newPixel25.JPG",
+   "train": "train/Potato___healthy/46b2555a-c0a6-48c2-af13-0816e147e4de___RS_HL 1943.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/4ae82355-6885-40e7-9807-dabe46ed3441___RS_HL 5410.JPG",
+   "train": "train/Potato___healthy/4ae82355-6885-40e7-9807-dabe46ed3441___RS_HL 5410_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/4ae82355-6885-40e7-9807-dabe46ed3441___RS_HL 5410_newGRR.JPG",
+   "train": "train/Potato___healthy/4ae82355-6885-40e7-9807-dabe46ed3441___RS_HL 5410_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/51a03694-82cd-43a5-9877-ddce42c1a5ad___RS_HL 1779.JPG",
+   "train": "train/Potato___healthy/51a03694-82cd-43a5-9877-ddce42c1a5ad___RS_HL 1779_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/533abd3a-3e1d-42d0-ae9c-5189282b78af___RS_HL 5369_newGGR.JPG",
+   "train": "train/Potato___healthy/533abd3a-3e1d-42d0-ae9c-5189282b78af___RS_HL 5369.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/54f86311-9d76-421b-b401-0b02f6e738a5___RS_HL 4172_newGRR.JPG",
+   "train": "train/Potato___healthy/54f86311-9d76-421b-b401-0b02f6e738a5___RS_HL 4172.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/58a98860-86d8-41e7-9f8c-cc2ca5e90012___RS_HL 1758_newGRR.JPG",
+   "train": "train/Potato___healthy/58a98860-86d8-41e7-9f8c-cc2ca5e90012___RS_HL 1758.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/5d505af8-3f73-4781-980c-a4a696a04550___RS_HL 1934_new30degFlipLR.JPG",
+   "train": "train/Potato___healthy/5d505af8-3f73-4781-980c-a4a696a04550___RS_HL 1934_new200degFlipTB.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/5d505af8-3f73-4781-980c-a4a696a04550___RS_HL 1934_newGRR.JPG",
+   "train": "train/Potato___healthy/5d505af8-3f73-4781-980c-a4a696a04550___RS_HL 1934.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/5df30492-0b54-474d-8883-bba9474ca88f___RS_HL 1801_newGGR.JPG",
+   "train": "train/Potato___healthy/5df30492-0b54-474d-8883-bba9474ca88f___RS_HL 1801.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/5fcbde8f-52af-4963-b324-ff7f4dd6bd4c___RS_HL 1762.JPG",
+   "train": "train/Potato___healthy/5fcbde8f-52af-4963-b324-ff7f4dd6bd4c___RS_HL 1762_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/61b8a692-91d8-40f5-a4a4-4d910875a638___RS_HL 1966.JPG",
+   "train": "train/Potato___healthy/61b8a692-91d8-40f5-a4a4-4d910875a638___RS_HL 1966_newGGR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/61b8a692-91d8-40f5-a4a4-4d910875a638___RS_HL 1966_new200degFlipTB.JPG",
+   "train": "train/Potato___healthy/61b8a692-91d8-40f5-a4a4-4d910875a638___RS_HL 1966_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/750584fd-72e0-45c8-b37c-97208bd559cc___RS_HL 1885_newGRR.JPG",
+   "train": "train/Potato___healthy/750584fd-72e0-45c8-b37c-97208bd559cc___RS_HL 1885.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/799b10e8-ba67-4e08-9abe-748789572ad1___RS_HL 1881.JPG",
+   "train": "train/Potato___healthy/799b10e8-ba67-4e08-9abe-748789572ad1___RS_HL 1881_newGGR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/7e6c8297-dfe1-4826-826e-01d696cc263b___RS_HL 1863_newGRR.JPG",
+   "train": "train/Potato___healthy/7e6c8297-dfe1-4826-826e-01d696cc263b___RS_HL 1863.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/7e7b6ab4-9adb-4a3b-abfb-8716b0039879___RS_HL 1921.JPG",
+   "train": "train/Potato___healthy/7e7b6ab4-9adb-4a3b-abfb-8716b0039879___RS_HL 1921_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/7e7b6ab4-9adb-4a3b-abfb-8716b0039879___RS_HL 1921_newGRR.JPG",
+   "train": "train/Potato___healthy/7e7b6ab4-9adb-4a3b-abfb-8716b0039879___RS_HL 1921_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/8583c4ff-2d8b-4b6f-89a8-fcc98917ce9b___RS_HL 1961_newGGR.JPG",
+   "train": "train/Potato___healthy/8583c4ff-2d8b-4b6f-89a8-fcc98917ce9b___RS_HL 1961.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/882798ca-67c3-45a3-86cf-4aed69388145___RS_HL 1750_new30degFlipTB.JPG",
+   "train": "train/Potato___healthy/b4031970-60ea-4739-9fed-6c81be1bad1c___RS_HL 1752_new30degFlipTB.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/8c1e1281-5937-4559-a02f-02817de6e122___RS_HL 4173_newGGR.JPG",
+   "train": "train/Potato___healthy/8c1e1281-5937-4559-a02f-02817de6e122___RS_HL 4173.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/907f26b7-a14f-463f-a41e-f35d6e0f1417___RS_HL 1757_newGGR.JPG",
+   "train": "train/Potato___healthy/907f26b7-a14f-463f-a41e-f35d6e0f1417___RS_HL 1757.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/923d4cc3-021a-4bcd-9f5f-1d6f69e4ad33___RS_HL 1888_new30degFlipLR.JPG",
+   "train": "train/Grape___healthy/120e3a97-f879-4047-8811-077c723cb069___Mt.N.V_HL 9058_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Potato___healthy/923d4cc3-021a-4bcd-9f5f-1d6f69e4ad33___RS_HL 1888_newGRR.JPG",
+   "train": "train/Potato___healthy/923d4cc3-021a-4bcd-9f5f-1d6f69e4ad33___RS_HL 1888.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/929107f1-4ae9-4dae-8319-ae7cf4804236___RS_HL 1932_newGGR.JPG",
+   "train": "train/Potato___healthy/929107f1-4ae9-4dae-8319-ae7cf4804236___RS_HL 1932.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/949cafd0-098b-497f-9590-f0fb8ccafc94___RS_HL 4168_newPixel25.JPG",
+   "train": "train/Potato___healthy/949cafd0-098b-497f-9590-f0fb8ccafc94___RS_HL 4168.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/9a6eb7c4-6b43-477a-89e0-69f62ef67991___RS_HL 1846.JPG",
+   "train": "train/Potato___healthy/9a6eb7c4-6b43-477a-89e0-69f62ef67991___RS_HL 1846_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/9d7d1bb9-1b10-4a8f-a961-e404b9d5acf8___RS_HL 1960_newGRR.JPG",
+   "train": "train/Potato___healthy/9d7d1bb9-1b10-4a8f-a961-e404b9d5acf8___RS_HL 1960.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/a02b6205-b40a-4178-8b34-3494f84b9d1f___RS_HL 1958.JPG",
+   "train": "train/Potato___healthy/a02b6205-b40a-4178-8b34-3494f84b9d1f___RS_HL 1958_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/a1abff90-34e5-464d-b4d3-0c09f5924900___RS_HL 5414_newGRR.JPG",
+   "train": "train/Potato___healthy/a1abff90-34e5-464d-b4d3-0c09f5924900___RS_HL 5414.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/a4d1d8cb-26a2-413f-a229-021e2eea87ac___RS_HL 1819_new30degFlipLR.JPG",
+   "train": "train/Potato___healthy/a4d1d8cb-26a2-413f-a229-021e2eea87ac___RS_HL 1819_new200degFlipTB.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/a4d1d8cb-26a2-413f-a229-021e2eea87ac___RS_HL 1819_newGGR.JPG",
+   "train": "train/Potato___healthy/a4d1d8cb-26a2-413f-a229-021e2eea87ac___RS_HL 1819.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/a5050bde-febc-4931-b31d-45c9652df318___RS_HL 5373_newGGR.JPG",
+   "train": "train/Potato___healthy/a5050bde-febc-4931-b31d-45c9652df318___RS_HL 5373.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/a8d687be-3777-403f-bae7-5c8c19340b3f___RS_HL 1738_new200degFlipTB.JPG",
+   "train": "train/Potato___healthy/a8d687be-3777-403f-bae7-5c8c19340b3f___RS_HL 1738_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ad9b6cf4-e065-496d-91c7-5713ce14e19e___RS_HL 1926.JPG",
+   "train": "train/Potato___healthy/ad9b6cf4-e065-496d-91c7-5713ce14e19e___RS_HL 1926_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ad9b6cf4-e065-496d-91c7-5713ce14e19e___RS_HL 1926_newGRR.JPG",
+   "train": "train/Potato___healthy/ad9b6cf4-e065-496d-91c7-5713ce14e19e___RS_HL 1926_newGGR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/af15ac00-67ff-4114-ace8-6dca48b94665___RS_HL 1865.JPG",
+   "train": "train/Potato___healthy/af15ac00-67ff-4114-ace8-6dca48b94665___RS_HL 1865_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/b4031970-60ea-4739-9fed-6c81be1bad1c___RS_HL 1752_newGGR.JPG",
+   "train": "train/Potato___healthy/b4031970-60ea-4739-9fed-6c81be1bad1c___RS_HL 1752.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/b4031970-60ea-4739-9fed-6c81be1bad1c___RS_HL 1752_newGRR.JPG",
+   "train": "train/Potato___healthy/b4031970-60ea-4739-9fed-6c81be1bad1c___RS_HL 1752.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/b42621c3-f751-46e1-a8d2-83ed85b90554___RS_HL 1740.JPG",
+   "train": "train/Potato___healthy/b42621c3-f751-46e1-a8d2-83ed85b90554___RS_HL 1740_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/b42621c3-f751-46e1-a8d2-83ed85b90554___RS_HL 1740_newGRR.JPG",
+   "train": "train/Potato___healthy/b42621c3-f751-46e1-a8d2-83ed85b90554___RS_HL 1740_newGGR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/b925ad3e-fc49-497d-a6eb-115f0de20800___RS_HL 4170_newGRR.JPG",
+   "train": "train/Potato___healthy/b925ad3e-fc49-497d-a6eb-115f0de20800___RS_HL 4170.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/b9ea902d-e557-4fa5-893b-39a7a57c0121___RS_HL 1893.JPG",
+   "train": "train/Potato___healthy/b9ea902d-e557-4fa5-893b-39a7a57c0121___RS_HL 1893_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/bb04f738-1848-4dda-8834-384a48b335cd___RS_HL 1765_newGGR.JPG",
+   "train": "train/Potato___healthy/bb04f738-1848-4dda-8834-384a48b335cd___RS_HL 1765.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/bb04f738-1848-4dda-8834-384a48b335cd___RS_HL 1765_newGRR.JPG",
+   "train": "train/Potato___healthy/bb04f738-1848-4dda-8834-384a48b335cd___RS_HL 1765.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/c3caa84b-6078-4489-80ac-919d92d25ff7___RS_HL 1772_new30degFlipLR.JPG",
+   "train": "train/Potato___healthy/c3caa84b-6078-4489-80ac-919d92d25ff7___RS_HL 1772_new200degFlipTB.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/c6204cb3-cd9f-4d7b-92a6-9773fe562cab___RS_HL 1939_newGRR.JPG",
+   "train": "train/Potato___healthy/c6204cb3-cd9f-4d7b-92a6-9773fe562cab___RS_HL 1939.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/c85bacb0-e5e8-4127-a0b0-a7342f2cab5f___RS_HL 5406_newGGR.JPG",
+   "train": "train/Potato___healthy/c85bacb0-e5e8-4127-a0b0-a7342f2cab5f___RS_HL 5406.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/c9ad5c9a-c9b0-4e07-9e03-9e9edfd58a19___RS_HL 1755_newGGR.JPG",
+   "train": "train/Potato___healthy/c9ad5c9a-c9b0-4e07-9e03-9e9edfd58a19___RS_HL 1755.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/d1752ed4-a0a7-4075-917d-205c0e785dcf___RS_HL 1911_newGGR.JPG",
+   "train": "train/Potato___healthy/d1752ed4-a0a7-4075-917d-205c0e785dcf___RS_HL 1911.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/d227e4c8-e203-4aa4-b813-25b96baa2869___RS_HL 1831_newGGR.JPG",
+   "train": "train/Potato___healthy/d227e4c8-e203-4aa4-b813-25b96baa2869___RS_HL 1831.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/d325e580-5faa-4aea-927d-2700f52cc343___RS_HL 1872_newGGR.JPG",
+   "train": "train/Potato___healthy/d325e580-5faa-4aea-927d-2700f52cc343___RS_HL 1872.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/d340704d-cc00-4068-bb8a-ae70840b7bfa___RS_HL 1773_new30degFlipLR.JPG",
+   "train": "train/Potato___healthy/d340704d-cc00-4068-bb8a-ae70840b7bfa___RS_HL 1773_new200degFlipTB.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/dbe4f332-9189-4b76-b30c-f0c9a55e48d3___RS_HL 1841.JPG",
+   "train": "train/Potato___healthy/dbe4f332-9189-4b76-b30c-f0c9a55e48d3___RS_HL 1841_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/dca8ac5c-b925-435a-a5e9-da09fa8938a1___RS_HL 4182_newGGR.JPG",
+   "train": "train/Potato___healthy/dca8ac5c-b925-435a-a5e9-da09fa8938a1___RS_HL 4182.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/dca8ac5c-b925-435a-a5e9-da09fa8938a1___RS_HL 4182_newGRR.JPG",
+   "train": "train/Potato___healthy/dca8ac5c-b925-435a-a5e9-da09fa8938a1___RS_HL 4182.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/de9a8669-d437-40f0-aa56-fe2d8276a1e0___RS_HL 1910.JPG",
+   "train": "train/Potato___healthy/de9a8669-d437-40f0-aa56-fe2d8276a1e0___RS_HL 1910_newGGR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/e34e563f-7a4a-4b44-bdf2-b6f96cbcd929___RS_HL 5370_newGRR.JPG",
+   "train": "train/Potato___healthy/e34e563f-7a4a-4b44-bdf2-b6f96cbcd929___RS_HL 5370.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ec6e43d3-512d-4908-99f2-c9e2a0be54be___RS_HL 4202.JPG",
+   "train": "train/Potato___healthy/ec6e43d3-512d-4908-99f2-c9e2a0be54be___RS_HL 4202_newGRR.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ef7005dc-1d44-412e-b858-145a2d7a6fa9___RS_HL 1951.JPG",
+   "train": "train/Potato___healthy/ef7005dc-1d44-412e-b858-145a2d7a6fa9___RS_HL 1951_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ef7005dc-1d44-412e-b858-145a2d7a6fa9___RS_HL 1951_new200degFlipLR.JPG",
+   "train": "train/Potato___healthy/ef7005dc-1d44-412e-b858-145a2d7a6fa9___RS_HL 1951_new30degFlipTB.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ef7005dc-1d44-412e-b858-145a2d7a6fa9___RS_HL 1951_newGGR.JPG",
+   "train": "train/Potato___healthy/ef7005dc-1d44-412e-b858-145a2d7a6fa9___RS_HL 1951_newGRR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/f0036dfd-9f46-4f2f-9001-5973495f2171___RS_HL 1849_newGGR.JPG",
+   "train": "train/Potato___healthy/f0036dfd-9f46-4f2f-9001-5973495f2171___RS_HL 1849.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/f4b5ec24-d318-4309-8294-9126450d5d7f___RS_HL 1824_newGGR.JPG",
+   "train": "train/Potato___healthy/f4b5ec24-d318-4309-8294-9126450d5d7f___RS_HL 1824.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/f4be3632-42a1-415a-9f7e-1d5ecb9f49d7___RS_HL 1783.JPG",
+   "train": "train/Potato___healthy/f4be3632-42a1-415a-9f7e-1d5ecb9f49d7___RS_HL 1783_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/f4be3632-42a1-415a-9f7e-1d5ecb9f49d7___RS_HL 1783_newGGR.JPG",
+   "train": "train/Potato___healthy/f4be3632-42a1-415a-9f7e-1d5ecb9f49d7___RS_HL 1783_newGRR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/f5bd2732-197b-4d8e-bb50-a4966dc416f5___RS_HL 1840_newGRR.JPG",
+   "train": "train/Potato___healthy/f5bd2732-197b-4d8e-bb50-a4966dc416f5___RS_HL 1840.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/f66af6c0-6fc6-4020-b1de-a73685d497c2___RS_HL 4181.JPG",
+   "train": "train/Potato___healthy/f66af6c0-6fc6-4020-b1de-a73685d497c2___RS_HL 4181_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ff700844-68ad-4e99-8427-58a39c07f817___RS_HL 1860.JPG",
+   "train": "train/Potato___healthy/ff700844-68ad-4e99-8427-58a39c07f817___RS_HL 1860_newGGR.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Potato___healthy/ff700844-68ad-4e99-8427-58a39c07f817___RS_HL 1860_newGRR.JPG",
+   "train": "train/Potato___healthy/ff700844-68ad-4e99-8427-58a39c07f817___RS_HL 1860_newGGR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/0f973c31-b338-438e-8162-e005738c659e___Mary_HL 9257_180deg.JPG",
+   "train": "train/Raspberry___healthy/7f771790-da66-43db-a051-5900affecc6e___Mary_HL 9261_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/11af4433-0a02-4684-a519-a1c2adbe9ceb___Mary_HL 6395.JPG",
+   "train": "train/Raspberry___healthy/11af4433-0a02-4684-a519-a1c2adbe9ceb___Mary_HL 6395_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/141f4953-4e0d-4e5d-bb1b-e3a880cd7bf6___Mary_HL 9192_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/6f4c7d33-4f72-44e7-9354-2e8e86fcd304___Mary_HL 9191_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/174c3316-f010-47bd-aef7-53826f8ec1dc___Mary_HL 6340_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/d1793bb4-1e90-4377-8cf9-d8f14630eed0___Mary_HL 6277_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/18333c95-ee6e-4af6-be83-a98f3ed68ccf___Mary_HL 9350.JPG",
+   "train": "train/Raspberry___healthy/4c210242-adfc-4011-88e5-3380cbee49b1___Mary_HL 9351.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/187f5dcf-6cf1-4d4f-b1be-e7dfa587ee15___Mary_HL 6367_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/187f5dcf-6cf1-4d4f-b1be-e7dfa587ee15___Mary_HL 6367.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/1e2f76bb-af16-4cc5-9fed-8efa9a68d6a3___Mary_HL 9142.JPG",
+   "train": "train/Raspberry___healthy/1e2f76bb-af16-4cc5-9fed-8efa9a68d6a3___Mary_HL 9142_newPixel25.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/1f8174d5-38a1-449f-912d-33cd4615d189___Mary_HL 6308_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/79862cb8-224c-4e96-b1fa-83662a7cfb1b___Mary_HL 6316_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/21db22b7-4541-4ab5-aaad-707b22f09cb4___Mary_HL 9334_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/837ce07f-c8df-42c6-8b24-a6d93b6e60dc___Mary_HL 9332_new30degFlipLR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/23b44f6d-0a70-4587-85ac-534ca483a49e___Mary_HL 9296_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/9effa4a0-acd4-420c-bb44-535b4834ab67___Mary_HL 9295_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/27ef7a65-771c-4eab-9169-03a5fa121c71___Mary_HL 9195_180deg.JPG",
+   "train": "train/Raspberry___healthy/7626213e-3f4a-4551-b7f0-3c0915e267d9___Mary_HL 9196_180deg.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/28b1e241-4234-4710-893c-b75c6dec6fa7___Mary_HL 9299.JPG",
+   "train": "train/Raspberry___healthy/28b1e241-4234-4710-893c-b75c6dec6fa7___Mary_HL 9299_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/37557051-4ace-415d-851b-5c01eb006fcf___Mary_HL 9209_270deg.JPG",
+   "train": "train/Raspberry___healthy/7f719590-e1de-45b9-8ebf-96403795f185___Mary_HL 9210_270deg.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/37557051-4ace-415d-851b-5c01eb006fcf___Mary_HL 9209_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/376a1bda-3613-4275-be2f-2060422e4398___Mary_HL 9211_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/63accf9d-25b2-48f3-8e57-c244b20d9787___Mary_HL 9251_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/63accf9d-25b2-48f3-8e57-c244b20d9787___Mary_HL 9251.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/6e1e9d62-fe33-4df9-8f02-8603c21b06a1___Mary_HL 9231_180deg.JPG",
+   "train": "train/Raspberry___healthy/e1b5fa88-4c95-4845-a422-20c96d77b384___Mary_HL 9229_180deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/72f3a2a3-41c8-46ea-9621-c249c4eaf75f___Mary_HL 9290.JPG",
+   "train": "train/Raspberry___healthy/72f3a2a3-41c8-46ea-9621-c249c4eaf75f___Mary_HL 9290_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/75516457-ea59-483c-821c-5f173575702f___Mary_HL 9225_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/afe05bf6-ccef-4665-8a62-6a4a4c2d2939___Mary_HL 9239_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/837ce07f-c8df-42c6-8b24-a6d93b6e60dc___Mary_HL 9332_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/21db22b7-4541-4ab5-aaad-707b22f09cb4___Mary_HL 9334_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/8e5806cd-b3f0-4737-8be0-9b7726d8b33c___Mary_HL 9165_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/ecd85c83-4675-4657-9c48-ca9ef7bdd1ef___Mary_HL 9157_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/9fef3df4-201a-4c35-ba56-1142ccebeba0___Mary_HL 9230_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/e1b5fa88-4c95-4845-a422-20c96d77b384___Mary_HL 9229_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/a2a60055-0788-42e6-9ab5-b234c1739ebb___Mary_HL 9298.JPG",
+   "train": "train/Raspberry___healthy/a2a60055-0788-42e6-9ab5-b234c1739ebb___Mary_HL 9298_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/b2779283-7f45-4c50-97b5-bfca3c2a87d2___Mary_HL 6387_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/b2779283-7f45-4c50-97b5-bfca3c2a87d2___Mary_HL 6387.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/b2c6d751-869b-4b4e-b521-dda5be29482c___Mary_HL 9173.JPG",
+   "train": "train/Raspberry___healthy/b2c6d751-869b-4b4e-b521-dda5be29482c___Mary_HL 9173_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/d9d314cb-8870-463d-92fc-2561070b7580___Mary_HL 9176_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/d9d314cb-8870-463d-92fc-2561070b7580___Mary_HL 9176.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/dca7fd16-7615-4b8b-86f3-0cffb9632a6e___Mary_HL 9205_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/ead8c507-c422-43d2-8efe-855cd9c0a504___Mary_HL 6279_new30degFlipLR.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/e2bc5cd9-a590-4b06-a610-dec52f74ae1e___Mary_HL 9163_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/98226f66-15a1-40d5-9b62-04ae5b4fd8d5___Mary_HL 9159_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/e52f84a2-6942-4abe-bdd7-eb14156c0361___Mary_HL 9222_new30degFlipLR.JPG",
+   "train": "train/Raspberry___healthy/edd8fa98-a7a1-46c4-81a1-798e5ea6670e___Mary_HL 9217_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/e9a17bb8-bf48-41b4-b106-0b1dae3456d5___Mary_HL 9168_270deg.JPG",
+   "train": "train/Raspberry___healthy/78f64c25-c927-4d0c-ac9d-3138ea00c978___Mary_HL 9166_270deg.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Raspberry___healthy/ead8c507-c422-43d2-8efe-855cd9c0a504___Mary_HL 6279_newPixel25.JPG",
+   "train": "train/Raspberry___healthy/ead8c507-c422-43d2-8efe-855cd9c0a504___Mary_HL 6279.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Soybean___healthy/62924e81-7a12-4ad7-aa26-876b27e0202f___RS_HL 4095.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/3701b877-df2b-49cd-9bb9-066dd6f2f206___JR_HL 9734_180deg.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Soybean___healthy/84694c87-4407-4e77-bd86-99baa800bd5c___RS_HL 4021.JPG",
+   "train": "train/Soybean___healthy/af1154e0-e3b1-4489-8e71-7ac6884da636___RS_HL 5313.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Soybean___healthy/b6b0ce43-ebe2-4ea9-b575-9ba152cd073b___RS_HL 6546.JPG",
+   "train": "train/Soybean___healthy/c0ecc123-52bd-4cbb-aa65-a832e97c3812___RS_HL 6544.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Soybean___healthy/dca141ca-bc6c-41c0-86e6-f9c9d0d2c434___RS_HL 6586.JPG",
+   "train": "train/Soybean___healthy/9959a991-0138-46b5-8d6e-9c49cfc8a064___RS_HL 6584.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Soybean___healthy/e658f526-5097-42fe-a98e-ef864a40e214___RS_HL 2992.JPG",
+   "train": "train/Pepper,_bell___Bacterial_spot/f92689ca-b5db-4a0a-b865-a69ba215922f___JR_B.Spot 9040.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Soybean___healthy/eb6da00a-4294-476a-b2da-210005874d4d___RS_HL 5804.JPG",
+   "train": "train/Soybean___healthy/e020e9ae-583f-4e58-bb03-7dfe4fbfe7e4___RS_HL 5806.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Soybean___healthy/efbb9871-46a4-49d5-b536-49f899784bc5___RS_HL 6848.JPG",
+   "train": "train/Soybean___healthy/e8fb469f-1076-4565-a428-97e11e991127___RS_HL 6849.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Soybean___healthy/f6c17303-68dd-4d84-8232-bc940b029c94___RS_HL 6102.JPG",
+   "train": "train/Soybean___healthy/cf12c31b-2c24-47d3-b04a-1ec52334eed8___RS_HL 6101.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___Leaf_scorch/03e9b07f-582d-4a76-9a9c-aeacc96e4284___RS_L.Scorch 0870.JPG",
+   "train": "train/Strawberry___Leaf_scorch/aed8624d-676c-453f-a0af-cfee0fac55f9___RS_L.Scorch 0869.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___Leaf_scorch/8890b926-3a8e-434e-9775-bba40fb43839___RS_L.Scorch 1027_flipLR.JPG",
+   "train": "train/Apple___healthy/ee4eddac-1368-4d79-950f-e9b09e7cbd24___RS_HL 7704_flipTB.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Strawberry___Leaf_scorch/97fc0a8d-280a-44e2-811d-71419f9a5526___RS_L.Scorch 1277.JPG",
+   "train": "train/Strawberry___Leaf_scorch/cb060904-20f5-4192-b4bf-83ee54be17f0___RS_L.Scorch 1287.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___healthy/7d6ed1f3-f7c9-48a8-a363-bf2ea58f3f67___RS_HL 4839_new30degFlipLR.JPG",
+   "train": "train/Strawberry___healthy/a5f3534e-b953-4925-abfa-999eeb8aaf64___RS_HL 4845_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___healthy/8fc17609-45eb-4a9e-9b71-7a7407936c5f___RS_HL 4394_new30degFlipLR.JPG",
+   "train": "train/Strawberry___healthy/b30220c5-0c39-4953-8e0b-1a2236fd4a8b___RS_HL 4399_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___healthy/a5f3534e-b953-4925-abfa-999eeb8aaf64___RS_HL 4845_270deg.JPG",
+   "train": "train/Strawberry___healthy/7d6ed1f3-f7c9-48a8-a363-bf2ea58f3f67___RS_HL 4839_270deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___healthy/b4d26c7f-f0e0-4ab5-bc2e-a47d4285df67___RS_HL 1998_new30degFlipLR.JPG",
+   "train": "train/Apple___Black_rot/52c66129-6303-4aa4-97e7-8f1c0d24c57a___JR_FrgE.S 2759_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Strawberry___healthy/de6a28bb-b09b-4279-b31b-f716fa637356___RS_HL 1997_new30degFlipLR.JPG",
+   "train": "train/Apple___Apple_scab/80ddd81b-9c75-4711-8012-7ee68af378db___FREC_Scab 3458_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Strawberry___healthy/ed89a94c-9730-4607-8ad4-c23ffb0a8ffb___RS_HL 4532_270deg.JPG",
+   "train": "train/Strawberry___healthy/1345a880-f629-49ea-8524-234770fe3cc6___RS_HL 4529_270deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Strawberry___healthy/fea9a141-9561-4508-bd7d-49cd9412bd2f___RS_HL 1624.JPG",
+   "train": "train/Soybean___healthy/dda1fb19-5ac2-4a68-b49d-d691ad784412___RS_HL 2966.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Tomato___Bacterial_spot/19a4a07c-5e82-4a4f-bc64-9f7d941cab88___GCREC_Bact.Sp 3515.JPG",
+   "train": "train/Tomato___Bacterial_spot/517dac9f-61a6-4e5a-928e-b0009c2d6d47___GCREC_Bact.Sp 3516.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Late_blight/2159d0f7-09ef-46ad-ad49-749e8ce1becc___GHLB2 Leaf 8836.JPG",
+   "train": "train/Tomato___Late_blight/7f533ee8-1d72-486e-b2a6-b5ef2ac7cc88___GHLB2 Leaf 8837.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Late_blight/3fae9c64-18f0-4a67-9f97-554248bb1bed___GHLB_PS Leaf 24 Day 16.jpg",
+   "train": "train/Tomato___Late_blight/5de6da85-f8c4-48c4-b463-3e6bd78884cc___GHLB_PS Leaf 24 Day 16.jpg",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Late_blight/7d2ecdff-4eca-4f8e-b550-166d668498ba___GHLB2 Leaf 8602.JPG",
+   "train": "train/Tomato___Late_blight/7d2ecdff-4eca-4f8e-b550-166d668498ba___GHLB2 Leaf 8602_flipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Late_blight/d6e6897a-5083-4914-9903-804c5684a956___GHLB2 Leaf 102.JPG",
+   "train": "train/Tomato___Late_blight/d81682aa-746b-4e07-af2b-52ebb6f4c017___GHLB2 Leaf 102.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Spider_mites Two-spotted_spider_mite/d83e3292-0be8-43b9-8215-4705a452a08a___Com.G_SpM_FL 1642.JPG",
+   "train": "train/Tomato___Spider_mites Two-spotted_spider_mite/fa0f71aa-5583-4376-ab17-a755cf065aaf___Com.G_SpM_FL 1520.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/02da8ab6-7510-4bf7-a0e3-457f14b6adad___Com.G_TgS_FL 1022.JPG",
+   "train": "train/Tomato___Target_Spot/02da8ab6-7510-4bf7-a0e3-457f14b6adad___Com.G_TgS_FL 1022_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/06a52af1-8456-4d7f-98bc-d5ec26be7083___Com.G_TgS_FL 9923.JPG",
+   "train": "train/Tomato___Target_Spot/06a52af1-8456-4d7f-98bc-d5ec26be7083___Com.G_TgS_FL 9923_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/06ddddf1-c107-4e34-9546-676f00f52254___Com.G_TgS_FL 8070_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/06ddddf1-c107-4e34-9546-676f00f52254___Com.G_TgS_FL 8070.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/0a458dfc-b513-44f2-a3ce-dab4c3adb939___Com.G_TgS_FL 8166.JPG",
+   "train": "train/Tomato___Target_Spot/0a458dfc-b513-44f2-a3ce-dab4c3adb939___Com.G_TgS_FL 8166_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/0ac9e61f-8dda-4628-bbf9-4fd81012b7a3___Com.G_TgS_FL 8245_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/0ac9e61f-8dda-4628-bbf9-4fd81012b7a3___Com.G_TgS_FL 8245.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/0c2bd887-092f-410d-ac56-9b96110665c8___Com.G_TgS_FL 8285.JPG",
+   "train": "train/Tomato___Target_Spot/0c2bd887-092f-410d-ac56-9b96110665c8___Com.G_TgS_FL 8285_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/0e8a96d7-528a-4d09-8263-2a2d92f3c3b1___Com.G_TgS_FL 8337_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/0e8a96d7-528a-4d09-8263-2a2d92f3c3b1___Com.G_TgS_FL 8337.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/0eaa45be-4346-4e3c-ab6f-4ce9f9aec1db___Com.G_TgS_FL 7902.JPG",
+   "train": "train/Tomato___Target_Spot/0eaa45be-4346-4e3c-ab6f-4ce9f9aec1db___Com.G_TgS_FL 7902_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/0f5f2efc-3544-4fbc-8dcc-e623577596bc___Com.G_TgS_FL 9869_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/0f5f2efc-3544-4fbc-8dcc-e623577596bc___Com.G_TgS_FL 9869.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/10e35abb-b0a4-4aa2-a533-ab12c7fbe76a___Com.G_TgS_FL 8035.JPG",
+   "train": "train/Grape___Esca_(Black_Measles)/6f27cc9b-355f-440a-b1eb-7c45319661b0___FAM_B.Msls 4474.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/1a519d98-24e1-48bc-af8b-1e9c6ede95e8___Com.G_TgS_FL 9678_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/1a519d98-24e1-48bc-af8b-1e9c6ede95e8___Com.G_TgS_FL 9678.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/1b0bb2af-424b-4268-9f2b-80e4324b769d___Com.G_TgS_FL 8358_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/1b0bb2af-424b-4268-9f2b-80e4324b769d___Com.G_TgS_FL 8358.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/1b46f9fb-4e90-4cbf-bad5-78414e389be2___Com.G_TgS_FL 8001_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/1b46f9fb-4e90-4cbf-bad5-78414e389be2___Com.G_TgS_FL 8001.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/1c980f09-7e37-4e57-96e5-d18783691134___Com.G_TgS_FL 9908.JPG",
+   "train": "train/Tomato___Target_Spot/1c980f09-7e37-4e57-96e5-d18783691134___Com.G_TgS_FL 9908_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/1dbc3729-aa02-46fb-9276-79a382f62026___Com.G_TgS_FL 7951_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/1dbc3729-aa02-46fb-9276-79a382f62026___Com.G_TgS_FL 7951.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/2a1fa2a0-b6ab-4c9b-984f-ea4108087568___Com.G_TgS_FL 8225.JPG",
+   "train": "train/Tomato___Target_Spot/2a1fa2a0-b6ab-4c9b-984f-ea4108087568___Com.G_TgS_FL 8225_newPixel25.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/2d4f2887-d7e7-4986-ab54-754b8fa3eeb4___Com.G_TgS_FL 8102.JPG",
+   "train": "train/Tomato___Target_Spot/2d4f2887-d7e7-4986-ab54-754b8fa3eeb4___Com.G_TgS_FL 8102_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/2e6677ea-2788-49fd-86bc-1a3d3842725d___Com.G_TgS_FL 1092_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/2e6677ea-2788-49fd-86bc-1a3d3842725d___Com.G_TgS_FL 1092.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/3f273e21-2b93-4327-ad8f-d1d94766b63a___Com.G_TgS_FL 9874_new30degFlipLR.JPG",
+   "train": "train/Apple___Cedar_apple_rust/3762c9a3-83db-44b7-88be-07c048ad293b___FREC_C.Rust 9945_new30degFlipTB.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/4b5b48f8-7d82-400a-af7a-43f7804896c6___Com.G_TgS_FL 9762_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/4b5b48f8-7d82-400a-af7a-43f7804896c6___Com.G_TgS_FL 9762.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/4cf7fd8f-f605-41c6-93ab-76da0119d40a___Com.G_TgS_FL 8162_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/4cf7fd8f-f605-41c6-93ab-76da0119d40a___Com.G_TgS_FL 8162.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/4da7287d-0928-413c-8dbe-965e6db6c8bd___Com.G_TgS_FL 9666.JPG",
+   "train": "train/Tomato___Target_Spot/4da7287d-0928-413c-8dbe-965e6db6c8bd___Com.G_TgS_FL 9666_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/4f742898-78c7-4f18-b98b-937734263cbe___Com.G_TgS_FL 0884.JPG",
+   "train": "train/Tomato___Target_Spot/4f742898-78c7-4f18-b98b-937734263cbe___Com.G_TgS_FL 0884_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/6eddf6dc-415f-4e8d-b6b6-3080370e228b___Com.G_TgS_FL 0659_newPixel25.JPG",
+   "train": "train/Tomato___Target_Spot/6eddf6dc-415f-4e8d-b6b6-3080370e228b___Com.G_TgS_FL 0659.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Target_Spot/fddfa96b-42a0-43f1-bbee-eac32d7caff7___Com.G_TgS_FL 9820.JPG",
+   "train": "train/Tomato___Bacterial_spot/166a69a7-cae0-4e6e-ac75-bc207a5335f4___GCREC_Bact.Sp 5705.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Tomato___Tomato_Yellow_Leaf_Curl_Virus/a662a4ac-6f3d-4a2b-993e-448608bf97e3___UF.GRC_YLCV_Lab 01649.JPG",
+   "train": "train/Apple___Cedar_apple_rust/8fd46690-5e57-47f6-8d99-235d4738411f___FREC_C.Rust 0074_270deg.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/1170f108-86a3-4bc6-8a06-c82e55178f91___PSU_CG 2327.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/1170f108-86a3-4bc6-8a06-c82e55178f91___PSU_CG 2327_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/1f675039-385d-4438-b157-db0c95673580___PSU_CG 2100_new30degFlipLR.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/658e96ee-271d-442b-876e-a52970ff540f___PSU_CG 2269_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/23987cfe-9866-46ce-b4ec-49ad82ede267___PSU_CG 2224_90deg.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/c03d1596-7911-42f1-bbf3-3f3c052b3e76___PSU_CG 2223_90deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/23987cfe-9866-46ce-b4ec-49ad82ede267___PSU_CG 2224_new30degFlipLR.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/c03d1596-7911-42f1-bbf3-3f3c052b3e76___PSU_CG 2223_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/388f46e3-32d3-45f3-84fd-12cb06feed12___PSU_CG 2119_new30degFlipLR.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/4ab5b752-6622-42f2-8743-fa9c9b03e137___PSU_CG 2120_new30degFlipLR.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/49a98ba1-a1b1-4d4b-85af-29aa6648fc64___PSU_CG 2292.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/49a98ba1-a1b1-4d4b-85af-29aa6648fc64___PSU_CG 2292_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/4ab5b752-6622-42f2-8743-fa9c9b03e137___PSU_CG 2120.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/4ab5b752-6622-42f2-8743-fa9c9b03e137___PSU_CG 2120_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/503c6a57-2af3-48ed-b96f-e2cbf6fb5dd1___PSU_CG 2263_newPixel25.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/503c6a57-2af3-48ed-b96f-e2cbf6fb5dd1___PSU_CG 2263.JPG",
+   "distance": 1,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/55117128-4dcf-4b3a-bde6-9f42a18d4b24___PSU_CG 2377.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/55117128-4dcf-4b3a-bde6-9f42a18d4b24___PSU_CG 2377_newPixel25.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/570486a0-abe0-4046-add9-14aab37de620___PSU_CG 2313.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/570486a0-abe0-4046-add9-14aab37de620___PSU_CG 2313_newPixel25.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/6e67c953-5934-439c-8303-e1762793a36a___PSU_CG 2181_90deg.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/2370fa79-6f15-4ae5-a3cb-2d585a0043c2___PSU_CG 2178_90deg.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/7569fab7-ac19-4ac4-a01b-b77a4abb0c29___PSU_CG 2350.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/c3ddea5d-2076-46cf-8769-0d200185c259___PSU_CG 2348.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/8b75624a-5775-4d44-a2e0-62243632b4a9___PSU_CG 2279.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/8b75624a-5775-4d44-a2e0-62243632b4a9___PSU_CG 2279_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/c03d1596-7911-42f1-bbf3-3f3c052b3e76___PSU_CG 2223.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/c03d1596-7911-42f1-bbf3-3f3c052b3e76___PSU_CG 2223_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/d5632be7-268d-4781-8986-b71a6449be9c___PSU_CG 2413_new30degFlipLR.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/860780b3-9c8b-4f90-9010-ac255e953784___PSU_CG 2150_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/db0867bf-ca5a-4dd0-99e0-6d41efaffff6___PSU_CG 2334.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/db0867bf-ca5a-4dd0-99e0-6d41efaffff6___PSU_CG 2334_newPixel25.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/efc00b83-9c44-48f5-b6ff-3acc4f5b0875___PSU_CG 2345.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/efc00b83-9c44-48f5-b6ff-3acc4f5b0875___PSU_CG 2345_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/f600fd06-c834-4305-83b2-ee1bd08cea49___PSU_CG 2235_newPixel25.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/f600fd06-c834-4305-83b2-ee1bd08cea49___PSU_CG 2235.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___Tomato_mosaic_virus/f85cef40-132b-4be8-8781-d8e5c14c7f22___PSU_CG 2242_newPixel25.JPG",
+   "train": "train/Tomato___Tomato_mosaic_virus/f85cef40-132b-4be8-8781-d8e5c14c7f22___PSU_CG 2242.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/02d94768-da6d-4c1a-b8b3-fa2e5a2fcd4d___RS_HL 0449.JPG",
+   "train": "train/Tomato___healthy/02d94768-da6d-4c1a-b8b3-fa2e5a2fcd4d___RS_HL 0449_newPixel25.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/0aacdad5-c9b9-4309-96e3-0797bbed1375___RS_HL 9836.JPG",
+   "train": "train/Tomato___healthy/0aacdad5-c9b9-4309-96e3-0797bbed1375___RS_HL 9836_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/0caff918-5807-40f2-b9e4-7dd34a7bab5d___RS_HL 0345.JPG",
+   "train": "train/Tomato___healthy/0caff918-5807-40f2-b9e4-7dd34a7bab5d___RS_HL 0345_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/0de569a8-21c5-4d22-b9c9-ba0ef0f2b614___RS_HL 0314.JPG",
+   "train": "train/Tomato___healthy/0de569a8-21c5-4d22-b9c9-ba0ef0f2b614___RS_HL 0314_newPixel25.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/0fee8af3-ca03-418c-a71c-c4fb0a80dc7b___RS_HL 0199.JPG",
+   "train": "train/Tomato___healthy/0fee8af3-ca03-418c-a71c-c4fb0a80dc7b___RS_HL 0199_newPixel25.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/1a0b9a32-3993-44e4-879f-338cd6e45a09___GH_HL Leaf 178_new30degFlipLR.JPG",
+   "train": "train/Tomato___healthy/0fd3432a-e22a-4a71-9a63-1c56ee4ce067___GH_HL Leaf 463.1_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/1af0bfe1-4bcf-4b8b-be66-5d0953eb647e___GH_HL Leaf 482.2.JPG",
+   "train": "train/Tomato___healthy/cfd491d6-4af5-4728-8f0e-0d330a07174a___GH_HL Leaf 482.2.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/1b6ac535-3a40-40c7-a626-d11181dfb5a4___GH_HL Leaf 304_new30degFlipLR.JPG",
+   "train": "train/Tomato___healthy/2db5d3de-824c-4e62-9db1-e271d13ea27e___GH_HL Leaf 273.1_new30degFlipLR.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/1ca3c77d-13d8-43cc-929f-9c3a79e5dd1b___RS_HL 0250.JPG",
+   "train": "train/Tomato___healthy/1ca3c77d-13d8-43cc-929f-9c3a79e5dd1b___RS_HL 0250_newPixel25.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/1d1017be-8cd6-4967-894b-1b9fb89d7d6e___RS_HL 0270_newPixel25.JPG",
+   "train": "train/Tomato___healthy/1d1017be-8cd6-4967-894b-1b9fb89d7d6e___RS_HL 0270.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/1e1aa3d8-d12f-47e1-b316-b8656ab3f2b6___RS_HL 0075_newPixel25.JPG",
+   "train": "train/Tomato___healthy/1e1aa3d8-d12f-47e1-b316-b8656ab3f2b6___RS_HL 0075.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/2b8306e4-7898-4f27-b659-b0061c4c3832___RS_HL 0440.JPG",
+   "train": "train/Tomato___healthy/2b8306e4-7898-4f27-b659-b0061c4c3832___RS_HL 0440_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/2d66100e-9a61-412b-95da-2b852de7a447___RS_HL 9950_newPixel25.JPG",
+   "train": "train/Tomato___healthy/2d66100e-9a61-412b-95da-2b852de7a447___RS_HL 9950.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/3be4b3ce-9fc7-4216-98f0-abd0faa9e45c___RS_HL 9945_newPixel25.JPG",
+   "train": "train/Tomato___healthy/3be4b3ce-9fc7-4216-98f0-abd0faa9e45c___RS_HL 9945.JPG",
+   "distance": 2,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/3e51f746-2ed2-4eb4-96e7-f6717ec068fd___RS_HL 0122_flipTB.JPG",
+   "train": "train/Cherry_(including_sour)___healthy/ff11a187-14dc-4743-9930-1e1cf276273b___JR_HL 4101_180deg.JPG",
+   "distance": 4,
+   "same_class": false
+  },
+  {
+   "valid": "valid/Tomato___healthy/3eb7e000-68e2-4cf3-b202-2aaf17642cb4___RS_HL 9957_newPixel25.JPG",
+   "train": "train/Tomato___healthy/3eb7e000-68e2-4cf3-b202-2aaf17642cb4___RS_HL 9957.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/4bd918e2-ac0a-41b4-b1a0-f1bb799a309c___RS_HL 9846.JPG",
+   "train": "train/Tomato___healthy/4bd918e2-ac0a-41b4-b1a0-f1bb799a309c___RS_HL 9846_newPixel25.JPG",
+   "distance": 3,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/96d85e53-b980-42f7-8e3d-cd6f7ec9c287___GH_HL Leaf 520.5.JPG",
+   "train": "train/Tomato___healthy/e8d0f3de-312b-4316-aca4-798a51ebd423___GH_HL Leaf 520.1.JPG",
+   "distance": 4,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/e786ac89-29fe-47e3-b49e-b9a9ee7edd9d___GH_HL Leaf 342.1.JPG",
+   "train": "train/Tomato___healthy/37aad83b-7ff8-4b35-b3ed-fb8e0f54910b___GH_HL Leaf 342.1.JPG",
+   "distance": 0,
+   "same_class": true
+  },
+  {
+   "valid": "valid/Tomato___healthy/eab401a8-c014-4a63-98d4-b6144cfc7bc9___GH_HL Leaf 289.JPG",
+   "train": "train/Tomato___healthy/d5beabbd-afc7-41c5-aa06-ec45c32e751e___GH_HL Leaf 289.1.JPG",
+   "distance": 4,
+   "same_class": true
+  }
+ ]
+}

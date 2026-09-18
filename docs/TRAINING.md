@@ -52,10 +52,20 @@ python scripts/evaluate_models.py --device cpu --threads 4 --batch-size 64
 python scripts/evaluate_models.py --models hybrid # одна модель
 ```
 
-Скрипт пишет `models/model_metrics.json` (accuracy, top-5, macro precision/recall/F1, время инференса,
-размер) и `results/metrics/<name>_validation.json` (метрики по классам, матрица ошибок 38×38,
-наиболее путаемые пары), а также считает ансамбль всех обученных моделей. Именно эти файлы
-показывает веб-приложение — в коде нет захардкоженных метрик.
+Скрипт пишет `models/model_metrics.json` (accuracy, top-5, macro precision/recall/F1, ECE до и после
+temperature scaling, время инференса, размер), `results/metrics/<name>_validation.json` (метрики по классам,
+матрица ошибок 38×38, путаемые пары, бины диаграммы надёжности), `results/metrics/<name>_probs.npz`
+(вероятности для пост-анализа) и `results/metrics/model_comparison.json` (попарный тест МакНемара,
+точность на valid без почти-дубликатов из train — см. `scripts/check_duplicates.py`). Ансамбль всех
+обученных моделей считается там же. Именно эти файлы показывает веб-приложение — в коде нет захардкоженных
+метрик. `--analysis-only` пересчитывает калибровку/статистику из сохранённых вероятностей без инференса.
+
+## 3a. Утечка train/valid и таблицы для диссертации
+
+```bash
+python scripts/check_duplicates.py      # results/metrics/duplicates.{json,md}: valid-изображения с почти-дубликатом в train
+python scripts/make_thesis_tables.py    # docs/thesis/*.tex + tables.md из JSON-метрик
+```
 
 ## 4. Доменная адаптация
 

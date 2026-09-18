@@ -94,7 +94,23 @@ def summarise(seeds: list[int]) -> dict:
             }
 
     all27 = collect("eval_baseline_source_all27")
+    zero_shot = {}
+    for arch, focus_name, all_name in (
+        ("baseline", "eval_baseline_baseline", "eval_baseline_baseline_all27"),
+        ("efficientnet", "eval_baseline_efficientnet", "eval_baseline_efficientnet_all27"),
+        ("mobilenet", "eval_baseline_source", "eval_baseline_source_all27"),
+        ("hybrid", "eval_baseline_hybrid", "eval_baseline_hybrid_all27"),
+    ):
+        f, a = collect(focus_name), collect(all_name)
+        if f:
+            zero_shot[arch] = {
+                "focus_eval_open": f["eval"]["open"]["accuracy"],
+                "focus_eval_restricted": f["eval"]["restricted"]["accuracy"],
+                "all27_test_open": a["test"]["open"]["accuracy"] if a else None,
+                "all27_top5": a["test"]["top5_open"] if a else None,
+            }
     return {
+        "zero_shot_by_arch": zero_shot,
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "seeds": seeds,
         "protocol": {
@@ -204,6 +220,11 @@ def main():
     if want("baseline"):
         run("da.evaluate", *common, skip_if=skip("eval_baseline_source"))
         run("da.evaluate", "--classes", "all", *common, skip_if=skip("eval_baseline_source_all27"))
+        # zero-shot generalisation of the other PlantVillage architectures (needs their weights in models/)
+        for arch in ("baseline", "efficientnet", "hybrid"):
+            if (C.MODELS_DIR / f"{arch}_model.pth").exists():
+                run("da.evaluate", "--arch", arch, *common, skip_if=skip(f"baseline_{arch}"))
+                run("da.evaluate", "--arch", arch, "--classes", "all", *common, skip_if=skip(f"baseline_{arch}_all27"))
     for seed in args.seeds:
         s = ["--seed", str(seed)]
         if want("self_training"):

@@ -51,7 +51,7 @@ select = ["E", "F", "W", "I", "UP", "B"]
 ignore = ["E402", "E501", "E731", "B008", "B905"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["config", "model", "explain", "field_model", "labels", "treatments", "validation", "export_utils", "report_generator", "app", "da"]
+known-first-party = ["config", "model", "explain", "field_model", "labels", "treatments", "validation", "export_utils", "report_generator", "history", "app", "da"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

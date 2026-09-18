@@ -65,6 +65,18 @@
 
 ### `POST /api/batch` — `{"image_paths": [...], "model": "...", "explanation": "..."}`
 
+## Журнал анализов
+
+Каждый успешный `predict` / `ensemble` / `batch` записывается в SQLite (`results/history.sqlite`, отключается
+`CROP_HISTORY=false`). Хранится миниатюра 160 px и результат без больших изображений.
+
+| Метод | Путь | Описание |
+|---|---|---|
+| GET | `/api/history?limit=&offset=&model=&plant=&healthy=0\|1&q=` | записи (новые первыми), `total` |
+| GET | `/api/history/stats` | всего, доля здоровых, топ классов, по культурам, по моделям, по дням |
+| GET | `/api/history/<id>` | полная запись с результатом |
+| DELETE | `/api/history/<id>`, `/api/history` | удалить запись / очистить журнал |
+
 ## Экспорт
 
 | Путь | Тело | Результат |
