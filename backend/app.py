@@ -414,6 +414,14 @@ def create_app(load_models: bool = True, models=None) -> Flask:
     def history_page():
         return send_from_directory(config.FRONTEND_DIR, "history.html")
 
+    @app.route("/api/comparison")
+    def comparison():
+        """Pairwise McNemar tests and de-duplicated accuracy (results/metrics/model_comparison.json)."""
+        path = config.METRICS_DIR / "model_comparison.json"
+        if not path.exists():
+            return _error("No comparison file; run scripts/evaluate_models.py", 404)
+        return jsonify({"success": True, **json.loads(path.read_text(encoding="utf-8"))})
+
     @app.route("/api/research")
     def research():
         """Domain adaptation study summary (written by domain_adaptation_experiments/da/run_all.py)."""

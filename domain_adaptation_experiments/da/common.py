@@ -94,6 +94,7 @@ FOCUS_CLASSES = {
 EASY_CLASSES = {"Squash Powdery mildew leaf": 25, "Tomato leaf late blight": 30}
 HARD_CLASSES = {"Corn Gray leaf spot": 7, "Corn leaf blight": 9}
 FOCUS_IDX = sorted(FOCUS_CLASSES.values())
+ACTIVE_IDX = FOCUS_IDX  # class set of the current run (set by setup(); 4 focus classes by default)
 
 IMG_SIZE = 224
 MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
@@ -290,7 +291,8 @@ def restricted_argmax(probs: np.ndarray, allowed: list[int]) -> np.ndarray:
     return masked.argmax(1)
 
 
-def compute_metrics(labels: np.ndarray, preds: np.ndarray, classes: list[int] = FOCUS_IDX) -> dict:
+def compute_metrics(labels: np.ndarray, preds: np.ndarray, classes: list[int] | None = None) -> dict:
+    classes = list(classes) if classes is not None else list(ACTIVE_IDX)
     correct = int((labels == preds).sum())
     n = len(labels)
     acc = correct / n if n else 0.0
@@ -324,8 +326,9 @@ def compute_metrics(labels: np.ndarray, preds: np.ndarray, classes: list[int] = 
 
 
 def evaluate_model(
-    model: nn.Module, device, splits: dict[str, list], batch_size=64, workers=0, classes: list[int] = FOCUS_IDX
+    model: nn.Module, device, splits: dict[str, list], batch_size=64, workers=0, classes: list[int] | None = None
 ) -> dict:
+    classes = list(classes) if classes is not None else list(ACTIVE_IDX)
     """Evaluate on dev, test and dev+test; both open-set (38-way) and restricted (4-way) argmax."""
     out = {}
     tf = eval_transform()
@@ -396,7 +399,7 @@ def dev_accuracy_fn(model, device, splits, batch_size=64, workers=0, mode="open"
 
     def fn(*_):
         probs, labels = predict(model, loader, device)
-        preds = probs.argmax(1) if mode == "open" else restricted_argmax(probs, FOCUS_IDX)
+        preds = probs.argmax(1) if mode == "open" else restricted_argmax(probs, ACTIVE_IDX)
         return {"dev_acc": float((preds == labels).mean())}
 
     return fn
@@ -404,7 +407,10 @@ def dev_accuracy_fn(model, device, splits, batch_size=64, workers=0, mode="open"
 
 def describe_splits(splits: dict) -> dict:
     return {
-        name: {"n": len(items), "per_class": {short_name(c): sum(1 for _, lbl in items if lbl == c) for c in FOCUS_IDX}}
+        name: {
+            "n": len(items),
+            "per_class": {short_name(c): sum(1 for _, lbl in items if lbl == c) for c in ACTIVE_IDX},
+        }
         for name, items in splits.items()
         if not name.startswith("_")
     }
@@ -419,11 +425,14 @@ def common_args(parser):
     return parser
 
 
-def setup(args):
+def setup(args, mapping: dict[str, int] = FOCUS_CLASSES):
+    """Device, seed and splits. `mapping` selects the class set (focus 4 by default, or all 27)."""
+    global ACTIVE_IDX
     if args.threads:
         torch.set_num_threads(args.threads)
     set_seed(args.seed)
     device = pick_device(args.device)
-    splits = make_splits()
+    ACTIVE_IDX = sorted(mapping.values())
+    splits = make_splits(mapping)
     print(f"device={device}  splits={ {k: v['n'] for k, v in describe_splits(splits).items()} }")
     return device, splits

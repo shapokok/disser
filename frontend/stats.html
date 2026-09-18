@@ -36,6 +36,7 @@
         <button role="tab" data-tab="training" aria-selected="false" data-i18n="stats.tab_training"></button>
         <button role="tab" data-tab="classes" aria-selected="false" data-i18n="stats.tab_classes"></button>
         <button role="tab" data-tab="confusion" aria-selected="false" data-i18n="stats.tab_confusion"></button>
+        <button role="tab" data-tab="calibration" aria-selected="false" data-i18n="stats.tab_calibration"></button>
         <button role="tab" data-tab="research" aria-selected="false" data-i18n="stats.tab_research"></button>
       </div>
 
@@ -82,6 +83,14 @@
           <div class="card-body"><div class="cm-wrap" id="cmGrid"></div></div>
         </div>
         <div class="card"><div class="card-head"><h3 data-i18n="stats.confused_pairs"></h3></div><div class="table-wrap" id="cmPairs"></div></div>
+      </section>
+
+      <section class="tab-panel stack" id="tab-calibration" hidden>
+        <div class="card"><div class="card-body prose"><h3 data-i18n="stats.calibration_title"></h3><p class="small muted" data-i18n="stats.calibration_text"></p></div></div>
+        <div class="grid grid-2">
+          <div class="card chart-card"><div class="card-body"><p class="chart-title" data-i18n="stats.chart_reliability"></p><p class="chart-sub" data-i18n="stats.chart_reliability_sub"></p><div class="chart-box"><canvas id="reliabilityChart"></canvas></div></div></div>
+          <div class="card"><div class="card-head"><h3 data-i18n="stats.calibration_table"></h3></div><div class="table-wrap" id="calibrationTable"></div><div class="table-wrap" id="mcnemarTable"></div></div>
+        </div>
       </section>
 
       <section class="tab-panel stack" id="tab-research" hidden>

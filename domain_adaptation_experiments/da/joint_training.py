@@ -30,8 +30,11 @@ def main():
     p.add_argument("--init", default=None, help="starting checkpoint (default: PlantVillage source model)")
     p.add_argument("--name", default=None)
     p.add_argument("--augment", default="heavy", choices=["heavy", "light"])
+    p.add_argument(
+        "--classes", default="focus", choices=["focus", "all"], help="4 focus classes or all 27 overlapping ones"
+    )
     args = p.parse_args()
-    device, splits = C.setup(args)
+    device, splits = C.setup(args, mapping=C.PLANTDOC_TO_PV if args.classes == "all" else C.FOCUS_CLASSES)
     name = args.name or f"joint_seed{args.seed}"
 
     model = C.load_checkpoint(Path(args.init), device) if args.init else C.load_source_model(device)

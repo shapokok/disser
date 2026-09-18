@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 640" width="1180" height="640" font-family="Inter, Manrope, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#48594e"/>
+    </marker>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#125a32"/><stop offset="1" stop-color="#7fcf4a"/></linearGradient>
+    <style>
+      .box{fill:#ffffff;stroke:#c9d2c6;stroke-width:1.2;rx:12}
+      .zone{fill:#f4f6f1;stroke:#dbe2d6;stroke-dasharray:6 4;rx:16}
+      .t{font-size:13px;fill:#0f1a13}
+      .h{font-size:14px;font-weight:700;fill:#0f1a13}
+      .s{font-size:11px;fill:#48594e}
+      .z{font-size:12px;font-weight:700;fill:#0e4a2a;letter-spacing:.08em}
+      .arrow{stroke:#48594e;stroke-width:1.6;fill:none;marker-end:url(#arr)}
+      .mono{font-family:Menlo, Consolas, monospace;font-size:11px;fill:#48594e}
+    </style>
+  </defs>
+  <rect width="1180" height="640" fill="#ffffff"/>
+  <text x="24" y="34" class="h" font-size="18">Архитектура системы CropAI Monitor</text>
+  <text x="24" y="54" class="s">браузер → Flask API → модели и объяснимость → рекомендации, отчёты, журнал; отдельный контур — исследование доменной адаптации</text>
+
+  <!-- zone: client -->
+  <rect x="24" y="80" width="250" height="300" class="zone"/>
+  <text x="40" y="104" class="z">КЛИЕНТ (браузер)</text>
+  <rect x="40" y="120" width="218" height="54" class="box"/>
+  <text x="52" y="142" class="t">index / analyze / history / stats</text>
+  <text x="52" y="160" class="s">HTML + CSS + JS, ru/en, темы</text>
+  <rect x="40" y="186" width="218" height="54" class="box"/>
+  <text x="52" y="208" class="t">Загрузка фото, выбор модели</text>
+  <text x="52" y="226" class="s">drag-and-drop, камера, ансамбль</text>
+  <rect x="40" y="252" width="218" height="54" class="box"/>
+  <text x="52" y="274" class="t">Chart.js (локально)</text>
+  <text x="52" y="292" class="s">метрики, матрица ошибок, журнал</text>
+  <rect x="40" y="318" width="218" height="46" class="box"/>
+  <text x="52" y="340" class="t">Экспорт PDF / Excel / CSV / JSON</text>
+
+  <!-- zone: API -->
+  <rect x="314" y="80" width="300" height="470" class="zone"/>
+  <text x="330" y="104" class="z">BACKEND (Flask, backend/app.py)</text>
+  <rect x="330" y="120" width="268" height="60" class="box"/>
+  <text x="342" y="142" class="t">REST API</text>
+  <text x="342" y="160" class="mono">/api/upload  /api/predict  /api/ensemble</text>
+  <text x="342" y="174" class="mono">/api/compare /api/stats   /api/history</text>
+  <rect x="330" y="194" width="268" height="52" class="box"/>
+  <text x="342" y="216" class="t">config.py — CROP_* окружение</text>
+  <text x="342" y="234" class="s">порт, устройство (cuda/mps/cpu), пути</text>
+  <rect x="330" y="260" width="268" height="52" class="box"/>
+  <text x="342" y="282" class="t">explain.py — Grad-CAM, LIME</text>
+  <text x="342" y="300" class="s">карты внимания, JPEG-превью</text>
+  <rect x="330" y="326" width="268" height="52" class="box"/>
+  <text x="342" y="348" class="t">treatments.py + labels.py</text>
+  <text x="342" y="366" class="s">38 классов, рекомендации ru/en</text>
+  <rect x="330" y="392" width="268" height="52" class="box"/>
+  <text x="342" y="414" class="t">report_generator.py, export_utils.py</text>
+  <text x="342" y="432" class="s">PDF (кириллица), Excel, CSV, JSON</text>
+  <rect x="330" y="458" width="268" height="52" class="box"/>
+  <text x="342" y="480" class="t">history.py — журнал (SQLite)</text>
+  <text x="342" y="498" class="s">динамика диагнозов во времени</text>
+
+  <!-- zone: models -->
+  <rect x="654" y="80" width="250" height="470" class="zone"/>
+  <text x="670" y="104" class="z">МОДЕЛИ (model.py)</text>
+  <rect x="670" y="120" width="218" height="70" class="box"/>
+  <text x="682" y="142" class="t">ModelManager</text>
+  <text x="682" y="160" class="s">загрузка весов, метрики, ансамбль</text>
+  <text x="682" y="176" class="s">взвешенный по точности, неопределённость</text>
+  <rect x="670" y="204" width="218" height="40" class="box"/><rect x="670" y="204" width="6" height="40" fill="#2a78d6"/>
+  <text x="686" y="229" class="t">Baseline CNN</text>
+  <rect x="670" y="252" width="218" height="40" class="box"/><rect x="670" y="252" width="6" height="40" fill="#eb6834"/>
+  <text x="686" y="277" class="t">EfficientNet-B0</text>
+  <rect x="670" y="300" width="218" height="40" class="box"/><rect x="670" y="300" width="6" height="40" fill="#1baf7a"/>
+  <text x="686" y="325" class="t">MobileNet-V2</text>
+  <rect x="670" y="348" width="218" height="40" class="box"/><rect x="670" y="348" width="6" height="40" fill="#eda100"/>
+  <text x="686" y="373" class="t">Hybrid CNN-Transformer</text>
+  <rect x="670" y="404" width="218" height="58" class="box"/><rect x="670" y="404" width="6" height="58" fill="#008300"/>
+  <text x="686" y="426" class="t">field_model.py</text>
+  <text x="686" y="444" class="s">MobileNet-V2, адаптированная к PlantDoc</text>
+  <rect x="670" y="474" width="218" height="60" class="box"/>
+  <text x="682" y="496" class="t">models/ · results/metrics/</text>
+  <text x="682" y="514" class="s">веса, model_metrics.json, валидация</text>
+
+  <!-- zone: data & scripts -->
+  <rect x="944" y="80" width="212" height="470" class="zone"/>
+  <text x="960" y="104" class="z">ДАННЫЕ И СКРИПТЫ</text>
+  <rect x="960" y="120" width="180" height="60" class="box"/>
+  <text x="972" y="142" class="t">PlantVillage</text>
+  <text x="972" y="160" class="s">70 295 train / 17 572 valid</text>
+  <text x="972" y="174" class="s">38 классов, 14 культур</text>
+  <rect x="960" y="194" width="180" height="60" class="box"/>
+  <text x="972" y="216" class="t">PlantDoc</text>
+  <text x="972" y="234" class="s">полевые снимки, 27 общих</text>
+  <text x="972" y="248" class="s">классов, 4 в фокусе</text>
+  <rect x="960" y="268" width="180" height="82" class="box"/>
+  <text x="972" y="290" class="t">scripts/</text>
+  <text x="972" y="308" class="s">train_models · evaluate_models</text>
+  <text x="972" y="322" class="s">check_duplicates · export_onnx</text>
+  <text x="972" y="336" class="s">robustness_eval · thesis_tables</text>
+  <rect x="960" y="364" width="180" height="96" class="box"/>
+  <text x="972" y="386" class="t">domain_adaptation_experiments/da</text>
+  <text x="972" y="404" class="s">evaluate · self_training</text>
+  <text x="972" y="418" class="s">joint_training · progressive · tta</text>
+  <text x="972" y="432" class="s">run_all → summary, figures,</text>
+  <text x="972" y="446" class="s">field_mobilenet_da.pth</text>
+  <rect x="960" y="474" width="180" height="60" class="box"/>
+  <text x="972" y="496" class="t">Тесты и CI</text>
+  <text x="972" y="514" class="s">pytest · Playwright · ruff</text>
+  <text x="972" y="528" class="s">GitHub Actions · Docker</text>
+
+  <!-- arrows -->
+  <path d="M258 147 L330 147" class="arrow"/>
+  <text x="264" y="140" class="s">HTTP/JSON</text>
+  <path d="M598 150 L670 150" class="arrow"/>
+  <path d="M598 286 L670 224" class="arrow"/>
+  <path d="M888 320 L960 320" class="arrow" transform="translate(0,-6)"/>
+  <text x="893" y="308" class="s">веса, метрики</text>
+  <path d="M960 412 L888 432" class="arrow"/>
+  <path d="M1050 180 L1050 194" class="arrow"/>
+  <path d="M1050 254 L1050 268" class="arrow"/>
+
+  <!-- flow strip -->
+  <rect x="24" y="576" width="1132" height="44" rx="12" fill="url(#g)"/>
+  <text x="44" y="603" font-size="13" fill="#ffffff" font-weight="700">Поток анализа:</text>
+  <text x="160" y="603" font-size="13" fill="#ffffff">фото → препроцессинг 224×224 → модель / ансамбль → Grad-CAM или LIME → диагноз + top-5 + рекомендации → журнал → отчёт</text>
+</svg>

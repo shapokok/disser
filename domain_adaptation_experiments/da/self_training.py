@@ -31,11 +31,16 @@ def main():
     p.add_argument("--conf-start", type=float, default=0.85)
     p.add_argument("--conf-end", type=float, default=0.65)
     p.add_argument("--name", default=None)
+    p.add_argument("--no-balance", action="store_true", help="do not class-balance the pseudo-labelled batches")
+    p.add_argument("--freeze-backbone", action="store_true", help="fine-tune only the classifier head")
     args = p.parse_args()
     device, splits = C.setup(args)
     name = args.name or f"self_training_seed{args.seed}"
 
     model = C.load_source_model(device)
+    if args.freeze_backbone:
+        for prm in model.backbone.features.parameters():
+            prm.requires_grad_(False)
     start = C.evaluate_model(model, device, splits, args.batch_size, args.workers)
     print(f"start: {C.headline(start)}")
 
@@ -63,7 +68,12 @@ def main():
 
         items = [splits["adapt"][i] for i in np.where(keep)[0]]
         loader = C.make_loader(
-            items, C.light_augment(), args.batch_size, balanced=True, workers=args.workers, pseudo_labels=pseudo_labels
+            items,
+            C.light_augment(),
+            args.batch_size,
+            balanced=not args.no_balance,
+            workers=args.workers,
+            pseudo_labels=pseudo_labels,
         )
         history = C.train_epochs(
             model,

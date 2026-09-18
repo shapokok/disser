@@ -67,7 +67,7 @@
     $("#evalInfo").textContent = best && best.evaluated_at ? `${t("stats.evaluated_on")}: ${new Date(best.evaluated_at).toLocaleString(i18n.lang === "ru" ? "ru-RU" : "en-US")}` : "";
 
     // table
-    const head = ["common.model", "", "common.accuracy", "common.top5", "common.precision", "common.recall", "common.f1", "common.inference", "common.params", "common.size"];
+    const head = ["common.model", "", "common.accuracy", "common.top5", "common.precision", "common.recall", "common.f1", "stats.ece", "common.inference", "common.params", "common.size"];
     const rows = state.models.map((m) => {
       const st = s.statistics[m.name] || {};
       return el("tr", {}, [
@@ -78,12 +78,13 @@
         el("td", { class: "num", text: fmt.pct(st.precision, 2) }),
         el("td", { class: "num", text: fmt.pct(st.recall, 2) }),
         el("td", { class: "num", text: fmt.pct(st.f1_score, 2) }),
+        el("td", { class: "num", text: st.ece === undefined || st.ece === null ? t("common.na") : st.ece.toFixed(3) }),
         el("td", { class: "num", text: fmt.ms(st.inference_time_ms) }),
         el("td", { class: "num", text: st.parameters || m.parameters || t("common.na") }),
         el("td", { class: "num", text: fmt.mb(st.size_mb) }),
       ]);
     });
-    if (ens) rows.push(el("tr", {}, [el("td", {}, [el("span", { style: { display: "inline-block", width: "10px", height: "10px", borderRadius: "3px", background: modelColor("ensemble"), marginRight: ".5rem" } }), t("stats.tile_ensemble")]), el("td", {}, el("span", { class: "chip accent", text: (Array.isArray(ens.models_combined) ? ens.models_combined.length : ens.models_combined) + " ×" })), el("td", { class: "num", text: fmt.pct(ens.accuracy, 2) }), el("td", { class: "num", text: t("common.na") }), el("td", { class: "num", text: fmt.pct(ens.precision, 2) }), el("td", { class: "num", text: fmt.pct(ens.recall, 2) }), el("td", { class: "num", text: fmt.pct(ens.f1_score, 2) }), el("td", { class: "num", text: fmt.ms(ens.inference_time_ms) }), el("td", { class: "num", text: ens.parameters }), el("td", { class: "num", text: fmt.mb(ens.size_mb) })]));
+    if (ens) rows.push(el("tr", {}, [el("td", {}, [el("span", { style: { display: "inline-block", width: "10px", height: "10px", borderRadius: "3px", background: modelColor("ensemble"), marginRight: ".5rem" } }), t("stats.tile_ensemble")]), el("td", {}, el("span", { class: "chip accent", text: (Array.isArray(ens.models_combined) ? ens.models_combined.length : ens.models_combined) + " ×" })), el("td", { class: "num", text: fmt.pct(ens.accuracy, 2) }), el("td", { class: "num", text: t("common.na") }), el("td", { class: "num", text: fmt.pct(ens.precision, 2) }), el("td", { class: "num", text: fmt.pct(ens.recall, 2) }), el("td", { class: "num", text: fmt.pct(ens.f1_score, 2) }), el("td", { class: "num", text: ens.ece === undefined || ens.ece === null ? t("common.na") : ens.ece.toFixed(3) }), el("td", { class: "num", text: fmt.ms(ens.inference_time_ms) }), el("td", { class: "num", text: ens.parameters }), el("td", { class: "num", text: fmt.mb(ens.size_mb) })]));
     clear($("#modelsTable")).append(el("table", { class: "data" }, [el("thead", {}, el("tr", {}, head.map((k, i) => el("th", { class: i >= 2 ? "num" : "", text: k ? t(k) : "" })))), el("tbody", {}, rows)]));
 
     // charts: nominal categories -> one hue
@@ -200,6 +201,42 @@
     ]));
   }
 
+  // ------------------------------------------------------------------ calibration
+  function renderCalibration() {
+    const table = clear($("#calibrationTable"));
+    const mc = clear($("#mcnemarTable"));
+    const reports = state.reports || {};
+    const names = Object.keys(reports).filter((n) => reports[n].calibration);
+    if (!names.length) {
+      table.append(el("p", { class: "muted", style: { padding: "1rem" }, text: t("stats.no_data") }));
+      chart("reliabilityChart", { type: "bar", data: { labels: [], datasets: [] }, options: { maintainAspectRatio: false } });
+      return;
+    }
+    const s = state.stats.statistics || {};
+    table.append(el("table", { class: "data" }, [
+      el("thead", {}, el("tr", {}, [el("th", { text: t("common.model") }), el("th", { class: "num", text: "ECE" }), el("th", { class: "num", text: t("stats.ece_after") }), el("th", { class: "num", text: "T" }), el("th", { class: "num", text: "NLL" }), el("th", { class: "num", text: t("stats.mean_conf") })])),
+      el("tbody", {}, names.map((n) => { const c = reports[n].calibration; return el("tr", {}, [el("td", { text: modelLabel(n) }), el("td", { class: "num", text: c.ece.toFixed(4) }), el("td", { class: "num", text: c.ece_after_temperature.toFixed(4) }), el("td", { class: "num", text: c.temperature.toFixed(2) }), el("td", { class: "num", text: c.nll.toFixed(3) }), el("td", { class: "num", text: fmt.pct(c.mean_confidence, 1) })]); })),
+    ]));
+    const comp = state.comparison;
+    if (comp && comp.mcnemar && comp.mcnemar.length) {
+      mc.append(el("div", { class: "card-head" }, el("h3", { text: t("stats.mcnemar") })), el("table", { class: "data" }, [
+        el("thead", {}, el("tr", {}, [el("th", { text: "A" }), el("th", { text: "B" }), el("th", { class: "num", text: t("stats.a_only") }), el("th", { class: "num", text: t("stats.b_only") }), el("th", { class: "num", text: "p" })])),
+        el("tbody", {}, comp.mcnemar.map((r) => el("tr", {}, [el("td", { text: modelLabel(r.a) }), el("td", { text: modelLabel(r.b) }), el("td", { class: "num", text: r.b }), el("td", { class: "num", text: r.c }), el("td", { class: "num", text: r.p_value < 0.001 ? "< 0.001" : r.p_value.toFixed(3) })]))),
+      ]));
+    }
+    // reliability diagram: accuracy per confidence bin for the trained models (+ the diagonal)
+    const trained = names.filter((n) => (s[n] || {}).trained !== false);
+    const bins = reports[trained[0]].calibration.bins;
+    const labels = bins.map((b) => `${Math.round(b.lo * 100)}–${Math.round(b.hi * 100)}`);
+    const datasets = trained.slice(0, 4).map((n) => ({ label: modelLabel(n), data: reports[n].calibration.bins.map((b) => (b.accuracy === null ? null : b.accuracy * 100)), backgroundColor: modelColor(n), maxBarThickness: 14 }));
+    datasets.push({ type: "line", label: t("stats.perfect"), data: bins.map((b) => ((b.lo + b.hi) / 2) * 100), borderColor: cssVar("--ink-3"), borderDash: [4, 4], pointRadius: 0, borderWidth: 1.5 });
+    chart("reliabilityChart", {
+      type: "bar",
+      data: { labels, datasets },
+      options: { maintainAspectRatio: false, scales: { x: { title: { display: true, text: t("stats.conf_bin") }, grid: { display: false } }, y: { min: 0, max: 100, ticks: { callback: (v) => v + " %" }, title: { display: true, text: t("common.accuracy") } } }, plugins: { legend: { position: "bottom" }, tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y === null ? "—" : c.parsed.y.toFixed(1) + " %"}` } } } },
+    });
+  }
+
   // ------------------------------------------------------------------ research
   function renderResearch() {
     const body = clear($("#researchBody"));
@@ -263,10 +300,10 @@
   // ------------------------------------------------------------------ load
   async function load() {
     try {
-      const [stats, models, reports, research] = await Promise.all([
-        api("/api/stats"), api("/api/models"), api(`/api/validation/all?lang=${i18n.lang}`).catch(() => ({ reports: {} })), api("/api/research").catch(() => null),
+      const [stats, models, reports, research, comparison] = await Promise.all([
+        api("/api/stats"), api("/api/models"), api(`/api/validation/all?lang=${i18n.lang}`).catch(() => ({ reports: {} })), api("/api/research").catch(() => null), api("/api/comparison").catch(() => null),
       ]);
-      state.stats = stats; state.models = models.models; state.reports = reports.reports || {}; state.research = research;
+      state.stats = stats; state.models = models.models; state.reports = reports.reports || {}; state.research = research; state.comparison = comparison;
       renderAll();
     } catch (e) { toast(e.message, "error", t("common.error")); }
   }
@@ -277,13 +314,14 @@
     fillModelSelects();
     renderClasses();
     renderConfusion();
+    renderCalibration();
     renderResearch();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     $$("#tabs button").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
     const initial = (location.hash || "#overview").slice(1);
-    showTab(["overview", "training", "classes", "confusion", "research"].includes(initial) ? initial : "overview");
+    showTab(["overview", "training", "classes", "confusion", "calibration", "research"].includes(initial) ? initial : "overview");
     $("#classModelSelect").addEventListener("change", renderClasses);
     $("#classSearch").addEventListener("input", renderClasses);
     $("#cmModelSelect").addEventListener("change", renderConfusion);
