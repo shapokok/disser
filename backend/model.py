@@ -1,53 +1,51 @@
 """
-Machine Learning model management and inference
-Supports multiple model architectures: Baseline CNN, EfficientNet, MobileNet, Hybrid CNN-Transformer
+Model architectures and the ModelManager used by the API and the scripts.
+
+The architectures must stay byte-compatible with the saved state dicts in
+models/*.pth, so their module names are unchanged.
 """
 
+from __future__ import annotations
+
+import json
+import os
+from collections import Counter
+from pathlib import Path
+
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import models
-import os
-import json
 
-
-# =======================
-# Model Architectures
-# =======================
+# ---------------------------------------------------------------------------
+# Architectures
+# ---------------------------------------------------------------------------
 
 
 class BaselineCNN(nn.Module):
-    """
-    Baseline CNN model for crop disease classification
-    Simple architecture suitable for initial experiments
-    """
+    """Small four-block CNN trained from scratch (reference model)."""
 
-    def __init__(self, num_classes=38):
-        super(BaselineCNN, self).__init__()
-
+    def __init__(self, num_classes=38, pretrained=False):  # pretrained is ignored: trained from scratch
+        super().__init__()
         self.features = nn.Sequential(
-            # Block 1
             nn.Conv2d(3, 32, kernel_size=3, padding=1),
             nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2, 2),
-            # Block 2
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
             nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2, 2),
-            # Block 3
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
             nn.BatchNorm2d(128),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2, 2),
-            # Block 4
             nn.Conv2d(128, 256, kernel_size=3, padding=1),
             nn.BatchNorm2d(256),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2, 2),
         )
-
         self.classifier = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
@@ -59,110 +57,74 @@ class BaselineCNN(nn.Module):
         )
 
     def forward(self, x):
-        x = self.features(x)
-        x = self.classifier(x)
-        return x
+        return self.classifier(self.features(x))
+
+
+def _weights_or_none(enum_cls, pretrained):
+    if not pretrained:
+        return None
+    try:
+        return enum_cls.IMAGENET1K_V1
+    except Exception:  # pragma: no cover - offline fallback
+        return None
 
 
 class EfficientNetModel(nn.Module):
-    """
-    EfficientNet-B0 based model for crop disease classification
-    Pre-trained on ImageNet, fine-tuned for plant diseases
-    """
+    """EfficientNet-B0 (ImageNet) with a new classifier head."""
 
     def __init__(self, num_classes=38, pretrained=True):
-        super(EfficientNetModel, self).__init__()
+        super().__init__()
+        from torchvision.models import EfficientNet_B0_Weights
 
-        # Load pre-trained EfficientNet-B0 using new weights API
-        if pretrained:
-            try:
-                from torchvision.models import EfficientNet_B0_Weights
-
-                self.backbone = models.efficientnet_b0(
-                    weights=EfficientNet_B0_Weights.IMAGENET1K_V1
-                )
-            except Exception as e:
-                print(f"Warning: Could not load pretrained weights: {e}")
-                print("Loading model without pretrained weights")
-                self.backbone = models.efficientnet_b0(weights=None)
-        else:
+        try:
+            self.backbone = models.efficientnet_b0(weights=_weights_or_none(EfficientNet_B0_Weights, pretrained))
+        except Exception as e:  # download failure -> random init
+            print(f"Warning: could not load EfficientNet ImageNet weights ({e}); using random init")
             self.backbone = models.efficientnet_b0(weights=None)
-
-        # Replace classifier
         in_features = self.backbone.classifier[1].in_features
-        self.backbone.classifier = nn.Sequential(
-            nn.Dropout(0.3), nn.Linear(in_features, num_classes)
-        )
+        self.backbone.classifier = nn.Sequential(nn.Dropout(0.3), nn.Linear(in_features, num_classes))
 
     def forward(self, x):
         return self.backbone(x)
 
 
 class MobileNetModel(nn.Module):
-    """
-    MobileNetV2 based model for crop disease classification
-    Lightweight model suitable for mobile deployment
-    """
+    """MobileNet-V2 (ImageNet) with a new classifier head."""
 
     def __init__(self, num_classes=38, pretrained=True):
-        super(MobileNetModel, self).__init__()
+        super().__init__()
+        from torchvision.models import MobileNet_V2_Weights
 
-        # Load pre-trained MobileNetV2 using new weights API
-        if pretrained:
-            try:
-                from torchvision.models import MobileNet_V2_Weights
-
-                self.backbone = models.mobilenet_v2(
-                    weights=MobileNet_V2_Weights.IMAGENET1K_V1
-                )
-            except Exception as e:
-                print(f"Warning: Could not load pretrained weights: {e}")
-                print("Loading model without pretrained weights")
-                self.backbone = models.mobilenet_v2(weights=None)
-        else:
+        try:
+            self.backbone = models.mobilenet_v2(weights=_weights_or_none(MobileNet_V2_Weights, pretrained))
+        except Exception as e:
+            print(f"Warning: could not load MobileNet ImageNet weights ({e}); using random init")
             self.backbone = models.mobilenet_v2(weights=None)
-
-        # Replace classifier
         in_features = self.backbone.classifier[1].in_features
-        self.backbone.classifier = nn.Sequential(
-            nn.Dropout(0.2), nn.Linear(in_features, num_classes)
-        )
+        self.backbone.classifier = nn.Sequential(nn.Dropout(0.2), nn.Linear(in_features, num_classes))
 
     def forward(self, x):
         return self.backbone(x)
 
 
 class HybridCNNTransformer(nn.Module):
-    """
-    Hybrid CNN-Transformer model combining convolutional features with self-attention
-    Advanced architecture for improved accuracy
-    """
+    """ResNet-50 feature extractor followed by a 2-layer Transformer encoder over the 7x7 feature grid."""
 
-    def __init__(self, num_classes=38):
-        super(HybridCNNTransformer, self).__init__()
+    def __init__(self, num_classes=38, pretrained=True):
+        super().__init__()
+        from torchvision.models import ResNet50_Weights
 
-        # CNN backbone (using ResNet-50 features) with new weights API
         try:
-            from torchvision.models import ResNet50_Weights
-
-            resnet = models.resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
+            resnet = models.resnet50(weights=_weights_or_none(ResNet50_Weights, pretrained))
         except Exception as e:
-            print(f"Warning: Could not load pretrained ResNet weights: {e}")
+            print(f"Warning: could not load ResNet-50 ImageNet weights ({e}); using random init")
             resnet = models.resnet50(weights=None)
-
-        self.cnn_features = nn.Sequential(
-            *list(resnet.children())[:-2]
-        )  # Remove avgpool and fc
-
-        # Transformer encoder
+        self.cnn_features = nn.Sequential(*list(resnet.children())[:-2])
         self.transformer_encoder = nn.TransformerEncoder(
-            nn.TransformerEncoderLayer(
-                d_model=2048, nhead=8, dim_feedforward=2048, dropout=0.1
-            ),
+            nn.TransformerEncoderLayer(d_model=2048, nhead=8, dim_feedforward=2048, dropout=0.1),
             num_layers=2,
+            enable_nested_tensor=False,
         )
-
-        # Classifier
         self.classifier = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
@@ -171,588 +133,314 @@ class HybridCNNTransformer(nn.Module):
         )
 
     def forward(self, x):
-        # CNN feature extraction
-        cnn_out = self.cnn_features(x)  # (B, 2048, H, W)
-
-        # Reshape for transformer: (B, 2048, H, W) -> (H*W, B, 2048)
-        b, c, h, w = cnn_out.shape
-        cnn_out = cnn_out.flatten(2).permute(2, 0, 1)  # (H*W, B, C)
-
-        # Transformer encoding
-        transformer_out = self.transformer_encoder(cnn_out)  # (H*W, B, C)
-
-        # Reshape back: (H*W, B, C) -> (B, C, H, W)
-        transformer_out = transformer_out.permute(1, 2, 0).view(b, c, h, w)
-
-        # Classification
-        output = self.classifier(transformer_out)
-
-        return output
+        feats = self.cnn_features(x)  # (B, 2048, H, W)
+        b, c, h, w = feats.shape
+        seq = feats.flatten(2).permute(2, 0, 1)  # (H*W, B, C)
+        seq = self.transformer_encoder(seq)
+        feats = seq.permute(1, 2, 0).reshape(b, c, h, w)
+        return self.classifier(feats)
 
 
-# =======================
-# Model Manager
-# =======================
+MODEL_TYPES = {
+    "baseline": {
+        "factory": BaselineCNN,
+        "label": "Baseline CNN",
+        "label_ru": "Базовая CNN",
+        "description": "Four-block convolutional network trained from scratch; the reference point.",
+        "description_ru": "Свёрточная сеть из четырёх блоков, обученная с нуля; точка отсчёта.",
+        "tagline": "reference",
+        "tagline_ru": "эталон сравнения",
+    },
+    "efficientnet": {
+        "factory": EfficientNetModel,
+        "label": "EfficientNet-B0",
+        "label_ru": "EfficientNet-B0",
+        "description": "Compound-scaled network pre-trained on ImageNet; best accuracy/size balance.",
+        "description_ru": "Сеть с компаундным масштабированием, предобучена на ImageNet; лучший баланс точности и размера.",
+        "tagline": "recommended",
+        "tagline_ru": "рекомендуется",
+    },
+    "mobilenet": {
+        "factory": MobileNetModel,
+        "label": "MobileNet-V2",
+        "label_ru": "MobileNet-V2",
+        "description": "Lightweight inverted-residual network; fastest inference, used for domain adaptation.",
+        "description_ru": "Лёгкая сеть с инвертированными остаточными блоками; самая быстрая, используется в доменной адаптации.",
+        "tagline": "fastest",
+        "tagline_ru": "самая быстрая",
+    },
+    "hybrid": {
+        "factory": HybridCNNTransformer,
+        "label": "Hybrid CNN-Transformer",
+        "label_ru": "Гибрид CNN-Transformer",
+        "description": "ResNet-50 features refined by a Transformer encoder over the spatial grid.",
+        "description_ru": "Признаки ResNet-50, уточнённые Transformer-энкодером по пространственной сетке.",
+        "tagline": "largest",
+        "tagline_ru": "самая крупная",
+    },
+}
+
+
+def count_parameters(model: nn.Module) -> int:
+    return sum(p.numel() for p in model.parameters())
+
+
+def pick_device(spec: str | torch.device | None = "auto") -> torch.device:
+    if isinstance(spec, torch.device):
+        return spec
+    if spec and spec != "auto":
+        return torch.device(spec)
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    if torch.backends.mps.is_available():
+        return torch.device("mps")
+    return torch.device("cpu")
+
+
+# ---------------------------------------------------------------------------
+# Manager
+# ---------------------------------------------------------------------------
 
 
 class ModelManager:
-    """
-    Manages loading and inference for multiple models
-    """
+    """Loads the classifiers, exposes predictions, metrics and the ensemble."""
 
-    def __init__(self, models_dir="../models", device=None):
-        self.models_dir = models_dir
-        self.device = (
-            device
-            if device
-            else torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        )
-        self.models = {}
+    def __init__(self, models_dir="../models", device=None, trained_threshold: float = 0.5):
+        self.models_dir = Path(models_dir)
+        self.device = pick_device(device)
+        self.trained_threshold = trained_threshold
+        self.models: dict[str, dict] = {}
         self.class_names = self._load_class_names()
-
+        self._metrics_cache: tuple[float, dict] | None = None
         print(f"Using device: {self.device}")
 
-    def _load_class_names(self):
-        """Load class names from JSON file or use default PlantVillage classes"""
-        class_file = os.path.join(self.models_dir, "class_names.json")
-
-        if os.path.exists(class_file):
-            with open(class_file, "r") as f:
+    # --- class names --------------------------------------------------------
+    def _load_class_names(self) -> list[str]:
+        class_file = self.models_dir / "class_names.json"
+        if class_file.exists():
+            with open(class_file, encoding="utf-8") as f:
                 return json.load(f)
-        else:
-            # Default PlantVillage dataset classes (38 classes)
-            return [
-                "Apple___Apple_scab",
-                "Apple___Black_rot",
-                "Apple___Cedar_apple_rust",
-                "Apple___healthy",
-                "Blueberry___healthy",
-                "Cherry_(including_sour)___Powdery_mildew",
-                "Cherry_(including_sour)___healthy",
-                "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
-                "Corn_(maize)___Common_rust_",
-                "Corn_(maize)___Northern_Leaf_Blight",
-                "Corn_(maize)___healthy",
-                "Grape___Black_rot",
-                "Grape___Esca_(Black_Measles)",
-                "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
-                "Grape___healthy",
-                "Orange___Haunglongbing_(Citrus_greening)",
-                "Peach___Bacterial_spot",
-                "Peach___healthy",
-                "Pepper,_bell___Bacterial_spot",
-                "Pepper,_bell___healthy",
-                "Potato___Early_blight",
-                "Potato___Late_blight",
-                "Potato___healthy",
-                "Raspberry___healthy",
-                "Soybean___healthy",
-                "Squash___Powdery_mildew",
-                "Strawberry___Leaf_scorch",
-                "Strawberry___healthy",
-                "Tomato___Bacterial_spot",
-                "Tomato___Early_blight",
-                "Tomato___Late_blight",
-                "Tomato___Leaf_Mold",
-                "Tomato___Septoria_leaf_spot",
-                "Tomato___Spider_mites Two-spotted_spider_mite",
-                "Tomato___Target_Spot",
-                "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
-                "Tomato___Tomato_mosaic_virus",
-                "Tomato___healthy",
-            ]
+        raise FileNotFoundError(f"{class_file} not found - train the models first (scripts/train_models.py)")
 
-    def load_model(self, model_name, model_type="baseline"):
-        """
-        Load a model from disk or create new instance
+    # --- loading --------------------------------------------------------------
+    def weights_path(self, model_name: str) -> Path | None:
+        for candidate in (f"{model_name}_model.pth", f"{model_name}.pth", f"model_{model_name}.pth"):
+            p = self.models_dir / candidate
+            if p.exists():
+                return p
+        return None
 
-        Args:
-            model_name: Name identifier for the model
-            model_type: Type of architecture ('baseline', 'efficientnet', 'mobilenet', 'hybrid')
-
-        Returns:
-            model: Loaded PyTorch model
-        """
-        num_classes = len(self.class_names)
-
-        # Create model based on type
-        if model_type == "baseline":
-            model = BaselineCNN(num_classes=num_classes)
-        elif model_type == "efficientnet":
-            model = EfficientNetModel(num_classes=num_classes, pretrained=True)
-        elif model_type == "mobilenet":
-            model = MobileNetModel(num_classes=num_classes, pretrained=True)
-        elif model_type == "hybrid":
-            model = HybridCNNTransformer(num_classes=num_classes)
-        else:
+    def load_model(self, model_name: str, model_type: str | None = None) -> nn.Module:
+        model_type = model_type or model_name
+        if model_type not in MODEL_TYPES:
             raise ValueError(f"Unknown model type: {model_type}")
 
-        # Support multiple naming conventions: modelname.pth, modelname_model.pth, model_modelname.pth
+        path = self.weights_path(model_name)
+        # Only download ImageNet weights when we have nothing better.
+        model = MODEL_TYPES[model_type]["factory"](num_classes=len(self.class_names), pretrained=path is None)
+        loaded = False
+        if path is not None:
+            state = torch.load(path, map_location="cpu")
+            if isinstance(state, dict) and "model_state_dict" in state:
+                state = state["model_state_dict"]
+            elif isinstance(state, dict) and "state_dict" in state:
+                state = state["state_dict"]
+            model.load_state_dict(state)
+            loaded = True
+            print(f"Loaded weights for {model_name} from {path.name}")
+        else:
+            print(f"No weights for {model_name} in {self.models_dir} - using untrained network")
 
-        possible_paths = [
-            os.path.join(self.models_dir, f"{model_name}_model.pth"),
-            os.path.join(self.models_dir, f"{model_name}.pth"),
-            os.path.join(self.models_dir, f"model_{model_name}.pth"),
-        ]
-
-        model_loaded = False
-
-        for model_path in possible_paths:
-
-            if os.path.exists(model_path):
-
-                try:
-
-                    checkpoint = torch.load(model_path, map_location=self.device)
-
-                    # Handle different checkpoint formats
-
-                    if isinstance(checkpoint, dict):
-
-                        # Check if it's a full checkpoint with 'model_state_dict' or 'state_dict'
-
-                        if "model_state_dict" in checkpoint:
-
-                            state_dict = checkpoint["model_state_dict"]
-
-                        elif "state_dict" in checkpoint:
-
-                            state_dict = checkpoint["state_dict"]
-
-                        else:
-
-                            # Assume the dict is the state_dict itself
-
-                            state_dict = checkpoint
-
-                    else:
-
-                        # Assume it's directly the state_dict
-
-                        state_dict = checkpoint
-
-                    model.load_state_dict(state_dict)
-
-                    print(f"✓ Successfully loaded trained weights from {model_path}")
-
-                    model_loaded = True
-
-                    break
-
-                except Exception as e:
-
-                    print(f"Warning: Could not load weights from {model_path}: {e}")
-
-                    continue
-
-        if not model_loaded:
-
-            print(f"! No trained weights found for {model_name}")
-
-            print(
-                f"  Searched: {', '.join([os.path.basename(p) for p in possible_paths])}"
-            )
-
-            if model_type in ["efficientnet", "mobilenet", "hybrid"]:
-
-                print(f"  Using ImageNet pre-trained weights for {model_type}")
-
-            else:
-
-                print(f"  Using randomly initialized weights")
-
-        model = model.to(self.device)
-        model.eval()
-
-        self.models[model_name] = {"model": model, "type": model_type}
-
+        model = model.to(self.device).eval()
+        self.models[model_name] = {"model": model, "type": model_type, "path": path, "weights_loaded": loaded}
         return model
 
-    def get_model(self, model_name):
-        """Get a loaded model"""
+    def get_model(self, model_name: str) -> nn.Module:
         if model_name not in self.models:
-            raise ValueError(
-                f"Model {model_name} not loaded. Available models: {list(self.models.keys())}"
-            )
+            raise KeyError(f"Model '{model_name}' is not loaded. Loaded: {list(self.models)}")
         return self.models[model_name]["model"]
 
-    def get_target_layer(self, model_name):
-        """Get the target layer for Grad-CAM based on model type"""
-        if model_name not in self.models:
-            raise ValueError(f"Model {model_name} not loaded")
-
-        model = self.models[model_name]["model"]
-        model_type = self.models[model_name]["type"]
-
-        if model_type == "baseline":
-            # Last conv layer in features
-            return model.features[-2]
-        elif model_type == "efficientnet":
-            # Last conv layer in EfficientNet
+    def get_target_layer(self, model_name: str):
+        """Last convolutional block, used by Grad-CAM."""
+        entry = self.models[model_name]
+        model, kind = entry["model"], entry["type"]
+        if kind == "baseline":
+            # The whole feature stack: its output is not modified in place (the inner ReLUs are).
+            return model.features
+        if kind in ("efficientnet", "mobilenet"):
             return model.backbone.features[-1]
-        elif model_type == "mobilenet":
-            # Last conv layer in MobileNet
-            return model.backbone.features[-1]
-        elif model_type == "hybrid":
-            # Last layer of CNN backbone
+        if kind == "hybrid":
             return model.cnn_features[-1]
-        else:
-            raise ValueError(f"Unknown model type: {model_type}")
+        raise ValueError(kind)
 
-    def predict(self, model_name, image_tensor):
-        """
-        Make prediction on an image
+    # --- metrics ----------------------------------------------------------------
+    @property
+    def metrics(self) -> dict:
+        """models/model_metrics.json (written by scripts/evaluate_models.py), re-read when it changes."""
+        path = self.models_dir / "model_metrics.json"
+        if not path.exists():
+            return {}
+        mtime = path.stat().st_mtime
+        if self._metrics_cache and self._metrics_cache[0] == mtime:
+            return self._metrics_cache[1]
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        self._metrics_cache = (mtime, data)
+        return data
 
-        Args:
-            model_name: Name of the model to use
-            image_tensor: Preprocessed image tensor
+    def is_trained(self, model_name: str) -> bool:
+        m = self.metrics.get(model_name)
+        if not m:
+            return False
+        return bool(m.get("trained", m.get("accuracy", 0) >= self.trained_threshold))
 
-        Returns:
-            result_dict: Dictionary with prediction results
-        """
-        model = self.get_model(model_name)
-        image_tensor = image_tensor.to(self.device)
+    def trained_models(self) -> list[str]:
+        return [n for n in self.models if self.is_trained(n)]
 
-        with torch.no_grad():
-            output = model(image_tensor)
-            probabilities = F.softmax(output, dim=1)
-            confidence, predicted_idx = probabilities.max(1)
+    def best_model(self) -> str | None:
+        trained = self.trained_models()
+        if not trained:
+            return next(iter(self.models), None)
+        return max(trained, key=lambda n: self.metrics[n].get("accuracy", 0))
 
+    def model_info(self, model_name: str) -> dict:
+        entry = self.models.get(model_name, {})
+        meta = MODEL_TYPES[entry.get("type", model_name)]
+        m = self.metrics.get(model_name, {})
+        model = entry.get("model")
         return {
-            "predicted_class": self.class_names[predicted_idx.item()],
-            "confidence": confidence.item(),
-            "predicted_idx": predicted_idx.item(),
-            "all_probabilities": probabilities[0].cpu().tolist(),
-            "class_names": self.class_names,
+            "name": model_name,
+            "label": meta["label"],
+            "label_ru": meta["label_ru"],
+            "description": meta["description"],
+            "description_ru": meta["description_ru"],
+            "tagline": meta["tagline"],
+            "tagline_ru": meta["tagline_ru"],
+            "loaded": model is not None,
+            "weights_loaded": bool(entry.get("weights_loaded")),
+            "trained": self.is_trained(model_name),
+            "parameters": m.get("parameters") or (f"{count_parameters(model)/1e6:.1f}M" if model else None),
+            "size_mb": m.get("size_mb"),
+            "accuracy": m.get("accuracy"),
+            "f1_score": m.get("f1_score"),
+            "inference_time_ms": m.get("inference_time_ms"),
+            "evaluated_at": m.get("evaluated_at"),
         }
 
-    def get_model_stats(self):
-        """
-        Get performance statistics for all loaded models
-        Loads from model_metrics.json if available, otherwise returns default values
+    def all_model_info(self) -> list[dict]:
+        return [self.model_info(n) for n in self.models]
 
-        """
+    # --- inference ----------------------------------------------------------------
+    @torch.no_grad()
+    def predict_probs(self, model_name: str, tensor: torch.Tensor) -> np.ndarray:
+        out = self.get_model(model_name)(tensor.to(self.device))
+        return F.softmax(out, dim=1)[0].float().cpu().numpy()
 
-        # Try to load real metrics from JSON file
-
-        metrics_file = os.path.join(self.models_dir, "model_metrics.json")
-
-        if os.path.exists(metrics_file):
-
-            try:
-
-                with open(metrics_file, "r") as f:
-
-                    stats = json.load(f)
-
-                print(f"✓ Loaded model metrics from {metrics_file}")
-
-                return stats
-
-            except Exception as e:
-
-                print(f"Warning: Could not load metrics from {metrics_file}: {e}")
-
-                print("Using default metrics")
-
-        # Default/fallback statistics
-        stats = {
-            "baseline": {
-                "accuracy": 0.9862,
-                "precision": 0.9850,
-                "recall": 0.9845,
-                "f1_score": 0.9847,
-                "inference_time_ms": 45,
-                "parameters": "1.2M",
-                "size_mb": 2.1,
-                "notes": "Real validation accuracy: 98.62% from 5 epochs training",
-            },
-            "efficientnet": {
-                "accuracy": 0.9893,
-                "precision": 0.9885,
-                "recall": 0.9880,
-                "f1_score": 0.9882,
-                "inference_time_ms": 78,
-                "parameters": "4.0M",
-                "size_mb": 15.8,
-                "notes": "Real validation accuracy: 98.93% from 5 epochs training",
-            },
-            "mobilenet": {
-                "accuracy": 0.9887,
-                "precision": 0.9880,
-                "recall": 0.9875,
-                "f1_score": 0.9877,
-                "inference_time_ms": 32,
-                "parameters": "2.3M",
-                "size_mb": 8.9,
-                "notes": "Real validation accuracy: 98.87% from 5 epochs training",
-            },
-            "hybrid": {
-                "accuracy": 0.9870,
-                "precision": 0.9865,
-                "recall": 0.9860,
-                "f1_score": 0.9862,
-                "inference_time_ms": 125,
-                "parameters": "25.6M",
-                "size_mb": 282.6,
-                "notes": "Estimated metrics - run compute_metrics.py for exact values",
-            },
-            "ensemble": {
-                "accuracy": 0.9905,
-                "precision": 0.9900,
-                "recall": 0.9895,
-                "f1_score": 0.9897,
-                "inference_time_ms": 95,
-                "parameters": "33.1M",
-                "size_mb": 309.4,
-                "description": "Weighted ensemble of all 4 models",
-                "models_combined": 4,
-                "notes": "Ensemble typically 0.5-1% better than best individual model",
-            },
+    def predict(self, model_name: str, tensor: torch.Tensor) -> dict:
+        probs = self.predict_probs(model_name, tensor)
+        idx = int(probs.argmax())
+        return {
+            "predicted_class": self.class_names[idx],
+            "predicted_idx": idx,
+            "confidence": float(probs[idx]),
+            "probabilities": probs,
+            "all_probabilities": probs.tolist(),
         }
 
-        return stats
+    def compare_models(self, tensor: torch.Tensor, names=None) -> dict:
+        names = names or list(self.models)
+        return {n: self.predict(n, tensor) for n in names if n in self.models}
 
-    def compare_models(self, image_tensor):
-        """
-        Compare predictions from all loaded models on the same image
+    def ensemble_weights(self, names) -> dict[str, float]:
+        return {n: float(self.metrics.get(n, {}).get("accuracy", 1.0)) for n in names}
 
-        Args:
-            image_tensor: Preprocessed image tensor
+    def predict_ensemble(self, tensor: torch.Tensor, method: str = "weighted") -> dict:
+        names = self.trained_models() or list(self.models)
+        if not names:
+            raise RuntimeError("No models loaded")
+        probs = {n: self.predict_probs(n, tensor) for n in names}
+        stack = np.stack([probs[n] for n in names])
+        preds = [int(p.argmax()) for p in stack]
 
-        Returns:
-            comparison: Dictionary with results from all models
-        """
-        comparison = {}
-
-        for model_name in self.models.keys():
-            try:
-                result = self.predict(model_name, image_tensor)
-                comparison[model_name] = result
-            except Exception as e:
-                comparison[model_name] = {"error": str(e)}
-
-        return comparison
-
-    def predict_ensemble(self, image_tensor, method="weighted"):
-        """
-        Ensemble prediction combining all loaded models
-
-        Args:
-            image_tensor: Preprocessed image tensor
-            method: Ensemble method ('weighted', 'average', 'voting')
-                - weighted: Use model accuracy as weights
-                - average: Simple average of probabilities
-                - voting: Majority voting on predicted class
-
-        Returns:
-            result_dict: Dictionary with ensemble prediction results
-        """
-        image_tensor = image_tensor.to(self.device)
-
-        # Get predictions from all models
-        all_predictions = {}
-        all_probabilities = []
-        all_predicted_classes = []
-
-        # Model weights based on accuracy (from get_model_stats)
-        model_weights = {
-            "baseline": 0.999,
-            "efficientnet": 0.954,
-            "mobilenet": 0.923,
-            "hybrid": 0.967,
-        }
-
-        for model_name in self.models.keys():
-            try:
-                with torch.no_grad():
-                    model = self.get_model(model_name)
-                    output = model(image_tensor)
-                    probabilities = F.softmax(output, dim=1)
-                    confidence, predicted_idx = probabilities.max(1)
-
-                    all_predictions[model_name] = {
-                        "probabilities": probabilities[0].cpu(),
-                        "predicted_idx": predicted_idx.item(),
-                        "confidence": confidence.item(),
-                    }
-                    all_probabilities.append(probabilities[0].cpu())
-                    all_predicted_classes.append(predicted_idx.item())
-            except Exception as e:
-                print(f"Warning: Model {model_name} failed in ensemble: {e}")
-                continue
-
-        if not all_probabilities:
-            raise RuntimeError("No models available for ensemble prediction")
-
-        # Combine predictions based on method
         if method == "weighted":
-            # Weighted average of probabilities
-            total_weight = sum(
-                model_weights.get(name, 1.0) for name in all_predictions.keys()
-            )
-            ensemble_probs = torch.zeros_like(all_probabilities[0])
-
-            for model_name, pred in all_predictions.items():
-                weight = model_weights.get(model_name, 1.0) / total_weight
-                ensemble_probs += pred["probabilities"] * weight
-
+            w = np.array([self.ensemble_weights(names)[n] for n in names])
+            ens = (stack * w[:, None]).sum(0) / w.sum()
         elif method == "average":
-            # Simple average of probabilities
-            ensemble_probs = torch.stack(all_probabilities).mean(dim=0)
-
+            ens = stack.mean(0)
         elif method == "voting":
-            # Majority voting on class
-            from collections import Counter
-
-            vote_counts = Counter(all_predicted_classes)
-            most_common_class = vote_counts.most_common(1)[0][0]
-
-            # Create probability distribution with 1.0 for voted class
-            ensemble_probs = torch.zeros(len(self.class_names))
-            ensemble_probs[most_common_class] = 1.0
+            winner = Counter(preds).most_common(1)[0][0]
+            ens = np.zeros(len(self.class_names))
+            ens[winner] = 1.0
         else:
             raise ValueError(f"Unknown ensemble method: {method}")
 
-        # Get final prediction
-        confidence, predicted_idx = ensemble_probs.max(0)
+        idx = int(ens.argmax())
+        agreement = sum(p == idx for p in preds) / len(preds)
+        entropy = float(-(ens * np.log(ens + 1e-10)).sum())
+        max_entropy = float(np.log(len(self.class_names)))
+        norm_entropy = entropy / max_entropy
+        top_class = np.array([probs[n][idx] for n in names])
+        std = float(top_class.std())
+        mean = float(top_class.mean())
 
-        # Calculate agreement (how many models agree with ensemble)
-        agreement_count = sum(
-            1 for idx in all_predicted_classes if idx == predicted_idx.item()
-        )
-        agreement_rate = agreement_count / len(all_predicted_classes)
-
-        # === Advanced Uncertainty Metrics ===
-
-        # 1. Prediction Variance: Measure disagreement between models
-        prob_stack = torch.stack(all_probabilities)
-        prediction_variance = prob_stack.var(dim=0).mean().item()
-
-        # 2. Entropy: Measure uncertainty in ensemble prediction
-        # Higher entropy = more uncertain prediction
-        entropy = -torch.sum(ensemble_probs * torch.log(ensemble_probs + 1e-10)).item()
-        max_entropy = -torch.log(torch.tensor(1.0 / len(self.class_names))).item()
-        normalized_entropy = entropy / max_entropy if max_entropy > 0 else 0
-
-        # 3. Confidence Interval (95% CI using standard deviation across models)
-        top_class_probs = torch.tensor(
-            [
-                pred["probabilities"][predicted_idx.item()].item()
-                for pred in all_predictions.values()
-            ]
-        )
-        conf_std = top_class_probs.std().item()
-        conf_mean = top_class_probs.mean().item()
-        confidence_interval_lower = max(0, conf_mean - 1.96 * conf_std)
-        confidence_interval_upper = min(1, conf_mean + 1.96 * conf_std)
-
-        # 4. Model Disagreement Score: Percentage of models that disagree
-        disagreement_score = 1.0 - agreement_rate
-
-        # 5. Uncertainty Category
-        if (
-            confidence.item() > 0.9
-            and agreement_rate > 0.75
-            and normalized_entropy < 0.3
-        ):
-            uncertainty_level = "low"
-        elif (
-            confidence.item() > 0.7
-            and agreement_rate > 0.5
-            and normalized_entropy < 0.6
-        ):
-            uncertainty_level = "medium"
+        if ens[idx] > 0.9 and agreement > 0.75 and norm_entropy < 0.3:
+            level = "low"
+        elif ens[idx] > 0.7 and agreement > 0.5 and norm_entropy < 0.6:
+            level = "medium"
         else:
-            uncertainty_level = "high"
+            level = "high"
 
         return {
-            "predicted_class": self.class_names[predicted_idx.item()],
-            "confidence": confidence.item(),
-            "predicted_idx": predicted_idx.item(),
-            "all_probabilities": ensemble_probs.tolist(),
-            "class_names": self.class_names,
+            "predicted_class": self.class_names[idx],
+            "predicted_idx": idx,
+            "confidence": float(ens[idx]),
+            "probabilities": ens,
+            "all_probabilities": ens.tolist(),
             "ensemble_method": method,
-            "models_used": list(all_predictions.keys()),
+            "models_used": names,
+            "weights": self.ensemble_weights(names) if method == "weighted" else None,
             "individual_predictions": {
-                name: {
-                    "predicted_class": self.class_names[pred["predicted_idx"]],
-                    "confidence": pred["confidence"],
-                }
-                for name, pred in all_predictions.items()
+                n: {"predicted_class": self.class_names[preds[i]], "predicted_idx": preds[i], "confidence": float(stack[i].max())}
+                for i, n in enumerate(names)
             },
-            "agreement_rate": agreement_rate,
-            "models_count": len(all_predictions),
-            # Advanced uncertainty metrics
+            "agreement_rate": agreement,
             "uncertainty_metrics": {
-                "prediction_variance": round(prediction_variance, 4),
+                "prediction_variance": round(float(stack.var(0).mean()), 4),
                 "entropy": round(entropy, 4),
-                "normalized_entropy": round(normalized_entropy, 4),
-                "disagreement_score": round(disagreement_score, 4),
-                "uncertainty_level": uncertainty_level,
+                "normalized_entropy": round(norm_entropy, 4),
+                "disagreement_score": round(1 - agreement, 4),
+                "uncertainty_level": level,
                 "confidence_interval": {
-                    "lower": round(confidence_interval_lower, 4),
-                    "upper": round(confidence_interval_upper, 4),
-                    "width": round(
-                        confidence_interval_upper - confidence_interval_lower, 4
-                    ),
+                    "lower": round(max(0.0, mean - 1.96 * std), 4),
+                    "upper": round(min(1.0, mean + 1.96 * std), 4),
+                    "width": round(min(1.0, mean + 1.96 * std) - max(0.0, mean - 1.96 * std), 4),
                 },
             },
         }
 
 
-# =======================
-# Helper Functions
-# =======================
+class MaskedModel(nn.Module):
+    """Wraps a classifier and hides every class except the allowed ones (used for the field model)."""
+
+    def __init__(self, model: nn.Module, allowed_idx, num_classes: int):
+        super().__init__()
+        self.model = model
+        mask = torch.full((num_classes,), float("-inf"))
+        mask[list(allowed_idx)] = 0.0
+        self.register_buffer("mask", mask)
+
+    def forward(self, x):
+        return self.model(x) + self.mask
 
 
-def create_mock_models(models_dir):
-    """
-    Initialize models directory and create class_names.json if needed
-
-    This sets up the directory structure for trained models
-
-    """
-
-    os.makedirs(models_dir, exist_ok=True)
-
-    # Create class names file if it doesn't exist
-
-    class_names_file = os.path.join(models_dir, "class_names.json")
-
-    if not os.path.exists(class_names_file):
-
-        manager = ModelManager(models_dir)
-
-        with open(class_names_file, "w") as f:
-
-            json.dump(manager.class_names, f, indent=2)
-
-        print(f"✓ Created {class_names_file}")
-
-    # Check for trained model files
-
-    expected_models = [
-        "baseline_model.pth",
-        "efficientnet_model.pth",
-        "mobilenet_model.pth",
-        "hybrid_model.pth",
-    ]
-
-    existing_models = [
-        m for m in expected_models if os.path.exists(os.path.join(models_dir, m))
-    ]
-
-    if existing_models:
-
-        print(f"✓ Models directory ready at: {models_dir}")
-
-    else:
-
-        print(f"ℹ Models directory initialized at: {models_dir}")
-
-        print(f"  Place your trained models here with names:")
-
-        print(f"  - {', '.join(expected_models)}")
-
-        print(f"  Or use alternative naming: baseline.pth, efficientnet.pth, etc.")
+__all__ = [
+    "BaselineCNN",
+    "EfficientNetModel",
+    "MobileNetModel",
+    "HybridCNNTransformer",
+    "MODEL_TYPES",
+    "ModelManager",
+    "MaskedModel",
+    "count_parameters",
+    "pick_device",
+]

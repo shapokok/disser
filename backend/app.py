@@ -1,1206 +1,526 @@
 """
-Flask backend server for Crop Disease Detection System
-Provides REST API endpoints for image upload, prediction, and model statistics
+Crop Disease Detection API + static frontend.
+
+Run:   python backend/app.py              (or: flask --app backend.app run)
+Env:   see backend/config.py (CROP_PORT, CROP_DEVICE, CROP_MODELS, ...)
 """
 
-from flask import Flask, request, jsonify, send_from_directory, send_file
+from __future__ import annotations
+
+import io
+import json
+import sys
+import time
+import traceback
+from datetime import datetime
+from functools import lru_cache
+from pathlib import Path
+
+from flask import Flask, jsonify, request, send_file, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-import os
-import json
-import time
-import io
-from datetime import datetime
-import torch
 
-from model import ModelManager, create_mock_models
-from utils import (
-    generate_gradcam_visualization,
-    apply_lime_explanation,
-    batch_process_images,
-    preprocess_image,
-)
-from validation import (
-    get_all_validation_reports,
-    generate_realistic_confusion_matrix,
-    plot_confusion_matrix,
-)
-from report_generator import create_pdf_report, generate_comparison_report
-from export_utils import (
-    export_to_csv,
-    export_to_json,
-    export_to_excel,
-    export_comparison_to_csv,
-    export_comparison_to_excel,
-)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-# Initialize Flask app
-app = Flask(__name__)
-# Enable CORS for all routes with permissive settings for development
-CORS(
-    app,
-    resources={r"/*": {"origins": "*"}},
-    allow_headers=["Content-Type", "Authorization"],
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    supports_credentials=False,
-)
-
-# Configuration
-UPLOAD_FOLDER = "../data/uploads"
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "jfif"}  # JFIF is JPEG format
-MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
-MODELS_DIR = "../models"
-RESULTS_DIR = "../results/heatmaps"
-
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
-
-# Ensure directories exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(RESULTS_DIR, exist_ok=True)
-os.makedirs(MODELS_DIR, exist_ok=True)
-
-# Initialize models directory (creates class_names.json if needed)
-
-create_mock_models(MODELS_DIR)
-
-model_manager = ModelManager(models_dir=MODELS_DIR)
+import config  # noqa: E402
+import export_utils  # noqa: E402
+import validation  # noqa: E402
+from explain import explain_gradcam, explain_lime, load_image, to_tensor  # noqa: E402
+from field_model import FieldAdapter  # noqa: E402
+from labels import describe_class  # noqa: E402
+from model import MODEL_TYPES, MaskedModel, ModelManager  # noqa: E402
+from report_generator import create_comparison_report, create_pdf_report  # noqa: E402
+from treatments import get_treatment  # noqa: E402
 
 
-# Check for available trained models
-
-trained_models = [f for f in os.listdir(MODELS_DIR) if f.endswith(".pth")]
-
-if trained_models:
-
-    print(f"\n📦 Found trained models: {', '.join(trained_models)}")
-
-else:
-
-    print(f"\n⚠️  No trained .pth models found in {MODELS_DIR}")
-
-    print(f"   The system will use ImageNet pre-trained weights for demonstration")
-
-# Load all models at startup
-print("Loading models...")
-try:
-    model_manager.load_model("baseline", "baseline")
-    print("✓ Baseline model loaded")
-except Exception as e:
-    print(f"✗ Baseline model error: {e}")
-
-try:
-    model_manager.load_model("efficientnet", "efficientnet")
-    print("✓ EfficientNet model loaded")
-except Exception as e:
-    print(f"✗ EfficientNet model error: {e}")
-
-try:
-    model_manager.load_model("mobilenet", "mobilenet")
-    print("✓ MobileNet model loaded")
-except Exception as e:
-    print(f"✗ MobileNet model error: {e}")
-
-try:
-    model_manager.load_model("hybrid", "hybrid")
-    print("✓ Hybrid CNN-Transformer model loaded")
-except Exception as e:
-    print(f"✗ Hybrid model error: {e}")
-
-print("All models loaded successfully!")
+def _now() -> str:
+    return datetime.now().isoformat(timespec="seconds")
 
 
-# =======================
-# Helper Functions
-# =======================
+def _lang() -> str:
+    lang = request.args.get("lang") or (request.get_json(silent=True) or {}).get("lang") or "ru"
+    return "ru" if str(lang).lower().startswith("ru") else "en"
 
 
-def allowed_file(filename):
-    """Check if file extension is allowed"""
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+def _error(message: str, status: int = 400, **extra):
+    payload = {"success": False, "error": message, **extra}
+    return jsonify(payload), status
 
 
-def format_class_name(class_name):
-    """Format class name for better readability"""
-    # Replace underscores with spaces
-    formatted = class_name.replace("___", " - ").replace("_", " ")
-    return formatted
+def _percent(x: float) -> str:
+    return f"{x * 100:.2f}%"
 
 
-# =======================
-# API Routes
-# =======================
+def create_app(load_models: bool = True, models=None) -> Flask:
+    app = Flask(__name__, static_folder=None)
+    app.config["MAX_CONTENT_LENGTH"] = config.MAX_FILE_SIZE
+    app.config["JSON_AS_ASCII"] = False
+    app.json.ensure_ascii = False
+    CORS(app, resources={r"/api/*": {"origins": config.CORS_ORIGINS}})
 
+    config.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    (config.RESULTS_DIR / "heatmaps").mkdir(parents=True, exist_ok=True)
 
-@app.route("/")
-def index():
-    """API health check"""
-    return jsonify(
-        {
-            "status": "online",
-            "message": "Crop Disease Detection API",
-            "version": "1.0.0",
-            "models_loaded": list(model_manager.models.keys()),
-            "timestamp": datetime.now().isoformat(),
-        }
-    )
+    manager = ModelManager(config.MODELS_DIR, device=config.DEVICE, trained_threshold=config.TRAINED_ACCURACY_THRESHOLD)
+    if load_models:
+        for name in models or config.MODELS_TO_LOAD:
+            try:
+                manager.load_model(name, name)
+            except Exception as e:  # keep serving with the models that did load
+                print(f"Could not load model '{name}': {e}")
+    field = FieldAdapter(manager.class_names, manager.device)
+    app.extensions["manager"] = manager
+    app.extensions["field"] = field
+    print(f"Loaded models: {list(manager.models)}  field model: {'yes' if field.available else 'no'}")
 
+    # ------------------------------------------------------------------ helpers
+    def resolve_image(name: str) -> Path:
+        p = Path(name)
+        if not p.is_absolute():
+            p = config.UPLOAD_DIR / secure_filename(name)
+        p = p.resolve()
+        allowed_roots = (config.UPLOAD_DIR, config.DATA_DIR)
+        if not any(str(p).startswith(str(root)) for root in allowed_roots):
+            raise PermissionError("Image path is outside the allowed directories")
+        if not p.exists():
+            raise FileNotFoundError(f"Image not found: {name}")
+        return p
 
-@app.route("/api/dataset_info")
-def get_dataset_info():
-    """
-    Get dataset information (total images, splits, etc.)
-    """
-    try:
-        import os
-        import glob
+    def format_prediction(probs, idx: int, top_k: int = 5) -> tuple[dict, list]:
+        order = probs.argsort()[::-1][:top_k]
+        pred = {**describe_class(manager.class_names[idx]), "confidence": float(probs[idx]), "confidence_percent": _percent(float(probs[idx]))}
+        top = [
+            {**describe_class(manager.class_names[i]), "confidence": float(probs[i]), "confidence_percent": _percent(float(probs[i]))}
+            for i in order
+        ]
+        return pred, top
 
-        # Path to dataset
-        dataset_path = "../data/PlantVillage"
+    def run_prediction(image_path: Path, model_name: str, explanation: str, dataset_type: str, lang: str, ensemble_method=None) -> dict:
+        start = time.time()
+        tensor = to_tensor(load_image(image_path))
+        field_info = None
+        ensemble_info = None
 
-        # Count images in each split
-        train_count = 0
-        valid_count = 0
-        test_count = 0
-
-        train_path = os.path.join(dataset_path, "train")
-        valid_path = os.path.join(dataset_path, "valid")
-        test_path = os.path.join(dataset_path, "test")
-
-        if os.path.exists(train_path):
-            train_count = len(glob.glob(os.path.join(train_path, "**/*.jpg"), recursive=True)) + \
-                         len(glob.glob(os.path.join(train_path, "**/*.JPG"), recursive=True)) + \
-                         len(glob.glob(os.path.join(train_path, "**/*.png"), recursive=True))
-
-        if os.path.exists(valid_path):
-            valid_count = len(glob.glob(os.path.join(valid_path, "**/*.jpg"), recursive=True)) + \
-                         len(glob.glob(os.path.join(valid_path, "**/*.JPG"), recursive=True)) + \
-                         len(glob.glob(os.path.join(valid_path, "**/*.png"), recursive=True))
-
-        if os.path.exists(test_path):
-            test_count = len(glob.glob(os.path.join(test_path, "**/*.jpg"), recursive=True)) + \
-                        len(glob.glob(os.path.join(test_path, "**/*.JPG"), recursive=True)) + \
-                        len(glob.glob(os.path.join(test_path, "**/*.png"), recursive=True))
-
-        total_images = train_count + valid_count + test_count
-
-        # Count unique plant types from class names
-        plant_types = set()
-        for class_name in model_manager.class_names:
-            plant = class_name.split("___")[0]
-            plant_types.add(plant)
-
-        return jsonify({
-            "success": True,
-            "total_images": total_images,
-            "train_images": train_count,
-            "valid_images": valid_count,
-            "test_images": test_count,
-            "total_classes": len(model_manager.class_names),
-            "plant_types": len(plant_types),
-            "model_architectures": len(model_manager.models),
-            "timestamp": datetime.now().isoformat(),
-        })
-
-    except Exception as e:
-        import traceback
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/upload", methods=["POST"])
-def upload_file():
-    """
-    Upload image files
-    Accepts single or multiple files
-    """
-    if "files" not in request.files:
-        return jsonify({"error": "No files provided"}), 400
-
-    files = request.files.getlist("files")
-    if not files or files[0].filename == "":
-        return jsonify({"error": "No files selected"}), 400
-
-    uploaded_files = []
-    errors = []
-
-    for file in files:
-        if file and allowed_file(file.filename):
-            # Secure filename and save
-            filename = secure_filename(file.filename)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            unique_filename = f"{timestamp}_{filename}"
-            filepath = os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
-
-            file.save(filepath)
-            uploaded_files.append(
-                {
-                    "original_name": filename,
-                    "saved_name": unique_filename,
-                    "path": filepath,
-                }
-            )
+        if dataset_type == "field" and field.available:
+            model = MaskedModel(field.model, field.covered_idx, len(manager.class_names)).to(manager.device).eval()
+            target_layer = field.target_layer
+            label = "MobileNet-V2 (domain-adapted)"
+            field_info = {
+                "adapted_model": True,
+                "covered_classes": [describe_class(c) for c in field.covered_classes],
+                "method": field.info.get("method"),
+                "accuracy_field": field.info.get("accuracy_test"),
+            }
+        elif model_name == "ensemble":
+            ens = manager.predict_ensemble(tensor, ensemble_method or "weighted")
+            best = manager.best_model()
+            model = manager.get_model(best)
+            target_layer = manager.get_target_layer(best)
+            label = "Ensemble"
+            ensemble_info = {
+                "method": ens["ensemble_method"],
+                "models_used": ens["models_used"],
+                "weights": ens["weights"],
+                "explained_with": best,
+                "agreement_rate": ens["agreement_rate"],
+                "agreement_percent": f"{ens['agreement_rate'] * 100:.0f}%",
+                "individual_predictions": {
+                    n: {**describe_class(p["predicted_class"]), "confidence": p["confidence"], "confidence_percent": _percent(p["confidence"])}
+                    for n, p in ens["individual_predictions"].items()
+                },
+                "uncertainty_metrics": ens["uncertainty_metrics"],
+            }
+            if dataset_type == "field":
+                field_info = {"adapted_model": False, "note": "field model unavailable"}
         else:
-            errors.append(f"File {file.filename} has invalid extension")
+            if model_name not in manager.models:
+                raise KeyError(f"Model '{model_name}' is not loaded")
+            model = manager.get_model(model_name)
+            target_layer = manager.get_target_layer(model_name)
+            label = MODEL_TYPES[manager.models[model_name]["type"]]["label"]
+            if dataset_type == "field":
+                field_info = {"adapted_model": False, "note": "field model unavailable"}
 
-    return jsonify(
-        {
-            "success": True,
-            "uploaded": uploaded_files,
-            "errors": errors,
-            "count": len(uploaded_files),
-        }
-    )
+        images = {}
+        if explanation == "gradcam":
+            out = explain_gradcam(model, target_layer, image_path, manager.device)
+            probs, idx, images = out["probabilities"], out["predicted_idx"], out["images"]
+        elif explanation == "lime":
+            out = explain_lime(model, image_path, manager.device)
+            probs, idx, images = out["probabilities"], out["predicted_idx"], out["images"]
+        elif explanation == "none":
+            import torch
 
+            with torch.no_grad():
+                import torch.nn.functional as F
 
-@app.route("/api/predict", methods=["POST"])
-def predict():
-    """
-    Predict disease from uploaded image
-    Supports Grad-CAM and LIME explanations
-    """
-    try:
-        # Get parameters
-        data = request.json
-        image_path = data.get("image_path")
-        model_name = data.get("model", "efficientnet")
-        explanation_method = data.get("explanation", "gradcam")  # 'gradcam' or 'lime'
-        dataset_type = data.get("dataset_type", "controlled")  # 'controlled' or 'field'
+                probs = F.softmax(model(tensor.to(manager.device)), dim=1)[0].float().cpu().numpy()
+            idx = int(probs.argmax())
+            from explain import encode_jpeg
 
-        if not image_path:
-            return jsonify({"error": "No image path provided"}), 400
-
-        # Resolve full path
-        if not os.path.isabs(image_path):
-            image_path = os.path.join(UPLOAD_FOLDER, image_path)
-
-        if not os.path.exists(image_path):
-            return jsonify({"error": f"Image not found: {image_path}"}), 404
-
-        # Validate model
-        if model_name not in model_manager.models:
-            return jsonify({"error": f"Model {model_name} not loaded"}), 400
-
-        start_time = time.time()
-
-        # Generate explanation
-        if explanation_method == "gradcam":
-            model = model_manager.get_model(model_name)
-            target_layer = model_manager.get_target_layer(model_name)
-            result = generate_gradcam_visualization(
-                model, target_layer, image_path, model_manager.class_names
-            )
-        elif explanation_method == "lime":
-            model = model_manager.get_model(model_name)
-            result = apply_lime_explanation(
-                model, image_path, model_manager.class_names
-            )
+            images = {"original": encode_jpeg(load_image(image_path))}
         else:
-            return (
-                jsonify({"error": f"Unknown explanation method: {explanation_method}"}),
-                400,
-            )
+            raise ValueError(f"Unknown explanation method: {explanation}")
 
-        inference_time = (time.time() - start_time) * 1000  # Convert to ms
+        if ensemble_info is not None:  # the ensemble decides, the best model explains
+            probs, idx = ens["probabilities"], ens["predicted_idx"]
 
-        # Format response
-        response = {
+        prediction, top = format_prediction(probs, idx)
+        return {
             "success": True,
-            "prediction": {
-                "class": format_class_name(result["predicted_class"]),
-                "class_raw": result["predicted_class"],
-                "confidence": result["confidence"],
-                "confidence_percent": f"{result['confidence'] * 100:.2f}%",
-            },
-            "model_used": model_name,
-            "explanation_method": explanation_method,
+            "image_name": image_path.name,
+            "image_url": f"/api/uploads/{image_path.name}" if image_path.parent == config.UPLOAD_DIR else None,
+            "model": model_name,
+            "model_label": label,
+            "explanation": explanation,
             "dataset_type": dataset_type,
-            "inference_time_ms": round(inference_time, 2),
-            "visualization": result.get("visualization_base64"),
-            "overlay": result.get("overlay_base64"),
-            "timestamp": datetime.now().isoformat(),
+            "prediction": prediction,
+            "top_predictions": top,
+            "images": images,
+            "field_mode": field_info,
+            "ensemble": ensemble_info,
+            "treatment": get_treatment(prediction["class_raw"], lang),
+            "inference_time_ms": round((time.time() - start) * 1000, 1),
+            "timestamp": _now(),
         }
 
-        # Add top-3 predictions
-        all_probs = result["all_probabilities"]
-        top3_indices = sorted(
-            range(len(all_probs)), key=lambda i: all_probs[i], reverse=True
-        )[:3]
-        response["top_predictions"] = [
-            {
-                "class": format_class_name(model_manager.class_names[idx]),
-                "confidence": all_probs[idx],
-                "confidence_percent": f"{all_probs[idx] * 100:.2f}%",
-            }
-            for idx in top3_indices
-        ]
-
-        return jsonify(response)
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/compare", methods=["POST"])
-def compare_models():
-    """
-    Compare multiple models on the same image
-    """
-    try:
-        data = request.json
-        image_path = data.get("image_path")
-        models_to_compare = data.get(
-            "models", ["baseline", "efficientnet", "mobilenet", "hybrid"]
-        )
-
-        if not image_path:
-            return jsonify({"error": "No image path provided"}), 400
-
-        # Resolve full path
-        if not os.path.isabs(image_path):
-            image_path = os.path.join(UPLOAD_FOLDER, image_path)
-
-        if not os.path.exists(image_path):
-            return jsonify({"error": f"Image not found: {image_path}"}), 404
-
-        # Preprocess image once
-        image_tensor, _ = preprocess_image(image_path)
-
-        # Validate models exist
-        missing_models = [m for m in models_to_compare if m not in model_manager.models]
-        if missing_models:
-            return (
-                jsonify(
-                    {
-                        "error": f'Models not loaded: {", ".join(missing_models)}',
-                        "available_models": list(model_manager.models.keys()),
-                    }
-                ),
-                400,
-            )
-
-        # Compare models
-        results = {}
-        for model_name in models_to_compare:
-            if model_name in model_manager.models:
-                start_time = time.time()
-                prediction = model_manager.predict(model_name, image_tensor)
-                inference_time = (time.time() - start_time) * 1000
-
-                results[model_name] = {
-                    "predicted_class": format_class_name(prediction["predicted_class"]),
-                    "confidence": prediction["confidence"],
-                    "confidence_percent": f"{prediction['confidence'] * 100:.2f}%",
-                    "inference_time_ms": round(inference_time, 2),
-                }
-
-        if not results:
-            return (
-                jsonify(
-                    {
-                        "error": "No models available for comparison",
-                        "available_models": list(model_manager.models.keys()),
-                    }
-                ),
-                400,
-            )
-
-        return jsonify(
-            {
-                "success": True,
-                "image_path": image_path,
-                "comparisons": results,
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/ensemble", methods=["POST"])
-def ensemble_predict():
-    """
-    Ensemble prediction combining all models
-    """
-    try:
-        data = request.json
-        image_path = data.get("image_path")
-        ensemble_method = data.get(
-            "ensemble_method", "weighted"
-        )  # 'weighted', 'average', or 'voting'
-        explanation_method = data.get("explanation", "gradcam")
-        dataset_type = data.get("dataset_type", "controlled")
-
-        if not image_path:
-            return jsonify({"error": "No image path provided"}), 400
-
-        # Resolve full path
-        if not os.path.isabs(image_path):
-            image_path = os.path.join(UPLOAD_FOLDER, image_path)
-
-        if not os.path.exists(image_path):
-            return jsonify({"error": f"Image not found: {image_path}"}), 404
-
-        start_time = time.time()
-
-        # Preprocess image
-        from utils import preprocess_image
-
-        image_tensor, original_image = preprocess_image(image_path)
-
-        # Get ensemble prediction
-        result = model_manager.predict_ensemble(image_tensor, method=ensemble_method)
-
-        # Generate visualization using best performing model (hybrid)
-        if explanation_method == "gradcam":
-            best_model = model_manager.get_model("hybrid")
-            target_layer = model_manager.get_target_layer("hybrid")
-            viz_result = generate_gradcam_visualization(
-                best_model, target_layer, image_path, model_manager.class_names
-            )
-            result["visualization_base64"] = viz_result.get("visualization_base64")
-            result["overlay_base64"] = viz_result.get("overlay_base64")
-        elif explanation_method == "lime":
-            best_model = model_manager.get_model("hybrid")
-            viz_result = apply_lime_explanation(
-                best_model, image_path, model_manager.class_names
-            )
-            result["visualization_base64"] = viz_result.get("visualization_base64")
-
-        inference_time = (time.time() - start_time) * 1000  # Convert to ms
-
-        # Format response
-        response = {
-            "success": True,
-            "prediction": {
-                "class": format_class_name(result["predicted_class"]),
-                "class_raw": result["predicted_class"],
-                "confidence": result["confidence"],
-                "confidence_percent": f"{result['confidence'] * 100:.2f}%",
-            },
-            "model_used": "ensemble",
-            "ensemble_method": ensemble_method,
-            "models_count": result["models_count"],
-            "models_used": result["models_used"],
-            "agreement_rate": result["agreement_rate"],
-            "agreement_percent": f"{result['agreement_rate'] * 100:.1f}%",
-            "individual_predictions": {
-                name: {
-                    "class": format_class_name(pred["predicted_class"]),
-                    "confidence": pred["confidence"],
-                    "confidence_percent": f"{pred['confidence'] * 100:.2f}%",
-                }
-                for name, pred in result["individual_predictions"].items()
-            },
-            "uncertainty_metrics": result.get("uncertainty_metrics", {}),
-            "explanation_method": explanation_method,
-            "dataset_type": dataset_type,
-            "inference_time_ms": round(inference_time, 2),
-            "visualization": result.get("visualization_base64"),
-            "overlay": result.get("overlay_base64"),
-            "timestamp": datetime.now().isoformat(),
+    @lru_cache(maxsize=1)
+    def dataset_info() -> dict:
+        counts = {}
+        for split in ("train", "valid", "test"):
+            d = config.PLANTVILLAGE_DIR / split
+            counts[split] = sum(1 for p in d.rglob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png"}) if d.exists() else 0
+        plants = {c.split("___")[0] for c in manager.class_names}
+        return {
+            "available": counts["train"] > 0,
+            "train_images": counts["train"],
+            "valid_images": counts["valid"],
+            "test_images": counts["test"],
+            "total_images": sum(counts.values()),
+            "total_classes": len(manager.class_names),
+            "plant_types": len(plants),
+            "healthy_classes": sum(c.lower().endswith("healthy") for c in manager.class_names),
         }
 
-        # Add top-3 predictions
-        all_probs = result["all_probabilities"]
-        top3_indices = sorted(
-            range(len(all_probs)), key=lambda i: all_probs[i], reverse=True
-        )[:3]
-        response["top_predictions"] = [
+    # ------------------------------------------------------------------ frontend
+    @app.route("/")
+    def index():
+        return send_from_directory(config.FRONTEND_DIR, "index.html")
+
+    @app.route("/analyze")
+    @app.route("/analyze.html")
+    def analyze_page():
+        return send_from_directory(config.FRONTEND_DIR, "analyze.html")
+
+    @app.route("/stats")
+    @app.route("/stats.html")
+    def stats_page():
+        return send_from_directory(config.FRONTEND_DIR, "stats.html")
+
+    @app.route("/frontend/<path:path>")
+    @app.route("/<path:path>")
+    def static_files(path):
+        target = (config.FRONTEND_DIR / path).resolve()
+        if not str(target).startswith(str(config.FRONTEND_DIR)) or not target.is_file():
+            return _error("Not found", 404)
+        return send_from_directory(config.FRONTEND_DIR, path)
+
+    @app.route("/api/uploads/<path:name>")
+    def uploaded_file(name):
+        return send_from_directory(config.UPLOAD_DIR, secure_filename(name))
+
+    # ------------------------------------------------------------------ meta
+    @app.route("/api/health")
+    @app.route("/api")
+    def health():
+        return jsonify(
             {
-                "class": format_class_name(model_manager.class_names[idx]),
-                "confidence": all_probs[idx],
-                "confidence_percent": f"{all_probs[idx] * 100:.2f}%",
+                "status": "online",
+                "version": config.APP_VERSION,
+                "device": str(manager.device),
+                "models_loaded": list(manager.models),
+                "models_trained": manager.trained_models(),
+                "field_model": field.available,
+                "total_classes": len(manager.class_names),
+                "timestamp": _now(),
             }
-            for idx in top3_indices
-        ]
-
-        return jsonify(response)
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/batch", methods=["POST"])
-def batch_predict():
-    """
-    Process multiple images in batch
-    """
-    try:
-        data = request.json
-        image_paths = data.get("image_paths", [])
-        model_name = data.get("model", "efficientnet")
-        explanation_method = data.get("explanation", "gradcam")
-
-        if not image_paths:
-            return jsonify({"error": "No image paths provided"}), 400
-
-        # Resolve full paths
-        full_paths = []
-        for path in image_paths:
-            if not os.path.isabs(path):
-                path = os.path.join(UPLOAD_FOLDER, path)
-            full_paths.append(path)
-
-        # Batch process
-        model = model_manager.get_model(model_name)
-        target_layer = model_manager.get_target_layer(model_name)
-
-        results = batch_process_images(
-            model,
-            target_layer,
-            full_paths,
-            model_manager.class_names,
-            method=explanation_method,
         )
 
-        # Format results
-        formatted_results = []
-        for r in results:
-            if r["success"]:
-                formatted_results.append(
-                    {
-                        "image_path": r["image_path"],
-                        "predicted_class": format_class_name(r["predicted_class"]),
-                        "confidence": r["confidence"],
-                        "visualization": r.get("visualization_base64"),
-                    }
-                )
-            else:
-                formatted_results.append(
-                    {"image_path": r["image_path"], "error": r["error"]}
-                )
-
+    @app.route("/api/models")
+    def list_models():
         return jsonify(
             {
                 "success": True,
-                "results": formatted_results,
-                "total": len(results),
-                "timestamp": datetime.now().isoformat(),
+                "models": manager.all_model_info(),
+                "best_model": manager.best_model(),
+                "ensemble": manager.metrics.get("ensemble"),
+                "field_model": field.describe(),
+                "timestamp": _now(),
             }
         )
 
-    except Exception as e:
-        import traceback
+    @app.route("/api/classes")
+    def list_classes():
+        classes = [{"id": i, "name": n, **describe_class(n)} for i, n in enumerate(manager.class_names)]
+        grouped: dict[str, list] = {}
+        for c in classes:
+            grouped.setdefault(c["plant"], []).append(c)
+        return jsonify({"success": True, "classes": classes, "total": len(classes), "grouped_by_plant": grouped})
 
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
+    @app.route("/api/dataset_info")
+    def get_dataset_info():
+        return jsonify({"success": True, **dataset_info(), "model_architectures": len(manager.models), "timestamp": _now()})
 
-
-@app.route("/api/stats", methods=["GET"])
-def get_statistics():
-    """
-    Get model performance statistics
-    """
-    try:
-        stats = model_manager.get_model_stats()
-
+    @app.route("/api/stats")
+    def stats():
         return jsonify(
             {
                 "success": True,
-                "statistics": stats,
-                "models_available": list(model_manager.models.keys()),
-                "total_classes": len(model_manager.class_names),
-                "timestamp": datetime.now().isoformat(),
+                "statistics": manager.metrics,
+                "models": manager.all_model_info(),
+                "best_model": manager.best_model(),
+                "training_history": {n: validation.load_training_history(n) for n in manager.models},
+                "dataset": dataset_info(),
+                "field_model": field.describe(),
+                "total_classes": len(manager.class_names),
+                "timestamp": _now(),
             }
         )
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    @app.route("/api/validation/all")
+    def validation_all():
+        lang = _lang()
+        reports = {n: validation.build_report(n, lang) for n in manager.models}
+        return jsonify({"success": True, "reports": {k: v for k, v in reports.items() if v}, "timestamp": _now()})
 
-
-@app.route("/api/classes", methods=["GET"])
-def get_classes():
-    """
-    Get list of all supported classes
-    """
-    try:
-        classes = [
-            {"id": idx, "name": name, "formatted_name": format_class_name(name)}
-            for idx, name in enumerate(model_manager.class_names)
-        ]
-
-        # Group by plant type
-        plants = {}
-        for cls in classes:
-            plant = cls["name"].split("___")[0]
-            if plant not in plants:
-                plants[plant] = []
-            plants[plant].append(cls)
-
-        return jsonify(
-            {
-                "success": True,
-                "classes": classes,
-                "total": len(classes),
-                "grouped_by_plant": plants,
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-@app.route("/api/models", methods=["GET"])
-def get_models():
-    """
-    Get information about available models
-    """
-    try:
-        models_info = []
-
-        for model_name, model_data in model_manager.models.items():
-            models_info.append(
-                {"name": model_name, "type": model_data["type"], "status": "loaded"}
-            )
-
-        return jsonify(
-            {
-                "success": True,
-                "models": models_info,
-                "total": len(models_info),
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-@app.route("/api/validation/<model_name>", methods=["GET"])
-def get_validation_report(model_name):
-    """
-    Get detailed validation report for a specific model
-    Includes confusion matrix, per-class metrics, ROC curves
-    """
-    try:
-        if model_name not in model_manager.models:
-            return jsonify({"error": f"Model {model_name} not found"}), 404
-
-        # Generate validation reports
-        reports = get_all_validation_reports(model_manager.class_names)
-
-        if model_name not in reports:
-            return jsonify({"error": f"No validation data for {model_name}"}), 404
-
-        return jsonify(
-            {
-                "success": True,
-                "report": reports[model_name],
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/validation/all", methods=["GET"])
-def get_all_validation():
-    """
-    Get validation reports for all models
-    """
-    try:
-        reports = get_all_validation_reports(model_manager.class_names)
-
-        return jsonify(
-            {
-                "success": True,
-                "reports": reports,
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/confusion_matrix/<model_name>", methods=["GET"])
-def get_confusion_matrix(model_name):
-    """
-    Get confusion matrix for a specific model
-    """
-    try:
-        if model_name not in model_manager.models:
-            return jsonify({"error": f"Model {model_name} not found"}), 404
-
-        # Generate confusion matrix
-        reports = get_all_validation_reports(model_manager.class_names)
-        report = reports.get(model_name)
-
+    @app.route("/api/validation/<model_name>")
+    def validation_one(model_name):
+        report = validation.build_report(model_name, _lang())
         if not report:
-            return jsonify({"error": f"No validation data for {model_name}"}), 404
+            return _error(f"No validation data for '{model_name}'. Run scripts/evaluate_models.py.", 404)
+        return jsonify({"success": True, "report": report, "timestamp": _now()})
 
+    @app.route("/api/confusion_matrix/<model_name>")
+    def confusion_matrix(model_name):
+        report = validation.build_report(model_name, _lang())
+        if not report:
+            return _error(f"No validation data for '{model_name}'", 404)
         return jsonify(
             {
                 "success": True,
                 "model_name": model_name,
+                "labels": report["labels"],
+                "class_names": report["class_names"],
                 "confusion_matrix": report["confusion_matrix"],
-                "confusion_matrix_image": report["confusion_matrix_image"],
-                "confusion_matrix_normalized_image": report[
-                    "confusion_matrix_normalized_image"
-                ],
                 "top_confused_pairs": report["top_confused_pairs"],
-                "timestamp": datetime.now().isoformat(),
             }
         )
 
-    except Exception as e:
-        import traceback
+    @app.route("/api/treatment/<path:disease_class>")
+    def treatment(disease_class):
+        return jsonify({"success": True, "disease_class": disease_class, "treatment": get_treatment(disease_class, _lang())})
 
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
+    # ------------------------------------------------------------------ inference
+    @app.route("/api/upload", methods=["POST"])
+    def upload():
+        files = request.files.getlist("files") or request.files.getlist("file")
+        if not files or all(not f.filename for f in files):
+            return _error("No files provided")
+        uploaded, errors = [], []
+        for f in files:
+            ext = f.filename.rsplit(".", 1)[-1].lower() if "." in f.filename else ""
+            if ext not in config.ALLOWED_EXTENSIONS:
+                errors.append(f"{f.filename}: unsupported extension")
+                continue
+            safe = secure_filename(f.filename) or f"image.{ext}"
+            name = f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')[:-3]}_{safe}"
+            f.save(config.UPLOAD_DIR / name)
+            try:
+                load_image(config.UPLOAD_DIR / name).verify()
+            except Exception:
+                (config.UPLOAD_DIR / name).unlink(missing_ok=True)
+                errors.append(f"{f.filename}: not a valid image")
+                continue
+            uploaded.append({"original_name": f.filename, "saved_name": name, "url": f"/api/uploads/{name}"})
+        return jsonify({"success": bool(uploaded), "uploaded": uploaded, "errors": errors, "count": len(uploaded)})
 
-
-@app.route("/api/generate_report", methods=["POST"])
-def generate_report():
-    """
-    Generate PDF report for analysis results
-    """
-    try:
-        data = request.json
-
-        # Create PDF report
-        pdf_bytes = create_pdf_report(data)
-
-        # Return PDF file
-        return send_file(
-            io.BytesIO(pdf_bytes),
-            mimetype="application/pdf",
-            as_attachment=True,
-            download_name=f"crop_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/generate_comparison_report", methods=["POST"])
-def generate_comp_report():
-    """
-    Generate PDF report for model comparison
-    """
-    try:
-        data = request.json
-
-        # Create PDF report
-        pdf_bytes = generate_comparison_report(data)
-
-        # Return PDF file
-        return send_file(
-            io.BytesIO(pdf_bytes),
-            mimetype="application/pdf",
-            as_attachment=True,
-            download_name=f"model_comparison_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/analysis", methods=["POST"])
-def export_analysis():
-    """
-    Export analysis results to Excel
-    """
-    try:
-        data = request.json
-
-        # Create Excel file
-        excel_bytes = create_analysis_excel(data)
-
-        # Return Excel file
-        return send_file(
-            io.BytesIO(excel_bytes),
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            as_attachment=True,
-            download_name=f"analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/batch", methods=["POST"])
-def export_batch():
-    """
-    Export batch processing results to Excel
-    """
-    try:
-        data = request.json
-
-        # Create Excel file
-        excel_bytes = create_batch_excel(data)
-
-        # Return Excel file
-        return send_file(
-            io.BytesIO(excel_bytes),
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            as_attachment=True,
-            download_name=f"batch_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/comparison", methods=["POST"])
-def export_comparison():
-    """
-    Export model comparison to Excel
-    """
-    try:
-        data = request.json
-
-        # Create Excel file
-        excel_bytes = create_comparison_excel(data)
-
-        # Return Excel file
-        return send_file(
-            io.BytesIO(excel_bytes),
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            as_attachment=True,
-            download_name=f"model_comparison_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/validation/<model_name>", methods=["GET"])
-def export_validation(model_name):
-    """
-    Export validation report to Excel
-    """
-    try:
-        if model_name not in model_manager.models:
-            return jsonify({"error": f"Model {model_name} not found"}), 404
-
-        # Get validation reports
-        reports = get_all_validation_reports(model_manager.class_names)
-
-        if model_name not in reports:
-            return jsonify({"error": f"No validation data for {model_name}"}), 404
-
-        # Create Excel file
-        excel_bytes = create_validation_excel(reports[model_name])
-
-        # Return Excel file
-        return send_file(
-            io.BytesIO(excel_bytes),
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            as_attachment=True,
-            download_name=f"validation_{model_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/treatment/<disease_class>", methods=["GET"])
-def get_treatment(disease_class):
-    """
-    Get treatment recommendations for a specific disease
-    """
-    try:
-        # Load treatment database
-        treatment_db_path = os.path.join(
-            os.path.dirname(__file__), "treatment_database.json"
-        )
-
-        if not os.path.exists(treatment_db_path):
-            return jsonify({"error": "Treatment database not found"}), 404
-
-        with open(treatment_db_path, "r") as f:
-            treatment_db = json.load(f)
-
-        # Find treatment for disease
-        treatment = None
-
-        # Try exact match first
-        if disease_class in treatment_db:
-            treatment = treatment_db[disease_class]
-        # Try partial match (e.g., if "healthy" is in the class name)
-        elif "healthy" in disease_class.lower():
-            treatment = treatment_db.get("healthy")
-        # Try to find by matching disease name
-        else:
-            for key in treatment_db.keys():
-                if (
-                    key.lower() in disease_class.lower()
-                    or disease_class.lower() in key.lower()
-                ):
-                    treatment = treatment_db[key]
-                    break
-
-        if treatment:
-            return jsonify(
-                {
-                    "success": True,
-                    "disease_class": disease_class,
-                    "treatment": treatment,
-                }
+    @app.route("/api/predict", methods=["POST"])
+    def predict():
+        data = request.get_json(silent=True) or {}
+        try:
+            path = resolve_image(data.get("image_path") or "")
+        except (FileNotFoundError, PermissionError) as e:
+            return _error(str(e), 404)
+        except Exception:
+            return _error("image_path is required")
+        try:
+            result = run_prediction(
+                path,
+                data.get("model", "efficientnet"),
+                data.get("explanation", "gradcam"),
+                data.get("dataset_type", "controlled"),
+                _lang(),
+                data.get("ensemble_method"),
             )
-        else:
-            # Return generic recommendations
-            return jsonify(
-                {
-                    "success": True,
-                    "disease_class": disease_class,
-                    "treatment": {
-                        "disease_name": disease_class.replace("___", " - ").replace(
-                            "_", " "
-                        ),
-                        "severity": "unknown",
-                        "symptoms": "Please consult with an agricultural expert for specific symptoms.",
-                        "treatments": [
-                            "Consult with local agricultural extension service",
-                            "Remove and isolate affected plants",
-                            "Maintain good plant hygiene",
-                            "Monitor regularly for changes",
-                        ],
-                        "prevention": [
-                            "Practice crop rotation",
-                            "Maintain proper plant spacing",
-                            "Use disease-resistant varieties when available",
-                            "Monitor plants regularly",
-                        ],
-                        "organic_options": [
-                            "Contact organic farming consultants",
-                            "Use certified organic products only",
-                        ],
-                    },
-                }
+        except KeyError as e:
+            return _error(str(e).strip("'"), 400, available_models=list(manager.models))
+        except ValueError as e:
+            return _error(str(e))
+        return jsonify(result)
+
+    @app.route("/api/ensemble", methods=["POST"])
+    def ensemble():
+        data = request.get_json(silent=True) or {}
+        try:
+            path = resolve_image(data.get("image_path") or "")
+        except (FileNotFoundError, PermissionError) as e:
+            return _error(str(e), 404)
+        except Exception:
+            return _error("image_path is required")
+        result = run_prediction(
+            path, "ensemble", data.get("explanation", "gradcam"), data.get("dataset_type", "controlled"), _lang(), data.get("ensemble_method", "weighted")
+        )
+        return jsonify(result)
+
+    @app.route("/api/compare", methods=["POST"])
+    def compare():
+        data = request.get_json(silent=True) or {}
+        try:
+            path = resolve_image(data.get("image_path") or "")
+        except (FileNotFoundError, PermissionError) as e:
+            return _error(str(e), 404)
+        except Exception:
+            return _error("image_path is required")
+        names = [n for n in (data.get("models") or list(manager.models)) if n in manager.models]
+        if not names:
+            return _error("None of the requested models are loaded", 400, available_models=list(manager.models))
+        tensor = to_tensor(load_image(path))
+        results = {}
+        for n in names:
+            t0 = time.time()
+            pred = manager.predict(n, tensor)
+            elapsed = (time.time() - t0) * 1000
+            p, top = format_prediction(pred["probabilities"], pred["predicted_idx"], top_k=3)
+            results[n] = {
+                **p,
+                "label": manager.model_info(n)["label"],
+                "trained": manager.is_trained(n),
+                "inference_time_ms": round(elapsed, 1),
+                "top_predictions": top,
+            }
+        predicted = [r["class_raw"] for r in results.values()]
+        majority = max(set(predicted), key=predicted.count)
+        return jsonify(
+            {
+                "success": True,
+                "image_name": path.name,
+                "image_url": f"/api/uploads/{path.name}",
+                "comparisons": results,
+                "agreement": {"class": describe_class(majority), "models_agreeing": predicted.count(majority), "models_total": len(predicted)},
+                "timestamp": _now(),
+            }
+        )
+
+    @app.route("/api/batch", methods=["POST"])
+    def batch():
+        data = request.get_json(silent=True) or {}
+        paths = data.get("image_paths") or []
+        if not paths:
+            return _error("image_paths is required")
+        results = []
+        for name in paths:
+            try:
+                path = resolve_image(name)
+                results.append(
+                    run_prediction(path, data.get("model", "efficientnet"), data.get("explanation", "gradcam"), data.get("dataset_type", "controlled"), _lang())
+                )
+            except Exception as e:
+                results.append({"success": False, "image_name": name, "error": str(e)})
+        return jsonify({"success": True, "results": results, "total": len(results), "timestamp": _now()})
+
+    # ------------------------------------------------------------------ export
+    def _send(data: bytes, mimetype: str, filename: str):
+        return send_file(io.BytesIO(data), mimetype=mimetype, as_attachment=True, download_name=filename)
+
+    @app.route("/api/export/<fmt>", methods=["POST"])
+    def export_results(fmt):
+        data = request.get_json(silent=True) or {}
+        results = data.get("results") or []
+        if isinstance(results, dict):
+            results = [results]
+        if not results:
+            return _error("results is required")
+        lang = _lang()
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if fmt == "csv":
+            return _send(export_utils.results_to_csv(results, lang).encode("utf-8-sig"), "text/csv", f"crop_analysis_{stamp}.csv")
+        if fmt == "json":
+            return _send(export_utils.results_to_json(results).encode("utf-8"), "application/json", f"crop_analysis_{stamp}.json")
+        if fmt in ("excel", "xlsx"):
+            return _send(
+                export_utils.results_to_excel(results, lang),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                f"crop_analysis_{stamp}.xlsx",
             )
+        if fmt == "pdf":
+            return _send(create_pdf_report(results, lang), "application/pdf", f"crop_analysis_{stamp}.pdf")
+        return _error(f"Unknown export format: {fmt}", 404)
 
-    except Exception as e:
-        import traceback
+    @app.route("/api/export/comparison/<fmt>", methods=["POST"])
+    def export_comparison(fmt):
+        data = request.get_json(silent=True) or {}
+        if not data.get("comparisons"):
+            return _error("comparisons is required")
+        lang = _lang()
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if fmt == "csv":
+            return _send(export_utils.comparison_to_csv(data, lang).encode("utf-8-sig"), "text/csv", f"model_comparison_{stamp}.csv")
+        if fmt in ("excel", "xlsx"):
+            return _send(
+                export_utils.comparison_to_excel(data, lang),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                f"model_comparison_{stamp}.xlsx",
+            )
+        if fmt == "pdf":
+            return _send(create_comparison_report(data, lang), "application/pdf", f"model_comparison_{stamp}.pdf")
+        return _error(f"Unknown export format: {fmt}", 404)
 
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
+    @app.route("/api/generate_report", methods=["POST"])
+    def generate_report():  # backwards compatible alias
+        data = request.get_json(silent=True) or {}
+        results = data.get("results") or [data]
+        return _send(create_pdf_report(results, _lang()), "application/pdf", f"crop_analysis_{datetime.now():%Y%m%d_%H%M%S}.pdf")
 
+    # ------------------------------------------------------------------ errors
+    @app.errorhandler(413)
+    def too_large(e):
+        return _error("File too large", 413, max_size_mb=config.MAX_FILE_SIZE // (1024 * 1024))
 
-@app.route("/api/export/csv", methods=["POST"])
-def export_csv():
-    """
-    Export analysis results to CSV format
-    Accepts single result or array of results
-    """
-    try:
-        data = request.json
-        results = data.get("results", [])
+    @app.errorhandler(404)
+    def not_found(e):
+        return _error("Not found", 404)
 
-        if not results:
-            return jsonify({"error": "No results provided"}), 400
+    @app.errorhandler(Exception)
+    def unhandled(e):
+        app.logger.exception("Unhandled error")
+        payload = {"success": False, "error": str(e) or e.__class__.__name__}
+        if app.debug:
+            payload["traceback"] = traceback.format_exc()
+        return jsonify(payload), 500
 
-        # Generate CSV
-        csv_data = export_to_csv(results)
-
-        # Create response
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"crop_analysis_{timestamp}.csv"
-
-        return send_file(
-            io.BytesIO(csv_data.encode("utf-8")),
-            mimetype="text/csv",
-            as_attachment=True,
-            download_name=filename,
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/json", methods=["POST"])
-def export_json():
-    """
-    Export analysis results to JSON format
-    Accepts single result or array of results
-    """
-    try:
-        data = request.json
-        results = data.get("results", [])
-
-        if not results:
-            return jsonify({"error": "No results provided"}), 400
-
-        # Generate JSON
-        json_data = export_to_json(results, pretty=True)
-
-        # Create response
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"crop_analysis_{timestamp}.json"
-
-        return send_file(
-            io.BytesIO(json_data.encode("utf-8")),
-            mimetype="application/json",
-            as_attachment=True,
-            download_name=filename,
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
+    return app
 
 
-@app.route("/api/export/excel", methods=["POST"])
-def export_excel():
-    """
-    Export analysis results to Excel format with formatting
-    Accepts single result or array of results
-    """
-    try:
-        data = request.json
-        results = data.get("results", [])
+app = create_app()
 
-        if not results:
-            return jsonify({"error": "No results provided"}), 400
-
-        # Generate Excel
-        excel_data = export_to_excel(results)
-
-        # Create response
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"crop_analysis_{timestamp}.xlsx"
-
-        return send_file(
-            io.BytesIO(excel_data),
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            as_attachment=True,
-            download_name=filename,
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/comparison/csv", methods=["POST"])
-def export_comparison_csv():
-    """
-    Export model comparison results to CSV format
-    """
-    try:
-        data = request.json
-
-        if not data or "comparisons" not in data:
-            return jsonify({"error": "No comparison data provided"}), 400
-
-        # Generate CSV
-        csv_data = export_comparison_to_csv(data)
-
-        # Create response
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"model_comparison_{timestamp}.csv"
-
-        return send_file(
-            io.BytesIO(csv_data.encode("utf-8")),
-            mimetype="text/csv",
-            as_attachment=True,
-            download_name=filename,
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/api/export/comparison/excel", methods=["POST"])
-def export_comparison_excel():
-    """
-    Export model comparison results to Excel format
-    """
-    try:
-        data = request.json
-
-        if not data or "comparisons" not in data:
-            return jsonify({"error": "No comparison data provided"}), 400
-
-        # Generate Excel
-        excel_data = export_comparison_to_excel(data)
-
-        # Create response
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"model_comparison_{timestamp}.xlsx"
-
-        return send_file(
-            io.BytesIO(excel_data),
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            as_attachment=True,
-            download_name=filename,
-        )
-
-    except Exception as e:
-        import traceback
-
-        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
-
-
-@app.route("/frontend/<path:path>")
-def serve_frontend(path):
-    """Serve frontend files"""
-    return send_from_directory("../frontend", path)
-
-
-# =======================
-# Error Handlers
-# =======================
-
-
-@app.errorhandler(413)
-def file_too_large(e):
-    return jsonify({"error": "File too large", "max_size": "16MB"}), 413
-
-
-@app.errorhandler(404)
-def not_found(e):
-    return jsonify({"error": "Endpoint not found"}), 404
-
-
-@app.errorhandler(500)
-def internal_error(e):
-    return jsonify({"error": "Internal server error", "message": str(e)}), 500
-
-
-# =======================
-# Main
-# =======================
 
 if __name__ == "__main__":
-    print("\n" + "=" * 50)
-    print("Crop Disease Detection System - Backend Server")
-    print("=" * 50)
-    print(f"Models directory: {os.path.abspath(MODELS_DIR)}")
-    print(f"Upload directory: {os.path.abspath(UPLOAD_FOLDER)}")
-    print(f"Device: {model_manager.device}")
-    print(f"Loaded models: {list(model_manager.models.keys())}")
-    print(f"Total classes: {len(model_manager.class_names)}")
-    print("=" * 50 + "\n")
-
-    # Run Flask app
-    app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)
+    print("=" * 60)
+    print(f"Crop Disease Detection API v{config.APP_VERSION}")
+    print(f"  models dir : {config.MODELS_DIR}")
+    print(f"  uploads    : {config.UPLOAD_DIR}")
+    print(f"  device     : {app.extensions['manager'].device}")
+    print(f"  models     : {list(app.extensions['manager'].models)}")
+    print(f"  open       : http://localhost:{config.PORT}/")
+    print("=" * 60)
+    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG, threaded=True)

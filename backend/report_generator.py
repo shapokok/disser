@@ -1,393 +1,231 @@
 """
-PDF Report Generation for Crop Disease Analysis
-Creates professional reports with images, predictions, and visualizations
+PDF reports (ReportLab) with Cyrillic support.
+
+DejaVu Sans ships with matplotlib, so no extra font download is required.
 """
 
-from reportlab.lib.pagesizes import letter, A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.lib import colors
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Image as RLImage,
-    Table, TableStyle, PageBreak, KeepTogether
-)
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
-from datetime import datetime
-import io
+from __future__ import annotations
+
 import base64
-from PIL import Image
+import io
+from datetime import datetime
+from pathlib import Path
+
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import Image as RLImage
+from reportlab.platypus import KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+
+_FONT = "Helvetica"
+_FONT_BOLD = "Helvetica-Bold"
 
 
-def create_pdf_report(analysis_data, output_path=None):
-    """
-    Create a comprehensive PDF report for crop disease analysis
+def _register_fonts():
+    global _FONT, _FONT_BOLD
+    if _FONT == "DejaVuSans":
+        return
+    try:
+        import matplotlib
 
-    Args:
-        analysis_data: Dictionary containing analysis results
-        output_path: Path to save PDF (if None, returns bytes)
+        ttf = Path(matplotlib.get_data_path()) / "fonts" / "ttf"
+        pdfmetrics.registerFont(TTFont("DejaVuSans", str(ttf / "DejaVuSans.ttf")))
+        pdfmetrics.registerFont(TTFont("DejaVuSans-Bold", str(ttf / "DejaVuSans-Bold.ttf")))
+        _FONT, _FONT_BOLD = "DejaVuSans", "DejaVuSans-Bold"
+    except Exception as e:  # pragma: no cover
+        print(f"Warning: Cyrillic PDF font unavailable ({e})")
 
-    Returns:
-        PDF bytes if output_path is None, else None (saves to file)
-    """
-    # Create PDF buffer
-    if output_path:
-        doc = SimpleDocTemplate(output_path, pagesize=letter)
-    else:
-        buffer = io.BytesIO()
-        doc = SimpleDocTemplate(buffer, pagesize=letter)
 
-    # Container for PDF elements
-    story = []
+T = {
+    "en": {
+        "title": "Crop Disease Detection Report",
+        "generated": "Generated",
+        "image": "Image",
+        "prediction": "Prediction",
+        "confidence": "Confidence",
+        "model": "Model",
+        "explanation": "Explanation",
+        "mode": "Mode",
+        "time": "Inference time",
+        "top": "Alternative classes",
+        "treatment": "Recommendations",
+        "symptoms": "Symptoms",
+        "treatments": "Treatment",
+        "prevention": "Prevention",
+        "organic": "Organic options",
+        "severity": "Severity",
+        "comparison": "Model comparison",
+        "class": "Class",
+        "agreement": "Models agreeing",
+        "original": "Original",
+        "overlay": "Grad-CAM overlay",
+        "lime": "LIME regions",
+        "footer": "Master's thesis: intelligent crop condition monitoring with computer vision and neural networks",
+    },
+    "ru": {
+        "title": "Отчёт о диагностике заболеваний растений",
+        "generated": "Сформирован",
+        "image": "Изображение",
+        "prediction": "Диагноз",
+        "confidence": "Уверенность",
+        "model": "Модель",
+        "explanation": "Метод объяснения",
+        "mode": "Режим",
+        "time": "Время инференса",
+        "top": "Альтернативные классы",
+        "treatment": "Рекомендации",
+        "symptoms": "Симптомы",
+        "treatments": "Лечение",
+        "prevention": "Профилактика",
+        "organic": "Органические меры",
+        "severity": "Серьёзность",
+        "comparison": "Сравнение моделей",
+        "class": "Класс",
+        "agreement": "Согласие моделей",
+        "original": "Оригинал",
+        "overlay": "Наложение Grad-CAM",
+        "lime": "Области LIME",
+        "footer": "Магистерская диссертация: интеллектуальная система мониторинга состояния сельскохозяйственных культур",
+    },
+}
 
-    # Styles
-    styles = getSampleStyleSheet()
-    title_style = ParagraphStyle(
-        'CustomTitle',
-        parent=styles['Heading1'],
-        fontSize=24,
-        textColor=colors.HexColor('#2ecc71'),
-        spaceAfter=30,
-        alignment=TA_CENTER
-    )
 
-    heading_style = ParagraphStyle(
-        'CustomHeading',
-        parent=styles['Heading2'],
-        fontSize=16,
-        textColor=colors.HexColor('#2c3e50'),
-        spaceAfter=12,
-        spaceBefore=12
-    )
+def _styles():
+    _register_fonts()
+    base = getSampleStyleSheet()
+    return {
+        "title": ParagraphStyle("t", parent=base["Title"], fontName=_FONT_BOLD, fontSize=20, textColor=colors.HexColor("#1f5130"), alignment=TA_CENTER, spaceAfter=4),
+        "meta": ParagraphStyle("m", parent=base["Normal"], fontName=_FONT, fontSize=9, textColor=colors.grey, alignment=TA_CENTER, spaceAfter=10),
+        "h2": ParagraphStyle("h", parent=base["Heading2"], fontName=_FONT_BOLD, fontSize=13, textColor=colors.HexColor("#1f2933"), spaceBefore=8, spaceAfter=6),
+        "h3": ParagraphStyle("h3", parent=base["Heading3"], fontName=_FONT_BOLD, fontSize=10.5, spaceBefore=6, spaceAfter=3),
+        "body": ParagraphStyle("b", parent=base["Normal"], fontName=_FONT, fontSize=9.5, leading=13),
+        "small": ParagraphStyle("s", parent=base["Normal"], fontName=_FONT, fontSize=8, textColor=colors.grey),
+    }
 
-    # Title
-    story.append(Paragraph("Crop Disease Detection Report", title_style))
-    story.append(Spacer(1, 0.2*inch))
 
-    # Report metadata
-    metadata_style = ParagraphStyle(
-        'metadata',
-        parent=styles['Normal'],
-        fontSize=10,
-        textColor=colors.grey,
-        alignment=TA_CENTER
-    )
-
-    story.append(Paragraph(
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        metadata_style
-    ))
-    story.append(Spacer(1, 0.3*inch))
-
-    # Divider line
-    story.append(Table(
-        [['']], colWidths=[6.5*inch],
-        style=[('LINEABOVE', (0,0), (-1,0), 2, colors.HexColor('#2ecc71'))]
-    ))
-    story.append(Spacer(1, 0.3*inch))
-
-    # Analysis Summary
-    story.append(Paragraph("Analysis Summary", heading_style))
-
-    summary_data = [
-        ['Property', 'Value'],
-        ['Image Name', analysis_data.get('image_name', 'N/A')],
-        ['Model Used', analysis_data.get('model_used', 'N/A')],
-        ['Explanation Method', analysis_data.get('explanation_method', 'N/A')],
-        ['Dataset Type', analysis_data.get('dataset_type', 'N/A')],
-        ['Inference Time', f"{analysis_data.get('inference_time_ms', 'N/A')} ms"],
-    ]
-
-    summary_table = Table(summary_data, colWidths=[2*inch, 4*inch])
-    summary_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2ecc71')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
-    ]))
-
-    story.append(summary_table)
-    story.append(Spacer(1, 0.3*inch))
-
-    # Prediction Results
-    story.append(Paragraph("Prediction Results", heading_style))
-
-    prediction = analysis_data.get('prediction', {})
-    confidence = prediction.get('confidence', 0)
-
-    # Confidence color
-    if confidence > 0.8:
-        conf_color = colors.HexColor('#2ecc71')
-    elif confidence > 0.5:
-        conf_color = colors.HexColor('#f39c12')
-    else:
-        conf_color = colors.HexColor('#e74c3c')
-
-    prediction_data = [
-        ['Metric', 'Value'],
-        ['Predicted Disease', prediction.get('class', 'Unknown')],
-        ['Confidence Score', prediction.get('confidence_percent', '0%')],
-    ]
-
-    prediction_table = Table(prediction_data, colWidths=[2*inch, 4*inch])
-    prediction_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#3498db')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (0, -1), colors.lightgrey),
-        ('BACKGROUND', (1, 1), (1, 1), colors.lightblue),
-        ('BACKGROUND', (1, 2), (1, 2), conf_color),
-        ('TEXTCOLOR', (1, 2), (1, 2), colors.whitesmoke),
-        ('FONTNAME', (1, 1), (1, -1), 'Helvetica-Bold'),
-        ('FONTSIZE', (1, 1), (1, -1), 14),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    story.append(prediction_table)
-    story.append(Spacer(1, 0.3*inch))
-
-    # Top 3 Predictions
-    top_predictions = analysis_data.get('top_predictions', [])
-    if top_predictions:
-        story.append(Paragraph("Top 3 Predictions", heading_style))
-
-        top_pred_data = [['Rank', 'Disease Class', 'Confidence']]
-        for i, pred in enumerate(top_predictions[:3], 1):
-            top_pred_data.append([
-                str(i),
-                pred.get('class', 'Unknown'),
-                pred.get('confidence_percent', '0%')
-            ])
-
-        top_pred_table = Table(top_pred_data, colWidths=[0.8*inch, 3.7*inch, 1.5*inch])
-        top_pred_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#34495e')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 11),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.lightgrey),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
-        ]))
-
-        story.append(top_pred_table)
-        story.append(Spacer(1, 0.3*inch))
-
-    # Visualization (if available)
-    visualization_base64 = analysis_data.get('visualization')
-    if visualization_base64:
-        story.append(PageBreak())
-        story.append(Paragraph("Explainable AI Visualization", heading_style))
-        story.append(Spacer(1, 0.2*inch))
-
-        try:
-            # Decode base64 image
-            img_data = base64.b64decode(visualization_base64)
-            img = Image.open(io.BytesIO(img_data))
-
-            # Save to temp buffer
-            img_buffer = io.BytesIO()
-            img.save(img_buffer, format='PNG')
-            img_buffer.seek(0)
-
-            # Add to PDF
-            rl_img = RLImage(img_buffer, width=6*inch, height=None)
-            story.append(rl_img)
-            story.append(Spacer(1, 0.2*inch))
-
-            # Explanation text
-            explanation_text = f"""
-            The visualization above shows the Grad-CAM (Gradient-weighted Class Activation Mapping)
-            or LIME (Local Interpretable Model-agnostic Explanations) heatmap. The colored regions
-            indicate which parts of the image the AI model focused on when making its prediction.
-            Warmer colors (red/yellow) indicate higher importance in the decision-making process.
-            """
-            story.append(Paragraph(explanation_text, styles['Normal']))
-
-        except Exception as e:
-            story.append(Paragraph(f"Error loading visualization: {str(e)}", styles['Normal']))
-
-    # Recommendations section
-    story.append(PageBreak())
-    story.append(Paragraph("Recommendations & Next Steps", heading_style))
-
-    recommendations = get_recommendations(prediction.get('class_raw', ''), confidence)
-    for rec in recommendations:
-        story.append(Paragraph(f"• {rec}", styles['Normal']))
-        story.append(Spacer(1, 0.1*inch))
-
-    # Footer
-    story.append(Spacer(1, 0.5*inch))
-    story.append(Table(
-        [['']], colWidths=[6.5*inch],
-        style=[('LINEABOVE', (0,0), (-1,0), 1, colors.grey)]
-    ))
-    footer_style = ParagraphStyle(
-        'footer',
-        parent=styles['Normal'],
-        fontSize=9,
-        textColor=colors.grey,
-        alignment=TA_CENTER
-    )
-    story.append(Spacer(1, 0.1*inch))
-    story.append(Paragraph(
-        "Crop Disease Detection System | Master's Thesis Project | For Educational Purposes",
-        footer_style
-    ))
-    story.append(Paragraph(
-        f"© 2025 - Generated on {datetime.now().strftime('%Y-%m-%d')}",
-        footer_style
-    ))
-
-    # Build PDF
-    doc.build(story)
-
-    if output_path:
+def _img(b64: str | None, width_mm: float):
+    if not b64:
         return None
-    else:
-        pdf_bytes = buffer.getvalue()
-        buffer.close()
-        return pdf_bytes
+    try:
+        from PIL import Image as PILImage
 
-
-def get_recommendations(disease_class, confidence):
-    """
-    Get recommendations based on detected disease
-
-    Args:
-        disease_class: Detected disease class
-        confidence: Confidence score
-
-    Returns:
-        List of recommendation strings
-    """
-    recommendations = []
-
-    if confidence < 0.5:
-        recommendations.append(
-            "⚠️ Low confidence detection. Consider retaking the image with better lighting and focus."
-        )
-        recommendations.append(
-            "Ensure the leaf is clearly visible without blur or obstructions."
-        )
-
-    if 'healthy' in disease_class.lower():
-        recommendations.append(
-            "✓ Plant appears healthy. Continue regular monitoring and maintenance."
-        )
-        recommendations.append(
-            "Maintain current watering and fertilization practices."
-        )
-    else:
-        recommendations.append(
-            "⚠️ Disease detected. Isolate affected plants to prevent spread."
-        )
-        recommendations.append(
-            "Consult with an agricultural expert for treatment recommendations."
-        )
-        recommendations.append(
-            "Consider removing severely infected leaves."
-        )
-
-        if 'blight' in disease_class.lower():
-            recommendations.append(
-                "For blight: Improve air circulation and reduce moisture on leaves."
-            )
-            recommendations.append(
-                "Apply appropriate fungicide as recommended by local agricultural extension."
-            )
-        elif 'rust' in disease_class.lower():
-            recommendations.append(
-                "For rust: Remove infected plant parts and apply fungicides."
-            )
-        elif 'spot' in disease_class.lower():
-            recommendations.append(
-                "For spot diseases: Improve air circulation and avoid overhead watering."
-            )
-
-    recommendations.append(
-        "📸 Take multiple photos from different angles for comprehensive assessment."
-    )
-    recommendations.append(
-        "📊 Monitor the affected area regularly and track disease progression."
-    )
-
-    return recommendations
-
-
-def generate_comparison_report(comparison_data, output_path=None):
-    """
-    Generate PDF report for model comparison
-
-    Args:
-        comparison_data: Dictionary with comparison results
-        output_path: Path to save PDF
-
-    Returns:
-        PDF bytes or None
-    """
-    if output_path:
-        doc = SimpleDocTemplate(output_path, pagesize=letter)
-    else:
-        buffer = io.BytesIO()
-        doc = SimpleDocTemplate(buffer, pagesize=letter)
-
-    story = []
-    styles = getSampleStyleSheet()
-
-    # Title
-    title_style = ParagraphStyle(
-        'CustomTitle',
-        parent=styles['Heading1'],
-        fontSize=22,
-        textColor=colors.HexColor('#2ecc71'),
-        spaceAfter=20,
-        alignment=TA_CENTER
-    )
-
-    story.append(Paragraph("Model Comparison Report", title_style))
-    story.append(Spacer(1, 0.3*inch))
-
-    # Comparison table
-    comparisons = comparison_data.get('comparisons', {})
-
-    comp_data = [['Model', 'Prediction', 'Confidence', 'Inference Time']]
-    for model, result in comparisons.items():
-        comp_data.append([
-            model.upper(),
-            result.get('predicted_class', 'N/A'),
-            result.get('confidence_percent', '0%'),
-            f"{result.get('inference_time_ms', 0):.2f} ms"
-        ])
-
-    comp_table = Table(comp_data, colWidths=[1.5*inch, 2.5*inch, 1.3*inch, 1.2*inch])
-    comp_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2ecc71')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 11),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    story.append(comp_table)
-
-    # Build PDF
-    doc.build(story)
-
-    if output_path:
+        data = base64.b64decode(b64)
+        w, h = PILImage.open(io.BytesIO(data)).size
+        return RLImage(io.BytesIO(data), width=width_mm * mm, height=width_mm * mm * h / w)
+    except Exception:
         return None
-    else:
-        pdf_bytes = buffer.getvalue()
-        buffer.close()
-        return pdf_bytes
+
+
+def _table(rows, col_widths, header=True):
+    t = Table(rows, colWidths=col_widths, hAlign="LEFT")
+    style = [
+        ("FONTNAME", (0, 0), (-1, -1), _FONT),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#d0d7de")),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+    ]
+    if header:
+        style += [
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8f3ec")),
+            ("FONTNAME", (0, 0), (-1, 0), _FONT_BOLD),
+        ]
+    t.setStyle(TableStyle(style))
+    return t
+
+
+def _cls(entry: dict, lang: str) -> str:
+    return entry.get("class_ru" if lang == "ru" else "class") or entry.get("class", "")
+
+
+def _bullets(items, st):
+    return [Paragraph(f"• {x}", st["body"]) for x in (items or [])]
+
+
+def _doc(buf, title):
+    return SimpleDocTemplate(buf, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=16 * mm, title=title)
+
+
+def create_pdf_report(results: list[dict], lang: str = "en") -> bytes:
+    lang = "ru" if lang == "ru" else "en"
+    t, st = T[lang], _styles()
+    buf = io.BytesIO()
+    doc = _doc(buf, t["title"])
+    story = [Paragraph(t["title"], st["title"]), Paragraph(f"{t['generated']}: {datetime.now():%Y-%m-%d %H:%M}", st["meta"])]
+
+    for n, r in enumerate(results, 1):
+        pred = r.get("prediction", {})
+        block = [Paragraph(f"{n}. {r.get('image_name', t['image'])}", st["h2"])]
+
+        imgs = r.get("images") or {}
+        pics = [(t["original"], imgs.get("original")), (t["overlay"], imgs.get("overlay")), (t["lime"], imgs.get("lime"))]
+        pics = [(cap, b) for cap, b in pics if b]
+        if pics:
+            width = min(55.0, 170.0 / len(pics) - 4)
+            cells = [_img(b, width) or "" for _, b in pics]
+            caps = [Paragraph(cap, st["small"]) for cap, _ in pics]
+            block.append(_table([cells, caps], [(width + 4) * mm] * len(pics), header=False))
+            block.append(Spacer(1, 4))
+
+        info = [
+            [t["prediction"], _cls(pred, lang)],
+            [t["confidence"], pred.get("confidence_percent", "")],
+            [t["model"], r.get("model_label") or r.get("model", "")],
+            [t["explanation"], (r.get("explanation") or "").upper()],
+            [t["mode"], r.get("dataset_type", "")],
+            [t["time"], f"{r.get('inference_time_ms', '')} ms"],
+        ]
+        block.append(_table([[Paragraph(f"<b>{a}</b>", st["body"]), Paragraph(str(b), st["body"])] for a, b in info], [45 * mm, 120 * mm], header=False))
+
+        top = r.get("top_predictions") or []
+        if len(top) > 1:
+            block.append(Paragraph(t["top"], st["h3"]))
+            block.append(_table([[t["class"], t["confidence"]]] + [[_cls(x, lang), x.get("confidence_percent", "")] for x in top[:5]], [120 * mm, 45 * mm]))
+
+        tr = r.get("treatment")
+        if tr:
+            block.append(Paragraph(f"{t['treatment']}: {tr.get('disease_name', '')}", st["h3"]))
+            if tr.get("severity"):
+                block.append(Paragraph(f"<b>{t['severity']}:</b> {tr['severity']}", st["body"]))
+            if tr.get("symptoms"):
+                block.append(Paragraph(f"<b>{t['symptoms']}:</b> {tr['symptoms']}", st["body"]))
+            for key, label in (("treatments", "treatments"), ("prevention", "prevention"), ("organic_options", "organic")):
+                if tr.get(key):
+                    block.append(Paragraph(f"<b>{t[label]}</b>", st["body"]))
+                    block += _bullets(tr[key], st)
+        block.append(Spacer(1, 8))
+        story.append(KeepTogether(block[:3]))
+        story += block[3:]
+
+    story.append(Spacer(1, 10))
+    story.append(Paragraph(t["footer"], st["small"]))
+    doc.build(story)
+    return buf.getvalue()
+
+
+def create_comparison_report(data: dict, lang: str = "en") -> bytes:
+    lang = "ru" if lang == "ru" else "en"
+    t, st = T[lang], _styles()
+    buf = io.BytesIO()
+    doc = _doc(buf, t["comparison"])
+    story = [Paragraph(t["comparison"], st["title"]), Paragraph(f"{t['generated']}: {datetime.now():%Y-%m-%d %H:%M}", st["meta"])]
+    if data.get("image_name"):
+        story.append(Paragraph(f"{t['image']}: {data['image_name']}", st["body"]))
+    story.append(Spacer(1, 6))
+    rows = [[t["model"], t["class"], t["confidence"], t["time"]]]
+    for name, r in (data.get("comparisons") or {}).items():
+        rows.append([r.get("label") or name, _cls(r, lang), r.get("confidence_percent", ""), f"{r.get('inference_time_ms', '')} ms"])
+    story.append(_table(rows, [45 * mm, 75 * mm, 25 * mm, 25 * mm]))
+    agr = data.get("agreement")
+    if agr:
+        story.append(Spacer(1, 6))
+        story.append(Paragraph(f"{t['agreement']}: {agr.get('models_agreeing')}/{agr.get('models_total')} → {_cls(agr.get('class', {}), lang)}", st["body"]))
+    story.append(Spacer(1, 10))
+    story.append(Paragraph(t["footer"], st["small"]))
+    doc.build(story)
+    return buf.getvalue()

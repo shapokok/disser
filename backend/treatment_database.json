@@ -1,168 +1,154 @@
 {
   "Apple___Apple_scab": {
-    "disease_name": "Apple Scab",
-    "severity": "moderate",
-    "symptoms": "Dark, scabby lesions on leaves and fruit",
-    "treatments": [
-      "Remove and destroy infected leaves",
-      "Apply fungicides (myclobutanil or captan) during wet periods",
-      "Prune trees to improve air circulation",
-      "Apply dormant spray in early spring"
-    ],
-    "prevention": [
-      "Choose scab-resistant apple varieties",
-      "Rake and remove fallen leaves in autumn",
-      "Maintain proper spacing between trees",
-      "Avoid overhead watering"
-    ],
-    "organic_options": [
-      "Sulfur-based fungicides",
-      "Neem oil spray",
-      "Copper-based fungicides"
-    ]
+    "en": {"pathogen": "Venturia inaequalis (fungus)", "severity": "moderate", "symptoms": "Olive-green to brown velvety spots on leaves and fruit; leaves may curl and drop early, fruit becomes cracked and corky.", "treatments": ["Apply protectant fungicides (captan, mancozeb) from green tip until 2-3 weeks after petal fall", "Alternate with systemic fungicides (myclobutanil, difenoconazole) to limit resistance", "Remove and destroy heavily infected shoots and fruit"], "prevention": ["Rake and compost or shred fallen leaves in autumn to reduce overwintering spores", "Plant resistant cultivars (Liberty, Enterprise, Prima)", "Prune for an open canopy that dries quickly"], "organic_options": ["Sulfur or lime-sulfur sprays before infection periods", "Potassium bicarbonate during the season", "Urea spray on fallen leaves to speed decomposition"]},
+    "ru": {"pathogen": "Venturia inaequalis (гриб)", "severity": "средняя", "symptoms": "Оливково-зелёные, затем бурые бархатистые пятна на листьях и плодах; листья скручиваются и опадают, плоды растрескиваются и опробковевают.", "treatments": ["Контактные фунгициды (каптан, манкоцеб) от фазы «зелёный конус» до 2–3 недель после цветения", "Чередование с системными препаратами (миклобутанил, дифеноконазол) для профилактики резистентности", "Удаление и уничтожение сильно поражённых побегов и плодов"], "prevention": ["Сгребание и компостирование опавших листьев осенью — снижает запас спор", "Устойчивые сорта (Либерти, Энтерпрайз, Прима)", "Обрезка для разреженной, быстро просыхающей кроны"], "organic_options": ["Обработки серой или известково-серным отваром перед периодами заражения", "Бикарбонат калия в течение сезона", "Опрыскивание опавших листьев мочевиной для ускорения разложения"]}
   },
   "Apple___Black_rot": {
-    "disease_name": "Black Rot",
-    "severity": "high",
-    "symptoms": "Circular brown spots on leaves, fruit rot",
-    "treatments": [
-      "Remove all mummified fruit and cankers",
-      "Apply fungicides (captan or thiophanate-methyl)",
-      "Prune infected branches 6-8 inches below visible symptoms"
-    ],
-    "prevention": [
-      "Remove dead wood and debris",
-      "Maintain tree health through proper fertilization",
-      "Thin fruit to prevent overcrowding"
-    ],
-    "organic_options": [
-      "Copper fungicides",
-      "Remove and destroy infected material"
-    ]
+    "en": {"pathogen": "Botryosphaeria obtusa (fungus)", "severity": "high", "symptoms": "'Frog-eye' leaf spots with purple margins, sunken cankers on limbs, and fruit rot with concentric brown rings that mummifies on the tree.", "treatments": ["Prune out cankers and dead wood, cutting 20-30 cm into healthy tissue", "Remove mummified fruit from the tree and the ground", "Apply captan or thiophanate-methyl from petal fall through summer in wet seasons"], "prevention": ["Keep trees vigorous: balanced fertilisation and irrigation", "Avoid wounding bark; protect from winter injury and fire blight strikes", "Sanitise pruning tools between trees"], "organic_options": ["Copper sprays at bud break", "Strict orchard sanitation is the most effective organic measure"]},
+    "ru": {"pathogen": "Botryosphaeria obtusa (гриб)", "severity": "высокая", "symptoms": "Пятна «лягушачий глаз» с пурпурной каймой на листьях, вдавленные раковые язвы на ветвях, гниль плодов с концентрическими кольцами и мумификация плодов на дереве.", "treatments": ["Вырезка раковых язв и сухих ветвей с захватом 20–30 см здоровой древесины", "Удаление мумифицированных плодов с дерева и с земли", "Каптан или тиофанат-метил после цветения и в течение влажного лета"], "prevention": ["Поддержание силы роста: сбалансированное питание и полив", "Избегать ранений коры, защищать от морозобоин и бактериального ожога", "Дезинфекция секатора между деревьями"], "organic_options": ["Медьсодержащие препараты в фазу набухания почек", "Строгая санитария сада — главная органическая мера"]}
   },
-  "Tomato___Early_blight": {
-    "disease_name": "Early Blight",
-    "severity": "moderate",
-    "symptoms": "Dark brown spots with concentric rings on lower leaves",
-    "treatments": [
-      "Apply fungicides (chlorothalonil or copper-based)",
-      "Remove infected lower leaves",
-      "Mulch around plants to prevent soil splash",
-      "Water at the base of plants, avoid wetting foliage"
-    ],
-    "prevention": [
-      "Rotate crops (don't plant tomatoes in same spot for 3 years)",
-      "Space plants properly for good air circulation",
-      "Use disease-resistant varieties",
-      "Stake or cage plants to keep foliage off ground"
-    ],
-    "organic_options": [
-      "Copper fungicides",
-      "Baking soda spray (1 tablespoon per gallon water)",
-      "Neem oil"
-    ]
+  "Apple___Cedar_apple_rust": {
+    "en": {"pathogen": "Gymnosporangium juniperi-virginianae (fungus)", "severity": "moderate", "symptoms": "Bright orange-yellow spots on upper leaf surface, later with tube-like spore structures underneath; fruit may be deformed.", "treatments": ["Fungicides (myclobutanil, trifloxystrobin) from pink bud stage until 3 weeks after petal fall", "Remove galls from nearby junipers in late winter before they release spores"], "prevention": ["Do not plant apples within 1-2 km of eastern red cedar / juniper when possible", "Choose resistant cultivars (Redfree, Liberty, William's Pride)"], "organic_options": ["Sulfur sprays during spore release (spring rains)", "Physical removal of juniper galls"]},
+    "ru": {"pathogen": "Gymnosporangium juniperi-virginianae (гриб)", "severity": "средняя", "symptoms": "Ярко-оранжевые пятна на верхней стороне листа, позже трубчатые спороносные образования снизу; плоды могут деформироваться.", "treatments": ["Фунгициды (миклобутанил, трифлоксистробин) от фазы «розовый бутон» до 3 недель после цветения", "Удаление галлов с можжевельника поблизости в конце зимы до высвобождения спор"], "prevention": ["По возможности не размещать яблони ближе 1–2 км от можжевельника", "Устойчивые сорта (Редфри, Либерти, Уильямс Прайд)"], "organic_options": ["Серосодержащие обработки в период разлёта спор (весенние дожди)", "Механическое удаление галлов на можжевельнике"]}
   },
-  "Tomato___Late_blight": {
-    "disease_name": "Late Blight",
-    "severity": "critical",
-    "symptoms": "Water-soaked spots on leaves, white mold on undersides, fruit rot",
-    "treatments": [
-      "Immediately remove and destroy all infected plants",
-      "Apply fungicides (chlorothalonil, mancozeb) preventatively",
-      "Do NOT compost infected material - burn or dispose in trash",
-      "Clean tools with 10% bleach solution"
-    ],
-    "prevention": [
-      "Use certified disease-free seed potatoes and transplants",
-      "Avoid overhead irrigation",
-      "Provide excellent air circulation",
-      "Monitor weather for conditions favoring blight (cool, wet)"
-    ],
-    "organic_options": [
-      "Copper fungicides (must be applied preventatively)",
-      "Remove infected plants immediately to protect others"
-    ]
+  "Apple___healthy": {
+    "en": {"severity": "none", "symptoms": "Uniformly green leaves without spots, curling or powdery coating.", "treatments": ["No treatment needed"], "prevention": ["Keep monitoring weekly during wet spring weather", "Maintain balanced fertilisation and a well-pruned canopy", "Remove fallen leaves and fruit in autumn"], "organic_options": ["Compost mulch and beneficial insect habitat"]},
+    "ru": {"severity": "нет", "symptoms": "Равномерно зелёные листья без пятен, скручивания и налёта.", "treatments": ["Лечение не требуется"], "prevention": ["Еженедельный осмотр во влажную весеннюю погоду", "Сбалансированное питание и правильно сформированная крона", "Уборка опавших листьев и плодов осенью"], "organic_options": ["Мульчирование компостом, привлечение полезных насекомых"]}
   },
-  "Potato___Early_blight": {
-    "disease_name": "Early Blight",
-    "severity": "moderate",
-    "symptoms": "Dark spots with target-like pattern on lower leaves",
-    "treatments": [
-      "Apply fungicides containing chlorothalonil or mancozeb",
-      "Remove infected leaves from bottom of plant",
-      "Hill soil around plants to cover lower stems"
-    ],
-    "prevention": [
-      "Rotate crops (3-4 year rotation)",
-      "Use certified disease-free seed potatoes",
-      "Maintain proper plant nutrition",
-      "Destroy volunteer plants"
-    ],
-    "organic_options": [
-      "Copper fungicides",
-      "Bordeaux mixture",
-      "Remove affected foliage"
-    ]
+  "Blueberry___healthy": {
+    "en": {"severity": "none", "symptoms": "Glossy green leaves, no reddening, spotting or dieback.", "treatments": ["No treatment needed"], "prevention": ["Keep soil acidic (pH 4.5-5.5) and mulched", "Irrigate at the base to keep foliage dry", "Prune old canes annually"], "organic_options": ["Pine bark or sawdust mulch", "Compost tea for soil biology"]},
+    "ru": {"severity": "нет", "symptoms": "Глянцевые зелёные листья без покраснения, пятен и усыхания.", "treatments": ["Лечение не требуется"], "prevention": ["Кислая почва (pH 4,5–5,5) и мульчирование", "Полив под корень, листья должны оставаться сухими", "Ежегодная обрезка старых побегов"], "organic_options": ["Мульча из сосновой коры или опилок", "Компостный чай для почвенной биоты"]}
+  },
+  "Cherry_(including_sour)___Powdery_mildew": {
+    "en": {"pathogen": "Podosphaera clandestina (fungus)", "severity": "moderate", "symptoms": "White powdery patches on young leaves and shoots; leaves curl, blister and may drop; fruit can be coated near harvest.", "treatments": ["Sulfur or fungicides (myclobutanil, tebuconazole) starting at shuck fall, repeat every 10-14 days while shoots grow", "Prune out infected shoot tips"], "prevention": ["Manage irrigation to avoid excess shoot growth", "Open the canopy for light and airflow", "Control root suckers where the fungus overwinters"], "organic_options": ["Wettable sulfur", "Potassium bicarbonate", "Horticultural oils (not within 2 weeks of sulfur)"]},
+    "ru": {"pathogen": "Podosphaera clandestina (гриб)", "severity": "средняя", "symptoms": "Белый мучнистый налёт на молодых листьях и побегах; листья скручиваются, вздуваются и опадают; плоды покрываются налётом ближе к уборке.", "treatments": ["Сера или фунгициды (миклобутанил, тебуконазол) от опадения околоплодника, повтор каждые 10–14 дней в период роста побегов", "Вырезка поражённых верхушек побегов"], "prevention": ["Умеренный полив, чтобы не провоцировать бурный рост побегов", "Прореживание кроны для света и проветривания", "Удаление корневой поросли, где зимует гриб"], "organic_options": ["Смачивающаяся сера", "Бикарбонат калия", "Садовые масла (не ранее 2 недель после серы)"]}
+  },
+  "Cherry_(including_sour)___healthy": {
+    "en": {"severity": "none", "symptoms": "Dark green leaves, normal shoot growth, clean fruit.", "treatments": ["No treatment needed"], "prevention": ["Prune after harvest in dry weather", "Avoid overhead irrigation", "Monitor for aphids and leaf spot"], "organic_options": ["Mulching and balanced compost"]},
+    "ru": {"severity": "нет", "symptoms": "Тёмно-зелёные листья, нормальный рост побегов, чистые плоды.", "treatments": ["Лечение не требуется"], "prevention": ["Обрезка после сбора урожая в сухую погоду", "Без дождевания по листьям", "Контроль тли и коккомикоза"], "organic_options": ["Мульчирование и сбалансированный компост"]}
+  },
+  "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+    "en": {"pathogen": "Cercospora zeae-maydis (fungus)", "severity": "high", "symptoms": "Narrow, rectangular grey-tan lesions bounded by leaf veins, first on lower leaves; severe blighting reduces grain fill.", "treatments": ["Foliar fungicides (strobilurin + triazole mixes) between V8 and R1 when lesions reach the third leaf below the ear", "Time application to weather: warm, humid periods favour spread"], "prevention": ["Rotate away from corn for 1-2 years", "Bury residue by tillage where erosion allows", "Plant resistant hybrids and avoid late planting"], "organic_options": ["Residue management and rotation are the primary organic tools", "Copper-based products give limited protection"]},
+    "ru": {"pathogen": "Cercospora zeae-maydis (гриб)", "severity": "высокая", "symptoms": "Узкие прямоугольные серо-жёлтые пятна, ограниченные жилками, сначала на нижних листьях; при сильном поражении листья усыхают и налив зерна снижается.", "treatments": ["Фунгициды (стробилурин + триазол) между фазами V8 и R1, когда пятна доходят до третьего листа под початком", "Приурочивать обработку к тёплой влажной погоде, благоприятной для болезни"], "prevention": ["Севооборот с перерывом 1–2 года без кукурузы", "Заделка растительных остатков там, где это не усиливает эрозию", "Устойчивые гибриды, без поздних посевов"], "organic_options": ["Управление остатками и севооборот — основные органические меры", "Медьсодержащие препараты дают ограниченную защиту"]}
   },
   "Corn_(maize)___Common_rust_": {
-    "disease_name": "Common Rust",
-    "severity": "low-moderate",
-    "symptoms": "Reddish-brown pustules on both sides of leaves",
-    "treatments": [
-      "Usually doesn't require treatment in most cases",
-      "Apply fungicides if infection is severe (propiconazole)",
-      "No action needed if infection occurs after tasseling"
-    ],
-    "prevention": [
-      "Plant resistant hybrid varieties",
-      "Early planting to avoid peak rust season",
-      "Good weed control around field"
-    ],
-    "organic_options": [
-      "Usually not necessary",
-      "Sulfur dust if absolutely needed"
-    ]
+    "en": {"pathogen": "Puccinia sorghi (fungus)", "severity": "low to moderate", "symptoms": "Small, cinnamon-brown powdery pustules on both leaf surfaces, later turning black; heavy infection on young plants may stunt growth.", "treatments": ["Fungicides (triazoles, strobilurins) only when pustules appear early on susceptible hybrids or sweet corn", "Scout every 7 days during cool, humid weather"], "prevention": ["Plant resistant hybrids", "Sow early so plants mature before peak rust pressure"], "organic_options": ["Sulfur dust on sweet corn", "Resistant varieties"]},
+    "ru": {"pathogen": "Puccinia sorghi (гриб)", "severity": "низкая–средняя", "symptoms": "Мелкие коричневые порошащие пустулы с обеих сторон листа, позже чернеющие; сильное раннее заражение угнетает рост.", "treatments": ["Фунгициды (триазолы, стробилурины) только при раннем появлении пустул на восприимчивых гибридах или сахарной кукурузе", "Осмотр каждые 7 дней в прохладную влажную погоду"], "prevention": ["Устойчивые гибриды", "Ранний посев, чтобы растения созрели до пика болезни"], "organic_options": ["Опыливание серой на сахарной кукурузе", "Устойчивые сорта"]}
+  },
+  "Corn_(maize)___Northern_Leaf_Blight": {
+    "en": {"pathogen": "Exserohilum turcicum (fungus)", "severity": "high", "symptoms": "Long (2-15 cm) cigar-shaped grey-green to tan lesions, starting on lower leaves and moving up; can blight whole leaves before grain fill.", "treatments": ["Fungicide at VT-R1 if lesions are on the ear leaf or above on 50 % of plants", "Strobilurin/triazole premixes are most effective"], "prevention": ["Hybrids with Ht resistance genes", "Rotate crops and manage residue", "Avoid dense, poorly ventilated stands"], "organic_options": ["Rotation and residue incorporation", "Resistant hybrids"]},
+    "ru": {"pathogen": "Exserohilum turcicum (гриб)", "severity": "высокая", "symptoms": "Длинные (2–15 см) сигарообразные серо-зелёные, затем соломенные пятна, от нижних листьев вверх; целые листья могут отмирать до налива зерна.", "treatments": ["Фунгицид в фазу VT–R1, если пятна есть на листе початка и выше у 50 % растений", "Наиболее эффективны смеси стробилурин + триазол"], "prevention": ["Гибриды с генами устойчивости Ht", "Севооборот и управление остатками", "Избегать загущённых, плохо проветриваемых посевов"], "organic_options": ["Севооборот и заделка остатков", "Устойчивые гибриды"]}
+  },
+  "Corn_(maize)___healthy": {
+    "en": {"severity": "none", "symptoms": "Uniform green leaves with no lesions or pustules.", "treatments": ["No treatment needed"], "prevention": ["Scout weekly from V8 onward", "Balanced nitrogen supply", "Rotate crops"], "organic_options": ["Cover crops and rotation"]},
+    "ru": {"severity": "нет", "symptoms": "Равномерно зелёные листья без пятен и пустул.", "treatments": ["Лечение не требуется"], "prevention": ["Еженедельный осмотр с фазы V8", "Сбалансированное азотное питание", "Севооборот"], "organic_options": ["Сидераты и севооборот"]}
   },
   "Grape___Black_rot": {
-    "disease_name": "Black Rot",
-    "severity": "high",
-    "symptoms": "Reddish-brown spots on leaves, black mummified fruit",
-    "treatments": [
-      "Apply fungicides (myclobutanil or captan) starting at bloom",
-      "Remove and destroy all mummified fruit",
-      "Prune to improve air circulation",
-      "Continue fungicide applications through mid-summer"
-    ],
-    "prevention": [
-      "Sanitation is critical - remove ALL mummies",
-      "Prune vines to open canopy",
-      "Apply dormant lime-sulfur spray",
-      "Remove infected canes during dormant pruning"
-    ],
-    "organic_options": [
-      "Copper fungicides",
-      "Sulfur sprays",
-      "Rigorous sanitation"
-    ]
+    "en": {"pathogen": "Guignardia bidwellii (fungus)", "severity": "high", "symptoms": "Tan leaf spots with dark margins and tiny black dots; berries turn brown, shrivel into hard black mummies.", "treatments": ["Fungicides (mancozeb, myclobutanil, strobilurins) from 2-3 weeks before bloom through 4-6 weeks after bloom", "Remove mummies and infected clusters immediately"], "prevention": ["Remove all mummified berries from vines and the ground in winter", "Train vines for good air movement and sun exposure", "Avoid wild grapes nearby"], "organic_options": ["Copper sprays (Bordeaux mixture) in the critical bloom window", "Meticulous sanitation"]},
+    "ru": {"pathogen": "Guignardia bidwellii (гриб)", "severity": "высокая", "symptoms": "Светло-бурые пятна с тёмной каймой и чёрными точками на листьях; ягоды буреют и высыхают в твёрдые чёрные мумии.", "treatments": ["Фунгициды (манкоцеб, миклобутанил, стробилурины) с 2–3 недель до цветения до 4–6 недель после", "Немедленное удаление мумий и поражённых гроздей"], "prevention": ["Зимой убрать все мумифицированные ягоды с лоз и с земли", "Формировка для проветривания и освещения", "Удалять дикий виноград поблизости"], "organic_options": ["Медные препараты (бордоская жидкость) в критическое окно цветения", "Тщательная санитария"]}
   },
-  "healthy": {
-    "disease_name": "Healthy Plant",
-    "severity": "none",
-    "symptoms": "No disease symptoms detected",
-    "treatments": [
-      "Continue regular monitoring",
-      "Maintain current care practices"
-    ],
-    "prevention": [
-      "Continue proper watering schedule",
-      "Maintain adequate nutrition",
-      "Monitor regularly for early disease detection",
-      "Practice good garden hygiene"
-    ],
-    "organic_options": [
-      "Companion planting",
-      "Beneficial insects for pest control",
-      "Compost tea for plant health"
-    ]
+  "Grape___Esca_(Black_Measles)": {
+    "en": {"pathogen": "Phaeomoniella chlamydospora, Phaeoacremonium spp. (trunk fungi)", "severity": "high", "symptoms": "'Tiger-stripe' interveinal chlorosis and necrosis on leaves, dark spotting on berries, sudden wilting (apoplexy) of shoots in hot weather.", "treatments": ["No curative fungicide: cut back to healthy wood and retrain from a sucker", "Remove and burn dead arms and trunks", "Protect large pruning wounds with wound sealants or Trichoderma products"], "prevention": ["Prune late in dormancy and in dry weather", "Make small cuts, avoid large wounds", "Use certified clean planting material"], "organic_options": ["Trichoderma-based wound protectants", "Double pruning to reduce wound exposure"]},
+    "ru": {"pathogen": "Phaeomoniella chlamydospora, Phaeoacremonium spp. (грибы древесины)", "severity": "высокая", "symptoms": "«Тигровый» межжилковый хлороз и некроз листьев, тёмные пятна на ягодах, внезапное увядание побегов (апоплексия) в жару.", "treatments": ["Лечащих фунгицидов нет: обрезка до здоровой древесины и переформировка от порослевого побега", "Удаление и сжигание отмерших рукавов и штамбов", "Защита крупных срезов садовым варом или препаратами Trichoderma"], "prevention": ["Обрезка в конце покоя и в сухую погоду", "Мелкие срезы, без крупных ран", "Сертифицированный здоровый посадочный материал"], "organic_options": ["Средства на основе Trichoderma для защиты ран", "Двойная обрезка для снижения периода уязвимости ран"]}
+  },
+  "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+    "en": {"pathogen": "Pseudocercospora vitis (fungus)", "severity": "moderate", "symptoms": "Irregular dark brown to black spots on the upper leaf surface with a downy grey-brown mould underneath; premature defoliation late in season.", "treatments": ["Fungicides used for downy mildew and black rot (mancozeb, copper, strobilurins) also control this disease", "Remove heavily spotted leaves"], "prevention": ["Destroy fallen leaves in autumn", "Improve canopy ventilation", "Avoid excessive nitrogen"], "organic_options": ["Copper sprays", "Canopy management"]},
+    "ru": {"pathogen": "Pseudocercospora vitis (гриб)", "severity": "средняя", "symptoms": "Неправильные тёмно-бурые или чёрные пятна на верхней стороне листа с серо-бурым налётом снизу; преждевременный листопад в конце сезона.", "treatments": ["Фунгициды против милдью и чёрной гнили (манкоцеб, медь, стробилурины) контролируют и эту болезнь", "Удаление сильно поражённых листьев"], "prevention": ["Уничтожение опавших листьев осенью", "Проветривание кроны", "Без избытка азота"], "organic_options": ["Медные препараты", "Управление кроной"]}
+  },
+  "Grape___healthy": {
+    "en": {"severity": "none", "symptoms": "Bright green, fully expanded leaves; clean clusters.", "treatments": ["No treatment needed"], "prevention": ["Maintain a preventive spray schedule in humid regions", "Shoot thinning and leaf removal around clusters", "Balanced fertilisation"], "organic_options": ["Cover crops, compost, sulfur as preventive"]},
+    "ru": {"severity": "нет", "symptoms": "Ярко-зелёные полностью развитые листья, чистые грозди.", "treatments": ["Лечение не требуется"], "prevention": ["Профилактическая схема обработок во влажных регионах", "Прореживание побегов и удаление листьев вокруг гроздей", "Сбалансированное питание"], "organic_options": ["Сидераты, компост, профилактическая сера"]}
+  },
+  "Orange___Haunglongbing_(Citrus_greening)": {
+    "en": {"pathogen": "Candidatus Liberibacter asiaticus (bacterium, spread by Asian citrus psyllid)", "severity": "critical", "symptoms": "Blotchy, asymmetric yellow mottling of leaves, yellow shoots, small lopsided bitter fruit that stays green at the bottom, twig dieback.", "treatments": ["No cure: remove and destroy infected trees to protect the grove", "Control the psyllid vector with systemic and foliar insecticides", "Support remaining trees with enhanced nutrition (foliar micronutrients)"], "prevention": ["Plant only certified disease-free nursery trees", "Coordinated area-wide psyllid control", "Regular scouting with yellow sticky traps"], "organic_options": ["Kaolin clay and horticultural oils against psyllids", "Release of parasitoid Tamarixia radiata", "Reflective mulch in young plantings"]},
+    "ru": {"pathogen": "Candidatus Liberibacter asiaticus (бактерия, переносчик — азиатская цитрусовая листоблошка)", "severity": "критическая", "symptoms": "Пятнистая асимметричная желтизна листьев, жёлтые побеги, мелкие кривобокие горькие плоды, зелёные снизу, усыхание веток.", "treatments": ["Лечения нет: заражённые деревья удаляют и уничтожают для защиты насаждения", "Борьба с листоблошкой системными и контактными инсектицидами", "Поддержка оставшихся деревьев некорневыми подкормками микроэлементами"], "prevention": ["Только сертифицированные здоровые саженцы", "Согласованная борьба с переносчиком на всей территории", "Регулярный мониторинг жёлтыми клеевыми ловушками"], "organic_options": ["Каолин и садовые масла против листоблошки", "Выпуск паразитоида Tamarixia radiata", "Светоотражающая мульча в молодых садах"]}
+  },
+  "Peach___Bacterial_spot": {
+    "en": {"pathogen": "Xanthomonas arboricola pv. pruni (bacterium)", "severity": "moderate to high", "symptoms": "Small angular water-soaked leaf spots that turn purple-brown and drop out ('shot-hole'); pitted, cracked spots on fruit; twig cankers.", "treatments": ["Copper sprays at leaf fall and delayed dormant stage", "Oxytetracycline during the season on susceptible cultivars", "Prune out cankered twigs in dry weather"], "prevention": ["Choose tolerant cultivars (Candor, Redhaven, Contender)", "Avoid windy exposed sites and overhead irrigation", "Balanced nitrogen to avoid lush growth"], "organic_options": ["Copper hydroxide at low rates (watch for phytotoxicity)", "Windbreaks to reduce leaf wounding"]},
+    "ru": {"pathogen": "Xanthomonas arboricola pv. pruni (бактерия)", "severity": "средняя–высокая", "symptoms": "Мелкие угловатые водянистые пятна на листьях, буреющие и выпадающие («дырчатость»); вдавленные растрескивающиеся пятна на плодах; язвы на побегах.", "treatments": ["Медные обработки в листопад и в конце покоя", "Окситетрациклин в сезон на восприимчивых сортах", "Вырезка побегов с язвами в сухую погоду"], "prevention": ["Толерантные сорта (Кандор, Редхейвен, Контендер)", "Избегать ветреных участков и дождевания", "Умеренный азот без буйного роста"], "organic_options": ["Гидроксид меди в низких дозах (осторожно, фитотоксичность)", "Ветрозащитные полосы для снижения травм листьев"]}
+  },
+  "Peach___healthy": {
+    "en": {"severity": "none", "symptoms": "Healthy lanceolate leaves without spots or curl.", "treatments": ["No treatment needed"], "prevention": ["Dormant copper spray for leaf curl prevention", "Thin fruit and prune annually", "Irrigate at soil level"], "organic_options": ["Compost and mulching"]},
+    "ru": {"severity": "нет", "symptoms": "Здоровые ланцетные листья без пятен и курчавости.", "treatments": ["Лечение не требуется"], "prevention": ["Медная обработка в период покоя против курчавости", "Ежегодное прореживание плодов и обрезка", "Полив под корень"], "organic_options": ["Компост и мульчирование"]}
+  },
+  "Pepper,_bell___Bacterial_spot": {
+    "en": {"pathogen": "Xanthomonas euvesicatoria and related species (bacteria)", "severity": "high", "symptoms": "Small water-soaked spots on leaves that turn brown with yellow halos; raised scabby spots on fruit; leaf drop exposes fruit to sunscald.", "treatments": ["Copper + mancozeb sprays every 7-10 days during wet weather", "Remove severely infected plants", "Avoid working in the crop when foliage is wet"], "prevention": ["Use certified, hot-water-treated seed and clean transplants", "Rotate out of peppers and tomatoes for 2-3 years", "Resistant varieties (Bs genes)"], "organic_options": ["Copper products", "Bacteriophage or Bacillus-based biocontrols", "Drip irrigation instead of sprinklers"]},
+    "ru": {"pathogen": "Xanthomonas euvesicatoria и родственные виды (бактерии)", "severity": "высокая", "symptoms": "Мелкие водянистые пятна на листьях, буреющие с жёлтой каймой; выпуклые паршеобразные пятна на плодах; опадение листьев и солнечные ожоги плодов.", "treatments": ["Медь + манкоцеб каждые 7–10 дней во влажную погоду", "Удаление сильно поражённых растений", "Не работать в посадках по мокрым листьям"], "prevention": ["Сертифицированные, прогретые семена и здоровая рассада", "Севооборот без перца и томата 2–3 года", "Устойчивые сорта (гены Bs)"], "organic_options": ["Медные препараты", "Бактериофаги или биопрепараты на основе Bacillus", "Капельный полив вместо дождевания"]}
+  },
+  "Pepper,_bell___healthy": {
+    "en": {"severity": "none", "symptoms": "Deep green glossy leaves, no spotting or wilting.", "treatments": ["No treatment needed"], "prevention": ["Mulch to keep soil moisture even", "Stake plants and avoid leaf wetness", "Monitor for aphids and thrips"], "organic_options": ["Compost, neem oil for early pest pressure"]},
+    "ru": {"severity": "нет", "symptoms": "Тёмно-зелёные глянцевые листья, без пятен и увядания.", "treatments": ["Лечение не требуется"], "prevention": ["Мульчирование для ровной влажности почвы", "Подвязка, листья должны оставаться сухими", "Контроль тли и трипсов"], "organic_options": ["Компост, масло нима при появлении вредителей"]}
+  },
+  "Potato___Early_blight": {
+    "en": {"pathogen": "Alternaria solani (fungus)", "severity": "moderate", "symptoms": "Dark brown 'target' spots with concentric rings on older leaves, surrounded by yellow tissue; lower leaves die first; tubers get dark sunken lesions.", "treatments": ["Fungicides (chlorothalonil, mancozeb, azoxystrobin, difenoconazole) starting at first symptoms, 7-14 day intervals", "Maintain plant vigour with adequate nitrogen and potassium"], "prevention": ["2-3 year rotation away from potato and tomato", "Destroy volunteers and crop debris", "Harvest mature tubers and avoid wounding"], "organic_options": ["Copper sprays", "Bacillus subtilis products", "Remove infected lower leaves early"]},
+    "ru": {"pathogen": "Alternaria solani (гриб)", "severity": "средняя", "symptoms": "Тёмно-бурые пятна с концентрическими кольцами («мишень») на старых листьях с жёлтой каймой; нижние листья отмирают первыми; на клубнях тёмные вдавленные пятна.", "treatments": ["Фунгициды (хлороталонил, манкоцеб, азоксистробин, дифеноконазол) с первых симптомов, интервал 7–14 дней", "Поддержание силы растений азотом и калием"], "prevention": ["Севооборот 2–3 года без картофеля и томата", "Уничтожение падалицы и растительных остатков", "Уборка зрелых клубней без травм"], "organic_options": ["Медные препараты", "Препараты Bacillus subtilis", "Раннее удаление поражённых нижних листьев"]}
+  },
+  "Potato___Late_blight": {
+    "en": {"pathogen": "Phytophthora infestans (oomycete)", "severity": "critical", "symptoms": "Pale green water-soaked blotches turning brown-black, white fuzzy growth on leaf undersides in humid weather; stems blacken; tubers develop reddish-brown granular rot. Can destroy a field in days.", "treatments": ["Start protectant fungicides (mancozeb, chlorothalonil) before infection when weather is cool and wet", "Switch to systemic/translaminar products (cymoxanil, fluazinam, mandipropamid) once disease is present", "Kill infected foliage 2-3 weeks before harvest to protect tubers"], "prevention": ["Plant certified seed tubers; destroy cull piles and volunteers", "Hill well to cover tubers", "Follow late-blight forecasting services"], "organic_options": ["Copper sprays applied preventively", "Resistant cultivars (Sarpo Mira, Defender)", "Wide spacing and morning irrigation to shorten leaf wetness"]},
+    "ru": {"pathogen": "Phytophthora infestans (оомицет)", "severity": "критическая", "symptoms": "Бледно-зелёные водянистые пятна, быстро буреющие и чернеющие, белый пушистый налёт снизу листа во влажную погоду; стебли чернеют; клубни с бурой зернистой гнилью. Может уничтожить поле за несколько дней.", "treatments": ["Контактные фунгициды (манкоцеб, хлороталонил) до заражения в прохладную влажную погоду", "При появлении болезни — системные/трансламинарные препараты (цимоксанил, флуазинам, мандипропамид)", "Десикация ботвы за 2–3 недели до уборки для защиты клубней"], "prevention": ["Сертифицированный семенной материал; уничтожение отбракованных клубней и падалицы", "Высокое окучивание", "Использование прогнозов по фитофторозу"], "organic_options": ["Профилактические медные обработки", "Устойчивые сорта (Сарпо Мира, Дефендер)", "Широкая посадка и утренний полив для сокращения увлажнения листьев"]}
+  },
+  "Potato___healthy": {
+    "en": {"severity": "none", "symptoms": "Dark green foliage, no lesions on leaves or stems.", "treatments": ["No treatment needed"], "prevention": ["Use certified seed and rotate crops", "Hill plants and irrigate evenly", "Scout during cool, wet periods"], "organic_options": ["Compost and green manures"]},
+    "ru": {"severity": "нет", "symptoms": "Тёмно-зелёная ботва, без пятен на листьях и стеблях.", "treatments": ["Лечение не требуется"], "prevention": ["Сертифицированный семенной материал и севооборот", "Окучивание и равномерный полив", "Осмотры в прохладные влажные периоды"], "organic_options": ["Компост и сидераты"]}
+  },
+  "Raspberry___healthy": {
+    "en": {"severity": "none", "symptoms": "Healthy compound leaves, no rust, spots or cane lesions.", "treatments": ["No treatment needed"], "prevention": ["Remove fruited canes after harvest", "Thin canes for airflow", "Keep rows narrow and weed-free"], "organic_options": ["Straw mulch and compost"]},
+    "ru": {"severity": "нет", "symptoms": "Здоровые сложные листья, без ржавчины, пятен и язв на побегах.", "treatments": ["Лечение не требуется"], "prevention": ["Удаление отплодоносивших побегов после сбора", "Прореживание побегов для проветривания", "Узкие ряды без сорняков"], "organic_options": ["Мульча из соломы и компост"]}
+  },
+  "Soybean___healthy": {
+    "en": {"severity": "none", "symptoms": "Uniform trifoliate leaves, no mosaic, spots or pustules.", "treatments": ["No treatment needed"], "prevention": ["Rotate with cereals", "Inoculate seed with Bradyrhizobium", "Scout for aphids and rust"], "organic_options": ["Cover crops and rotation"]},
+    "ru": {"severity": "нет", "symptoms": "Равномерные тройчатые листья, без мозаики, пятен и пустул.", "treatments": ["Лечение не требуется"], "prevention": ["Севооборот с зерновыми", "Инокуляция семян Bradyrhizobium", "Контроль тли и ржавчины"], "organic_options": ["Сидераты и севооборот"]}
+  },
+  "Squash___Powdery_mildew": {
+    "en": {"pathogen": "Podosphaera xanthii, Erysiphe cichoracearum (fungi)", "severity": "moderate", "symptoms": "White powdery colonies on upper and lower leaf surfaces and stems, starting on older leaves; leaves yellow and dry out, fruit ripens poorly.", "treatments": ["Start fungicides at first colonies: sulfur, myclobutanil, trifloxystrobin, or biofungicides", "Rotate modes of action; spray both leaf surfaces", "Remove the most infected leaves"], "prevention": ["Resistant varieties (PMR labelled)", "Wide spacing, full sun, avoid excess nitrogen", "Destroy crop residue after harvest"], "organic_options": ["Potassium bicarbonate", "Wettable sulfur (not above 30 °C)", "Milk spray (1:9 with water) weekly", "Neem or horticultural oil"]},
+    "ru": {"pathogen": "Podosphaera xanthii, Erysiphe cichoracearum (грибы)", "severity": "средняя", "symptoms": "Белые мучнистые колонии на обеих сторонах листьев и на стеблях, начиная со старых листьев; листья желтеют и засыхают, плоды плохо вызревают.", "treatments": ["Обработки с первых колоний: сера, миклобутанил, трифлоксистробин или биофунгициды", "Чередование механизмов действия; опрыскивать обе стороны листа", "Удаление наиболее поражённых листьев"], "prevention": ["Устойчивые сорта (маркировка PMR)", "Разреженная посадка, солнце, без избытка азота", "Уничтожение остатков после уборки"], "organic_options": ["Бикарбонат калия", "Смачивающаяся сера (не выше 30 °C)", "Молочный раствор (1:9 с водой) еженедельно", "Масло нима или садовое масло"]}
+  },
+  "Strawberry___Leaf_scorch": {
+    "en": {"pathogen": "Diplocarpon earlianum (fungus)", "severity": "moderate", "symptoms": "Many small irregular purple blotches without light centres that merge, giving leaves a scorched, reddish look; petioles and runners may be affected.", "treatments": ["Fungicides (captan, myclobutanil, strobilurins) after renovation and in spring before bloom", "Mow and remove old foliage at renovation"], "prevention": ["Resistant cultivars (Earliglow, Allstar, Jewel)", "Narrow rows, good drainage and airflow", "Drip irrigation; avoid wetting leaves late in the day"], "organic_options": ["Copper sprays in spring", "Leaf removal at renovation"]},
+    "ru": {"pathogen": "Diplocarpon earlianum (гриб)", "severity": "средняя", "symptoms": "Множество мелких неправильных пурпурных пятен без светлого центра, сливающихся и придающих листу «обожжённый» красноватый вид; поражаются черешки и усы.", "treatments": ["Фунгициды (каптан, миклобутанил, стробилурины) после скашивания и весной до цветения", "Скашивание и удаление старых листьев при обновлении плантации"], "prevention": ["Устойчивые сорта (Эрлиглоу, Оллстар, Джуэл)", "Узкие ряды, дренаж и проветривание", "Капельный полив; не мочить листья вечером"], "organic_options": ["Медные обработки весной", "Удаление листьев при обновлении"]}
+  },
+  "Strawberry___healthy": {
+    "en": {"severity": "none", "symptoms": "Clean green trifoliate leaves, no red blotching.", "treatments": ["No treatment needed"], "prevention": ["Renovate beds after harvest", "Keep mulch clean and dry", "Remove old leaves and runners"], "organic_options": ["Straw mulch, compost"]},
+    "ru": {"severity": "нет", "symptoms": "Чистые зелёные тройчатые листья, без красных пятен.", "treatments": ["Лечение не требуется"], "prevention": ["Обновление грядок после сбора", "Чистая сухая мульча", "Удаление старых листьев и усов"], "organic_options": ["Соломенная мульча, компост"]}
+  },
+  "Tomato___Bacterial_spot": {
+    "en": {"pathogen": "Xanthomonas spp. (bacteria)", "severity": "high", "symptoms": "Small dark greasy spots with yellow halos on leaves; raised black scabby spots on fruit; heavy defoliation in warm, wet weather.", "treatments": ["Copper + mancozeb every 7-10 days while conditions are wet", "Remove and destroy badly infected plants", "Do not handle plants when wet"], "prevention": ["Certified clean seed and transplants", "3-year rotation without tomato or pepper", "Drip irrigation and wide spacing"], "organic_options": ["Copper products", "Bacteriophage products", "Bacillus-based biocontrols"]},
+    "ru": {"pathogen": "Xanthomonas spp. (бактерии)", "severity": "высокая", "symptoms": "Мелкие тёмные маслянистые пятна с жёлтой каймой на листьях; выпуклые чёрные паршеобразные пятна на плодах; сильная дефолиация в тёплую влажную погоду.", "treatments": ["Медь + манкоцеб каждые 7–10 дней во влажных условиях", "Удаление и уничтожение сильно поражённых растений", "Не трогать растения мокрыми"], "prevention": ["Сертифицированные семена и рассада", "Севооборот 3 года без томата и перца", "Капельный полив и разреженная посадка"], "organic_options": ["Медные препараты", "Бактериофаги", "Биопрепараты на основе Bacillus"]}
+  },
+  "Tomato___Early_blight": {
+    "en": {"pathogen": "Alternaria solani / A. tomatophila (fungi)", "severity": "moderate", "symptoms": "Brown target-like spots with concentric rings on lower leaves, yellowing around spots, stem cankers at soil line, dark sunken spots at the fruit stem end.", "treatments": ["Fungicides (chlorothalonil, mancozeb, azoxystrobin) at first symptoms, 7-10 day intervals", "Remove infected lower leaves", "Mulch to reduce soil splash"], "prevention": ["Rotate 2-3 years; destroy debris", "Stake and prune for airflow", "Adequate potassium and nitrogen"], "organic_options": ["Copper sprays", "Bacillus subtilis (Serenade)", "Straw mulch"]},
+    "ru": {"pathogen": "Alternaria solani / A. tomatophila (грибы)", "severity": "средняя", "symptoms": "Бурые пятна с концентрическими кольцами на нижних листьях, пожелтение вокруг них, язвы на стебле у почвы, тёмные вдавленные пятна у плодоножки.", "treatments": ["Фунгициды (хлороталонил, манкоцеб, азоксистробин) с первых симптомов, интервал 7–10 дней", "Удаление поражённых нижних листьев", "Мульчирование против брызг почвы"], "prevention": ["Севооборот 2–3 года; уничтожение остатков", "Подвязка и пасынкование для проветривания", "Достаточное калийное и азотное питание"], "organic_options": ["Медные препараты", "Bacillus subtilis (Серенада)", "Мульча из соломы"]}
+  },
+  "Tomato___Late_blight": {
+    "en": {"pathogen": "Phytophthora infestans (oomycete)", "severity": "critical", "symptoms": "Large grey-green water-soaked patches that turn brown, white mould on leaf undersides in humid weather, brown greasy blotches on fruit; plants collapse quickly.", "treatments": ["Protectant sprays (chlorothalonil, mancozeb, copper) before disease in cool wet weather", "Systemic products (cymoxanil, mandipropamid, fluopicolide) once disease is present", "Remove and bag infected plants immediately"], "prevention": ["Resistant varieties (Mountain Magic, Defiant, Iron Lady)", "Avoid overhead watering; space plants widely", "Destroy volunteer tomatoes and potatoes"], "organic_options": ["Copper preventively every 5-7 days in wet weather", "Resistant varieties and greenhouse protection from rain"]},
+    "ru": {"pathogen": "Phytophthora infestans (оомицет)", "severity": "критическая", "symptoms": "Крупные серо-зелёные водянистые пятна, буреющие, белый налёт снизу листа во влажную погоду, бурые маслянистые пятна на плодах; растения быстро погибают.", "treatments": ["Контактные обработки (хлороталонил, манкоцеб, медь) до болезни в прохладную влажную погоду", "При появлении — системные препараты (цимоксанил, мандипропамид, флуопиколид)", "Немедленное удаление и утилизация поражённых растений в мешках"], "prevention": ["Устойчивые сорта (Маунтин Мэджик, Дефайант, Айрон Леди)", "Без дождевания; разреженная посадка", "Уничтожение самосева томата и картофеля"], "organic_options": ["Профилактически медь каждые 5–7 дней во влажную погоду", "Устойчивые сорта и укрытие от дождя"]}
+  },
+  "Tomato___Leaf_Mold": {
+    "en": {"pathogen": "Passalora fulva (Cladosporium fulvum) (fungus)", "severity": "moderate", "symptoms": "Pale yellow spots on upper leaf surface with olive-green velvety mould underneath; mainly in greenhouses with humidity above 85 %.", "treatments": ["Reduce humidity: ventilate, heat, space plants", "Fungicides (chlorothalonil, mancozeb, difenoconazole) when humidity cannot be controlled", "Remove infected leaves"], "prevention": ["Resistant varieties (Cf genes)", "Drip irrigation, avoid leaf wetness", "Disinfect greenhouse between crops"], "organic_options": ["Copper sprays", "Bacillus subtilis", "Humidity management is the key organic measure"]},
+    "ru": {"pathogen": "Passalora fulva (Cladosporium fulvum) (гриб)", "severity": "средняя", "symptoms": "Бледно-жёлтые пятна сверху листа и оливково-зелёный бархатистый налёт снизу; в основном в теплицах при влажности выше 85 %.", "treatments": ["Снижение влажности: проветривание, обогрев, разреженная посадка", "Фунгициды (хлороталонил, манкоцеб, дифеноконазол), если влажность не контролируется", "Удаление поражённых листьев"], "prevention": ["Устойчивые сорта (гены Cf)", "Капельный полив, сухие листья", "Дезинфекция теплицы между оборотами"], "organic_options": ["Медные препараты", "Bacillus subtilis", "Контроль влажности — ключевая органическая мера"]}
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "en": {"pathogen": "Septoria lycopersici (fungus)", "severity": "moderate", "symptoms": "Many small circular spots with dark borders and grey centres dotted with black pycnidia, starting on lower leaves; leaves yellow and drop.", "treatments": ["Fungicides (chlorothalonil, mancozeb, copper) every 7-10 days from first spots", "Remove infected lower leaves", "Mulch and stake plants"], "prevention": ["3-year rotation; destroy debris", "Avoid overhead irrigation", "Control solanaceous weeds"], "organic_options": ["Copper products", "Bacillus subtilis", "Lower-leaf removal and mulching"]},
+    "ru": {"pathogen": "Septoria lycopersici (гриб)", "severity": "средняя", "symptoms": "Много мелких округлых пятен с тёмной каймой и серым центром с чёрными точками пикнид, сначала на нижних листьях; листья желтеют и опадают.", "treatments": ["Фунгициды (хлороталонил, манкоцеб, медь) каждые 7–10 дней с первых пятен", "Удаление поражённых нижних листьев", "Мульчирование и подвязка"], "prevention": ["Севооборот 3 года; уничтожение остатков", "Без дождевания", "Борьба с паслёновыми сорняками"], "organic_options": ["Медные препараты", "Bacillus subtilis", "Удаление нижних листьев и мульчирование"]}
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "en": {"pathogen": "Tetranychus urticae (mite, pest)", "severity": "moderate to high", "symptoms": "Fine yellow stippling on leaves, bronzing, fine webbing on leaf undersides and shoot tips; leaves dry and drop in hot dry weather.", "treatments": ["Miticides (abamectin, bifenazate, spiromesifen) rotated between groups", "Strong water sprays to knock mites off leaf undersides", "Remove heavily infested leaves"], "prevention": ["Avoid drought stress and dusty conditions", "Avoid broad-spectrum insecticides that kill predators", "Scout leaf undersides weekly with a hand lens"], "organic_options": ["Predatory mites (Phytoseiulus persimilis)", "Insecticidal soap or horticultural oil", "Neem oil"]},
+    "ru": {"pathogen": "Tetranychus urticae (клещ, вредитель)", "severity": "средняя–высокая", "symptoms": "Мелкие жёлтые точки на листьях, бронзовый оттенок, тонкая паутина снизу листьев и на верхушках; листья засыхают и опадают в жаркую сухую погоду.", "treatments": ["Акарициды (абамектин, бифеназат, спиромезифен) с чередованием групп", "Смыв клещей сильной струёй воды с нижней стороны листьев", "Удаление сильно заселённых листьев"], "prevention": ["Не допускать засухи и запылённости", "Не применять инсектициды широкого спектра, губящие хищников", "Еженедельный осмотр нижней стороны листьев с лупой"], "organic_options": ["Хищные клещи (Phytoseiulus persimilis)", "Инсектицидное мыло или садовое масло", "Масло нима"]}
+  },
+  "Tomato___Target_Spot": {
+    "en": {"pathogen": "Corynespora cassiicola (fungus)", "severity": "moderate", "symptoms": "Brown spots with concentric rings and yellow halos on leaves, often with a lighter centre that falls out; sunken spots on fruit.", "treatments": ["Fungicides (chlorothalonil, mancozeb, azoxystrobin, fluxapyroxad) at first sign, 7-14 day intervals", "Improve airflow by pruning and staking"], "prevention": ["Rotate crops; remove debris", "Avoid dense planting and overhead irrigation", "Control weeds that host the fungus"], "organic_options": ["Copper sprays", "Canopy management"]},
+    "ru": {"pathogen": "Corynespora cassiicola (гриб)", "severity": "средняя", "symptoms": "Бурые пятна с концентрическими кольцами и жёлтой каймой на листьях, часто со светлым выпадающим центром; вдавленные пятна на плодах.", "treatments": ["Фунгициды (хлороталонил, манкоцеб, азоксистробин, флуксапироксад) с первых признаков, интервал 7–14 дней", "Улучшение проветривания обрезкой и подвязкой"], "prevention": ["Севооборот; удаление остатков", "Без загущения и дождевания", "Борьба с сорняками-резерваторами"], "organic_options": ["Медные препараты", "Управление кроной"]}
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "en": {"pathogen": "TYLCV (begomovirus, spread by whitefly Bemisia tabaci)", "severity": "critical", "symptoms": "Upward curling and yellowing of leaf margins, small crumpled leaves, stunted bushy plants, flower drop and little fruit set.", "treatments": ["No cure: remove infected plants promptly in sealed bags", "Control whiteflies (systemic neonicotinoids at transplanting, or insecticidal soaps/oils)", "Use reflective mulch and yellow sticky traps"], "prevention": ["Resistant varieties (Ty-1/Ty-3 genes)", "Insect-proof netting on nurseries and greenhouses", "Crop-free period and weed control to break the whitefly cycle"], "organic_options": ["Reflective silver mulch", "Neem oil and insecticidal soap against whiteflies", "Fine mesh row covers"]},
+    "ru": {"pathogen": "TYLCV (бегомовирус, переносчик — белокрылка Bemisia tabaci)", "severity": "критическая", "symptoms": "Скручивание краёв листьев вверх и пожелтение, мелкие морщинистые листья, угнетённые кустистые растения, опадение цветков и слабое плодообразование.", "treatments": ["Лечения нет: заражённые растения сразу удаляют в закрытых мешках", "Борьба с белокрылкой (системные неоникотиноиды при высадке или мыло/масла)", "Светоотражающая мульча и жёлтые клеевые ловушки"], "prevention": ["Устойчивые сорта (гены Ty-1/Ty-3)", "Защитная сетка в рассадниках и теплицах", "Период без культуры и борьба с сорняками для разрыва цикла белокрылки"], "organic_options": ["Серебристая светоотражающая мульча", "Масло нима и инсектицидное мыло против белокрылки", "Укрытия из мелкой сетки"]}
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "en": {"pathogen": "ToMV (tobamovirus, mechanically transmitted)", "severity": "high", "symptoms": "Light and dark green mosaic mottling, fern-like or distorted leaves, stunting; fruit may show internal browning and uneven ripening.", "treatments": ["No cure: remove infected plants and disinfect tools (10 % bleach or skim milk)", "Wash hands after handling tobacco products", "Do not compost infected material"], "prevention": ["Resistant varieties (Tm-2 gene)", "Certified virus-free seed; heat treat seed at 70 °C for 2-4 days", "Rotate out of tomato for 2 years; the virus persists in debris"], "organic_options": ["Sanitation and resistant varieties are the only options", "Milk spray on hands and tools reduces transmission"]},
+    "ru": {"pathogen": "ToMV (тобамовирус, передаётся механически)", "severity": "высокая", "symptoms": "Светло- и тёмно-зелёная мозаика, нитевидные или деформированные листья, угнетение; плоды с внутренним побурением и неравномерным созреванием.", "treatments": ["Лечения нет: удаление заражённых растений и дезинфекция инструмента (10 % хлорка или обезжиренное молоко)", "Мыть руки после контакта с табачными изделиями", "Не компостировать заражённые остатки"], "prevention": ["Устойчивые сорта (ген Tm-2)", "Сертифицированные семена; прогрев семян при 70 °C 2–4 дня", "Севооборот без томата 2 года; вирус сохраняется в остатках"], "organic_options": ["Санитария и устойчивые сорта — единственные меры", "Обработка рук и инструмента молоком снижает передачу"]}
+  },
+  "Tomato___healthy": {
+    "en": {"severity": "none", "symptoms": "Even green foliage, vigorous growth, no spots, curling or mosaic.", "treatments": ["No treatment needed"], "prevention": ["Stake, prune suckers and mulch", "Water at the base in the morning", "Scout weekly for early blight and whiteflies"], "organic_options": ["Compost, companion planting with basil and marigold"]},
+    "ru": {"severity": "нет", "symptoms": "Равномерно зелёная листва, сильный рост, без пятен, скручивания и мозаики.", "treatments": ["Лечение не требуется"], "prevention": ["Подвязка, пасынкование и мульчирование", "Полив под корень утром", "Еженедельный осмотр на альтернариоз и белокрылку"], "organic_options": ["Компост, совместные посадки с базиликом и бархатцами"]}
   }
 }

@@ -1,187 +1,74 @@
 """
-Configuration file for Crop Disease Detection System
-Modify these settings to customize the application
+Central configuration for the backend.
+
+Every value can be overridden with an environment variable (prefix CROP_),
+so the same code runs locally, in Docker and in CI without edits.
 """
 
+from __future__ import annotations
+
 import os
+from pathlib import Path
 
-# =======================
-# Server Configuration
-# =======================
+BACKEND_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BACKEND_DIR.parent
 
-# Flask server settings
-HOST = '0.0.0.0'  # Listen on all network interfaces
-PORT = 5000        # Default port
-DEBUG = True       # Enable debug mode (disable in production)
 
-# =======================
-# File Upload Settings
-# =======================
+def _path(name: str, default: Path) -> Path:
+    return Path(os.environ.get(name, default)).expanduser().resolve()
 
-# Maximum file size (in bytes)
-MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
 
-# Allowed file extensions
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+def _bool(name: str, default: bool) -> bool:
+    return os.environ.get(name, str(default)).strip().lower() in {"1", "true", "yes", "on"}
 
-# Upload directory
-UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'uploads'))
 
-# =======================
-# Model Configuration
-# =======================
+# --- Paths -----------------------------------------------------------------
+MODELS_DIR = _path("CROP_MODELS_DIR", PROJECT_ROOT / "models")
+DATA_DIR = _path("CROP_DATA_DIR", PROJECT_ROOT / "data")
+UPLOAD_DIR = _path("CROP_UPLOAD_DIR", DATA_DIR / "uploads")
+RESULTS_DIR = _path("CROP_RESULTS_DIR", PROJECT_ROOT / "results")
+METRICS_DIR = RESULTS_DIR / "metrics"
+FRONTEND_DIR = _path("CROP_FRONTEND_DIR", PROJECT_ROOT / "frontend")
+PLANTVILLAGE_DIR = DATA_DIR / "PlantVillage"
 
-# Models directory
-MODELS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'models'))
+# --- Server ------------------------------------------------------------------
+HOST = os.environ.get("CROP_HOST", "0.0.0.0")
+# 5000 is taken by AirPlay Receiver on macOS, so the default is 5001.
+PORT = int(os.environ.get("CROP_PORT", os.environ.get("PORT", "5001")))
+DEBUG = _bool("CROP_DEBUG", False)
+CORS_ORIGINS = os.environ.get("CROP_CORS_ORIGINS", "*")
 
-# Results directory
-RESULTS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'results', 'heatmaps'))
+# --- Uploads -----------------------------------------------------------------
+MAX_FILE_SIZE = int(os.environ.get("CROP_MAX_FILE_MB", "16")) * 1024 * 1024
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "jfif", "webp", "bmp"}
 
-# Default model for inference
-DEFAULT_MODEL = 'efficientnet'
-
-# Models to load at startup
+# --- Models ------------------------------------------------------------------
+# Which architectures to load at start-up (comma separated).
 MODELS_TO_LOAD = [
-    ('baseline', 'baseline'),
-    ('efficientnet', 'efficientnet'),
-    ('mobilenet', 'mobilenet'),
-    ('hybrid', 'hybrid')
+    m.strip()
+    for m in os.environ.get("CROP_MODELS", "baseline,efficientnet,mobilenet,hybrid").split(",")
+    if m.strip()
 ]
+# auto | cpu | cuda | mps
+DEVICE = os.environ.get("CROP_DEVICE", "auto")
+# A model whose validation accuracy is below this is shown as "needs training"
+# and excluded from the ensemble.
+TRAINED_ACCURACY_THRESHOLD = float(os.environ.get("CROP_TRAINED_THRESHOLD", "0.5"))
 
-# =======================
-# Image Processing
-# =======================
+# Field-condition model produced by the domain adaptation experiments.
+FIELD_MODEL_PATH = _path("CROP_FIELD_MODEL", MODELS_DIR / "field_mobilenet_da.pth")
+FIELD_MODEL_INFO = MODELS_DIR / "field_model_info.json"
 
-# Input image size for models (height, width)
+# --- Image processing --------------------------------------------------------
 IMAGE_SIZE = (224, 224)
-
-# ImageNet normalization values
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
-# =======================
-# Explainability Settings
-# =======================
+# --- Explainability ----------------------------------------------------------
+GRADCAM_ALPHA = 0.45
+# LIME perturbation samples: ~15 s on Apple GPU, ~1 min on CPU for EfficientNet.
+LIME_NUM_SAMPLES = int(os.environ.get("CROP_LIME_SAMPLES", "300"))
+# Size of the base64 images returned to the browser (longest side, px).
+PREVIEW_MAX_SIDE = int(os.environ.get("CROP_PREVIEW_SIDE", "512"))
 
-# Default explanation method
-DEFAULT_EXPLANATION = 'gradcam'  # 'gradcam' or 'lime'
-
-# Grad-CAM settings
-GRADCAM_ALPHA = 0.4  # Overlay transparency (0-1)
-GRADCAM_COLORMAP = 'jet'  # Matplotlib colormap
-
-# LIME settings
-LIME_NUM_SAMPLES = 1000  # Number of samples for LIME explanation
-
-# =======================
-# Performance Settings
-# =======================
-
-# Use GPU if available
-USE_GPU = True
-
-# Number of threads for CPU inference
-NUM_THREADS = 4
-
-# Batch size for batch processing
-BATCH_SIZE = 8
-
-# =======================
-# API Settings
-# =======================
-
-# Enable CORS
-ENABLE_CORS = True
-
-# CORS allowed origins (use ['*'] for all)
-CORS_ORIGINS = '*'
-
-# API rate limiting (requests per minute)
-RATE_LIMIT = 100
-
-# =======================
-# Logging Settings
-# =======================
-
-# Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-LOG_LEVEL = 'INFO'
-
-# Log file path
-LOG_FILE = os.path.join(os.path.dirname(__file__), 'app.log')
-
-# =======================
-# Frontend Settings
-# =======================
-
-# Frontend directory
-FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend'))
-
-# =======================
-# Dataset Settings
-# =======================
-
-# Number of disease classes
-NUM_CLASSES = 38
-
-# Dataset types
-DATASET_TYPES = ['controlled', 'field']
-
-# =======================
-# Development Settings
-# =======================
-
-# Enable detailed error messages
-VERBOSE_ERRORS = DEBUG
-
-# Save uploaded files permanently (for debugging)
-SAVE_UPLOADS = True
-
-# Save generated heatmaps
-SAVE_HEATMAPS = True
-
-# =======================
-# Security Settings
-# =======================
-
-# Secret key for session management (change in production!)
-SECRET_KEY = 'change-this-in-production-please'
-
-# Allowed hosts (for production)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
-# =======================
-# Helper Functions
-# =======================
-
-def get_device():
-    """Get PyTorch device based on configuration"""
-    import torch
-    if USE_GPU and torch.cuda.is_available():
-        return torch.device('cuda')
-    return torch.device('cpu')
-
-def ensure_directories():
-    """Ensure all required directories exist"""
-    directories = [
-        UPLOAD_FOLDER,
-        MODELS_DIR,
-        RESULTS_DIR,
-    ]
-    for directory in directories:
-        os.makedirs(directory, exist_ok=True)
-
-# =======================
-# Validation
-# =======================
-
-def validate_config():
-    """Validate configuration settings"""
-    assert MAX_FILE_SIZE > 0, "MAX_FILE_SIZE must be positive"
-    assert PORT > 0 and PORT < 65536, "PORT must be between 1 and 65535"
-    assert IMAGE_SIZE[0] > 0 and IMAGE_SIZE[1] > 0, "IMAGE_SIZE must be positive"
-    assert 0 <= GRADCAM_ALPHA <= 1, "GRADCAM_ALPHA must be between 0 and 1"
-    assert LIME_NUM_SAMPLES > 0, "LIME_NUM_SAMPLES must be positive"
-    assert NUM_CLASSES > 0, "NUM_CLASSES must be positive"
-
-# Run validation
-validate_config()
+APP_VERSION = "2.0.0"
