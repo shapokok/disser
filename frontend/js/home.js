@@ -23,7 +23,8 @@
       const color = modelColor(m.name);
       cards.append(
         el("div", { class: "card model-card lift reveal", style: { "--model-color": color } }, [
-          el("div", { class: "row between" }, [el("h3", {}, [el("span", { class: "swatch" }), fmt.modelLabel(m)]), chip]),
+          el("h3", { style: { marginBottom: ".2rem" } }, [el("span", { class: "swatch" }), fmt.modelLabel(m)]),
+          el("div", {}, chip),
           el("div", { class: "ring-row" }, [
             ring(m.accuracy || 0, color, { label: m.accuracy === null || m.accuracy === undefined ? "—" : `${(m.accuracy * 100).toFixed(1)}%` }),
             el("div", { class: "kv" }, [
