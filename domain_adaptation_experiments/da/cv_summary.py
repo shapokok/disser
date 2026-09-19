@@ -58,6 +58,11 @@ ENSEMBLE_MEMBERS = [
 ]
 LABELS = {**LABELS, "ensemble": "Ансамбль дообученных моделей + TTA"}
 KEY_PAIRS = [
+    ("zero_shot", "joint_long"),
+    ("joint", "joint_long"),
+    ("joint_long", "joint_long_tta"),
+    ("joint_long", "joint_effnet"),
+    ("joint_long_tta", "joint_effnet_tta"),
     ("zero_shot", "joint"),
     ("zero_shot", "self_training_v2"),
     ("self_training", "self_training_v2"),

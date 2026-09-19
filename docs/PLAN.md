@@ -45,17 +45,22 @@
 
 ## 4. Доменная адаптация (исследовательская часть)
 
+Основной протокол — **стратифицированная 5-кратная кросс-валидация** на всех 500 снимках PlantDoc
+четырёх классов (`da/cv.py`, сводка `da/cv_summary.py` → `results/cv_summary.{json,md}`).
+
 | Статус | Задача |
 |---|---|
-| ✅ | Новый пакет `domain_adaptation_experiments/da/` с честным протоколом adapt/dev/test, ДИ Уилсона, несколькими сидами; старые скрипты в `legacy/` |
-| ✅ | Zero-shot: 45,2 % на dev+test (4 класса), 18,2 % на всех 27 классах PlantDoc test |
-| 🔄 | Полный прогон `da.run_all` (3 сида, CPU): self-training → joint → joint из ST → progressive → TTA. Первый честный результат: self-training **ухудшает** модель (25 %), т.е. ранние 64,7 % были артефактом оценки на обучающих данных |
-| ⬜ | После прогона: `results/summary.md`, рисунки `figures/figure1-4.pdf`, экспорт `models/field_mobilenet_da.pth`, обновление вкладки «Доменная адаптация» и полевого режима |
-| ⬜ | Переписать раздел результатов диссертации/статьи по новым цифрам (старые 76–79 % не воспроизводимы на отложенных данных) |
-| ⬜ | Консервативный self-training: флаги `--no-balance --freeze-backbone --lr 1e-5` добавлены в `da.self_training`, запуск после основного прогона |
-| ⬜ | Адаптация на все 27 классов: `python -m da.joint_training --classes all` готов, запуск после основного прогона |
-| ⬜ | `scripts/robustness_eval.py` готов (размытие, шум, JPEG, освещение, низкое разрешение); запустить: `python scripts/robustness_eval.py --device mps` |
-| 💡 | Количественная оценка объяснимости (deletion/insertion для Grad-CAM vs LIME) — сейчас объяснения только качественные |
+| ✅ | Пакет `da/` с честным протоколом; старые скрипты в `legacy/`; фиксированное разбиение dev/test оставлено как дополнительное |
+| ✅ | Кросс-валидация (3 сида): без адаптации 42,0 %; AdaBN/TENT 18 %; self-training 16,9 %; self-training v2 (CBST + EMA) 36,7 %; joint 25 эп. 62,5 %; **joint 60 эп. 72,9 % (+TTA 74,7 %)**; **EfficientNet 60 эп. 72,3 % (+TTA 75,5 %)**; по 4 классам до 80,3 % |
+| ✅ | Тест МакНемара: joint 60 эп. лучше 25 эп. (p < 0,001) и исходной модели (p < 0,001); MobileNet и EfficientNet статистически неразличимы (p = 0,92); TTA даёт +1,5–3 п.п., но незначимо |
+| ✅ | Рисунки `figures/figure1-4` и таблицы `docs/thesis/table_da_cv*.tex` построены по кросс-валидации |
+| ✅ | TTA в полевом режиме приложения (`CROP_FIELD_TTA`) |
+| ⏸ | **Пауза.** Не досчитаны для 60-эпохового бюджета: `joint_320`, `joint_closed`, `joint_v2`, `joint_v2_noadabn`, `semi25` (все сиды) и `joint_long` для сида 42 уже есть. Продолжить: `cd domain_adaptation_experiments && for s in 42 43 44; do python -m da.cv --seeds $s --device mps --skip-existing & done; wait; python -m da.cv_summary && python -m da.figures` |
+| ⬜ | После завершения: обучить развёрнутую полевую модель лучшим MobileNet-рецептом `python -m da.cv --final joint_long --device mps`, обновить скриншоты, опубликовать веса |
+| ⬜ | Переписать раздел результатов диссертации по `results/cv_summary.md` (старые 76–79 % не воспроизводимы) |
+| ⬜ | Адаптация на все 27 классов: `python -m da.joint_training --classes all` (по желанию) |
+| ⬜ | `scripts/robustness_eval.py` (размытие, шум, JPEG, освещение) — по желанию |
+| 💡 | Количественная оценка объяснимости (deletion/insertion для Grad-CAM vs LIME) |
 
 ## 5. Фронтенд
 
@@ -90,7 +95,7 @@
 
 ## Ближайшие шаги по порядку
 
-1. Дождаться `evaluate_models.py` (калибровка/МакНемар) и `da.run_all` → `make_thesis_tables.py`, рисунки, полевой режим, скриншоты, коммит.
+1. Досчитать кросс-валидацию (команда в разделе 4, ~1,5 ч на GPU) → сводка, рисунки, таблицы, итоговая полевая модель, скриншоты, релиз весов.
 2. Обучить Hybrid, когда освободится GPU (1–2 ч на MPS): `python scripts/train_models.py --models hybrid --device mps && python scripts/evaluate_models.py`.
 3. Запустить подготовленные эксперименты: `scripts/robustness_eval.py`, `da.joint_training --classes all`, консервативный self-training.
 4. Обновить текст диссертации по новым цифрам (таблицы из `docs/thesis/`), заполнить автора/университет в README.

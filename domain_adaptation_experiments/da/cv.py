@@ -18,7 +18,9 @@ Methods
     tent              TENT: entropy minimisation of BN affine parameters (unlabelled), after AdaBN
     self_training     the original self-training recipe (threshold 0.85 -> 0.65, balanced sampling)
     self_training_v2  CBST class-balanced selection + EMA teacher + strong augmentation + source replay
-    joint             the original supervised joint fine-tuning recipe
+    joint             the original supervised joint fine-tuning recipe (25 epochs)
+    joint_long        the same with a 60-epoch budget (inner-dev accuracy was still rising at 25)
+    joint_closed / joint_320 / joint_effnet   60-epoch variants: 4-class loss, 320 px input, EfficientNet-B0
     joint_v2          AdaBN init + field augmentation + PlantVillage replay + EMA weights (+ "_tta" variant)
     joint_v2_noadabn  the same without AdaBN (ablation)
     semi25            25 % of the labels + CBST pseudo-labels on the rest (and "sup25": the 25 % alone)
@@ -371,12 +373,12 @@ def _joint_variant(key, img_size=None, **kw):
 
 m_joint = _joint_variant("joint")
 m_joint_long = _joint_variant("joint_long", epochs=60)
-m_joint_effnet = _joint_variant("joint_effnet", arch="efficientnet", epochs=40)
-m_joint_320 = _joint_variant("joint_320", img_size=320)
-m_joint_closed = _joint_variant("joint_closed", closed=True)
+m_joint_effnet = _joint_variant("joint_effnet", arch="efficientnet", epochs=60)
+m_joint_320 = _joint_variant("joint_320", img_size=320, epochs=60)
+m_joint_closed = _joint_variant("joint_closed", closed=True, epochs=60)
 
 
-def joint_v2_recipe(ctx, labeled, inner, unlabeled_for_bn, log="", epochs=30, adabn=True):
+def joint_v2_recipe(ctx, labeled, inner, unlabeled_for_bn, log="", epochs=60, adabn=True):
     model = C.load_source_model(ctx.device)
     if adabn:
         model = C.adapt_bn(model, unlabeled_for_bn, ctx.device)
@@ -448,20 +450,20 @@ LABELS = {
     "tent": "AdaBN + TENT",
     "self_training": "Self-training (исходный)",
     "self_training_v2": "Self-training v2 (CBST + EMA-учитель)",
-    "joint": "Joint fine-tuning (исходный)",
-    "joint_tta": "Joint fine-tuning + TTA",
+    "joint": "Joint fine-tuning, 25 эпох (исходный)",
+    "joint_tta": "Joint fine-tuning, 25 эпох + TTA",
     "joint_long": "Joint fine-tuning, 60 эпох",
     "joint_long_tta": "Joint fine-tuning, 60 эпох + TTA",
-    "joint_effnet": "Joint fine-tuning, EfficientNet-B0",
-    "joint_effnet_tta": "Joint fine-tuning, EfficientNet-B0 + TTA",
-    "joint_320": "Joint fine-tuning, 320 px",
-    "joint_320_tta": "Joint fine-tuning, 320 px + TTA",
-    "joint_closed": "Joint fine-tuning, 4-классовая функция потерь",
-    "joint_closed_tta": "Joint fine-tuning, 4-классовая функция потерь + TTA",
-    "joint_v2": "Joint fine-tuning v2",
-    "joint_v2_tta": "Joint fine-tuning v2 + TTA",
-    "joint_v2_noadabn": "Joint fine-tuning v2 без AdaBN",
-    "joint_v2_noadabn_tta": "Joint fine-tuning v2 без AdaBN + TTA",
+    "joint_effnet": "Joint, 60 эпох, EfficientNet-B0",
+    "joint_effnet_tta": "Joint, 60 эпох, EfficientNet-B0 + TTA",
+    "joint_320": "Joint, 60 эпох, 320 px",
+    "joint_320_tta": "Joint, 60 эпох, 320 px + TTA",
+    "joint_closed": "Joint, 60 эпох, 4-классовая функция потерь",
+    "joint_closed_tta": "Joint, 60 эпох, 4-классовая функция потерь + TTA",
+    "joint_v2": "Joint v2 (AdaBN + повтор PlantVillage + EMA), 60 эпох",
+    "joint_v2_tta": "Joint v2, 60 эпох + TTA",
+    "joint_v2_noadabn": "Joint v2 без AdaBN, 60 эпох",
+    "joint_v2_noadabn_tta": "Joint v2 без AdaBN, 60 эпох + TTA",
     "sup25": "25 % разметки",
     "semi25": "25 % разметки + псевдометки",
 }

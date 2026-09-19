@@ -6,11 +6,16 @@
 \toprule
 Метод A & Метод B & A верно, B нет & B верно, A нет & p \\
 \midrule
-Без адаптации & Joint fine-tuning (исходный) & 18 & 117 & < 0.001 \\
+Без адаптации & Joint fine-tuning, 60 эпох & 21 & 176 & < 0.001 \\
+Joint fine-tuning, 25 эпох (исходный) & Joint fine-tuning, 60 эпох & 12 & 68 & < 0.001 \\
+Joint fine-tuning, 60 эпох & Joint fine-tuning, 60 эпох + TTA & 13 & 18 & 0.472 \\
+Joint fine-tuning, 60 эпох & Joint, 60 эпох, EfficientNet-B0 & 56 & 54 & 0.924 \\
+Joint fine-tuning, 60 эпох + TTA & Joint, 60 эпох, EfficientNet-B0 + TTA & 44 & 54 & 0.363 \\
+Без адаптации & Joint fine-tuning, 25 эпох (исходный) & 18 & 117 & < 0.001 \\
 Без адаптации & Self-training v2 (CBST + EMA-учитель) & 61 & 32 & 0.004 \\
 Self-training (исходный) & Self-training v2 (CBST + EMA-учитель) & 7 & 103 & < 0.001 \\
-25 \% разметки & 25 \% разметки + псевдометки & 10 & 7 & 0.628 \\
-Joint fine-tuning (исходный) & Joint fine-tuning v2 & 41 & 39 & 0.911 \\
+Joint fine-tuning, 25 эпох (исходный) & Joint fine-tuning, 25 эпох + TTA & 9 & 14 & 0.404 \\
+Joint fine-tuning, 25 эпох (исходный) & Ансамбль дообученных моделей + TTA & 7 & 68 & < 0.001 \\
 \bottomrule
 \end{tabular}
 \end{table}
